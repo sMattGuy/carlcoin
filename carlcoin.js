@@ -146,7 +146,7 @@ client.on('message', message => {
 			let type = chop[chop.length-2];
 			let amount = parseInt(chop[chop.length-1]);
 			if(amount <= 2 || amount == 'NaN'){	
-				message.channel.send(`Invalid amount entered!(buy in min. 2CC)`);
+				message.channel.send(`Invalid amount entered!(buy in fee. 2CC)`);
 			}
 			else{
 				let noStrat = true;
@@ -174,7 +174,7 @@ client.on('message', message => {
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
-										let pot = data.pot-1;
+										let pot = data.pot-2;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -182,7 +182,7 @@ client.on('message', message => {
 										message.channel.send(`You've won! you got ${pot} CC!`);
 									}
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
-										let pot = data.pot-1;
+										let pot = data.pot-2;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -229,7 +229,7 @@ client.on('message', message => {
 				lowestEarnerAmount = data.users[i].balance;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
 	}
 	else if(message.content.startsWith('!cc help')){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
