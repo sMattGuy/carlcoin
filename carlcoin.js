@@ -177,6 +177,8 @@ client.on('message', message => {
 										let pot = data.pot;
 										data.users[j].balance += pot;
 										data.pot -= pot;
+										data.pot += 1;
+										data.econ += 1;
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You've won! you got ${pot} CC!`);
@@ -185,6 +187,8 @@ client.on('message', message => {
 										let pot = data.pot;
 										data.users[j].balance += pot;
 										data.pot -= pot;
+										data.pot += 5;
+
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You've won! you got ${pot} CC!`);
