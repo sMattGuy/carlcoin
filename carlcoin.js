@@ -84,7 +84,7 @@ client.on('message', message => {
 			let recipient = getUserFromMention(chop[chop.length-2]).username;
 			console.log(recipient);
 			let amount = parseInt(chop[chop.length-1]);
-			if(amount == 0 || amount == 'NaN'){
+			if(amount <= 0 || amount == 'NaN'){
 				
 				message.channel.send(`Invalid amount entered!`);
 			}
@@ -145,65 +145,70 @@ client.on('message', message => {
 			let strats = ["alwaysA", "alwaysB", "random"];
 			let type = chop[chop.length-2];
 			let amount = chop[chop.length-1];
-			let noStrat = true;
-			for(let i=0;i<strats.length;i++){
-				if(type == strats[i]){
-					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-					let data = JSON.parse(database);
-					let noUser = true;
-					//store user
-					let user = message.author.username;
-					//find user and check amount
-					for(let j=0;j<data.users.length;j++){
-						if(data.users[j].name == user){
-							let balance = data.users[j].balance;
-							if(balance - amount < 0){
-								console.log("not enough coin")
-								message.channel.send(`You don't have enough CC!`);
-							}
-							else{
-								//starts gambling
-								let optA = Math.floor(Math.random() * 10); 
-								let optB = Math.floor(Math.random() * 10);
-								let random = Math.floor(Math.random() * 2);
-								data.pot += amount;
-								data.users[j].balance -= amount;
-								message.channel.send("```\n`+--------+--------+\n|   ${optA}    |   ${optB}    |\n|        |        |\n+--------+--------+`\n```");
-								if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
-									let pot = data.pot;
-									data.users[j].balance += pot;
-									data.pot -= pot;
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									message.channel.send(`You've won! you got ${pot} CC!`);
-								}
-								else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
-									let pot = data.pot;
-									data.users[j].balance += pot;
-									data.pot -= pot;
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									message.channel.send(`You've won! you got ${pot} CC!`);
+			if(amount <= 0 || amount == 'NaN'){	
+				message.channel.send(`Invalid amount entered!`);
+			}
+			else{
+				let noStrat = true;
+				for(let i=0;i<strats.length;i++){
+					if(type == strats[i]){
+						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+						let data = JSON.parse(database);
+						let noUser = true;
+						//store user
+						let user = message.author.username;
+						//find user and check amount
+						for(let j=0;j<data.users.length;j++){
+							if(data.users[j].name == user){
+								let balance = data.users[j].balance;
+								if(balance - amount < 0){
+									console.log("not enough coin")
+									message.channel.send(`You don't have enough CC!`);
 								}
 								else{
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									message.channel.send(`You've lost! The pot is now ${data.pot}`);
+									//starts gambling
+									let optA = Math.floor(Math.random() * 10); 
+									let optB = Math.floor(Math.random() * 10);
+									let random = Math.floor(Math.random() * 2);
+									data.pot += amount;
+									data.users[j].balance -= amount;
+									message.channel.send("```\n`+--------+--------+\n|   ${optA}    |   ${optB}    |\n|        |        |\n+--------+--------+`\n```");
+									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
+										let pot = data.pot;
+										data.users[j].balance += pot;
+										data.pot -= pot;
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										message.channel.send(`You've won! you got ${pot} CC!`);
+									}
+									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
+										let pot = data.pot;
+										data.users[j].balance += pot;
+										data.pot -= pot;
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										message.channel.send(`You've won! you got ${pot} CC!`);
+									}
+									else{
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										message.channel.send(`You've lost! The pot is now ${data.pot}`);
+									}
 								}
+								noUser = false;
+								break;
 							}
-							noUser = false;
-							break;
 						}
+						if(noUser){
+							message.channel.send(`You are not registered for CC!`);
+						}
+						noStrat = false;
+						break;
 					}
-					if(noUser){
-						message.channel.send(`You are not registered for CC!`);
-					}
-					noStrat = false;
-					break;
 				}
-			}
-			if(noStrat){
-				message.channel.send(`Invalid strat (try alwaysA, alwaysB or random)`);
+				if(noStrat){
+					message.channel.send(`Invalid strat (try alwaysA, alwaysB or random)`);
+				}
 			}
 		}
 	}
