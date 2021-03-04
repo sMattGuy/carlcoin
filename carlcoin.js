@@ -47,6 +47,7 @@ client.on('message', message => {
 		}
 		if(addUser){
 			data.users.push({"name":`${user}`,"balance":10});
+			data.econ += 10;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send('You have been registered and recieved 10CC!');
@@ -134,10 +135,88 @@ client.on('message', message => {
 			}
 		}
 	}
+	else if(message.content.startsWith('!cc roll')){ /*!cc roll type amount*/ 
+		let chop = message.content.split(" ");
+		console.log(chop);
+		if(chop.length > 4){
+			message.channel.send(`Too many arguments supplied!`);
+		}
+		else{
+			let strats = {"alwaysA", "alwaysB", "random"};
+			let type = chop[chop.length-2];
+			let amount = chop[chop.length-1];
+			let noStrat = true;
+			for(let i=0;i<strats.length;i++){
+				if(type == strats[i]){
+					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					let data = JSON.parse(database);
+					let noUser = true;
+					//store user
+					let user = message.author.username;
+					//find user and check amount
+					for(let j=0;j<data.users.length;j++){
+						if(data.users[j].name == user){
+							let balance = data.users[j].balance;
+							if(balance - amount < 0){
+								console.log("not enough coin")
+								message.channel.send(`You don't have enough CC!`);
+							}
+							else{
+								//starts gambling
+								let optA = Math.floor(Math.random() * 10); 
+								let optB = Math.floor(Math.random() * 10);
+								let random = Math.floor(Math.random() * 2);
+								data.pot += amount;
+								data.users[j].balance -= amount;
+								message.channel.send("```\n`+--------+--------+\n|   ${optA}    |   ${optB}    |\n|        |        |\n+--------+--------+`\n```");
+								if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
+									let pot = data.pot;
+									data.users[j].balance += pot;
+									data.pot -= pot;
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+									message.channel.send(`You've won! you got ${pot} CC!`);
+								}
+								else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
+									let pot = data.pot;
+									data.users[j].balance += pot;
+									data.pot -= pot;
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+									message.channel.send(`You've won! you got ${pot} CC!`);
+								}
+								else{
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+									message.channel.send(`You've lost! The pot is now ${data.pot}`);
+								}
+							}
+							noUser = false;
+							break;
+						}
+					}
+					if(noUser){
+						message.channel.send(`You are not registered for CC!`);
+					}
+					noStrat = false;
+					break;
+				}
+			}
+			if(noStrat){
+				message.channel.send(`Invalid strat (try alwaysA, alwaysB or random)`);
+			}
+		}
+	}
+	else if(message.content.startsWith('!cc econ')){
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		message.channel.send(`There are currently ${data.econ} CC circulating`);
+	}
 	else if(message.content.startsWith('!cc help')){
 		message.channel.send(`use !cc join to join Carl Coin!`);
 		message.channel.send(`use !cc balance to see your balance`);
 		message.channel.send(`use !cc pay <@user> <amount> to pay another user`);
+		message.channel.send(`use !cc econ to see the current economy`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
