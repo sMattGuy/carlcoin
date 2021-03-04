@@ -46,7 +46,7 @@ client.on('message', message => {
 			}
 		}
 		if(addUser){
-			data.users.push({"name":`${user}`,"balance":10});
+			data.users.push({"name":`${user}`,"balance":10,"chanceTime":0});
 			data.econ += 10;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -91,56 +91,54 @@ client.on('message', message => {
 				corrUser = false;
 			}
 			if(corrUser){
-			console.log(recipient);
-			let amount = parseInt(chop[chop.length-1]);
-			if(amount <= 0 || amount == 'NaN'){
-				
-				message.channel.send(`Invalid amount entered!`);
-			}
-			else{
-				//fetch and store data
-				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-				let data = JSON.parse(database);
-				//store user
-				let user = message.author.username;
-				//flag
-				let notFound = true;
-				//finds payer
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].name == user){
-						let balance = data.users[i].balance;
-						if(balance - amount < 0){
-							console.log("not enough coin")
-							message.channel.send(`You don't have enough CC!`);
-						}
-						else{
-							let noRecp = true;
-							for(let j=0;j<data.users.length;j++){
-								if(data.users[j].name == recipient){
-									noRecp = false;
-									console.log("paying",amount);
-									data.users[i].balance -= amount;
-									data.users[j].balance += amount;
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									message.channel.send(`You have paid ${recipient} ${amount} CC!`);
-									message.channel.send(`${recipient}'s Balance ${data.users[j].balance}`);
-									message.channel.send(`${user}'s Balance ${data.users[i].balance}`);
+				console.log(recipient);
+				let amount = parseInt(chop[chop.length-1]);
+				if(amount <= 0 || amount == 'NaN'){
+					
+					message.channel.send(`Invalid amount entered!`);
+				}
+				else{
+					//fetch and store data
+					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					let data = JSON.parse(database);
+					//store user
+					let user = message.author.username;
+					//flag
+					let notFound = true;
+					//finds payer
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].name == user){
+							let balance = data.users[i].balance;
+							if(balance - amount < 0){
+								console.log("not enough coin")
+								message.channel.send(`You don't have enough CC!`);
+							}
+							else{
+								let noRecp = true;
+								for(let j=0;j<data.users.length;j++){
+									if(data.users[j].name == recipient){
+										noRecp = false;
+										console.log("paying",amount);
+										data.users[i].balance -= amount;
+										data.users[j].balance += amount;
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										message.channel.send(`You have paid ${recipient} ${amount} CC!\n${recipient}'s Balance ${data.users[j].balance}\n${user}'s Balance ${data.users[i].balance}`);
+									}
+								}
+								if(noRecp){
+									console.log("no user")
+									message.channel.send('Recipient not found!');
 								}
 							}
-							if(noRecp){
-								console.log("no user")
-								message.channel.send('Recipient not found!');
-							}
+							notFound = false;
+							break;
 						}
-						notFound = false;
-						break;
 					}
-				}
-				if(notFound){
-					console.log("not registered");
-					message.channel.send('You are not registered for CC!');
-				}
+					if(notFound){
+						console.log("not registered");
+						message.channel.send('You are not registered for CC!');
+					}
 			}
 			}
 		}
@@ -155,8 +153,8 @@ client.on('message', message => {
 			let strats = ["alwaysA", "alwaysB", "random"];
 			let type = chop[chop.length-2];
 			let amount = parseInt(chop[chop.length-1]);
-			if(amount <= 2 || amount == 'NaN'){	
-				message.channel.send(`Invalid amount entered!(buy in fee. 2CC)`);
+			if(amount <= 0 || amount == 'NaN'){	
+				message.channel.send(`Invalid amount entered!`);
 			}
 			else{
 				let noStrat = true;
@@ -184,7 +182,7 @@ client.on('message', message => {
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
-										let pot = data.pot;
+										let pot = Math.floor(data.pot/2);
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -192,7 +190,7 @@ client.on('message', message => {
 										message.channel.send(`You've won! you got ${pot} CC!`);
 									}
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
-										let pot = data.pot;
+										let pot = Math.floor(data.pot/2);
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -222,59 +220,52 @@ client.on('message', message => {
 			}
 		}
 	}
-	else if(message.content.startsWith('!cc chance')){ /*!cc chance amount*/ 
-		let chop = message.content.split(" ");
-		console.log(chop);
-		if(chop.length > 3){
-			message.channel.send(`Too many arguments supplied!`);
-		}
-		else{
-			let amount = parseInt(chop[chop.length-1]);
-			if(amount < 3 || amount == 'NaN'){	
-				message.channel.send(`Invalid amount entered!(minimum. 3CC)`);
-			}
-			else{
-				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-				let data = JSON.parse(database);
-				let noUser = true;
-				//store user
-				let user = message.author.username;
-				//find user and check amount
-				for(let j=0;j<data.users.length;j++){
-					if(data.users[j].name == user){
-						let balance = data.users[j].balance;
-						if(balance - amount < 0){
-							console.log("not enough coin")
-							message.channel.send(`You don't have enough CC!`);
-						}
-						else{
-							//starts chance time
-							let random = Math.floor(Math.random() * 4);
-							data.users[j].balance -= amount;
-							message.channel.send(`Quad. 0 wins\n+-0-+-1-+\n| W | L |\n+---+---+\n| L | L |\n+-2-+-3-+\nYou rolled Quad. ${random}`,{"code":true});
-							if(random == 0){
-								let doubleMoney = amount * 2;
-								data.users[j].balance += doubleMoney;
-								data.econ += amount;
-								let newData = JSON.stringify(data);
-								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-								message.channel.send(`You've won! You now have ${data.users[j].balance}`);
-							}
-							else{
-								data.pot += amount;
-								message.channel.send(`You've lost! You now have ${data.users[j].balance}`);
-								let newData = JSON.stringify(data);
-								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							}
-						}
-						noUser = false;
-						break;
+	else if(message.content.startsWith('!cc chance')){ /*!cc chance*/ 
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let noUser = true;
+		//store user
+		let user = message.author.username;
+		//find user and check amount
+		for(let j=0;j<data.users.length;j++){
+			if(data.users[j].name == user){
+				let balance = data.users[j].balance;
+				let amount = Math.floor(balance/2);
+				if(balance - amount < 0){
+					console.log("not enough coin")
+					message.channel.send(`You don't have enough CC!`);
+				}
+				let currentTime = new Date();
+				if(data.users[j].chanceTime == currentTime.getDate()){
+					message.channel.send(`You've already won today! Try tomorrow`);
+				}
+				else{
+					//starts chance time
+					let random = Math.floor(Math.random() * 4);
+					data.users[j].balance -= amount;
+					message.channel.send(`Quad. 0 wins\n+-0-+-1-+\n| W | L |\n+---+---+\n| L | L |\n+-2-+-3-+\nYou rolled Quad. ${random}`,{"code":true});
+					if(random == 0){
+						let doubleMoney = amount * 2;
+						data.users[j].balance += doubleMoney;
+						data.users[j].chanceTime = currentTime.getDate();
+						data.econ += amount;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You've won! You now have ${data.users[j].balance}`);
+					}
+					else{
+						data.pot += amount;
+						message.channel.send(`You've lost! You now have ${data.users[j].balance}`);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					}
 				}
-				if(noUser){
-					message.channel.send(`You are not registered for CC!`);
-				}
+				noUser = false;
+				break;
 			}
+		}
+		if(noUser){
+			message.channel.send(`You are not registered for CC!`);
 		}
 	}
 	else if(message.content.startsWith('!cc econ')){
@@ -297,7 +288,7 @@ client.on('message', message => {
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
 	}
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance <amount> to maybe double your money!`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
