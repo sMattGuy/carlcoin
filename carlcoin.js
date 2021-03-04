@@ -215,7 +215,21 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc econ')){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
-		message.channel.send(`There are currently ${data.econ} CC circulating`);
+		let highestEarnerName = "";
+		let highestEarnerAmount = 0;
+		let lowestEarnerName = "";
+		let lowestEarnerAmount = 99999;
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].balance > highestEarnerAmount){
+				highestEarnerName = data.users[i].name;
+				highestEarnerAmount = data.users[i].balance;
+			}
+			if(data.users[i].balance < lowestEarnerAmount){
+				lowestEarnerName = data.users[i].name;
+				lowestEarnerAmount = data.users[i].balance;
+			}
+		}
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
 	}
 	else if(message.content.startsWith('!cc help')){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
