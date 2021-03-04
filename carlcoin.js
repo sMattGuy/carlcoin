@@ -144,7 +144,7 @@ client.on('message', message => {
 		else{
 			let strats = ["alwaysA", "alwaysB", "random"];
 			let type = chop[chop.length-2];
-			let amount = chop[chop.length-1];
+			let amount = parseInt(chop[chop.length-1]);
 			if(amount <= 0 || amount == 'NaN'){	
 				message.channel.send(`Invalid amount entered!`);
 			}
@@ -172,7 +172,7 @@ client.on('message', message => {
 									let random = Math.floor(Math.random() * 2);
 									data.pot += amount;
 									data.users[j].balance -= amount;
-									message.channel.send("```\n`+--------+--------+\n|   ${optA}    |   ${optB}    |\n|        |        |\n+--------+--------+`\n```");
+									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
 										let pot = data.pot;
 										data.users[j].balance += pot;
@@ -218,12 +218,7 @@ client.on('message', message => {
 		message.channel.send(`There are currently ${data.econ} CC circulating`);
 	}
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!`);
-		message.channel.send(`use !cc balance to see your balance`);
-		message.channel.send(`use !cc pay <@user> <amount> to pay another user`);
-		message.channel.send(`use !cc econ to see the current economy`);
-		message.channel.send(`use !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
-
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
