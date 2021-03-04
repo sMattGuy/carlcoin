@@ -183,24 +183,26 @@ client.on('message', message => {
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
 										let pot = Math.floor(data.pot/2);
+										if(pot == 0) pot += 1;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've won! you got ${pot} CC!`);
+										message.channel.send(`You've won! you got ${pot}CC!`);
 									}
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
 										let pot = Math.floor(data.pot/2);
+										if(pot == 0) pot += 1;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've won! you got ${pot} CC!`);
+										message.channel.send(`You've won! you got ${pot}CC!`);
 									}
 									else{
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've lost! The pot is now ${data.pot}`);
+										message.channel.send(`You've lost! The pot is now ${data.pot}CC`);
 									}
 								}
 								noUser = false;
@@ -231,6 +233,7 @@ client.on('message', message => {
 			if(data.users[j].name == user){
 				let balance = data.users[j].balance;
 				let amount = Math.floor(balance/2);
+				if(amount == 0) amount += 1;
 				if(balance - amount < 0){
 					console.log("not enough coin")
 					message.channel.send(`You don't have enough CC!`);
@@ -251,11 +254,11 @@ client.on('message', message => {
 						data.econ += amount;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send(`You've won! You now have ${data.users[j].balance}`);
+						message.channel.send(`You've won! You now have ${data.users[j].balance}CC`);
 					}
 					else{
 						data.pot += amount;
-						message.channel.send(`You've lost! You now have ${data.users[j].balance}`);
+						message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					}
