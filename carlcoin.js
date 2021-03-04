@@ -174,7 +174,7 @@ client.on('message', message => {
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
-										let pot = data.pot;
+										let pot = data.pot-1;
 										data.users[j].balance += pot-1;
 										data.pot -= pot-1;
 										let newData = JSON.stringify(data);
@@ -182,7 +182,7 @@ client.on('message', message => {
 										message.channel.send(`You've won! you got ${pot} CC!`);
 									}
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
-										let pot = data.pot;
+										let pot = data.pot-1;
 										data.users[j].balance += pot-1;
 										data.pot -= pot-1;
 										let newData = JSON.stringify(data);
