@@ -142,7 +142,7 @@ client.on('message', message => {
 			message.channel.send(`Too many arguments supplied!`);
 		}
 		else{
-			let strats = {"alwaysA", "alwaysB", "random"};
+			let strats = ["alwaysA", "alwaysB", "random"];
 			let type = chop[chop.length-2];
 			let amount = chop[chop.length-1];
 			let noStrat = true;
@@ -217,6 +217,8 @@ client.on('message', message => {
 		message.channel.send(`use !cc balance to see your balance`);
 		message.channel.send(`use !cc pay <@user> <amount> to pay another user`);
 		message.channel.send(`use !cc econ to see the current economy`);
+		message.channel.send(`use !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
+
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
