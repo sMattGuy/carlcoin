@@ -174,7 +174,7 @@ client.on('message', message => {
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
-										let pot = data.pot-2;
+										let pot = data.pot;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -182,7 +182,7 @@ client.on('message', message => {
 										message.channel.send(`You've won! you got ${pot} CC!`);
 									}
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
-										let pot = data.pot-2;
+										let pot = data.pot;
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
@@ -208,6 +208,62 @@ client.on('message', message => {
 				}
 				if(noStrat){
 					message.channel.send(`Invalid strat (try alwaysA, alwaysB or random)`);
+				}
+			}
+		}
+	}
+	else if(message.content.startsWith('!cc chance')){ /*!cc chance amount*/ 
+		let chop = message.content.split(" ");
+		console.log(chop);
+		if(chop.length > 3){
+			message.channel.send(`Too many arguments supplied!`);
+		}
+		else{
+			let amount = parseInt(chop[chop.length-1]);
+			if(amount < 3 || amount == 'NaN'){	
+				message.channel.send(`Invalid amount entered!(minimum. 3CC)`);
+			}
+			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				let noUser = true;
+				//store user
+				let user = message.author.username;
+				//find user and check amount
+				for(let j=0;j<data.users.length;j++){
+					if(data.users[j].name == user){
+						let balance = data.users[j].balance;
+						if(balance - amount < 0){
+							console.log("not enough coin")
+							message.channel.send(`You don't have enough CC!`);
+						}
+						else{
+							//starts chance time
+							let random = Math.floor(Math.random() * 4);
+							data.users[j].balance -= amount;
+							message.channel.send(`Quad. 0 wins\n+-0-+-1-+\n| W | L |\n+---+---+\n| L | L |\n+-2-+-3-+\nYou rolled Quad. ${random}`,{"code":true});
+							if(random == 0){
+								let doubleMoney = amount * 2;
+								data.users[j].balance += doubleMoney;
+								data.econ += amount;
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								message.channel.send(`You've won! You now have ${data.users[j].balance}`);
+							}
+							else{
+								data.pot += amount;
+								message.channel.send(`You've lost! You now have ${data.users[j].balance}`);
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								message.channel.send(`You've lost! The pot is now ${data.pot}`);
+							}
+						}
+						noUser = false;
+						break;
+					}
+				}
+				if(noUser){
+					message.channel.send(`You are not registered for CC!`);
 				}
 			}
 		}
