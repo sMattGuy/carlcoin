@@ -76,12 +76,21 @@ client.on('message', message => {
 	}
 	else if(message.content.startsWith('!cc pay')){
 		let chop = message.content.split(" ");
+		let corrUser = true;
 		console.log(chop);
 		if(chop.length > 4){
 			message.channel.send(`Too many arguments supplied!`);
 		}
 		else{
-			let recipient = getUserFromMention(chop[chop.length-2]).username;
+			let recipient = "";
+			try{
+				recipient = getUserFromMention(chop[chop.length-2]).username;
+			}
+			catch(err){
+				message.channel.send(`Invalid recipient`);
+				corrUser = false;
+			}
+			if(corrUser){
 			console.log(recipient);
 			let amount = parseInt(chop[chop.length-1]);
 			if(amount <= 0 || amount == 'NaN'){
@@ -132,6 +141,7 @@ client.on('message', message => {
 					console.log("not registered");
 					message.channel.send('You are not registered for CC!');
 				}
+			}
 			}
 		}
 	}
@@ -255,7 +265,6 @@ client.on('message', message => {
 								message.channel.send(`You've lost! You now have ${data.users[j].balance}`);
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-								message.channel.send(`You've lost! The pot is now ${data.pot}`);
 							}
 						}
 						noUser = false;
@@ -288,7 +297,7 @@ client.on('message', message => {
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
 	}
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> <amount> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance <amount> to maybe double your money!`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
