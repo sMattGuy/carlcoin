@@ -10,12 +10,11 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 
 //raffle variables
-let raffleRNG = Math.floor(Math.random() * (1000 - 750 + 1)) + 750;
+let raffleRNG = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-let start = new Date();
-let end = 0;
+
 console.log("rafflerng",raffleRNG);
 //sets ready presense
 client.on('ready', () => {
@@ -33,7 +32,6 @@ client.on('ready', () => {
 client.on('message', message => {
 	//increment message counter
 	messageCounter += 1;
-	console.log(messageCounter);
 	//set presence
    client.user.setPresence({
       status: 'online',
@@ -42,13 +40,13 @@ client.on('message', message => {
          type: "WATCHING"
       }
    });
-	//debugger
-	if(message.content.startsWith('mattsecretdebugger')){
-		messageCounter = raffleRNG;
-	}
+	console.log(messageCounter);
 	//raffle functionality
-	if(messageCounter == raffleRNG){
-		raffleRNG = Math.floor(Math.random() * (1000 - 750 + 1)) + 750;
+	if(messageCounter > raffleRNG){
+		messageCounter = 0;
+	}
+	if(messageCounter == raffleRNG && !raffleStart){
+		raffleRNG = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
 		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
@@ -56,10 +54,9 @@ client.on('message', message => {
 		raffleStart = true;
 		messageCounter = 0;
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
-		end = (start.getMinutes() + 5) % 60;
 		let mysteryMD5 = md5(mysteryNumber);
 		console.log("md5",mysteryMD5);
-		message.channel.send(`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}`);
+		message.channel.send(`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`);
 	}
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){
@@ -86,17 +83,16 @@ client.on('message', message => {
 						message.channel.send(`Congradulations! You won 10CC!`);
 						raffleStart = false;
 					}
+					if(mysteryNumber > guess){
+						message.channel.send(`Incorrect, try a higher number!`)
+					}
 					else{
-						message.channel.send(`Incorrect, try again!`);
+						message.channel.send(`Incorrect, try a lower number!`);
 					}
 				}
 				break;
 			}
 		}
-	}
-	if((start.getMinutes() >= end) && raffleStart){
-		raffleStart = false;
-		console.log("raffle didnt complete");
 	}
    //commands
 	if (message.content.startsWith('!cc join')) {
