@@ -16,6 +16,7 @@ let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let start = new Date();
 let end = 0;
+console.log("rafflerng",raffleRNG);
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -48,6 +49,7 @@ client.on('message', message => {
 	//raffle functionality
 	if(messageCounter == raffleRNG){
 		raffleRNG = Math.floor(Math.random() * (1000 - 750 + 1)) + 750;
+		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
 		messageCounter = 0;
@@ -93,8 +95,8 @@ client.on('message', message => {
 		}
 	}
 	if((start.getMinutes() >= end) && raffleStart){
-		message.channel.send(`Raffle Over, No one wins.`);
 		raffleStart = false;
+		console.log("raffle didnt complete");
 	}
    //commands
 	if (message.content.startsWith('!cc join')) {
