@@ -48,7 +48,7 @@ client.on('message', message => {
 	if(messageCounter == raffleRNG){
 		raffleRNG = Math.floor(Math.random() * (1000 - 750 + 1)) + 750;
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-		console.log(mysteryNumber);
+		console.log("mystery",mysteryNumber);
 		messageCounter = 0;
 		raffleStart = true;
 		messageCounter = 0;
@@ -66,6 +66,8 @@ client.on('message', message => {
 		}
 		let guess = parseInt(chop[chop.length-1]);
 		let user = message.author.username;
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].name == user){
 				if(guess < 1 || guess == 'NaN'){	
@@ -75,6 +77,8 @@ client.on('message', message => {
 					if(mysteryNumber == guess){
 						data.users[i].balance += 10;
 						data.econ += 10;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`Congradulations! You won 10CC!`);
 						raffleStart = false;
 					}
