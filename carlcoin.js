@@ -56,6 +56,7 @@ client.on('message', message => {
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
 		end = (start.getMinutes() + 5) % 60;
 		let mysteryMD5 = md5(mysteryNumber);
+		console.log("md5",mysteryMD5);
 		message.channel.send(`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}`);
 	}
 	//guess command
@@ -67,6 +68,8 @@ client.on('message', message => {
 		}
 		let guess = parseInt(chop[chop.length-1]);
 		let user = message.author.username;
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].name == user){
 				if(guess < 1 || guess == 'NaN'){	
@@ -76,6 +79,8 @@ client.on('message', message => {
 					if(mysteryNumber == guess){
 						data.users[i].balance += 10;
 						data.econ += 10;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`Congradulations! You won 10CC!`);
 						raffleStart = false;
 					}
@@ -385,7 +390,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
