@@ -55,6 +55,7 @@ client.on('message', message => {
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
 		end = (start.getMinutes() + 5) % 60;
 		let mysteryMD5 = md5(mysteryNumber);
+		console.log("md5",mysteryMD5);
 		message.channel.send(`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}`);
 	}
 	//guess command
@@ -388,7 +389,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
