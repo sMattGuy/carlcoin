@@ -232,12 +232,12 @@ client.on('message', message => {
 			if(data.users[j].name == user){
 				let balance = data.users[j].balance;
 				let amount = Math.floor(balance/2);
+				let currentTime = new Date();
 				if(amount == 0) amount += 1;
 				if(balance - amount <= 0){
 					console.log("not enough coin")
 					message.channel.send(`You don't have enough CC!`);
 				}
-				let currentTime = new Date();
 				else if(data.users[j].chanceTime == currentTime.getDate()){
 					message.channel.send(`You've already won today! Try tomorrow`);
 				}
