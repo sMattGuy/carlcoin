@@ -32,6 +32,7 @@ client.on('ready', () => {
 client.on('message', message => {
 	//increment message counter
 	messageCounter += 1;
+	console.log(messageCounter);
 	//set presence
    client.user.setPresence({
       status: 'online',
@@ -48,7 +49,7 @@ client.on('message', message => {
 	if(messageCounter == raffleRNG){
 		raffleRNG = Math.floor(Math.random() * (1000 - 750 + 1)) + 750;
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-		console.log(mysteryNumber);
+		console.log("mystery",mysteryNumber);
 		messageCounter = 0;
 		raffleStart = true;
 		messageCounter = 0;
