@@ -72,7 +72,7 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
-				if(guess < 1 || guess == 'NaN'){	
+				if(guess < 1 || isNaN(guess)){	
 					message.channel.send(`Invalid amount entered!`);
 				}
 				else{
@@ -148,7 +148,6 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc pay')){
 		let chop = message.content.split(" ");
 		let corrUser = true;
-		console.log(chop);
 		//if too many arguments
 		if(chop.length > 4){
 			message.channel.send(`Too many arguments supplied!`);
@@ -168,10 +167,9 @@ client.on('message', message => {
 			}
 			//if username works
 			if(corrUser){
-				console.log(recipient);
 				let amount = parseInt(chop[chop.length-1]);
 				//checks valid money
-				if(amount <= 0 || amount == 'NaN'){
+				if(amount <= 0 || isNaN(amount)){
 					
 					message.channel.send(`Invalid amount entered!`);
 				}
@@ -190,7 +188,6 @@ client.on('message', message => {
 						if(data.users[i].id == id){
 							let balance = data.users[i].balance;
 							if(balance - amount < 0){
-								console.log("not enough coin")
 								message.channel.send(`You don't have enough CC!`);
 							}
 							else{
@@ -200,7 +197,6 @@ client.on('message', message => {
 									//starts paying
 									if(data.users[j].id == recpid){
 										noRecp = false;
-										console.log("paying",amount);
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
 										let newData = JSON.stringify(data);
@@ -210,7 +206,6 @@ client.on('message', message => {
 								}
 								//other user not found
 								if(noRecp){
-									console.log("no user")
 									message.channel.send('Recipient not found!');
 								}
 							}
@@ -219,7 +214,6 @@ client.on('message', message => {
 						}
 					}
 					if(notFound){
-						console.log("not registered");
 						message.channel.send('You are not registered for CC!');
 					}
 				}
@@ -229,7 +223,6 @@ client.on('message', message => {
 	//lottery game
 	else if(message.content.startsWith('!cc roll')){
 		let chop = message.content.split(" ");
-		console.log(chop);
 		if(chop.length > 3){
 			message.channel.send(`Too many arguments supplied!`);
 		}
@@ -259,7 +252,6 @@ client.on('message', message => {
 								let balance = data.users[j].balance;
 								//if balance would go negative
 								if(balance - amount < 0){
-									console.log("not enough coin")
 									message.channel.send(`You don't have enough CC! (costs 5)`);
 								}
 								else{
@@ -333,7 +325,6 @@ client.on('message', message => {
 				if(amount == 0) amount += 1;
 				//if user has no money
 				if(balance - amount <= 0){
-					console.log("not enough coin")
 					message.channel.send(`You don't have enough CC!`);
 				}
 				//if user has already played
