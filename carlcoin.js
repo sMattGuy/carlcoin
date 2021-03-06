@@ -10,7 +10,7 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 
 //raffle variables
-let raffleRNG = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+let raffleRNG = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
@@ -27,12 +27,12 @@ client.on('ready', () => {
   });
   console.log('I am ready!');
 });
-//
-console.log(client.guilds);
 // Create an event listener for messages
 client.on('message', message => {
 	//increment message counter
-	messageCounter += 1;
+	if(!raffleStart){
+		messageCounter += 1;
+	}
 	//set presence
    client.user.setPresence({
       status: 'online',
@@ -41,13 +41,12 @@ client.on('message', message => {
          type: "WATCHING"
       }
    });
-	console.log(messageCounter);
 	//raffle functionality
 	if(messageCounter > raffleRNG){
 		messageCounter = 0;
 	}
 	if(messageCounter == raffleRNG && !raffleStart){
-		raffleRNG = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+		raffleRNG = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
 		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
@@ -81,12 +80,10 @@ client.on('message', message => {
 						data.econ += 10;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						let guildList = client.guilds;
-						message.channel.send((`${data.users[i].name} has won! The mining is over.`));
-						console.log("couldnt send to" + guild.name);
+						message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
 						raffleStart = false;
 					}
-					if(mysteryNumber > guess){
+					else if(mysteryNumber > guess){
 						message.channel.send(`Incorrect, try a higher number!`)
 					}
 					else{
