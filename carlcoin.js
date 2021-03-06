@@ -67,10 +67,11 @@ client.on('message', message => {
 		}
 		let guess = parseInt(chop[chop.length-1]);
 		let user = message.author.username;
+		let id = message.author.id;
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].name == user){
+			if(data.users[i].id == id){
 				if(guess < 1 || guess == 'NaN'){	
 					message.channel.send(`Invalid amount entered!`);
 				}
@@ -101,11 +102,12 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		//stores user
 		let user = message.author.username;
+		let id = message.author.id;
 		//bool to add user
 		let addUser = true;
 		//checks for name
 		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].name == user){
+			if(data.users[i].id == id){
 				message.channel.send('You are already registered!');
 				addUser = false;
 				break;
@@ -113,7 +115,7 @@ client.on('message', message => {
 		}
 		//add user
 		if(addUser){
-			data.users.push({"name":`${user}`,"balance":10,"chanceTime":0});
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0});
 			data.econ += 10;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -126,11 +128,12 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		//stores user
 		let user = message.author.username;
+		let id = message.author.id;
 		//flag
 		let notFound = true;
 		//checks for name
 		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].name == user){
+			if(data.users[i].id == id){
 				let balance = data.users[i].balance;
 				message.channel.send(`You have ${balance} CC`);
 				notFound = false;
@@ -152,9 +155,11 @@ client.on('message', message => {
 		}
 		else{
 			let recipient = "";
+			let recpid = "";
 			//attempts to get username
 			try{
 				recipient = getUserFromMention(chop[chop.length-2]).username;
+				recpid = getUserFromMention(chop[chop.length-2]).id;
 			}
 			//if username cannot be gotten
 			catch(err){
@@ -176,12 +181,13 @@ client.on('message', message => {
 					let data = JSON.parse(database);
 					//store user
 					let user = message.author.username;
+					let id = message.author.id;
 					//flag
 					let notFound = true;
 					//finds payer
 					for(let i=0;i<data.users.length;i++){
 						//if username found
-						if(data.users[i].name == user){
+						if(data.users[i].id == id){
 							let balance = data.users[i].balance;
 							if(balance - amount < 0){
 								console.log("not enough coin")
@@ -192,7 +198,7 @@ client.on('message', message => {
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
-									if(data.users[j].name == recipient){
+									if(data.users[j].id == recpid){
 										noRecp = false;
 										console.log("paying",amount);
 										data.users[i].balance -= amount;
@@ -240,6 +246,7 @@ client.on('message', message => {
 					let noUser = true;
 					//store user
 					let user = message.author.username;
+					let id = message.author.id;
 					if(data.pot+5 < 10){
 						message.channel.send(`Pot is empty, try again later!`);
 						noUser = true;
@@ -248,7 +255,7 @@ client.on('message', message => {
 						//find user and check amount
 						for(let j=0;j<data.users.length;j++){
 							//if username found
-							if(data.users[j].name == user){
+							if(data.users[j].id == id){
 								let balance = data.users[j].balance;
 								//if balance would go negative
 								if(balance - amount < 0){
@@ -315,10 +322,11 @@ client.on('message', message => {
 		let noUser = true;
 		//store user
 		let user = message.author.username;
+		let id = message.author.id;
 		//find user and check amount
 		for(let j=0;j<data.users.length;j++){
 			//if user name found
-			if(data.users[j].name == user){
+			if(data.users[j].id == id){
 				let balance = data.users[j].balance;
 				let amount = Math.floor(balance/2);
 				let currentTime = new Date();
