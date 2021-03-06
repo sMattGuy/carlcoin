@@ -27,7 +27,8 @@ client.on('ready', () => {
   });
   console.log('I am ready!');
 });
-
+//
+console.log(client.guilds);
 // Create an event listener for messages
 client.on('message', message => {
 	//increment message counter
