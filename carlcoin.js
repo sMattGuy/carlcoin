@@ -10,7 +10,7 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 
 //raffle variables
-let raffleRNG = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
+let raffleRNG = Math.floor(Math.random() * (400 - 300 + 1)) + 300;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
@@ -46,7 +46,7 @@ client.on('message', message => {
 		messageCounter = 0;
 	}
 	if(messageCounter == raffleRNG && !raffleStart){
-		raffleRNG = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
+		raffleRNG = Math.floor(Math.random() * (400 - 300 + 1)) + 300;
 		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
