@@ -21,7 +21,7 @@ client.on('ready', () => {
   client.user.setPresence({
     status: 'online',
     activity: {
-        name: 'for ^message',
+        name: 'for !cc help',
         type: "WATCHING"
     }
   });
@@ -57,14 +57,7 @@ client.on('message', message => {
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
 		let mysteryMD5 = md5(mysteryNumber);
 		console.log("md5",mysteryMD5);
-		let guildList = client.guilds;
-		try{
-			guildList.forEach(guild => guild.defaultChannel.send(`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
-		}
-		catch(err){
-			console.log("Could not send message to " + guild.name);
-		}
-		
+		message.channel.send((`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
 	}
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){
@@ -89,12 +82,8 @@ client.on('message', message => {
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						let guildList = client.guilds;
-						try{
-							guildList.forEach(guild => guild.defaultChannel.send(`${data.users[i].name} has won! The mining is over.`));
-						}
-						catch(err){
-								console.log("couldnt send to" + guild.name);
-						}
+						message.channel.send((`${data.users[i].name} has won! The mining is over.`));
+						console.log("couldnt send to" + guild.name);
 						raffleStart = false;
 					}
 					if(mysteryNumber > guess){
