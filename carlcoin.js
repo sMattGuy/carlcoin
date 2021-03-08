@@ -142,7 +142,7 @@ client.on('message', message => {
 			if(data.users[i].id == id){
 				let balance = data.users[i].balance;
 				let perc = (balance / data.econ) * 100;
-				let homes = data.users[i]["home"];
+				let homes = data.users[i]["house"];
 				if(isNaN(homes)){
 					homes = 0;
 				}
@@ -449,6 +449,9 @@ client.on('message', message => {
 						}
 						else{
 							data.users[i]["house"] += 1;
+							if(isNaN(data.users[i].house)){
+								data.users[i].house = 1;
+							}
 							data.users[i].balance -= 100;
 							data.econ -= 100;
 							let newData = JSON.stringify(data);
@@ -462,6 +465,9 @@ client.on('message', message => {
 						}
 						else{
 							data.users[i]["apartment"] += 1;
+							if(isNaN(data.users[i].apartment)){
+								data.users[i].apartment = 1;
+							}
 							data.users[i].balance -= 200;
 							data.econ -= 200;
 							let newData = JSON.stringify(data);
