@@ -371,6 +371,45 @@ client.on('message', message => {
 			message.channel.send(`You are not registered for CC!`);
 		}
 	}
+	//claim
+	else if(message.content.startsWith('!cc claim')){
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let noUser = true;
+		//store user
+		let user = message.author.username;
+		let id = message.author.id;
+		//find user and check amount
+		for(let j=0;j<data.users.length;j++){
+			//if user name found
+			if(data.users[j].id == id){
+				let currentTime = new Date();
+				//if user has already played
+				try{
+					if(data.users[j].claim == currentTime.getDate()){
+						message.channel.send(`You've already claimed today! Come back tomorrow`);
+					}
+					else{
+						data.users[j].balance += 5;
+						data.users[j].claim = currentTime.getDate();
+						data.econ += 5;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
+					}
+				}
+				catch(err){
+					data.users[j]["claim"] = currentTime.getDate();
+				}
+				noUser = false;
+				break;
+			}
+		}
+		//if user not found
+		if(noUser){
+			message.channel.send(`You are not registered for CC!`);
+		}
+	}
 	//economy function
 	else if(message.content.startsWith('!cc econ')){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
