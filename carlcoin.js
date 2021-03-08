@@ -400,6 +400,12 @@ client.on('message', message => {
 				}
 				catch(err){
 					data.users[j]["claim"] = currentTime.getDate();
+					data.users[j].balance += 5;
+					data.users[j].claim = currentTime.getDate();
+					data.econ += 5;
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
 				}
 				noUser = false;
 				break;
@@ -433,7 +439,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc claim to claim 5 CC daily!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
