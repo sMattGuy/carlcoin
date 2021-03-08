@@ -14,6 +14,7 @@ let raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
 
 //anti spam stuff
@@ -54,13 +55,13 @@ client.on('message', message => {
 		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
-		messageCounter = 0;
 		raffleStart = true;
+		md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 		messageCounter = 0;
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
 		let mysteryMD5 = md5(mysteryNumber);
 		console.log("md5",mysteryMD5);
-		message.channel.send((`10 Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
+		message.channel.send((`${md5Val} Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
 	}
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){
@@ -81,8 +82,8 @@ client.on('message', message => {
 				}
 				else{
 					if(mysteryNumber == guess){
-						data.users[i].balance += 10;
-						data.econ += 10;
+						data.users[i].balance += md5Val;
+						data.econ += md5Val;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
