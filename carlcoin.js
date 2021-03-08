@@ -16,7 +16,7 @@ let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
-
+let universalDate = new Date();
 //anti spam stuff
 let recentId;
 
@@ -34,7 +34,7 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
 	//increment message counter
-	if(!raffleStart && (recentId !== message.author.id)){
+	if(!raffleStart && (recentId !== message.author.id || message.author.id != 816853972690141205)){
 		messageCounter += 1;
 		recentId = message.author.id;
 	}
@@ -127,6 +127,7 @@ client.on('message', message => {
 			message.channel.send('You have been registered and recieved 10CC!');
 		}
 	}
+	//check balance
 	else if(message.content.startsWith('!cc balance')){
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -141,8 +142,16 @@ client.on('message', message => {
 			if(data.users[i].id == id){
 				let balance = data.users[i].balance;
 				let perc = (balance / data.econ) * 100;
+				let homes = data.users[i]["home"];
+				if(isNaN(homes)){
+					homes = 0;
+				}
+				let apartments = data.users[i]["apartment"];
+				if(isNaN(apartments)){
+					apartments = 0;
+				}
 				perc = perc.toFixed(2);
-				message.channel.send(`You have ${balance} CC\nYou control ${perc}% of the economy!`);
+				message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
 				notFound = false;
 				break;
 			}
@@ -384,12 +393,26 @@ client.on('message', message => {
 			//if user name found
 			if(data.users[j].id == id){
 				let currentTime = new Date();
-				//if user has already played
-				try{
-					if(data.users[j].claim == currentTime.getDate()){
-						message.channel.send(`You've already claimed today! Come back tomorrow`);
+				if(data.users[j].balance >= 25){
+					message.channel.send('You already have enough CC! This is for poor people!');
+				}
+				else{
+					//if user has already played
+					try{
+						if(data.users[j].claim == currentTime.getDate()){
+							message.channel.send(`You've already claimed today! Come back tomorrow`);
+						}
+						else{
+							data.users[j].balance += 5;
+							data.users[j].claim = currentTime.getDate();
+							data.econ += 5;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
+						}
 					}
-					else{
+					catch(err){
+						data.users[j]["claim"] = currentTime.getDate();
 						data.users[j].balance += 5;
 						data.users[j].claim = currentTime.getDate();
 						data.econ += 5;
@@ -397,15 +420,6 @@ client.on('message', message => {
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
 					}
-				}
-				catch(err){
-					data.users[j]["claim"] = currentTime.getDate();
-					data.users[j].balance += 5;
-					data.users[j].claim = currentTime.getDate();
-					data.econ += 5;
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
 				}
 				noUser = false;
 				break;
@@ -415,6 +429,77 @@ client.on('message', message => {
 		if(noUser){
 			message.channel.send(`You are not registered for CC!`);
 		}
+	}
+	//purchase home
+	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment */
+		let chop = message.content.split(" ");
+		if(chop.length > 3){
+			message.channel.send('Too many arguments supplied!');
+		}
+		else{
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let noUser = true;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == message.author.id){
+					let type = chop[chop.length-1];
+					if(type == "house"){
+						if(data.users[i].balance - 100 < 0){
+							message.channel.send('You do not have enough CC! (Costs 100)');
+						}
+						else{
+							data.users[i]["house"] += 1;
+							data.users[i].balance -= 100;
+							data.econ -= 100;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery Sunday you will get some rent payments!`);
+						}
+					}
+					else if(type == "apartment"){
+						if(data.users[i].balance - 200 < 0){
+							message.channel.send('You do not have enough CC! (Costs 200)');
+						}
+						else{
+							data.users[i]["apartment"] += 1;
+							data.users[i].balance -= 200;
+							data.econ -= 200;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery Sunday you will get some rent payments!`);
+						}
+					}
+					else{
+						message.channel.send('Invalid purchase! Try house or apartment');
+					}
+					noUser = false;
+					break;
+				}
+			}
+			if(noUser){
+				message.channel.send('You are not registered for Carl Coin!');
+			}
+		}
+	}
+	//home payouts
+	else if(universalDate.getDate() == 0){
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		for(let i=0;i<data.users.length;i++){
+			let homePrice = data.users[i]["house"] * 10;
+			if(isNaN(homePrice)){
+				homePrice = 0;
+			}
+			let apartPrice = data.users[i]["apartment"] * 25;
+			if(isNaN(apartPrice)){
+				apartPrice = 0;
+			}
+			let amount = homePrice + apartPrice;
+			data.users[i].balance += amount;
+			data.econ += amount;
+		}
+		let newData = JSON.stringify(data);
+		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	}
 	//economy function
 	else if(message.content.startsWith('!cc econ')){
@@ -439,7 +524,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc claim to claim 5 CC daily!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc claim to claim 5 CC daily!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every Sunday!`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
