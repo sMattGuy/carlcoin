@@ -10,12 +10,15 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 
 //raffle variables
-let raffleRNG = Math.floor(Math.random() * (400 - 300 + 1)) + 300;
+let raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-
 console.log("rafflerng",raffleRNG);
+
+//anti spam stuff
+let recentId;
+
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -30,8 +33,9 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
 	//increment message counter
-	if(!raffleStart){
+	if(!raffleStart && (recentId !== message.author.id)){
 		messageCounter += 1;
+		recentId = message.author.id;
 	}
 	//set presence
    client.user.setPresence({
@@ -46,7 +50,7 @@ client.on('message', message => {
 		messageCounter = 0;
 	}
 	if(messageCounter == raffleRNG && !raffleStart){
-		raffleRNG = Math.floor(Math.random() * (400 - 300 + 1)) + 300;
+		raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 		console.log("rafflerng",raffleRNG);
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
@@ -135,7 +139,9 @@ client.on('message', message => {
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
 				let balance = data.users[i].balance;
-				message.channel.send(`You have ${balance} CC`);
+				let perc = (balance / data.econ) * 100;
+				perc = perc.toFixed(2);
+				message.channel.send(`You have ${balance} CC\nYou control ${perc}% of the economy!`);
 				notFound = false;
 				break;
 			}
@@ -242,7 +248,7 @@ client.on('message', message => {
 					let id = message.author.id;
 					if(data.pot+5 < 10){
 						message.channel.send(`Pot is empty, try again later!`);
-						noUser = true;
+						noUser = false;
 					}
 					else{
 						//find user and check amount
@@ -269,7 +275,7 @@ client.on('message', message => {
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've won! you got ${pot}CC!`);
+										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 									}
 									//if lottery win
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
@@ -278,13 +284,13 @@ client.on('message', message => {
 										data.pot -= pot;
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've won! you got ${pot}CC!`);
+										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 									}
 									//if lottery lose
 									else{
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You've lost! The pot is now ${data.pot}CC`);
+										message.channel.send(`You've lost! The pot is now ${data.pot}CC. You have ${data.users[j].balance}CC.`);
 									}
 								}
 								//user found, flag triggered
