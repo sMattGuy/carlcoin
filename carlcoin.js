@@ -10,14 +10,14 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 
 //raffle variables
+let startupDay = new Date();
 let raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
-let universalDate = new Date();
-let prevDate = universalDate.getDay();
+let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
 //battle variables
@@ -27,7 +27,6 @@ let opponent = 0;
 let oppIndex = -1;
 let wager = 0;
 let currentBattle = false;
-let battleTime = -1;
 let battleEnder = -2;
 //sets ready presense
 client.on('ready', () => {
@@ -42,6 +41,9 @@ client.on('ready', () => {
 });
 // Create an event listener for messages
 client.on('message', message => {
+	let universalDate = new Date();
+	let timeRightNow = universalDate.getMinutes();
+	let today = universalDate.getDay();
 	//increment message counter
 	if(!raffleStart && (recentId !== message.author.id || message.author.id != 816853972690141205)){
 		messageCounter += 1;
@@ -162,11 +164,10 @@ client.on('message', message => {
 												currentBattle = false;
 											}
 											else{
-												message.channel.send(`${data.users[j].name}! Type !cc accept to accept challenge ${data.users[i].name}'s challenge! You have 2 minutes to accept.`);
+												message.channel.send(`${data.users[j].name}! Type !cc accept to accept ${data.users[i].name}'s challenge or type !cc deny to reject the challenge. You have 1 minute to respond.`);
 												challIndex = i;
 												oppIndex = j;
-												battleTime = universalDate.getMinutes();
-												battleEnder = (universalDate.getMinutes() + 2) % 60;
+												battleEnder = (universalDate.getMinutes() + 1) % 60;
 											}
 											noOpp = false;
 											break;
@@ -191,19 +192,28 @@ client.on('message', message => {
 		}
 	}
 	//accept battle
-	else if((message.content.startsWith('!cc accept') || battleTime == battleEnder) && currentBattle){
-		if(battleTime == battleEnder){
+	else if(((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept')) && currentBattle) || ((timeRightNow >= battleEnder) && currentBattle)){
+		if(timeRightNow >= battleEnder){
 			challenger = 0;
 			opponent = 0;
 			wager = 0;
 			challIndex = -1;
 			oppIndex = -1;
-			battleTime = -1;
 			battleEnder = -2;
 			currentBattle = false;
 			message.channel.send('Time has expired to accept the battle');
 		}
-		else if(message.author.id == opponent){
+		else if(message.author.id == opponent && message.content.startsWith('!cc deny')){
+			challenger = 0;
+			opponent = 0;
+			wager = 0;
+			challIndex = -1;
+			oppIndex = -1;
+			battleEnder = -2;
+			currentBattle = false;
+			message.channel.send('Coward');
+		}
+		else if(message.author.id == opponent && message.content.startsWith('!cc accept')){
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
 			let winnerAmount = wager * 2;
@@ -211,15 +221,15 @@ client.on('message', message => {
 			data.users[oppIndex].balance -= wager;
 			let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 			let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\  | /|\  |\n| / \  | / \  |\n|      |      |\n+------+------+`,{"code":true});
+			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
 			if(ChallengerRandom > OpponentRandom){
 				data.users[challIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n| \o   |  o   |\n| /|\  | /|   |\n| / \  | / \  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 				message.channel.send(`${data.users[challIndex].name} has won! They now have ${data.users[challIndex].balance}CC!`);
 			}
 			else if(ChallengerRandom < OpponentRandom){
 				data.users[oppIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o/  |\n|  |\  | /|\  |\n| / \  | / \  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 				message.channel.send(`${data.users[oppIndex].name} has won! They now have ${data.users[oppIndex].balance}CC!`);
 			}
 			else{
@@ -227,7 +237,7 @@ client.on('message', message => {
 				data.users[oppIndex].balance += wager;
 				message.channel.send(`A draw?! How lame!`);
 			}
-			let wager = 0;
+			wager = 0;
 			currentBattle = false;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -637,7 +647,7 @@ client.on('message', message => {
 		}
 	}
 	//home payouts
-	else if(universalDate.getDay() != prevDate){
+	else if(today != prevDate){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		prevDate = universalDate.getDay();
