@@ -281,7 +281,7 @@ client.on('message', message => {
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									//if lottery win
-									if((type == "alwaysA" || (type == "random" && random == 0))&& optA >= optB){
+									if((type == "alwaysA" || (type == "random" && random == 0))&& optA > optB){
 										let pot = 10;
 										data.users[j].balance += pot;
 										data.pot -= pot;
@@ -290,7 +290,7 @@ client.on('message', message => {
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 									}
 									//if lottery win
-									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA <= optB){
+									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA < optB){
 										let pot = 10;
 										data.users[j].balance += pot;
 										data.pot -= pot;
