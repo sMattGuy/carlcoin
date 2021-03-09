@@ -17,6 +17,7 @@ let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
 let universalDate = new Date();
+let prevDate = universalDate.getDay();
 //anti spam stuff
 let recentId;
 
@@ -488,20 +489,27 @@ client.on('message', message => {
 		}
 	}
 	//home payouts
-	else if(universalDate.getDate() == 0){
+	else if(universalDate.getDay() != prevDate){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
+		prevDate = universalDate.getDay();
 		for(let i=0;i<data.users.length;i++){
-			let homePrice = data.users[i]["house"] * 10;
+			let homePrice = data.users[i]["house"] * 5;
+			let taxAmount = 0;
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
-			let apartPrice = data.users[i]["apartment"] * 25;
+			taxAmount = (homePrice/5) * 2;
+			let apartPrice = data.users[i]["apartment"] * 10;
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
+			taxAmount += (apartPrice/10) * 2;
 			let amount = homePrice + apartPrice;
+			amount -= taxAmount;
 			data.users[i].balance += amount;
+			data.welfare += taxAmount;
+			data.econ += taxAmount;
 			data.econ += amount;
 		}
 		let newData = JSON.stringify(data);
