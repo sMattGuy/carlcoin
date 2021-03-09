@@ -20,7 +20,15 @@ let universalDate = new Date();
 let prevDate = universalDate.getDay();
 //anti spam stuff
 let recentId;
-
+//battle variables
+let challenger = 0;
+let challIndex = -1;
+let opponent = 0;
+let oppIndex = -1;
+let wager = 0;
+let currentBattle = false;
+let battleTime = -1;
+let battleEnder = -2;
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -47,6 +55,7 @@ client.on('message', message => {
          type: "WATCHING"
       }
    });
+	
 	//raffle functionality
 	if(messageCounter > raffleRNG){
 		messageCounter = 0;
@@ -101,8 +110,130 @@ client.on('message', message => {
 			}
 		}
 	}
+	//battle
+	else if(message.channel.startsWith('!cc challenger')){
+		if(currentBattle){
+			message.channel.send('There is currently a battle going on!');
+		}
+		else{
+			currentBattle = true;
+			let chop = message.content.split(" ");
+			if(chop.length != 4){
+				message.channel.send('Command arguments incorrect!');
+				currentBattle = false;
+			}
+			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				challenger = message.author.id;
+				let mentionOK = true;
+				try{
+					opponent = getUserFromMention(chop[chop.length-2]).id;
+				}
+				catch(err){
+					message.channel.send('Invalid user selected!');
+					mentionOK = false;
+					currentBattle = false;
+				}
+				if(mentionOK){
+					wager = parseInt(chop[chop.length-1]);
+					if(opponent.id == challenger.id){
+						message.channel.send('Go fight your inner demons elsewhere');
+						currentBattle = false;
+					}
+					else if(isNaN(wager) || wager <= 0){
+						message.channel.send('Invalid amount entered!');
+						currentBattle = false;
+					}
+					else{
+						let noUser = true;
+						for(let i=0;i<data.users.length;i++){
+							if(data.users[i].id == challenger){
+								if(data.users[i].balance - wager < 0){
+									message.channel.send('You dont have enough CC!');
+									currentBattle = false;
+								}
+								else{
+									let noOpp = true;
+									for(let j=0;j<data.users.length;j++){
+										if(data.users[j].id == opponent){
+											if(data.users[j].balance - wager < 0){
+												message.channel.send('Opponent doesnt have enough CC!');
+												currentBattle = false;
+											}
+											else{
+												message.channel.send(`${data.users[j].name}! Type !cc accept to accept challenge ${data.users[i].name}'s challenge! You have 2 minutes to accept.`);
+												challIndex = i;
+												oppIndex = j;
+												battleTime = universalDate.getMinutes();
+												battleEnder = (universalDate.getMinutes() + 2) % 60;
+											}
+											break;
+											noOpp = false;
+										}
+									}
+									if(noOpp){
+										message.channel.send('Opponent doesnt exist!');
+										currentBattle = false;
+									}
+								}
+								noUser = false;
+								break;
+							}
+						}
+						if(noUser){
+							message.channel.send('You are not registered for CC!');
+							currentBattle = false;
+						}
+					}
+				}
+			}			
+		}
+	}
+	//accept battle
+	else if((message.content.startsWith('!cc accept') || battleTime == battleEnder) && currentBattle){
+		if(battleTime == battleEnder){
+			challenger = 0;
+			opponent = 0;
+			wager = 0;
+			challIndex = -1;
+			oppIndex = -1;
+			battleTime = -1;
+			battleEnder = -2;
+			message.channel.send('Time has expired to accept the battle');
+		}
+		else if(message.author.id == opponent){
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let winnerAmount = wager * 2;
+			data.users[challIndex].balance -= wager;
+			data.users[oppIndex].balance -= wager;
+			let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+			let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\  | /|\  |\n| / \  | / \  |\n|      |      |\n+------+------+`,{"code":true});
+			if(ChallengerRandom > OpponentRandom){
+				data.users[challIndex].balance += winnerAmount;
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n| \o   |  o   |\n| /|\  | /|   |\n| / \  | / \  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[challIndex].name} has won! They now have ${data.users[challIndex].balance}CC!`);
+			}
+			else if(ChallengerRandom < OpponentRandom){
+				data.users[oppIndex].balance += winnerAmount;
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o/  |\n|  |\  | /|\  |\n| / \  | / \  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[oppIndex].name} has won! They now have ${data.users[oppIndex].balance}CC!`);
+			}
+			else{
+				data.users[challIndex].balance += wager;
+				data.users[oppIndex].balance += wager;
+				message.channel.send(`A draw?! How lame!`);
+			}
+			let wager = 0;
+			currentBattle = false;
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+		}
+	}
    //commands
-	if (message.content.startsWith('!cc join')) {
+	else if (message.content.startsWith('!cc join')) {
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -166,7 +297,7 @@ client.on('message', message => {
 		let chop = message.content.split(" ");
 		let corrUser = true;
 		//if too many arguments
-		if(chop.length > 4){
+		if(chop.length != 4){
 			message.channel.send(`Too many arguments supplied!`);
 		}
 		else{
