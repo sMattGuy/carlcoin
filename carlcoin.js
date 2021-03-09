@@ -111,7 +111,7 @@ client.on('message', message => {
 		}
 	}
 	//battle
-	else if(message.channel.startsWith('!cc challenger')){
+	else if(message.content.startsWith('!cc challenge')){
 		if(currentBattle){
 			message.channel.send('There is currently a battle going on!');
 		}
@@ -137,7 +137,7 @@ client.on('message', message => {
 				}
 				if(mentionOK){
 					wager = parseInt(chop[chop.length-1]);
-					if(opponent.id == challenger.id){
+					if(opponent == challenger){
 						message.channel.send('Go fight your inner demons elsewhere');
 						currentBattle = false;
 					}
@@ -168,8 +168,8 @@ client.on('message', message => {
 												battleTime = universalDate.getMinutes();
 												battleEnder = (universalDate.getMinutes() + 2) % 60;
 											}
-											break;
 											noOpp = false;
+											break;
 										}
 									}
 									if(noOpp){
@@ -200,6 +200,7 @@ client.on('message', message => {
 			oppIndex = -1;
 			battleTime = -1;
 			battleEnder = -2;
+			currentBattle = false;
 			message.channel.send('Time has expired to accept the battle');
 		}
 		else if(message.author.id == opponent){
@@ -685,7 +686,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
