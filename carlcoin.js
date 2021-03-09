@@ -421,7 +421,7 @@ client.on('message', message => {
 					}
 					catch(err){
 						if(data.welfare < 5){
-							message.channel.send(`You've already claimed today! Come back tomorrow`);
+							message.channel.send(`The welfare fund has dried up! Come back soon!`);
 						}
 						else{
 							data.users[j]["claim"] = currentTime.getDate();
@@ -466,23 +466,25 @@ client.on('message', message => {
 								data.users[i].house = 1;
 							}
 							data.users[i].balance -= 100;
-							data.econ -= 100;
+							data.econ -= 50;
+							data.welfare += 50;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery Sunday you will get some rent payments!`);
 						}
 					}
 					else if(type == "apartment"){
-						if(data.users[i].balance - 200 < 0){
-							message.channel.send('You do not have enough CC! (Costs 200)');
+						if(data.users[i].balance - 250 < 0){
+							message.channel.send('You do not have enough CC! (Costs 250)');
 						}
 						else{
 							data.users[i]["apartment"] += 1;
 							if(isNaN(data.users[i].apartment)){
 								data.users[i].apartment = 1;
 							}
-							data.users[i].balance -= 200;
-							data.econ -= 200;
+							data.users[i].balance -= 250;
+							data.econ -= 150;
+							data.welfare += 100;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery Sunday you will get some rent payments!`);
