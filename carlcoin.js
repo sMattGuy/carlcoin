@@ -257,7 +257,7 @@ client.on('message', message => {
 					//store user
 					let user = message.author.username;
 					let id = message.author.id;
-					if(data.pot+5 < 10){
+					if(data.pot+3 < 10){
 						message.channel.send(`Pot is empty, try again later!`);
 						noUser = false;
 					}
@@ -276,7 +276,8 @@ client.on('message', message => {
 									let optA = Math.floor(Math.random() * 10); 
 									let optB = Math.floor(Math.random() * 10);
 									let random = Math.floor(Math.random() * 2);
-									data.pot += amount;
+									data.pot += amount - 2;
+									data.welfare += 2;
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									//if lottery win
@@ -365,7 +366,10 @@ client.on('message', message => {
 					}
 					//lose chance time
 					else{
+						let welfPot = amount / 2;
+						amount = amount - welfPot;
 						data.pot += amount;
+						data.welfare += welfPot;
 						data.users[j].chanceTime = currentTime.getDate();
 						message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
 						let newData = JSON.stringify(data);
@@ -403,23 +407,31 @@ client.on('message', message => {
 						if(data.users[j].claim == currentTime.getDate()){
 							message.channel.send(`You've already claimed today! Come back tomorrow`);
 						}
+						if(data.welfare < 5){
+							message.channel.send(`The welfare fund has dried up! Come back soon!`);
+						}
 						else{
 							data.users[j].balance += 5;
 							data.users[j].claim = currentTime.getDate();
-							data.econ += 5;
+							data.welfare -= 5;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
 						}
 					}
 					catch(err){
-						data.users[j]["claim"] = currentTime.getDate();
-						data.users[j].balance += 5;
-						data.users[j].claim = currentTime.getDate();
-						data.econ += 5;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
+						if(data.welfare < 5){
+							message.channel.send(`You've already claimed today! Come back tomorrow`);
+						}
+						else{
+							data.users[j]["claim"] = currentTime.getDate();
+							data.users[j].balance += 5;
+							data.users[j].claim = currentTime.getDate();
+							data.welfare -= 5;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
+						}
 					}
 				}
 				noUser = false;
