@@ -28,6 +28,7 @@ let oppIndex = -1;
 let wager = 0;
 let currentBattle = false;
 let battleEnder = -2;
+let originalChannel = 0;
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -165,6 +166,7 @@ client.on('message', message => {
 											}
 											else{
 												message.channel.send(`${data.users[j].name}! Type !cc accept to accept ${data.users[i].name}'s challenge or type !cc deny to reject the challenge. You have 1 minute to respond.`);
+												originalChannel = message.channel.id;
 												challIndex = i;
 												oppIndex = j;
 												battleEnder = (universalDate.getMinutes() + 1) % 60;
@@ -201,7 +203,7 @@ client.on('message', message => {
 			oppIndex = -1;
 			battleEnder = -2;
 			currentBattle = false;
-			message.channel.send('Time has expired to accept the battle');
+			client.channels.cache.get(originalChannel).send('Time has expired to accept the battle');
 		}
 		else if(message.author.id == opponent && message.content.startsWith('!cc deny')){
 			challenger = 0;
@@ -221,15 +223,15 @@ client.on('message', message => {
 			data.users[oppIndex].balance -= wager;
 			let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 			let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
+			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
 			if(ChallengerRandom > OpponentRandom){
 				data.users[challIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 				message.channel.send(`${data.users[challIndex].name} has won! They now have ${data.users[challIndex].balance}CC!`);
 			}
 			else if(ChallengerRandom < OpponentRandom){
 				data.users[oppIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 				message.channel.send(`${data.users[oppIndex].name} has won! They now have ${data.users[oppIndex].balance}CC!`);
 			}
 			else{
@@ -652,17 +654,17 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		prevDate = universalDate.getDay();
 		for(let i=0;i<data.users.length;i++){
-			let homePrice = data.users[i]["house"] * 5;
+			let homePrice = data.users[i]["house"] * 10;
 			let taxAmount = 0;
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
-			taxAmount = (homePrice/5) * 2;
-			let apartPrice = data.users[i]["apartment"] * 15;
+			taxAmount = (homePrice/10) * 2;
+			let apartPrice = data.users[i]["apartment"] * 25;
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
-			taxAmount += (apartPrice/15) * 2;
+			taxAmount += (apartPrice/25) * 2;
 			let amount = homePrice + apartPrice;
 			amount -= taxAmount;
 			data.users[i].balance += amount;
