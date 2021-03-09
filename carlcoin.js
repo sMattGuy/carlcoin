@@ -366,7 +366,7 @@ client.on('message', message => {
 					}
 					//lose chance time
 					else{
-						let welfPot = amount / 2;
+						let welfPot = Math.floor(amount / 2);
 						amount = amount - welfPot;
 						data.pot += amount;
 						data.welfare += welfPot;
@@ -407,7 +407,7 @@ client.on('message', message => {
 						if(data.users[j].claim == currentTime.getDate()){
 							message.channel.send(`You've already claimed today! Come back tomorrow`);
 						}
-						if(data.welfare < 5){
+						else if(data.welfare < 5){
 							message.channel.send(`The welfare fund has dried up! Come back soon!`);
 						}
 						else{
@@ -466,11 +466,12 @@ client.on('message', message => {
 								data.users[i].house = 1;
 							}
 							data.users[i].balance -= 100;
+							data.pot += 25;
+							data.welfare += 25;
 							data.econ -= 50;
-							data.welfare += 50;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery Sunday you will get some rent payments!`);
+							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery day you will get some rent payments!`);
 						}
 					}
 					else if(type == "apartment"){
@@ -483,11 +484,12 @@ client.on('message', message => {
 								data.users[i].apartment = 1;
 							}
 							data.users[i].balance -= 250;
-							data.econ -= 150;
-							data.welfare += 100;
+							data.pot += 50;
+							data.econ -= 150
+							data.welfare += 50;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery Sunday you will get some rent payments!`);
+							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery day you will get some rent payments!`);
 						}
 					}
 					else{
@@ -514,11 +516,11 @@ client.on('message', message => {
 				homePrice = 0;
 			}
 			taxAmount = (homePrice/5) * 2;
-			let apartPrice = data.users[i]["apartment"] * 10;
+			let apartPrice = data.users[i]["apartment"] * 15;
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
-			taxAmount += (apartPrice/10) * 2;
+			taxAmount += (apartPrice/15) * 2;
 			let amount = homePrice + apartPrice;
 			amount -= taxAmount;
 			data.users[i].balance += amount;
@@ -548,11 +550,11 @@ client.on('message', message => {
 				lowestEarnerAmount = data.users[i].balance;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every Sunday!`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
