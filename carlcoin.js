@@ -187,26 +187,26 @@ client.on('message', message => {
 		}			
 	}
 	//accept battle
-	else if(((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept'))){
+	else if((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept'))){
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
 			let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 			let battleParse = JSON.parse(battleFile);
 			if(battleParse.battleEnder < universalDate.getMinutes()){
-				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				client.channels.cache.get(originalChannel).send('Time has expired to accept the battle');
 			}
 			else{
 				if(message.content.startsWith('!cc deny')){
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 					message.channel.send('Coward');
 				}
 				else if(message.content.startsWith('!cc accept')){
 					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					let data = JSON.parse(database);
-					let winnerAmount = wager * 2;
-					data.users[challIndex].balance -= battleParse.wager;
-					data.users[oppIndex].balance -= battleParse.wager;
+					let winnerAmount = battleParse.wager * 2;
+					data.users[battleParse.challIndex].balance -= battleParse.wager;
+					data.users[battleParse.oppIndex].balance -= battleParse.wager;
 					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 					message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
@@ -227,7 +227,7 @@ client.on('message', message => {
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				}
 			}
 		}
