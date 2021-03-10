@@ -20,15 +20,6 @@ console.log("rafflerng",raffleRNG);
 let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
-//battle variables
-let challenger = 0;
-let challIndex = -1;
-let opponent = 0;
-let oppIndex = -1;
-let wager = 0;
-let currentBattle = false;
-let battleEnder = -2;
-let originalChannel = 0;
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -115,38 +106,43 @@ client.on('message', message => {
 	}
 	//battle
 	else if(message.content.startsWith('!cc challenge')){
-		if(currentBattle){
-			message.channel.send('There is currently a battle going on!');
+		let chop = message.content.split(" ");
+		if(chop.length != 4){
+			message.channel.send('Command arguments incorrect!');
 		}
 		else{
-			currentBattle = true;
-			let chop = message.content.split(" ");
-			if(chop.length != 4){
-				message.channel.send('Command arguments incorrect!');
-				currentBattle = false;
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let challenger = message.author.id;
+			let mentionOK = true;
+			let opponent = 0;
+			try{
+				opponent = getUserFromMention(chop[chop.length-2]).id;
 			}
-			else{
-				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-				let data = JSON.parse(database);
-				challenger = message.author.id;
-				let mentionOK = true;
-				try{
-					opponent = getUserFromMention(chop[chop.length-2]).id;
+			catch(err){
+				message.channel.send('Invalid user selected!');
+				mentionOK = false;
+			}
+			if(mentionOK){
+				let rebattle = true;
+				if(fs.existsSync(`/home/mattguy/carlcoin/cache/${opponent}battle`)){
+					let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+					let battleParse = JSON.parse(battleFile);
+					if(battleParse.battleEnder < universalDate.getMinutes()){
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+					}
+					else{
+						rebattle = false;
+						message.channel.send('That person is already in battle!');
+					}
 				}
-				catch(err){
-					message.channel.send('Invalid user selected!');
-					mentionOK = false;
-					currentBattle = false;
-				}
-				if(mentionOK){
-					wager = parseInt(chop[chop.length-1]);
+				if(rebattle){
+					let wager = parseInt(chop[chop.length-1]);
 					if(opponent == challenger){
 						message.channel.send('Go fight your inner demons elsewhere');
-						currentBattle = false;
 					}
 					else if(isNaN(wager) || wager <= 0){
 						message.channel.send('Invalid amount entered!');
-						currentBattle = false;
 					}
 					else{
 						let noUser = true;
@@ -154,7 +150,6 @@ client.on('message', message => {
 							if(data.users[i].id == challenger){
 								if(data.users[i].balance - wager < 0){
 									message.channel.send('You dont have enough CC!');
-									currentBattle = false;
 								}
 								else{
 									let noOpp = true;
@@ -162,14 +157,14 @@ client.on('message', message => {
 										if(data.users[j].id == opponent){
 											if(data.users[j].balance - wager < 0){
 												message.channel.send('Opponent doesnt have enough CC!');
-												currentBattle = false;
 											}
 											else{
+												let originalChannel = message.channel.id;
+												let battleEnder = (universalDate.getMinutes() + 1) % 60;
+												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`,"originalChannel":`${originalChannel}`};
+												let jsonBattle = JSON.stringify(battleInfo);
+												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
 												message.channel.send(`${data.users[j].name}! Type !cc accept to accept ${data.users[i].name}'s challenge or type !cc deny to reject the challenge. You have 1 minute to respond.`);
-												originalChannel = message.channel.id;
-												challIndex = i;
-												oppIndex = j;
-												battleEnder = (universalDate.getMinutes() + 1) % 60;
 											}
 											noOpp = false;
 											break;
@@ -177,7 +172,6 @@ client.on('message', message => {
 									}
 									if(noOpp){
 										message.channel.send('Opponent doesnt exist!');
-										currentBattle = false;
 									}
 								}
 								noUser = false;
@@ -186,64 +180,59 @@ client.on('message', message => {
 						}
 						if(noUser){
 							message.channel.send('You are not registered for CC!');
-							currentBattle = false;
 						}
 					}
 				}
-			}			
-		}
+			}
+		}			
 	}
 	//accept battle
-	else if(((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept')) && currentBattle) || ((timeRightNow >= battleEnder) && currentBattle)){
-		if(timeRightNow >= battleEnder){
-			challenger = 0;
-			opponent = 0;
-			wager = 0;
-			challIndex = -1;
-			oppIndex = -1;
-			battleEnder = -2;
-			currentBattle = false;
-			client.channels.cache.get(originalChannel).send('Time has expired to accept the battle');
-		}
-		else if(message.author.id == opponent && message.content.startsWith('!cc deny')){
-			challenger = 0;
-			opponent = 0;
-			wager = 0;
-			challIndex = -1;
-			oppIndex = -1;
-			battleEnder = -2;
-			currentBattle = false;
-			message.channel.send('Coward');
-		}
-		else if(message.author.id == opponent && message.content.startsWith('!cc accept')){
-			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-			let data = JSON.parse(database);
-			let winnerAmount = wager * 2;
-			data.users[challIndex].balance -= wager;
-			data.users[oppIndex].balance -= wager;
-			let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-			let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-			message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
-			if(ChallengerRandom > OpponentRandom){
-				data.users[challIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-				message.channel.send(`${data.users[challIndex].name} has won! They now have ${data.users[challIndex].balance}CC!`);
-			}
-			else if(ChallengerRandom < OpponentRandom){
-				data.users[oppIndex].balance += winnerAmount;
-				message.channel.send(`${data.users[challIndex].name} vs ${data.users[oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-				message.channel.send(`${data.users[oppIndex].name} has won! They now have ${data.users[oppIndex].balance}CC!`);
+	else if(((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept'))){
+		let personsId = message.author.id;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
+			let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+			let battleParse = JSON.parse(battleFile);
+			if(battleParse.battleEnder < universalDate.getMinutes()){
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+				client.channels.cache.get(originalChannel).send('Time has expired to accept the battle');
 			}
 			else{
-				data.users[challIndex].balance += wager;
-				data.users[oppIndex].balance += wager;
-				message.channel.send(`A draw?! How lame!`);
+				if(message.content.startsWith('!cc deny')){
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+					message.channel.send('Coward');
+				}
+				else if(message.content.startsWith('!cc accept')){
+					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					let data = JSON.parse(database);
+					let winnerAmount = wager * 2;
+					data.users[challIndex].balance -= battleParse.wager;
+					data.users[oppIndex].balance -= battleParse.wager;
+					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+					message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
+					if(ChallengerRandom > OpponentRandom){
+						data.users[battleParse.challIndex].balance += winnerAmount;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+						message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+					}
+					else if(ChallengerRandom < OpponentRandom){
+						data.users[battleParse.oppIndex].balance += winnerAmount;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+						message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+					}
+					else{
+						data.users[battleParse.challIndex].balance += wager;
+						data.users[battleParse.oppIndex].balance += wager;
+						message.channel.send(`A draw?! How lame!`);
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
+				}
 			}
-			wager = 0;
-			currentBattle = false;
-			let newData = JSON.stringify(data);
-			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 		}
+		
+		
 	}
    //commands
 	else if (message.content.startsWith('!cc join')) {
