@@ -221,8 +221,8 @@ client.on('message', message => {
 							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
 						}
 						else{
-							data.users[battleParse.challIndex].balance += wager;
-							data.users[battleParse.oppIndex].balance += wager;
+							data.users[battleParse.challIndex].balance += battleParse.wager;
+							data.users[battleParse.oppIndex].balance += battleParse.wager;
 							message.channel.send(`A draw?! How lame!`);
 						}
 						let newData = JSON.stringify(data);
