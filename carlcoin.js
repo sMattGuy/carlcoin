@@ -159,9 +159,8 @@ client.on('message', message => {
 												message.channel.send('Opponent doesnt have enough CC!');
 											}
 											else{
-												let originalChannel = message.channel.id;
 												let battleEnder = (universalDate.getMinutes() + 1) % 60;
-												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`,"originalChannel":`${originalChannel}`};
+												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`};
 												let jsonBattle = JSON.stringify(battleInfo);
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
 												message.channel.send(`${data.users[j].name}! Type !cc accept to accept ${data.users[i].name}'s challenge or type !cc deny to reject the challenge. You have 1 minute to respond.`);
@@ -189,47 +188,52 @@ client.on('message', message => {
 	//accept battle
 	else if((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept'))){
 		let personsId = message.author.id;
-		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
-			let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-			let battleParse = JSON.parse(battleFile);
-			if(battleParse.battleEnder < universalDate.getMinutes()){
-				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-				client.channels.cache.get(originalChannel).send('Time has expired to accept the battle');
-			}
-			else{
-				if(message.content.startsWith('!cc deny')){
+		try{
+			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
+				let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+				let battleParse = JSON.parse(battleFile);
+				if(battleParse.battleEnder < universalDate.getMinutes()){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-					message.channel.send('Coward');
+					message.channel.send('Time has expired to accept the battle');
 				}
-				else if(message.content.startsWith('!cc accept')){
-					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-					let data = JSON.parse(database);
-					let winnerAmount = battleParse.wager * 2;
-					data.users[battleParse.challIndex].balance -= battleParse.wager;
-					data.users[battleParse.oppIndex].balance -= battleParse.wager;
-					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-					message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
-					if(ChallengerRandom > OpponentRandom){
-						data.users[battleParse.challIndex].balance += winnerAmount;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-						message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+				else{
+					if(message.content.startsWith('!cc deny')){
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+						message.channel.send('Coward');
 					}
-					else if(ChallengerRandom < OpponentRandom){
-						data.users[battleParse.oppIndex].balance += winnerAmount;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-						message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+					else if(message.content.startsWith('!cc accept')){
+						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+						let data = JSON.parse(database);
+						let winnerAmount = battleParse.wager * 2;
+						data.users[battleParse.challIndex].balance -= battleParse.wager;
+						data.users[battleParse.oppIndex].balance -= battleParse.wager;
+						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
+						if(ChallengerRandom > OpponentRandom){
+							data.users[battleParse.challIndex].balance += winnerAmount;
+							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+							message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+						}
+						else if(ChallengerRandom < OpponentRandom){
+							data.users[battleParse.oppIndex].balance += winnerAmount;
+							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+						}
+						else{
+							data.users[battleParse.challIndex].balance += wager;
+							data.users[battleParse.oppIndex].balance += wager;
+							message.channel.send(`A draw?! How lame!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 					}
-					else{
-						data.users[battleParse.challIndex].balance += wager;
-						data.users[battleParse.oppIndex].balance += wager;
-						message.channel.send(`A draw?! How lame!`);
-					}
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				}
 			}
+		}
+		catch(err){
+			console.log(err);
 		}
 		
 		
