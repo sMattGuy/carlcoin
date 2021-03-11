@@ -21,10 +21,6 @@ let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
 
-//list server
-client.guilds.cache.forEach(guild => {
-	console.log(`${guild.name} | ${guild.id}`);
-});
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -33,6 +29,10 @@ client.on('ready', () => {
         name: 'for !cc help',
         type: "WATCHING"
     }
+  });
+  //list server
+  client.guilds.cache.forEach(guild => {
+    console.log(`${guild.name} | ${guild.id}`);
   });
   console.log('I am ready!');
 });
