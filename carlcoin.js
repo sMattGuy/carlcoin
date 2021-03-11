@@ -51,9 +51,11 @@ client.on('message', message => {
    });
 	
 	//raffle functionality
+	//message failsafe
 	if(messageCounter > raffleRNG){
 		messageCounter = 0;
 	}
+	//detects when md5 raffle should begin
 	if(messageCounter == raffleRNG && !raffleStart){
 		raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 		console.log("rafflerng",raffleRNG);
@@ -163,7 +165,7 @@ client.on('message', message => {
 												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`};
 												let jsonBattle = JSON.stringify(battleInfo);
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
-												message.channel.send(`${data.users[j].name}! Type !cc accept to accept ${data.users[i].name}'s challenge or type !cc deny to reject the challenge. You have 1 minute to respond.`);
+												message.channel.send(`${data.users[j].name}! Type !cc acceptBattle to accept ${data.users[i].name}'s challenge or type !cc denyBattle to reject the challenge. You have 1 minute to respond.`);
 											}
 											noOpp = false;
 											break;
@@ -186,55 +188,50 @@ client.on('message', message => {
 		}			
 	}
 	//accept battle
-	else if((message.content.startsWith('!cc deny') || message.content.startsWith('!cc accept'))){
+	else if((message.content.startsWith('!cc denyBattle') || message.content.startsWith('!cc acceptBattle'))){
 		let personsId = message.author.id;
-		try{
-			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
-				let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-				let battleParse = JSON.parse(battleFile);
-				if(battleParse.battleEnder < Date.now()){
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
+			let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+			let battleParse = JSON.parse(battleFile);
+			if(battleParse.battleEnder < Date.now()){
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+				message.channel.send('Time has expired to accept the battle');
+			}
+			else{
+				if(message.content.startsWith('!cc denyBattle')){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-					message.channel.send('Time has expired to accept the battle');
+					message.channel.send('Coward');
 				}
-				else{
-					if(message.content.startsWith('!cc deny')){
-						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
-						message.channel.send('Coward');
+				else if(message.content.startsWith('!cc acceptBattle')){
+					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					let data = JSON.parse(database);
+					let wager = parseInt(battleParse.wager);
+					let winnerAmount = wager * 2;
+					data.users[battleParse.challIndex].balance -= wager;
+					data.users[battleParse.oppIndex].balance -= wager;
+					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+					message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
+					if(ChallengerRandom > OpponentRandom){
+						data.users[battleParse.challIndex].balance += winnerAmount;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+						message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
 					}
-					else if(message.content.startsWith('!cc accept')){
-						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-						let data = JSON.parse(database);
-						let wager = parseInt(battleParse.wager);
-						let winnerAmount = wager * 2;
-						data.users[battleParse.challIndex].balance -= wager;
-						data.users[battleParse.oppIndex].balance -= wager;
-						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
-						if(ChallengerRandom > OpponentRandom){
-							data.users[battleParse.challIndex].balance += winnerAmount;
-							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-							message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
-						}
-						else if(ChallengerRandom < OpponentRandom){
-							data.users[battleParse.oppIndex].balance += winnerAmount;
-							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
-						}
-						else{
-							data.users[battleParse.challIndex].balance += wager;
-							data.users[battleParse.oppIndex].balance += wager;
-							message.channel.send(`A draw?! How lame!`);
-						}
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+					else if(ChallengerRandom < OpponentRandom){
+						data.users[battleParse.oppIndex].balance += winnerAmount;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+						message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
 					}
+					else{
+						data.users[battleParse.challIndex].balance += wager;
+						data.users[battleParse.oppIndex].balance += wager;
+						message.channel.send(`A draw?! How lame!`);
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				}
 			}
-		}
-		catch(err){
-			console.log(err);
 		}
 	}
    //commands
@@ -257,7 +254,7 @@ client.on('message', message => {
 		}
 		//add user
 		if(addUser){
-			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0});
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"house":0,"apartment":0});
 			data.econ += 10;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -783,7 +780,7 @@ client.on('message', message => {
 													let sellInfo = {"seller":`${seller}`,"sellerIndex":`${i}`,"buyer":`${buyer}`,"buyerIndex":`${j}`,"price":`${price}`,"sellEnder":`${sellEnder}`,"type":`${offerType}`};
 													let jsonBattle = JSON.stringify(sellInfo);
 													fs.writeFileSync(`/home/mattguy/carlcoin/cache/${buyer}houseSell`,jsonBattle);
-													message.channel.send(`${data.users[j].name}! Type !cc accPurchase to accept ${data.users[i].name}'s offer or type !cc denPurchase to reject the offer. You have 1 minute to respond.`);
+													message.channel.send(`${data.users[j].name}! Type !cc acceptPurchase to accept ${data.users[i].name}'s offer or type !cc denyPurchase to reject the offer. You have 1 minute to respond.`);
 												}
 											}
 											else{
@@ -810,51 +807,46 @@ client.on('message', message => {
 		}			
 	}
 	//accept offer
-	else if((message.content.startsWith('!cc accPurchase') || message.content.startsWith('!cc denPurchase'))){
+	else if((message.content.startsWith('!cc acceptPurchase') || message.content.startsWith('!cc denyPurchase'))){
 		let personsId = message.author.id;
-		try{
-			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`)){
-				let sellFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
-				let sellParse = JSON.parse(sellFile);
-				if(sellParse.sellEnder < Date.now()){
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`)){
+			let sellFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
+			let sellParse = JSON.parse(sellFile);
+			if(sellParse.sellEnder < Date.now()){
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
+				message.channel.send('Time has expired to accept the offer');
+			}
+			else{
+				if(message.content.startsWith('!cc denyPurchase')){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
-					message.channel.send('Time has expired to accept the offer');
+					message.channel.send('You have declined the offer');
 				}
-				else{
-					if(message.content.startsWith('!cc denPurchase')){
-						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
-						message.channel.send('You have declined the offer');
-					}
-					else if(message.content.startsWith('!cc accPurchase')){
-						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-						let data = JSON.parse(database);
-						let price = parseInt(sellParse.price);
-						data.users[sellParse.sellerIndex].balance += price;
-						data.users[sellParse.buyerIndex].balance -= price;
-						if(sellParse.type == "house"){
-							data.users[sellParse.sellerIndex]["house"] -= 1;
-							data.users[sellParse.buyerIndex]["house"] += 1;
-							if(isNaN(data.users[sellParse.buyerIndex]["house"])){
-								data.users[sellParse.buyerIndex]["house"] = 1;
-							}
+				else if(message.content.startsWith('!cc acceptPurchase')){
+					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					let data = JSON.parse(database);
+					let price = parseInt(sellParse.price);
+					data.users[sellParse.sellerIndex].balance += price;
+					data.users[sellParse.buyerIndex].balance -= price;
+					if(sellParse.type == "house"){
+						data.users[sellParse.sellerIndex]["house"] -= 1;
+						data.users[sellParse.buyerIndex]["house"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["house"])){
+							data.users[sellParse.buyerIndex]["house"] = 1;
 						}
-						else if(sellParse.type == "apartment"){
-							data.users[sellParse.sellerIndex]["apartment"] -= 1;
-							data.users[sellParse.buyerIndex]["apartment"] += 1;
-							if(isNaN(data.users[sellParse.buyerIndex]["apartment"])){
-								data.users[sellParse.buyerIndex]["apartment"] = 1;
-							}
-						}
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
-						message.channel.send('You have accepted the offer!');
 					}
+					else if(sellParse.type == "apartment"){
+						data.users[sellParse.sellerIndex]["apartment"] -= 1;
+						data.users[sellParse.buyerIndex]["apartment"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["apartment"])){
+							data.users[sellParse.buyerIndex]["apartment"] = 1;
+						}
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
+					message.channel.send('You have accepted the offer!');
 				}
 			}
-		}
-		catch(err){
-			console.log(err);
 		}
 	}
 	//economy function
