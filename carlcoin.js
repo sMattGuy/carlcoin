@@ -829,8 +829,8 @@ client.on('message', message => {
 						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 						let data = JSON.parse(database);
 						let price = parseInt(sellParse.price);
-						data.users[sellParse.sellerIndex].balance -= price;
-						data.users[sellParse.buyerIndex].balance += price;
+						data.users[sellParse.sellerIndex].balance += price;
+						data.users[sellParse.buyerIndex].balance -= price;
 						if(sellParse.type == "house"){
 							data.users[sellParse.sellerIndex]["house"] -= 1;
 							data.users[sellParse.buyerIndex]["house"] += 1;
