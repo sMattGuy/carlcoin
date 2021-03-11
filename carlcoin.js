@@ -719,7 +719,7 @@ client.on('message', message => {
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	}
 	//sell to someone
-	else if(message.content.startsWith('!cc sellTo')){ /* !cc sellTo person offer amount*/
+	else if(message.content.startsWith('!cc userSell')){ /* !cc sellTo person offer amount*/
 		let chop = message.content.split(" ");
 		if(chop.length != 5){
 			message.channel.send('Command arguments incorrect!');
@@ -775,12 +775,15 @@ client.on('message', message => {
 												if(data.users[j].balance - price < 0){
 													message.channel.send('Buyer doesnt have enough CC!');
 												}
+												else if(data.users[i][`${offerType}`] < 0 || isNaN(data.users[i][`${offerType}`])){
+													message.channel.send(`You dont have a ${offerType}`);
+												}
 												else{
 													let sellEnder = Date.now() + 60000;
-													let sellInfo = {"seller":`${seller}`,"sellerIndex":`${i}`,"buyer":`${buyer}`,"buyerIndex":`${j}`,"price":`${price}`,"sellEnder":`${sellEnder},"type":${offerType}`};
+													let sellInfo = {"seller":`${seller}`,"sellerIndex":`${i}`,"buyer":`${buyer}`,"buyerIndex":`${j}`,"price":`${price}`,"sellEnder":`${sellEnder}`,"type":`${offerType}`};
 													let jsonBattle = JSON.stringify(sellInfo);
 													fs.writeFileSync(`/home/mattguy/carlcoin/cache/${buyer}houseSell`,jsonBattle);
-													message.channel.send(`${data.users[j].name}! Type !cc acceptPurchase to accept ${data.users[i].name}'s offer or type !cc denyPurchase to reject the offer. You have 1 minute to respond.`);
+													message.channel.send(`${data.users[j].name}! Type !cc accPurchase to accept ${data.users[i].name}'s offer or type !cc denPurchase to reject the offer. You have 1 minute to respond.`);
 												}
 											}
 											else{
@@ -807,7 +810,7 @@ client.on('message', message => {
 		}			
 	}
 	//accept offer
-	else if((message.content.startsWith('!cc denyPurchase') || message.content.startsWith('!cc acceptPurchase'))){
+	else if((message.content.startsWith('!cc accPurchase') || message.content.startsWith('!cc denPurchase'))){
 		let personsId = message.author.id;
 		try{
 			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`)){
@@ -818,11 +821,11 @@ client.on('message', message => {
 					message.channel.send('Time has expired to accept the offer');
 				}
 				else{
-					if(message.content.startsWith('!cc denyPurchase')){
+					if(message.content.startsWith('!cc denPurchase')){
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
 						message.channel.send('You have declined the offer');
 					}
-					else if(message.content.startsWith('!cc acceptPurchase')){
+					else if(message.content.startsWith('!cc accPurchase')){
 						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 						let data = JSON.parse(database);
 						let price = parseInt(sellParse.price);
@@ -831,14 +834,21 @@ client.on('message', message => {
 						if(sellParse.type == "house"){
 							data.users[sellParse.sellerIndex]["house"] -= 1;
 							data.users[sellParse.buyerIndex]["house"] += 1;
+							if(isNaN(data.users[sellParse.buyerIndex]["house"])){
+								data.users[sellParse.buyerIndex]["house"] = 1;
+							}
 						}
 						else if(sellParse.type == "apartment"){
 							data.users[sellParse.sellerIndex]["apartment"] -= 1;
 							data.users[sellParse.buyerIndex]["apartment"] += 1;
+							if(isNaN(data.users[sellParse.buyerIndex]["apartment"])){
+								data.users[sellParse.buyerIndex]["apartment"] = 1;
+							}
 						}
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
+						message.channel.send('You have accepted the offer!');
 					}
 				}
 			}
@@ -874,7 +884,7 @@ client.on('message', message => {
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc sellTo <@user> <offer> <amount> to sell to another person`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <offer> <amount> to sell to another person`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
