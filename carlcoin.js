@@ -128,7 +128,7 @@ client.on('message', message => {
 				if(fs.existsSync(`/home/mattguy/carlcoin/cache/${opponent}battle`)){
 					let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
 					let battleParse = JSON.parse(battleFile);
-					if(battleParse.battleEnder < universalDate.getMinutes()){
+					if(battleParse.battleEnder < Date.now()){
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
 					}
 					else{
@@ -159,7 +159,7 @@ client.on('message', message => {
 												message.channel.send('Opponent doesnt have enough CC!');
 											}
 											else{
-												let battleEnder = (universalDate.getMinutes() + 1) % 60;
+												let battleEnder = Date.now() + 60000;
 												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`};
 												let jsonBattle = JSON.stringify(battleInfo);
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
@@ -192,7 +192,7 @@ client.on('message', message => {
 			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
 				let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				let battleParse = JSON.parse(battleFile);
-				if(battleParse.battleEnder < universalDate.getMinutes()){
+				if(battleParse.battleEnder < Date.now()){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 					message.channel.send('Time has expired to accept the battle');
 				}
@@ -204,9 +204,10 @@ client.on('message', message => {
 					else if(message.content.startsWith('!cc accept')){
 						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 						let data = JSON.parse(database);
-						let winnerAmount = battleParse.wager * 2;
-						data.users[battleParse.challIndex].balance -= battleParse.wager;
-						data.users[battleParse.oppIndex].balance -= battleParse.wager;
+						let wager = parseInt(battleParse.wager)
+						let winnerAmount = wager * 2;
+						data.users[battleParse.challIndex].balance -= wager;
+						data.users[battleParse.oppIndex].balance -= wager;
 						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
@@ -221,8 +222,8 @@ client.on('message', message => {
 							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
 						}
 						else{
-							data.users[battleParse.challIndex].balance += battleParse.wager;
-							data.users[battleParse.oppIndex].balance += battleParse.wager;
+							data.users[battleParse.challIndex].balance += wager;
+							data.users[battleParse.oppIndex].balance += wager;
 							message.channel.send(`A draw?! How lame!`);
 						}
 						let newData = JSON.stringify(data);
@@ -676,6 +677,7 @@ client.on('message', message => {
 		let highestEarnerAmount = 0;
 		let lowestEarnerName = "";
 		let lowestEarnerAmount = 99999;
+		let poorPeople = 0;
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance > highestEarnerAmount){
@@ -686,8 +688,11 @@ client.on('message', message => {
 				lowestEarnerName = data.users[i].name;
 				lowestEarnerAmount = data.users[i].balance;
 			}
+			if(data.users[i].balance == 0){
+				poorPeople += 1;
+			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
