@@ -643,7 +643,7 @@ client.on('message', message => {
 		}
 	}
 	//sell house
-	else if(message.content.startsWith('!cc purchase')){ /* !cc sell house/apartment */
+	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */
 		let chop = message.content.split(" ");
 		if(chop.length > 3){
 			message.channel.send('Too many arguments supplied!');
