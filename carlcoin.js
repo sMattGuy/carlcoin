@@ -20,6 +20,11 @@ console.log("rafflerng",raffleRNG);
 let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
+
+//list server
+client.guilds.cache.forEach(guild => {
+	console.log(`${guild.name} | ${guild.id}`);
+});
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -211,7 +216,6 @@ client.on('message', message => {
 					data.users[battleParse.oppIndex].balance -= wager;
 					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-					message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+------+------+`,{"code":true});
 					if(ChallengerRandom > OpponentRandom){
 						data.users[battleParse.challIndex].balance += winnerAmount;
 						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
@@ -225,6 +229,7 @@ client.on('message', message => {
 					else{
 						data.users[battleParse.challIndex].balance += wager;
 						data.users[battleParse.oppIndex].balance += wager;
+						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 						message.channel.send(`A draw?! How lame!`);
 					}
 					let newData = JSON.stringify(data);
