@@ -642,6 +642,57 @@ client.on('message', message => {
 			}
 		}
 	}
+	//sell house
+	else if(message.content.startsWith('!cc purchase')){ /* !cc sell house/apartment */
+		let chop = message.content.split(" ");
+		if(chop.length > 3){
+			message.channel.send('Too many arguments supplied!');
+		}
+		else{
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let noUser = true;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == message.author.id){
+					let type = chop[chop.length-1];
+					if(type == "house"){
+						if(data.users[i]["house"] - 1 < 0 || isNaN(data.users[i]["house"])){
+							message.channel.send('You do not have any homes!');
+						}
+						else{
+							data.users[i]["house"] -= 1;
+							data.users[i].balance += 50;
+							data.econ += 50;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have sold a home! You now own ${data.users[i].house} homes`);
+						}
+					}
+					else if(type == "apartment"){
+						if(data.users[i]["apartment"] - 1 < 0 || isNaN(data.users[i]["apartment"])){
+							message.channel.send('You do not have any apartments!');
+						}
+						else{
+							data.users[i]["apartment"] -= 1;
+							data.users[i].balance += 150;
+							data.econ += 150;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have sold an apartment! You now own ${data.users[i].apartment} apartment`);
+						}
+					}
+					else{
+						message.channel.send('Invalid sell! Try house or apartment');
+					}
+					noUser = false;
+					break;
+				}
+			}
+			if(noUser){
+				message.channel.send('You are not registered for Carl Coin!');
+			}
+		}
+	}
 	//home payouts
 	else if(today != prevDate){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
