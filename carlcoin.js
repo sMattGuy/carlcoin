@@ -211,30 +211,40 @@ client.on('message', message => {
 					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					let data = JSON.parse(database);
 					let wager = parseInt(battleParse.wager);
-					let winnerAmount = wager * 2;
-					data.users[battleParse.challIndex].balance -= wager;
-					data.users[battleParse.oppIndex].balance -= wager;
-					let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-					let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-					if(ChallengerRandom > OpponentRandom){
-						data.users[battleParse.challIndex].balance += winnerAmount;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-						message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+					if(data.users[battleParse.challIndex].balance - wager < 0){
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+						message.channel.send(`The challenger doesn't have enough money!`);
 					}
-					else if(ChallengerRandom < OpponentRandom){
-						data.users[battleParse.oppIndex].balance += winnerAmount;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-						message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+					else if(data.users[battleParse.oppIndex].balance - wager < 0){
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+						message.channel.send(`You don't have enough money!`);
 					}
 					else{
-						data.users[battleParse.challIndex].balance += wager;
-						data.users[battleParse.oppIndex].balance += wager;
-						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
-						message.channel.send(`A draw?! How lame!`);
+						let winnerAmount = wager * 2;
+						data.users[battleParse.challIndex].balance -= wager;
+						data.users[battleParse.oppIndex].balance -= wager;
+						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+						if(ChallengerRandom > OpponentRandom){
+							data.users[battleParse.challIndex].balance += winnerAmount;
+							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+							message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+						}
+						else if(ChallengerRandom < OpponentRandom){
+							data.users[battleParse.oppIndex].balance += winnerAmount;
+							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+						}
+						else{
+							data.users[battleParse.challIndex].balance += wager;
+							data.users[battleParse.oppIndex].balance += wager;
+							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
+							message.channel.send(`A draw?! How lame!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 					}
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				}
 			}
 		}
