@@ -190,7 +190,7 @@ client.on('message', message => {
 					}
 				}
 			}
-		}			
+		}	
 	}
 	//accept battle
 	else if((message.content.startsWith('!cc denyBattle') || message.content.startsWith('!cc acceptBattle'))){
