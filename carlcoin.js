@@ -876,6 +876,12 @@ client.on('message', message => {
 		let poorPeople = 0;
 		let houseCount = 0;
 		let apartmentCount = 0;
+		let carlball = 0;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+			let lotteryFile = JSON.parse(lotteryRead);
+			carlball = lotteryFile.value;
+		}
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance > highestEarnerAmount){
@@ -896,7 +902,7 @@ client.on('message', message => {
 				apartmentCount += 1;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery payout
 	else if(today != prevDate2){
