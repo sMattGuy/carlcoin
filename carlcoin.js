@@ -880,7 +880,7 @@ client.on('message', message => {
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
-			carlball = lotteryFile.value;
+			carlball = lotteryFile.pot;
 		}
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
