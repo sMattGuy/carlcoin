@@ -908,9 +908,9 @@ client.on('message', message => {
 			let closestGuess = 9999;
 			let value = lotteryFile.value;
 			for(let i=0;i<lotteryFile.users.length;i++){
-				if(Math.abs(lotteryFile.users[i].guess - value) < closestGuess){
+				if(Math.abs(parseInt(lotteryFile.users[i].guess) - value) < closestGuess){
 					closestId = lotteryFile.users[i].id;
-					closestGuess = Math.abs(lotteryFile.users[i].guess - value);
+					closestGuess = Math.abs(parseInt(lotteryFile.users[i].guess) - value);
 				}
 			}
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -921,9 +921,9 @@ client.on('message', message => {
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					message.channel.send(`The number today is ${value}\nCongradulations ${data.users[i].name}! You have won ${lotteryFile.pot}CC in todays lottery!`);
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 				}
 			}
+			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 		}
 	}
 	//lottery
