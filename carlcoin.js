@@ -18,6 +18,7 @@ let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
 let prevDate = startupDay.getDay();
+let prevDate2 = startupDay.getDay();
 //anti spam stuff
 let recentId;
 
@@ -897,9 +898,130 @@ client.on('message', message => {
 		}
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
+	//lottery payout
+	else if(today != prevDate2){
+		prevDate2 = today;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+			let lotteryFile = JSON.parse(lotteryRead);
+			let closestId = 0;
+			let closestGuess = 9999;
+			let value = lotteryFile.value;
+			for(let i=0;i<lotteryFile.users.length;i++){
+				if(Math.abs(lotteryFile.users[i].guess - value) < closestGuess){
+					closestId = lotteryFile.users[i].id;
+					closestGuess = Math.abs(lotteryFile.users[i].guess - value);
+				}
+			}
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == closestId){
+					data.users[i].balance += lotteryFile.pot;
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`The number today is ${value}\nCongradulations ${data.users[i].name}! You have won ${lotteryFile.pot}CC in todays lottery!`);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+				}
+			}
+		}
+	}
+	//lottery
+	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-1000 */
+		let personsId = message.author.id;
+		let chop = message.content.split(" ");
+		if(chop.length != 3){
+			message.channel.send('Command arguments incorrect!');
+		}
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+			let lotteryFile = JSON.parse(lotteryRead);
+			let lotteryGuess = parseInt(chop[chop.length-1]);
+			if(lotteryGuess < 1 || lotteryGuess > 1000 || isNaN(lotteryGuess)){
+				message.channel.send(`Invalid guess!`);
+			}
+			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				let noUser = true;
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id ==  personsId){
+						if(data.users[i].balance - 5 < 0){
+							message.channel.send(`You don't have enough CC!`);
+						}
+						else{
+							let play = true;
+							for(let j=0;j<lotteryFile.users.length;j++){
+								if(lotteryFile.users[j].id == personsId){
+									message.channel.send('You already played today!');
+									play = false;
+									break;
+								}
+								if(lotteryFile.users[j].guess == lotteryGuess){
+									message.channel.send('Someone already guessed that number!');
+									play = false;
+									break;
+								}
+							}
+							if(play){
+								data.users[i].balance -= 5;
+								lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
+								lotteryFile["pot"] += 5;
+								let newLottery = JSON.stringify(lotteryFile);
+								fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								message.channel.send(`You have been added to the lottery! Drawing happens at midnight!`);
+							}
+						}
+						noUser = false;
+						break;
+					}
+				}
+				if(noUser){
+					message.channel.send(`You are not registered for CarlCoin!`);
+				}
+			}
+		}
+		else{
+			let lotteryGuess = parseInt(chop[chop.length-1]);
+			if(lotteryGuess < 1 || lotteryGuess > 1000 || isNaN(lotteryGuess)){
+				message.channel.send(`Invalid guess!`);
+			}
+			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				let noUser = true;
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id ==  personsId){
+						if(data.users[i].balance - 5 < 0){
+							message.channel.send(`You don't have enough CC!`);
+						}
+						else{
+							data.users[i].balance -= 5;
+							let lotteryFile = {"users":[]};
+							lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
+							lotteryFile["value"] = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
+							lotteryFile["pot"] = 5;
+							let newLottery = JSON.stringify(lotteryFile);
+							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have been added to the lottery!`);
+						}
+						noUser = false;
+						break;
+					}
+				}
+				if(noUser){
+					message.channel.send(`You are not registered for CarlCoin!`);
+				}
+			}
+		}
+	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 1000, winner gets the pot!\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
