@@ -914,19 +914,25 @@ client.on('message', message => {
 			let closestGuess = 9999;
 			let value = lotteryFile.value;
 			for(let i=0;i<lotteryFile.users.length;i++){
-				if(Math.abs(parseInt(lotteryFile.users[i].guess) - value) < closestGuess){
+				if(parseInt(lotteryFile.users[i].guess) == value){
 					closestId = lotteryFile.users[i].id;
-					closestGuess = Math.abs(parseInt(lotteryFile.users[i].guess) - value);
+					break;
 				}
 			}
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
-			for(let i=0;i<data.users.length;i++){
-				if(data.users[i].id == closestId){
-					data.users[i].balance += lotteryFile.pot;
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					message.channel.send(`The number today is ${value}\nCongradulations ${data.users[i].name}! You have won ${lotteryFile.pot}CC in todays lottery!`);
+			if(closestId == 0){
+				message.channel.send(`The number today is ${value}\nNo one has won the lottery today!`);
+			}
+			else{
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == closestId){
+						data.users[i].balance += data.carlball;
+						data.carlball = 0;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`The number today is ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
+					}
 				}
 			}
 			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
@@ -939,7 +945,7 @@ client.on('message', message => {
 		if(chop.length != 3){
 			message.channel.send('Command arguments incorrect!');
 		}
-		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+		else if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
 			let lotteryGuess = parseInt(chop[chop.length-1]);
@@ -972,7 +978,7 @@ client.on('message', message => {
 							if(play){
 								data.users[i].balance -= 5;
 								lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
-								lotteryFile["pot"] += 5;
+								data["carlball"] += 5;
 								let newLottery = JSON.stringify(lotteryFile);
 								fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
 								let newData = JSON.stringify(data);
@@ -1008,7 +1014,7 @@ client.on('message', message => {
 							let lotteryFile = {"users":[]};
 							lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
 							lotteryFile["value"] = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
-							lotteryFile["pot"] = 5;
+							data["carlball"] += 5;
 							let newLottery = JSON.stringify(lotteryFile);
 							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
 							let newData = JSON.stringify(data);
