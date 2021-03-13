@@ -873,6 +873,8 @@ client.on('message', message => {
 		let lowestEarnerName = "";
 		let lowestEarnerAmount = 99999;
 		let poorPeople = 0;
+		let houseCount = 0;
+		let apartmentCount = 0;
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance > highestEarnerAmount){
@@ -886,8 +888,14 @@ client.on('message', message => {
 			if(data.users[i].balance == 0){
 				poorPeople += 1;
 			}
+			if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
+				houseCount += 1;
+			}
+			if(data.users[i]["apartment"] > 0 && !isNaN(data.users[i]["apartment"])){
+				apartmentCount += 1;
+			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThe highest earner is ${highestEarnerName} with ${highestEarnerAmount}CC\nThe lowest earner is ${lowestEarnerName} with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe pot is currently ${data.pot}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//help menu
 	else if(message.content.startsWith('!cc help')){
