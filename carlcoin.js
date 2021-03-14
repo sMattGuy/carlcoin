@@ -933,7 +933,7 @@ client.on('message', message => {
 		}
 	}
 	//lottery
-	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-1000 */
+	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-500 */
 		let personsId = message.author.id;
 		let chop = message.content.split(" ");
 		if(chop.length != 3){
@@ -943,7 +943,7 @@ client.on('message', message => {
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
 			let lotteryGuess = parseInt(chop[chop.length-1]);
-			if(lotteryGuess < 1 || lotteryGuess > 1000 || isNaN(lotteryGuess)){
+			if(lotteryGuess < 1 || lotteryGuess > 500 || isNaN(lotteryGuess)){
 				message.channel.send(`Invalid guess!`);
 			}
 			else{
@@ -991,7 +991,7 @@ client.on('message', message => {
 		}
 		else{
 			let lotteryGuess = parseInt(chop[chop.length-1]);
-			if(lotteryGuess < 1 || lotteryGuess > 1000 || isNaN(lotteryGuess)){
+			if(lotteryGuess < 1 || lotteryGuess > 500 || isNaN(lotteryGuess)){
 				message.channel.send(`Invalid guess!`);
 			}
 			else{
@@ -1007,7 +1007,7 @@ client.on('message', message => {
 							data.users[i].balance -= 5;
 							let lotteryFile = {"users":[]};
 							lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
-							lotteryFile["value"] = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
+							lotteryFile["value"] = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
 							data["carlball"] += 5;
 							let newLottery = JSON.stringify(lotteryFile);
 							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
