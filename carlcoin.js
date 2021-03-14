@@ -876,12 +876,7 @@ client.on('message', message => {
 		let poorPeople = 0;
 		let houseCount = 0;
 		let apartmentCount = 0;
-		let carlball = 0;
-		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
-			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
-			let lotteryFile = JSON.parse(lotteryRead);
-			carlball = lotteryFile.pot;
-		}
+		let carlball = data.carlball;
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance > highestEarnerAmount){
@@ -911,7 +906,6 @@ client.on('message', message => {
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
 			let closestId = 0;
-			let closestGuess = 9999;
 			let value = lotteryFile.value;
 			for(let i=0;i<lotteryFile.users.length;i++){
 				if(parseInt(lotteryFile.users[i].guess) == value){
@@ -922,7 +916,7 @@ client.on('message', message => {
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
 			if(closestId == 0){
-				message.channel.send(`The number today is ${value}\nNo one has won the lottery today!`);
+				message.channel.send(`The number was ${value}\nNo one has won the lottery today!`);
 			}
 			else{
 				for(let i=0;i<data.users.length;i++){
@@ -931,7 +925,7 @@ client.on('message', message => {
 						data.carlball = 0;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send(`The number today is ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
+						message.channel.send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
 					}
 				}
 			}
