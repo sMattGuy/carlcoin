@@ -21,7 +21,8 @@ let prevDate = startupDay.getDay();
 let prevDate2 = startupDay.getDay();
 //anti spam stuff
 let recentId;
-
+//cards
+const blackjackCards = ['♠A','♠2','♠3','♠4','♠5','♠6','♠7','♠8','♠9','♠10','♠J','♠Q','♠K','♥A','♥2','♥3','♥4','♥5','♥6','♥7','♥8','♥9','♥10','♥J','♥Q','♥K','♦A','♦2','♦3','♦4','♦5','♦6','♦7','♦8','♦9','♦10','♦J','♦Q','♦K','♣A','♣2','♣3','♣4','♣5','♣6','♣7','♣8','♣9','♣10','♣J','♣Q','♣K'];
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -1025,6 +1026,251 @@ client.on('message', message => {
 			}
 		}
 	}
+
+	//blackjack
+	else if(message.content.startsWith('!cc blackjack')){
+		let chop = message.content.split(" ");
+		if(chop.length != 3){
+			message.channel.send('Command arguments incorrect!');
+		}
+		else{
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let challenger = message.author.id;
+			let playing = true;
+			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`)){
+				let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`);
+				let blackjackParse = JSON.parse(blackjackFile);
+				if(blackjackParse.blackjackEnder < Date.now()){
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`);
+				}
+				else{
+					playing = false;
+					message.channel.send('You are already playing BlackJack!');
+				}
+			}
+			if(playing){
+				let wager = parseInt(chop[chop.length-1]);
+				if(isNaN(wager) || wager < 0){ //CHANGE LATER MATT DONT FORGET CHANGE BACK TO GREATER THAN 1
+					message.channel.send('Invalid amount entered!');
+				}
+				else if(Math.floor(wager * 1.5) > data.blackjack){
+					message.channel.send('The blackjack pot doesnt have enough CC!');
+				}
+				else{
+					let noUser = true;
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].id == challenger){
+							if(data.users[i].balance - wager < 0){
+								message.channel.send('You dont have enough CC!');
+							}
+							else{
+								data.blackjack += wager;
+								let blackjackEnder = Date.now() + 60000;
+								let usedCards = {"usedCards":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]};
+								//dealer
+								let dealerCard1 = (Math.floor(Math.random() * 52));
+								usedCards.usedCards[dealerCard1] = true;
+								let dealerCard2 = (Math.floor(Math.random() * 52));
+								while(usedCards.usedCards[dealerCard2]){
+									dealerCard2 = (Math.floor(Math.random() * 52));
+								}
+								usedCards.usedCards[dealerCard2] = true;
+								//player
+								let playerCard1 = (Math.floor(Math.random() * 52));
+								while(usedCards.usedCards[playerCard1]){
+									playerCard1 = (Math.floor(Math.random() * 52));
+								}
+								usedCards.usedCards[playerCard1] = true;
+								let playerCard2 = (Math.floor(Math.random() * 52));
+								while(usedCards.usedCards[playerCard2]){
+									playerCard2 = (Math.floor(Math.random() * 52));
+								}
+								usedCards.usedCards[playerCard2] = true;
+								let dealerCards = {"dealerCards":[dealerCard1,dealerCard2]};
+								let playerCards = {"playerCards":[playerCard1,playerCard2]};
+								//check instant win
+								if((playerCard1%13 == 0)&&(playerCard1%13 == 10 || playerCard1%13 == 11 || playerCard1%13 == 12)){
+									if((dealerCard1%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12)){
+										data.users[i].balance += wager;
+										data.blackjack -= wager;
+										message.channel.send(`You and the dealer both got a natural..... you get back your CC`);
+									}
+									else{
+										data.users[i].balance += Math.floor(wager * 1.5);
+										data.blackjack -= Math.floor(wager * 1.5);
+										message.channel.send(`You got a natural! You win!`);
+									}
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								}
+								else if((dealerCard1 == 0 || dealerCard1 == 13 || dealerCard1 == 26 || dealerCard1 == 39)&&(dealerCard1 == 10 || dealerCard1 == 11 || dealerCard1 == 12 || dealerCard1 == 23|| dealerCard1 == 24|| dealerCard1 == 25|| dealerCard1 == 36|| dealerCard1 == 37|| dealerCard1 == 38|| dealerCard1 == 49|| dealerCard1 == 50|| dealerCard1 == 51)){
+									message.channel.send(`Dealer got a natural! You lose!`);
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								}
+								else{
+									let blackjackInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"wager":`${wager}`,"blackjackEnder":`${blackjackEnder}`,usedCards,playerCards,dealerCards};
+									let jsonBlackjack = JSON.stringify(blackjackInfo);
+									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
+									message.channel.send(`${data.users[i].name}, you currently have ${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. The dealer has ${blackjackCards[dealerCard1]},XX.\nType !cc hit or !cc stay, you have 1 min to respond.`);
+								}
+								noOpp = false;
+								break;
+							}
+							noUser = false;
+							break;
+						}
+					}
+					if(noUser){
+						message.channel.send('You are not registered for CC!');
+					}
+				}
+			}
+		}
+	}
+	//hit
+	else if(message.content.startsWith('!cc hit')){
+		let personsId = message.author.id;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
+			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+			let blackjackParse = JSON.parse(blackjackFile);
+			if(blackjackParse.blackjackEnder < Date.now()){
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+				message.channel.send('Time has expired to play blackjack, you lost the money you bet!');
+			}
+			else{
+				blackjackParse.blackjackEnder += 60000;
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+				let newCard = (Math.floor(Math.random() * 52));
+				while(blackjackParse.usedCards.usedCards[newCard]){
+					newCard = (Math.floor(Math.random() * 52));
+				}
+				blackjackParse.usedCards.usedCards[newCard] == true;
+				blackjackParse.playerCards.playerCards.push(newCard);
+				let currentTotal = 0;
+				let ace = false;
+				let bust = false;
+				for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
+					currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]];
+					if(currentCardValue == 1){
+						ace = true;
+					}
+					currentTotal += currentCardValue;
+				}
+				let cardViewer = "";
+				for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
+					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
+				}
+				if(currentTotal > 21){
+					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\n${cardViewer}`);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+				}
+				else if(ace && currentTotal + 10 < 21){
+					let jsonBlackjack = JSON.stringify(blackjackParse);
+					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\n${cardViewer}`);
+				}
+				else{
+					let jsonBlackjack = JSON.stringify(blackjackParse);
+					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal}\n${cardViewer}`);
+				}
+			}
+		}
+	}
+	//stay
+	else if(message.content.startsWith('!cc stay')){
+		let personsId = message.author.id;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
+			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+			let blackjackParse = JSON.parse(blackjackFile);
+			if(blackjackParse.blackjackEnder < Date.now()){
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+				message.channel.send('Time has expired to play blackjack, you lost the money you bet!');
+			}
+			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+				let dealerTotal = 0;
+				for(let i=0;i<blackjackParse.dealerCards.dealerCards.length;i++){
+					currentCardValue = cardValue[blackjackParse.dealerCards.dealerCards[i]];
+					if(currentCardValue == 1){
+						ace = true;
+					}
+					dealerTotal += currentCardValue;
+				}
+				if(ace && dealerTotal + 10 < 21){
+					dealerTotal += 10;
+				}
+				while(dealerTotal < 17){
+					let newCard = (Math.floor(Math.random() * 52));
+					while(blackjackParse.usedCards.usedCards[newCard]){
+						newCard = (Math.floor(Math.random() * 52));
+					}
+					blackjackParse.usedCards.usedCards[newCard] == true;
+					blackjackParse.dealerCards.dealerCards.push(newCard);
+					dealerTotal += currentCardValue;
+				}
+				if(ace && dealerTotal + 10 < 21){
+					dealerTotal += 10;
+				}
+				let cardViewer = "";
+				for(let i=0;i<blackjackParse.dealerCards.dealerCards.length;i++){
+					cardViewer += blackjackCards[blackjackParse.dealerCards.dealerCards[i]];
+				}
+				if(dealerTotal > 21){
+					message.channel.send(`Bust! Dealer drew a ${blackjackCards[newCard]}\n${cardViewer}`);
+					data.users[blackjackParse.challIndex].balance += Math.floor(wager * 1.5);
+					data.blackjack -= Math.floor(wager * 1.5);
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+				}
+				else{
+					let playerValue = 0;
+					let playerAce = false;
+					for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
+						currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]];
+						if(currentCardValue == 1){
+							playerAce = true;
+						}
+						playerValue += currentCardValue;
+					}
+					if(ace && playerValue + 10 < 21){
+						playerValue += 10;
+					}
+					if(playerValue > dealerTotal){
+						//player wins
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!`);
+						data.users[blackjackParse.challIndex].balance += Math.floor(wager * 1.5);
+						data.blackjack -= Math.floor(wager * 1.5);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+					}
+					else if(dealerTotal > playerValue){
+						//player lose
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!`);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+					}
+					else{
+						//draw
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw, Dealer Wins!`);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
+					}
+				}
+			}
+		}
+	}
+
 	//help menu
 	else if(message.content.startsWith('!cc help')){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
