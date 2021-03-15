@@ -427,7 +427,8 @@ client.on('message', message => {
 									let optB = Math.floor(Math.random() * 10);
 									let random = Math.floor(Math.random() * 2);
 									data.pot += amount - 2;
-									data.welfare += 2;
+									data.welfare += 1;
+									data.blackjack += 1;
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
 									//if lottery win
@@ -517,7 +518,11 @@ client.on('message', message => {
 					//lose chance time
 					else{
 						let welfPot = Math.floor(amount / 2);
+						let blackPot = Math.floor(welfPot / 2);
+						welfPot = welfPot - blackPot;
 						amount = amount - welfPot;
+						amount = amount - blackPot
+						data.blackjack += blackPot;
 						data.pot += amount;
 						data.welfare += welfPot;
 						data.users[j].chanceTime = currentTime.getDate();
