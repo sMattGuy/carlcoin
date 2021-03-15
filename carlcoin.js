@@ -1051,10 +1051,10 @@ client.on('message', message => {
 			}
 			if(playing){
 				let wager = parseInt(chop[chop.length-1]);
-				if(isNaN(wager) || wager < 0){ //CHANGE LATER MATT DONT FORGET CHANGE BACK TO GREATER THAN 1
+				if(isNaN(wager) || wager < 2){ //CHANGE LATER MATT DONT FORGET CHANGE BACK TO GREATER THAN 1
 					message.channel.send('Invalid amount entered!');
 				}
-				else if(Math.floor(wager * 1.5) > data.blackjack){
+				else if(Math.floor(wager * 2) > data.blackjack){
 					message.channel.send('The blackjack pot doesnt have enough CC!');
 				}
 				else{
@@ -1066,7 +1066,8 @@ client.on('message', message => {
 							}
 							else{
 								data.blackjack += wager;
-								let blackjackEnder = Date.now() + 60000;
+								data.users[i].balance -= wager;
+								let blackjackEnder = parseInt(Date.now()) + 60000;
 								let usedCards = {"usedCards":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]};
 								//dealer
 								let dealerCard1 = (Math.floor(Math.random() * 52));
@@ -1097,8 +1098,8 @@ client.on('message', message => {
 										message.channel.send(`You and the dealer both got a natural..... you get back your CC`);
 									}
 									else{
-										data.users[i].balance += Math.floor(wager * 1.5);
-										data.blackjack -= Math.floor(wager * 1.5);
+										data.users[i].balance += Math.floor(wager * 2);
+										data.blackjack -= Math.floor(wager * 2);
 										message.channel.send(`You got a natural! You win!`);
 									}
 									let newData = JSON.stringify(data);
@@ -1115,8 +1116,9 @@ client.on('message', message => {
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
 									message.channel.send(`${data.users[i].name}, you currently have ${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. The dealer has ${blackjackCards[dealerCard1]},XX.\nType !cc hit or !cc stay, you have 1 min to respond.`);
 								}
-								noOpp = false;
-								break;
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+
 							}
 							noUser = false;
 							break;
@@ -1140,7 +1142,7 @@ client.on('message', message => {
 				message.channel.send('Time has expired to play blackjack, you lost the money you bet!');
 			}
 			else{
-				blackjackParse.blackjackEnder += 60000;
+				blackjackParse.blackjackEnder = parseInt(blackjackParse.blackjackEnder) + 60000;
 				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 				let data = JSON.parse(database);
 				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
@@ -1154,7 +1156,7 @@ client.on('message', message => {
 				let ace = false;
 				let bust = false;
 				for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
-					currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]];
+					let currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]%13];
 					if(currentCardValue == 1){
 						ace = true;
 					}
@@ -1196,8 +1198,9 @@ client.on('message', message => {
 				let data = JSON.parse(database);
 				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
 				let dealerTotal = 0;
+				let ace = false;
 				for(let i=0;i<blackjackParse.dealerCards.dealerCards.length;i++){
-					currentCardValue = cardValue[blackjackParse.dealerCards.dealerCards[i]];
+					let currentCardValue = cardValue[blackjackParse.dealerCards.dealerCards[i]%13];
 					if(currentCardValue == 1){
 						ace = true;
 					}
@@ -1213,7 +1216,12 @@ client.on('message', message => {
 					}
 					blackjackParse.usedCards.usedCards[newCard] == true;
 					blackjackParse.dealerCards.dealerCards.push(newCard);
+					let currentCardValue = cardValue[newCard%13];
 					dealerTotal += currentCardValue;
+					if(ace && dealerTotal > 21){
+						ace = false;
+						dealerTotal -= 10;
+					}
 				}
 				if(ace && dealerTotal + 10 < 21){
 					dealerTotal += 10;
@@ -1223,9 +1231,9 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.dealerCards.dealerCards[i]];
 				}
 				if(dealerTotal > 21){
-					message.channel.send(`Bust! Dealer drew a ${blackjackCards[newCard]}\n${cardViewer}`);
-					data.users[blackjackParse.challIndex].balance += Math.floor(wager * 1.5);
-					data.blackjack -= Math.floor(wager * 1.5);
+					message.channel.send(`Bust! Dealer loses!\n${cardViewer}`);
+					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
+					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1234,20 +1242,20 @@ client.on('message', message => {
 					let playerValue = 0;
 					let playerAce = false;
 					for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
-						currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]];
+						let currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]%13];
 						if(currentCardValue == 1){
 							playerAce = true;
 						}
 						playerValue += currentCardValue;
 					}
-					if(ace && playerValue + 10 < 21){
+					if(playerAce && playerValue + 10 < 21){
 						playerValue += 10;
 					}
 					if(playerValue > dealerTotal){
 						//player wins
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!`);
-						data.users[blackjackParse.challIndex].balance += Math.floor(wager * 1.5);
-						data.blackjack -= Math.floor(wager * 1.5);
+						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
+						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1261,7 +1269,9 @@ client.on('message', message => {
 					}
 					else{
 						//draw
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw, Dealer Wins!`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!`);
+						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
+						data.blackjack -= blackjackParse.wager;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1273,7 +1283,7 @@ client.on('message', message => {
 
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
