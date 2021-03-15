@@ -711,13 +711,13 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		prevDate = universalDate.getDay();
 		for(let i=0;i<data.users.length;i++){
-			let homePrice = data.users[i]["house"] * 10;
+			let homePrice = data.users[i]["house"] * 7;
 			let taxAmount = 0;
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
 			taxAmount = (homePrice/10) * 2;
-			let apartPrice = data.users[i]["apartment"] * 25;
+			let apartPrice = data.users[i]["apartment"] * 17;
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
