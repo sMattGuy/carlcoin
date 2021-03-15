@@ -1091,8 +1091,8 @@ client.on('message', message => {
 								let dealerCards = {"dealerCards":[dealerCard1,dealerCard2]};
 								let playerCards = {"playerCards":[playerCard1,playerCard2]};
 								//check instant win
-								if((playerCard1%13 == 0)&&(playerCard1%13 == 10 || playerCard1%13 == 11 || playerCard1%13 == 12)){
-									if((dealerCard1%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12)){
+								if(((playerCard1%13 == 0)&&(playerCard2%13 == 10 || playerCard2%13 == 11 || playerCard2%13 == 12))|| ((playerCard2%13 == 0)&&(playerCard1%13 == 10 || playerCard1%13 == 11 || playerCard1%13 == 12))){
+									if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 										data.users[i].balance += wager;
 										data.blackjack -= wager;
 										message.channel.send(`You and the dealer both got a natural..... you get back your CC`);
@@ -1105,7 +1105,7 @@ client.on('message', message => {
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
-								else if((dealerCard1 == 0 || dealerCard1 == 13 || dealerCard1 == 26 || dealerCard1 == 39)&&(dealerCard1 == 10 || dealerCard1 == 11 || dealerCard1 == 12 || dealerCard1 == 23|| dealerCard1 == 24|| dealerCard1 == 25|| dealerCard1 == 36|| dealerCard1 == 37|| dealerCard1 == 38|| dealerCard1 == 49|| dealerCard1 == 50|| dealerCard1 == 51)){
+								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									message.channel.send(`Dealer got a natural! You lose!`);
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1206,7 +1206,7 @@ client.on('message', message => {
 					}
 					dealerTotal += currentCardValue;
 				}
-				if(ace && dealerTotal + 10 < 21){
+				if(ace && dealerTotal + 10 <= 21){
 					dealerTotal += 10;
 				}
 				while(dealerTotal < 17){
@@ -1223,7 +1223,7 @@ client.on('message', message => {
 						dealerTotal -= 10;
 					}
 				}
-				if(ace && dealerTotal + 10 < 21){
+				if(ace && dealerTotal + 10 <= 21){
 					dealerTotal += 10;
 				}
 				let cardViewer = "";
@@ -1248,7 +1248,7 @@ client.on('message', message => {
 						}
 						playerValue += currentCardValue;
 					}
-					if(playerAce && playerValue + 10 < 21){
+					if(playerAce && playerValue + 10 <= 21){
 						playerValue += 10;
 					}
 					if(playerValue > dealerTotal){
