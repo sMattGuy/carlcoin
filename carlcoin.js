@@ -1170,7 +1170,7 @@ client.on('message', message => {
 					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\n${cardViewer}`);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
-				else if(ace && currentTotal + 10 < 21){
+				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
 					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\n${cardViewer}`);
