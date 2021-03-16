@@ -1099,8 +1099,8 @@ client.on('message', message => {
 								let dealerCards = {"dealerCards":[dealerCard1,dealerCard2]};
 								let playerCards = {"playerCards":[playerCard1,playerCard2]};
 								//check instant win
-								if(((playerCard1%13 == 0)&&(playerCard2%13 == 10 || playerCard2%13 == 11 || playerCard2%13 == 12))|| ((playerCard2%13 == 0)&&(playerCard1%13 == 10 || playerCard1%13 == 11 || playerCard1%13 == 12))){
-									if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
+								if(((playerCard1%13 == 0)&&(playerCard2%13 == 9 || playerCard2%13 == 10 || playerCard2%13 == 11 || playerCard2%13 == 12))|| ((playerCard2%13 == 0)&&(playerCard1%13 == 9 || playerCard1%13 == 10 || playerCard1%13 == 11 || playerCard1%13 == 12))){
+									if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 										data.users[i].balance += wager;
 										data.blackjack -= wager;
 										message.channel.send(`You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
@@ -1113,7 +1113,7 @@ client.on('message', message => {
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
-								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
+								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									message.channel.send(`Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
