@@ -906,7 +906,7 @@ client.on('message', message => {
 				apartmentCount += 1;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery payout
 	else if(today != prevDate2){
@@ -1243,7 +1243,7 @@ client.on('message', message => {
 					playerViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(dealerTotal > 21){
-					message.channel.send(`Bust! Dealer loses!\nYou:${playerViewer}|Dealer:${cardViewer}`);
+					message.channel.send(`Bust! Dealer loses!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					let newData = JSON.stringify(data);
