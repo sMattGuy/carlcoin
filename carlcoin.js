@@ -43,8 +43,9 @@ client.on('message', message => {
 	let universalDate = new Date();
 	let timeRightNow = universalDate.getMinutes();
 	let today = universalDate.getDay();
+	
 	//increment message counter
-	if(!raffleStart && (recentId !== message.author.id || message.author.id != 816853972690141205)){
+	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
 		recentId = message.author.id;
 	}
@@ -622,7 +623,8 @@ client.on('message', message => {
 							}
 							data.users[i].balance -= 100;
 							data.pot += 25;
-							data.welfare += 25;
+							data.welfare += 13;
+							data.blackjack += 12
 							data.econ -= 50;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -641,7 +643,8 @@ client.on('message', message => {
 							data.users[i].balance -= 250;
 							data.pot += 50;
 							data.econ -= 150;
-							data.welfare += 50;
+							data.welfare += 25;
+							data.blackjack += 25;
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery day you will get some rent payments!`);
