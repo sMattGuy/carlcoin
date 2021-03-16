@@ -1122,7 +1122,7 @@ client.on('message', message => {
 									let blackjackInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"wager":`${wager}`,"blackjackEnder":`${blackjackEnder}`,usedCards,playerCards,dealerCards};
 									let jsonBlackjack = JSON.stringify(blackjackInfo);
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
-									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stay, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`);
+									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`);
 								}
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1192,7 +1192,7 @@ client.on('message', message => {
 		}
 	}
 	//stay
-	else if(message.content.startsWith('!cc stay')){
+	else if(message.content.startsWith('!cc stand')){
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
 			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1265,7 +1265,7 @@ client.on('message', message => {
 					}
 					if(playerValue > dealerTotal){
 						//player wins
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}|Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						let newData = JSON.stringify(data);
@@ -1274,14 +1274,14 @@ client.on('message', message => {
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}|Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 					}
 					else{
 						//draw
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}|Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= blackjackParse.wager;
 						let newData = JSON.stringify(data);
