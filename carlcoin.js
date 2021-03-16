@@ -1106,8 +1106,8 @@ client.on('message', message => {
 										message.channel.send(`You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
 									}
 									else{
-										data.users[i].balance += Math.floor(wager * 2);
-										data.blackjack -= Math.floor(wager * 2);
+										data.users[i].balance += Math.floor(wager * 2.5);
+										data.blackjack -= Math.floor(wager * 2.5);
 										message.channel.send(`You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
 									}
 									let newData = JSON.stringify(data);
