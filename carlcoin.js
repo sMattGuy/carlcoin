@@ -1120,7 +1120,7 @@ client.on('message', message => {
 				if(isNaN(wager) || wager < 2){
 					message.channel.send('Invalid amount entered!');
 				}
-				else if(Math.floor(wager * 2) > data.blackjack){
+				else if(Math.floor((wager * .25) * 2.5) > data.blackjack){
 					message.channel.send('The blackjack pot doesnt have enough CC!');
 				}
 				else{
