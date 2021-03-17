@@ -17,6 +17,7 @@ let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
+//new day checking variables
 let prevDate = startupDay.getDay();
 let prevDate2 = startupDay.getDay();
 //anti spam stuff
@@ -40,11 +41,12 @@ client.on('ready', () => {
 });
 // Create an event listener for messages
 client.on('message', message => {
+	//defines the date and time for certain aspects of the bot
 	let universalDate = new Date();
 	let timeRightNow = universalDate.getMinutes();
 	let today = universalDate.getDay();
 	
-	//increment message counter
+	//increment message counter with spam protection
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
 		recentId = message.author.id;
@@ -59,73 +61,93 @@ client.on('message', message => {
    });
 	
 	//raffle functionality
-	//message failsafe
+	//message failsafe incase countery somehow goes past value
 	if(messageCounter > raffleRNG){
 		messageCounter = 0;
 	}
 	//detects when md5 raffle should begin
 	if(messageCounter == raffleRNG && !raffleStart){
+		//create new raffle rng
 		raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
 		console.log("rafflerng",raffleRNG);
+		//create new mystery number for people to guess
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 		console.log("mystery",mysteryNumber);
+		//set start flag to true
 		raffleStart = true;
+		//sets the value of the coin to claim
 		md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+		//reset message counter
 		messageCounter = 0;
+		//begin alerting server that triggered event
 		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
+		//hash number
 		let mysteryMD5 = md5(mysteryNumber);
 		console.log("md5",mysteryMD5);
 		message.channel.send((`${md5Val} Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
 	}
 	//guess command
-	if(raffleStart && message.content.startsWith('!cc guess')){
+	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
+		//chop message to parse
 		let chop = message.content.split(" ");
 		//if too many arguments
-		if(chop.length > 3){
+		if(chop.length != 3){
 			message.channel.send(`Too many arguments supplied!`);
 		}
-		let guess = parseInt(chop[chop.length-1]);
-		let user = message.author.username;
-		let id = message.author.id;
-		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-		let data = JSON.parse(database);
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].id == id){
-				if(guess < 1 || isNaN(guess)){	
-					message.channel.send(`Invalid amount entered!`);
+		else{
+			//gets number user guessed and checks if valid
+			let guess = parseInt(chop[chop.length-1]);
+			if(guess < 1 || isNaN(guess) || guess > 100){
+				message.channel.send(`Invalid amount entered!`);
+			}
+			else{
+				//stores name and id
+				let user = message.author.username;
+				let id = message.author.id;
+				//reads database file and parses it
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				//find user loop
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == id){
+						if(mysteryNumber == guess){
+							data.users[i].balance += md5Val;
+							data.econ += md5Val;
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
+							raffleStart = false;
+						}
+						else if(mysteryNumber > guess){
+							message.channel.send(`Incorrect, try a higher number!`)
+						}
+						else{
+							message.channel.send(`Incorrect, try a lower number!`);
+						}
+						break;
+					}
 				}
-				else{
-					if(mysteryNumber == guess){
-						data.users[i].balance += md5Val;
-						data.econ += md5Val;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
-						raffleStart = false;
-					}
-					else if(mysteryNumber > guess){
-						message.channel.send(`Incorrect, try a higher number!`)
-					}
-					else{
-						message.channel.send(`Incorrect, try a lower number!`);
-					}
-				}
-				break;
 			}
 		}
 	}
-	//battle
-	else if(message.content.startsWith('!cc challenge')){
+	//end of raffle functionality
+	//start of battle functionality
+	//battle start command
+	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
+		//check command is correctly entered
 		let chop = message.content.split(" ");
 		if(chop.length != 4){
 			message.channel.send('Command arguments incorrect!');
 		}
 		else{
+			//read and parse database
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
+			//assign challenger
 			let challenger = message.author.id;
 			let mentionOK = true;
 			let opponent = 0;
+			//check if opponent exists or is correctly entered
 			try{
 				opponent = getUserFromMention(chop[chop.length-2]).id;
 			}
@@ -133,45 +155,60 @@ client.on('message', message => {
 				message.channel.send('Invalid user selected!');
 				mentionOK = false;
 			}
+			//run if opponent parse is okay
 			if(mentionOK){
 				let rebattle = true;
+				//check if opponent is in battle
 				if(fs.existsSync(`/home/mattguy/carlcoin/cache/${opponent}battle`)){
+					//if opponent file exists, parse data
 					let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
 					let battleParse = JSON.parse(battleFile);
+					//time expired for battle, delete old file
 					if(battleParse.battleEnder < Date.now()){
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${opponent}battle`);
 					}
+					//if person is already in battle
 					else{
 						rebattle = false;
 						message.channel.send('That person is already in battle!');
 					}
 				}
+				//begin finding battle
 				if(rebattle){
+					//parse wager and check if valid
 					let wager = parseInt(chop[chop.length-1]);
+					//check if trying to battle self
 					if(opponent == challenger){
 						message.channel.send('Go fight your inner demons elsewhere');
 					}
+					//check that wager is valid
 					else if(isNaN(wager) || wager <= 0){
 						message.channel.send('Invalid amount entered!');
 					}
 					else{
 						let noUser = true;
+						//find challenger in database
 						for(let i=0;i<data.users.length;i++){
 							if(data.users[i].id == challenger){
+								//if challenger doesnt have enough money
 								if(data.users[i].balance - wager < 0){
 									message.channel.send('You dont have enough CC!');
 								}
 								else{
 									let noOpp = true;
+									//find opponent in database
 									for(let j=0;j<data.users.length;j++){
 										if(data.users[j].id == opponent){
+											//if opponent doesnt have enough money
 											if(data.users[j].balance - wager < 0){
 												message.channel.send('Opponent doesnt have enough CC!');
 											}
 											else{
+												//begin setting up battle variables
 												let battleEnder = Date.now() + 60000;
 												let battleInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"battleEnder":`${battleEnder}`};
 												let jsonBattle = JSON.stringify(battleInfo);
+												//create battle cache file and alert opponent of their challenge
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
 												message.channel.send(`${data.users[j].name}! Type !cc acceptBattle to accept ${data.users[i].name}'s challenge or type !cc denyBattle to reject the challenge. You have 1 minute to respond.`);
 											}
@@ -195,25 +232,34 @@ client.on('message', message => {
 			}
 		}	
 	}
-	//accept battle
+	//accept or deny battle
 	else if((message.content.startsWith('!cc denyBattle') || message.content.startsWith('!cc acceptBattle'))){
+		//save message author id
 		let personsId = message.author.id;
+		//find if opponent file exists
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}battle`)){
+			//parse opponent cache file
 			let battleFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 			let battleParse = JSON.parse(battleFile);
+			//check if time has expired for this opponent
 			if(battleParse.battleEnder < Date.now()){
 				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 				message.channel.send('Time has expired to accept the battle');
 			}
 			else{
+				//if deny battle, mock opponent and delete their cache file
 				if(message.content.startsWith('!cc denyBattle')){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 					message.channel.send('Coward');
 				}
+				//accept battle protocol
 				else if(message.content.startsWith('!cc acceptBattle')){
+					//parse database
 					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					let data = JSON.parse(database);
+					//parse wager from cache file
 					let wager = parseInt(battleParse.wager);
+					//checking to see if user suddenly doesnt have enough money
 					if(data.users[battleParse.challIndex].balance - wager < 0){
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 						message.channel.send(`The challenger doesn't have enough money!`);
@@ -222,28 +268,37 @@ client.on('message', message => {
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
 						message.channel.send(`You don't have enough money!`);
 					}
+					//begin battle
 					else{
+						//set the winning amount
 						let winnerAmount = wager * 2;
+						//take money from both users
 						data.users[battleParse.challIndex].balance -= wager;
 						data.users[battleParse.oppIndex].balance -= wager;
+						//generate their random value
 						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+						//check to see who wins
+						//challenger wins
 						if(ChallengerRandom > OpponentRandom){
 							data.users[battleParse.challIndex].balance += winnerAmount;
 							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 							message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
 						}
+						//opponent wins
 						else if(ChallengerRandom < OpponentRandom){
 							data.users[battleParse.oppIndex].balance += winnerAmount;
 							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 							message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
 						}
+						//users tie
 						else{
 							data.users[battleParse.challIndex].balance += wager;
 							data.users[battleParse.oppIndex].balance += wager;
 							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 							message.channel.send(`A draw?! How lame!`);
 						}
+						//write new data to database and delete cache file
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
@@ -252,7 +307,8 @@ client.on('message', message => {
 			}
 		}
 	}
-   //commands
+	//end of battle functionality
+    //join command
 	else if (message.content.startsWith('!cc join')) {
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -272,8 +328,11 @@ client.on('message', message => {
 		}
 		//add user
 		if(addUser){
-			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"house":0,"apartment":0});
+			//create user variables
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"claim":0,"house":0,"apartment":0});
+			//increase total economy
 			data.econ += 10;
+			//write new data and alert new user
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send('You have been registered and recieved 10CC!');
@@ -338,7 +397,6 @@ client.on('message', message => {
 				let amount = parseInt(chop[chop.length-1]);
 				//checks valid money
 				if(amount <= 0 || isNaN(amount)){
-					
 					message.channel.send(`Invalid amount entered!`);
 				}
 				else{
@@ -1073,7 +1131,10 @@ client.on('message', message => {
 								message.channel.send('You dont have enough CC!');
 							}
 							else{
-								data.blackjack += wager;
+								let welfareSupport = Math.floor(wager * .25);
+								let blackjackSupport = wager - welfareSupport;
+								data.blackjack += blackjackSupport;
+								data.welfare += welfareSupport;
 								data.users[i].balance -= wager;
 								let blackjackEnder = parseInt(Date.now()) + 60000;
 								let usedCards = {"usedCards":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]};
