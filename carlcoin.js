@@ -424,18 +424,22 @@ client.on('message', message => {
 							if(balance - amount < 0){
 								message.channel.send(`You don't have enough CC!`);
 							}
+							/*
 							else if(data.users[i].claim == currentDate.getDate()){
 								message.channel.send(`You claimed welfare today, you've been locked out of transfering funds today`);
 							}
+							*/
 							else{
 								let noRecp = true;
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
+									/*
 									if(data.users[j].claim == currentDate.getDate()){
 										message.channel.send(`Recipient claimed welfare today, they are locked out of recieveing funds!`);
 									}
-									else if(data.users[j].id == recpid){
+									add else to below statement if reactivate*/
+									if(data.users[j].id == recpid){
 										noRecp = false;
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
@@ -609,6 +613,7 @@ client.on('message', message => {
 			message.channel.send(`You are not registered for CC!`);
 		}
 	}
+	/*
 	//claim
 	else if(message.content.startsWith('!cc welfare')){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -667,6 +672,7 @@ client.on('message', message => {
 			message.channel.send(`You are not registered for CC!`);
 		}
 	}
+	*/
 	//purchase home
 	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment */
 		let chop = message.content.split(" ");
@@ -1375,7 +1381,7 @@ client.on('message', message => {
 
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc welfare to claim 5 CC daily if youre poor!\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
