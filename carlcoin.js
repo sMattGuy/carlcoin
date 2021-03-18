@@ -370,7 +370,6 @@ client.on('message', message => {
 				perc = perc.toFixed(2);
 				message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
 				notFound = false;
-				data.users[i]["activity"] = Date.now();
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				break;
@@ -425,12 +424,18 @@ client.on('message', message => {
 							if(balance - amount < 0){
 								message.channel.send(`You don't have enough CC!`);
 							}
+							else if(data.users[i].claim == today){
+								message.channel.send(`You claimed welfare today, you've been locked out of transfering funds today`);
+							}
 							else{
 								let noRecp = true;
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
-									if(data.users[j].id == recpid){
+									if(data.users[j].claim == today){
+										message.channel.send(`Recipient claimed welfare today, they are locked out of recieveing funds!`);
+									}
+									else if(data.users[j].id == recpid){
 										noRecp = false;
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
