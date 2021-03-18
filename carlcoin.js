@@ -113,6 +113,7 @@ client.on('message', message => {
 						if(mysteryNumber == guess){
 							data.users[i].balance += md5Val;
 							data.econ += md5Val;
+							data.users[i]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
@@ -210,6 +211,9 @@ client.on('message', message => {
 												let jsonBattle = JSON.stringify(battleInfo);
 												//create battle cache file and alert opponent of their challenge
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}battle`,jsonBattle);
+												data.users[i]["activity"] = universalDate.now();
+												let newData = JSON.stringify(data);
+												fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 												message.channel.send(`${data.users[j].name}! Type !cc acceptBattle to accept ${data.users[i].name}'s challenge or type !cc denyBattle to reject the challenge. You have 1 minute to respond.`);
 											}
 											noOpp = false;
@@ -275,6 +279,8 @@ client.on('message', message => {
 						//take money from both users
 						data.users[battleParse.challIndex].balance -= wager;
 						data.users[battleParse.oppIndex].balance -= wager;
+						data.users[battleParse.challIndex]["activity"] = universalDate.now();
+						data.users[battleParse.oppIndex]["activity"] = universalDate.now();
 						//generate their random value
 						let ChallengerRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 						let OpponentRandom = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
@@ -329,7 +335,7 @@ client.on('message', message => {
 		//add user
 		if(addUser){
 			//create user variables
-			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"claim":0,"house":0,"apartment":0});
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"claim":0,"house":0,"apartment":0,"activity":`${universalDate.now()}`});
 			//increase total economy
 			data.econ += 10;
 			//write new data and alert new user
@@ -364,6 +370,9 @@ client.on('message', message => {
 				perc = perc.toFixed(2);
 				message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
 				notFound = false;
+				data.users[i]["activity"] = universalDate.now();
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				break;
 			}
 		}
@@ -425,6 +434,8 @@ client.on('message', message => {
 										noRecp = false;
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
+										data.users[i]["activity"] = universalDate.now();
+										data.users[j]["activity"] = universalDate.now();
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You have paid ${recipient} ${amount} CC!\n${recipient}'s Balance ${data.users[j].balance}\n${user}'s Balance ${data.users[i].balance}`);
@@ -495,8 +506,6 @@ client.on('message', message => {
 										let pot = 10;
 										data.users[j].balance += pot;
 										data.pot -= pot;
-										let newData = JSON.stringify(data);
-										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 									}
 									//if lottery win
@@ -504,16 +513,15 @@ client.on('message', message => {
 										let pot = 10;
 										data.users[j].balance += pot;
 										data.pot -= pot;
-										let newData = JSON.stringify(data);
-										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 									}
 									//if lottery lose
 									else{
-										let newData = JSON.stringify(data);
-										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You've lost! The pot is now ${data.pot}CC. You have ${data.users[j].balance}CC.`);
 									}
+									data.users[j]["activity"] = universalDate.now();
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
 								//user found, flag triggered
 								noUser = false;
@@ -570,8 +578,6 @@ client.on('message', message => {
 						data.users[j].balance += doubleMoney;
 						data.users[j].chanceTime = currentTime.getDate();
 						data.econ += amount;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`You've won! You now have ${data.users[j].balance}CC`);
 					}
 					//lose chance time
@@ -586,10 +592,11 @@ client.on('message', message => {
 						data.welfare += welfPot;
 						data.users[j].chanceTime = currentTime.getDate();
 						message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					}
 				}
+				data.users[j]["activity"] = universalDate.now();
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				noUser = false;
 				break;
 			}
@@ -628,6 +635,7 @@ client.on('message', message => {
 							data.users[j].balance += 5;
 							data.users[j].claim = currentTime.getDate();
 							data.welfare -= 5;
+							data.users[j]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
@@ -642,6 +650,7 @@ client.on('message', message => {
 							data.users[j].balance += 5;
 							data.users[j].claim = currentTime.getDate();
 							data.welfare -= 5;
+							data.users[j]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
@@ -684,6 +693,7 @@ client.on('message', message => {
 							data.welfare += 13;
 							data.blackjack += 12
 							data.econ -= 50;
+							data.users[i]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery day you will get some rent payments!`);
@@ -703,6 +713,7 @@ client.on('message', message => {
 							data.econ -= 150;
 							data.welfare += 25;
 							data.blackjack += 25;
+							data.users[i]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery day you will get some rent payments!`);
@@ -741,6 +752,7 @@ client.on('message', message => {
 							data.users[i]["house"] -= 1;
 							data.users[i].balance += 50;
 							data.econ += 50;
+							data.users[i]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have sold a home! You now own ${data.users[i].house} homes`);
@@ -754,6 +766,7 @@ client.on('message', message => {
 							data.users[i]["apartment"] -= 1;
 							data.users[i].balance += 150;
 							data.econ += 150;
+							data.users[i]["activity"] = universalDate.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have sold an apartment! You now own ${data.users[i].apartment} apartment`);
@@ -794,6 +807,7 @@ client.on('message', message => {
 			data.welfare += taxAmount;
 			data.econ += taxAmount;
 			data.econ += amount;
+			data.users[i]["activity"] = universalDate.now();
 		}
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -924,6 +938,8 @@ client.on('message', message => {
 							data.users[sellParse.buyerIndex]["apartment"] = 1;
 						}
 					}
+					data.users[sellParse.sellerIndex]["activity"] = universalDate.now();
+					data.users[sellParse.buyerIndex]["activity"] = universalDate.now();
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
@@ -938,8 +954,6 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		let highestEarnerName = "";
 		let highestEarnerAmount = 0;
-		let lowestEarnerName = "";
-		let lowestEarnerAmount = 99999;
 		let poorPeople = 0;
 		let houseCount = 0;
 		let apartmentCount = 0;
@@ -949,10 +963,6 @@ client.on('message', message => {
 			if(data.users[i].balance > highestEarnerAmount){
 				highestEarnerName = data.users[i].name;
 				highestEarnerAmount = data.users[i].balance;
-			}
-			if(data.users[i].balance < lowestEarnerAmount){
-				lowestEarnerName = data.users[i].name;
-				lowestEarnerAmount = data.users[i].balance;
 			}
 			if(data.users[i].balance == 0){
 				poorPeople += 1;
@@ -964,7 +974,7 @@ client.on('message', message => {
 				apartmentCount += 1;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\n${lowestEarnerName} has the least CC with ${lowestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery payout
 	else if(today != prevDate2){
@@ -990,6 +1000,7 @@ client.on('message', message => {
 					if(data.users[i].id == closestId){
 						data.users[i].balance += data.carlball;
 						data.carlball = 0;
+						data.users[i]["activity"] = universalDate.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
@@ -1042,6 +1053,7 @@ client.on('message', message => {
 								data["carlball"] += 5;
 								let newLottery = JSON.stringify(lotteryFile);
 								fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
+								data.users[i]["activity"] = universalDate.now();
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								message.channel.send(`You have been added to the lottery! Drawing happens at midnight!`);
@@ -1076,6 +1088,7 @@ client.on('message', message => {
 							lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
 							lotteryFile["value"] = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
 							data["carlball"] += 5;
+							data.users[i]["activity"] = universalDate.now();
 							let newLottery = JSON.stringify(lotteryFile);
 							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
 							let newData = JSON.stringify(data);
@@ -1185,6 +1198,7 @@ client.on('message', message => {
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
 									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`);
 								}
+								data.users[i]["activity"] = universalDate.now();
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 
@@ -1307,6 +1321,7 @@ client.on('message', message => {
 					message.channel.send(`Bust! Dealer loses!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
+					data.users[blackjackParse.challIndex]["activity"] = universalDate.now();
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1329,6 +1344,7 @@ client.on('message', message => {
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
+						data.users[blackjackParse.challIndex]["activity"] = universalDate.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1336,6 +1352,7 @@ client.on('message', message => {
 					else if(dealerTotal > playerValue){
 						//player lose
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						data.users[blackjackParse.challIndex]["activity"] = universalDate.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1345,6 +1362,7 @@ client.on('message', message => {
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= blackjackParse.wager;
+						data.users[blackjackParse.challIndex]["activity"] = universalDate.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
