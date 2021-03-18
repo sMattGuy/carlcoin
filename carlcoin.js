@@ -44,8 +44,7 @@ client.on('message', message => {
 	//defines the date and time for certain aspects of the bot
 	let universalDate = new Date();
 	let timeRightNow = universalDate.getMinutes();
-	let today = universalDate.getDay();
-	
+	let today = universalDate.getDay();	
 	//increment message counter with spam protection
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
@@ -421,10 +420,11 @@ client.on('message', message => {
 						//if username found
 						if(data.users[i].id == id){
 							let balance = data.users[i].balance;
+							let currentDate = new Date();
 							if(balance - amount < 0){
 								message.channel.send(`You don't have enough CC!`);
 							}
-							else if(data.users[i].claim == today){
+							else if(data.users[i].claim == currentDate.getDate()){
 								message.channel.send(`You claimed welfare today, you've been locked out of transfering funds today`);
 							}
 							else{
@@ -432,7 +432,7 @@ client.on('message', message => {
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
-									if(data.users[j].claim == today){
+									if(data.users[j].claim == currentDate.getDate()){
 										message.channel.send(`Recipient claimed welfare today, they are locked out of recieveing funds!`);
 									}
 									else if(data.users[j].id == recpid){
