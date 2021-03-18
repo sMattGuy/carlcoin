@@ -434,8 +434,6 @@ client.on('message', message => {
 										noRecp = false;
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
-										data.users[i]["activity"] = Date.now();
-										data.users[j]["activity"] = Date.now();
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										message.channel.send(`You have paid ${recipient} ${amount} CC!\n${recipient}'s Balance ${data.users[j].balance}\n${user}'s Balance ${data.users[i].balance}`);
@@ -635,7 +633,6 @@ client.on('message', message => {
 							data.users[j].balance += 5;
 							data.users[j].claim = currentTime.getDate();
 							data.welfare -= 5;
-							data.users[j]["activity"] = Date.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
@@ -650,7 +647,6 @@ client.on('message', message => {
 							data.users[j].balance += 5;
 							data.users[j].claim = currentTime.getDate();
 							data.welfare -= 5;
-							data.users[j]["activity"] = Date.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
