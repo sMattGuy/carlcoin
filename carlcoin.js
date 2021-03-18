@@ -613,9 +613,8 @@ client.on('message', message => {
 			message.channel.send(`You are not registered for CC!`);
 		}
 	}
-	/*
-	//claim
-	else if(message.content.startsWith('!cc welfare')){
+	//work
+	else if(message.content.startsWith('!cc work')){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let noUser = true;
@@ -627,40 +626,36 @@ client.on('message', message => {
 			//if user name found
 			if(data.users[j].id == id){
 				let currentTime = new Date();
-				if(data.users[j].balance >= 25){
-					message.channel.send('You already have enough CC! This is for poor people!');
-				}
-				else{
-					//if user has already played
-					try{
-						if(data.users[j].claim == currentTime.getDate()){
-							message.channel.send(`You've already claimed today! Come back tomorrow`);
-						}
-						else if(data.welfare < 5){
-							message.channel.send(`The welfare fund has dried up! Come back soon!`);
-						}
-						else{
-							data.users[j].balance += 5;
-							data.users[j].claim = currentTime.getDate();
-							data.welfare -= 5;
-							let newData = JSON.stringify(data);
-							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
-						}
+				let randomAmount = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+				//if user has already played
+				try{
+					if(data.users[j].claim == currentTime.getDate()){
+						message.channel.send(`You've already worked today! Come back tomorrow`);
 					}
-					catch(err){
-						if(data.welfare < 5){
-							message.channel.send(`The welfare fund has dried up! Come back soon!`);
-						}
-						else{
-							data.users[j]["claim"] = currentTime.getDate();
-							data.users[j].balance += 5;
-							data.users[j].claim = currentTime.getDate();
-							data.welfare -= 5;
-							let newData = JSON.stringify(data);
-							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send(`You've claimed 5CC. You now have ${data.users[j].balance}CC`);
-						}
+					else if(data.welfare < randomAmount){
+						message.channel.send(`The mine has dried up! Come back soon!`);
+					}
+					else{
+						data.users[j].balance += randomAmount;
+						data.users[j].claim = currentTime.getDate();
+						data.welfare -= randomAmount;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
+					}
+				}
+				catch(err){
+					if(data.welfare < randomAmount){
+						message.channel.send(`The mine has dried up! Come back soon!`);
+					}
+					else{
+						data.users[j]["claim"] = currentTime.getDate();
+						data.users[j].balance += randomAmount;
+						data.users[j].claim = currentTime.getDate();
+						data.welfare -= randomAmount;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
 					}
 				}
 				noUser = false;
@@ -672,7 +667,6 @@ client.on('message', message => {
 			message.channel.send(`You are not registered for CC!`);
 		}
 	}
-	*/
 	//purchase home
 	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment */
 		let chop = message.content.split(" ");
@@ -981,7 +975,7 @@ client.on('message', message => {
 				apartmentCount += 1;
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe welfare fund is currently ${data.welfare}CC\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery payout
 	else if(today != prevDate2){
@@ -1381,7 +1375,7 @@ client.on('message', message => {
 
 	//help menu
 	else if(message.content.startsWith('!cc help')){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
