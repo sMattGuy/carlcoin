@@ -85,6 +85,12 @@ client.on('message', message => {
 		console.log("md5",mysteryMD5);
 		message.channel.send((`${md5Val} Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
 	}
+	//banning users haha lol
+	/*
+	if(message.author.id == 146113420498829313){
+		message.channel.send('You are banned from carl coin!');
+	}
+	*/
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
 		//chop message to parse
