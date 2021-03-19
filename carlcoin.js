@@ -342,13 +342,11 @@ client.on('message', message => {
 		//add user
 		if(addUser){
 			//create user variables
-			data.users.push({"id":`${id}`,"name":`${user}`,"balance":10,"chanceTime":0,"claim":0,"house":0,"apartment":0,"activity":`${Date.now()}`});
-			//increase total economy
-			data.econ += 10;
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":0,"chanceTime":0,"claim":0,"house":0,"apartment":0,"activity":`${Date.now()}`});
 			//write new data and alert new user
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-			message.channel.send('You have been registered and recieved 10CC!');
+			message.channel.send('You have been registered! Use !cc work to get some Carl Coin!');
 			console.log(user + " has joined carlcoin");
 		}
 	}
