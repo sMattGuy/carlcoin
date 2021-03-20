@@ -78,12 +78,19 @@ client.on('message', message => {
 		md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 		//reset message counter
 		messageCounter = 0;
-		//begin alerting server that triggered event
-		message.channel.send(`https://i.imgur.com/0aDFif9.png`);
 		//hash number
 		let mysteryMD5 = md5(mysteryNumber);
 		console.log("md5",mysteryMD5);
-		message.channel.send((`${md5Val} Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`));
+		//send to all general chats
+		client.guilds.cache.forEach((guild) => {
+			try{
+				guild.channels.cache.find((x) => x.name == 'general').send(`https://i.imgur.com/0aDFif9.png`);
+				guild.channels.cache.find((x) => x.name == 'general').send(`${md5Val} Carl Coin has appeared! the MD5 is ${mysteryMD5}\nType !cc guess <number> to try to crack the hash! (between 1 and 100)`);
+			}
+			catch(err){
+				console.log("no general chat in "+guild.name);
+			}
+		});
 	}
 	//banning users haha lol
 	/*
@@ -91,6 +98,9 @@ client.on('message', message => {
 		message.channel.send('You are banned from carl coin!');
 	}
 	*/
+	if(message.content.startsWith('debuggertime')){
+		message.channel.send('this will be deleted in 5 seconds').then(msg => {msg.delete({timeout:5000});}).catch(console.log('message already deleted'));
+	}
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
 		//chop message to parse
@@ -122,7 +132,14 @@ client.on('message', message => {
 							data.users[i]["activity"] = Date.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send((`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`));
+							client.guilds.cache.forEach((guild) => {
+								try{
+									guild.channels.cache.find((x) => x.name == 'general').send(`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`);
+								}
+								catch(err){
+									console.log("no general chat in "+guild.name);
+								}
+							});
 							raffleStart = false;
 						}
 						else if(mysteryNumber > guess){
