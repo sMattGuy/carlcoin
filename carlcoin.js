@@ -92,19 +92,9 @@ client.on('message', message => {
 			}
 		});
 	}
-	//banning users haha lol
-	/*
-	if(message.author.id == 146113420498829313){
-		message.channel.send('You are banned from carl coin!');
-	}
-	*/
-	/*	
-	if(message.content.startsWith('debuggertime')){
-		message.channel.send('delete in 5').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)})
-	}
-	*/
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
+		message.delete({timeout:30000}).catch(error => {console.log(error)});
 		//chop message to parse
 		let chop = message.content.split(" ");
 		//if too many arguments
@@ -136,7 +126,7 @@ client.on('message', message => {
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							client.guilds.cache.forEach((guild) => {
 								try{
-									guild.channels.cache.find((x) => x.name == 'general').send(`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`);
+									guild.channels.cache.find((x) => x.name == 'general').send(`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});;
 								}
 								catch(err){
 									console.log("no general chat in "+guild.name);
@@ -1269,13 +1259,14 @@ client.on('message', message => {
 	}
 	//hit
 	else if(message.content.startsWith('!cc hit')){
+		message.delete({timeout:5000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
 			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 			let blackjackParse = JSON.parse(blackjackFile);
 			if(blackjackParse.blackjackEnder < Date.now()){
 				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
-				message.channel.send('Time has expired to play blackjack, you lost the money you bet!');
+				message.channel.send('Time has expired to play blackjack, you lost the money you bet!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 			}
 			else{
 				blackjackParse.blackjackEnder = parseInt(blackjackParse.blackjackEnder) + 60000;
@@ -1303,31 +1294,32 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(currentTotal > 21){
-					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\nYou:${cardViewer}`);
+					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`);
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 				}
 				else{
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`);
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 				}
 			}
 		}
 	}
 	//stay
 	else if(message.content.startsWith('!cc stand')){
+		message.delete({timeout:5000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
 			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 			let blackjackParse = JSON.parse(blackjackFile);
 			if(blackjackParse.blackjackEnder < Date.now()){
 				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
-				message.channel.send('Time has expired to play blackjack, you lost the money you bet!');
+				message.channel.send('Time has expired to play blackjack, you lost the money you bet!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 			}
 			else{
 				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -1371,7 +1363,7 @@ client.on('message', message => {
 					playerViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(dealerTotal > 21){
-					message.channel.send(`Bust! Dealer loses!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+					message.channel.send(`Bust! Dealer loses, You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -1394,7 +1386,7 @@ client.on('message', message => {
 					}
 					if(playerValue > dealerTotal){
 						//player wins
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -1404,7 +1396,7 @@ client.on('message', message => {
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1412,7 +1404,7 @@ client.on('message', message => {
 					}
 					else{
 						//draw
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
 						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= blackjackParse.wager;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
