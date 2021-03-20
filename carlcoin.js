@@ -98,7 +98,7 @@ client.on('message', message => {
 		message.channel.send('You are banned from carl coin!');
 	}
 	*/
-	/*
+	/*	
 	if(message.content.startsWith('debuggertime')){
 		message.channel.send('delete in 5').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)})
 	}
