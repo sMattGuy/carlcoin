@@ -94,7 +94,7 @@ client.on('message', message => {
 	}
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
-		message.delete({timeout:30000}).catch(error => {console.log(error)});
+		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		//chop message to parse
 		let chop = message.content.split(" ");
 		//if too many arguments
@@ -126,7 +126,7 @@ client.on('message', message => {
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							client.guilds.cache.forEach((guild) => {
 								try{
-									guild.channels.cache.find((x) => x.name == 'general').send(`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});;
+									guild.channels.cache.find((x) => x.name == 'general').send(`${data.users[i].name} has won! ${data.users[i].name} now has ${data.users[i].balance}CC. The mining game is over.`);
 								}
 								catch(err){
 									console.log("no general chat in "+guild.name);
@@ -135,10 +135,10 @@ client.on('message', message => {
 							raffleStart = false;
 						}
 						else if(mysteryNumber > guess){
-							message.channel.send(`Incorrect, try a higher number!`)
+							message.channel.send(`Incorrect, try a higher number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 						}
 						else{
-							message.channel.send(`Incorrect, try a lower number!`);
+							message.channel.send(`Incorrect, try a lower number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 						}
 						break;
 					}
@@ -1294,18 +1294,18 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(currentTotal > 21){
-					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\nYou:${cardViewer}`);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 				else{
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+					message.channel.send(`You drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 			}
 		}
@@ -1363,7 +1363,7 @@ client.on('message', message => {
 					playerViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(dealerTotal > 21){
-					message.channel.send(`Bust! Dealer loses, You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+					message.channel.send(`Bust! Dealer loses, You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -1386,7 +1386,7 @@ client.on('message', message => {
 					}
 					if(playerValue > dealerTotal){
 						//player wins
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -1396,7 +1396,7 @@ client.on('message', message => {
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1404,7 +1404,7 @@ client.on('message', message => {
 					}
 					else{
 						//draw
-						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`).then(msg => msg.delete({timeout:10000})).catch(error => {console.log(error)});
+						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= blackjackParse.wager;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
