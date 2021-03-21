@@ -1432,15 +1432,23 @@ client.on('message', message => {
 				let bullet = Math.floor(Math.random() * 6);
 				message.channel.send(`You load in one bullet and spin the barrel.`);
 				let balance = data.users[i].balance;
-				if(bullet == 0){
+				let canDie = data.users[i]["suicide"];
+				if(isNaN(canDie)){
+					data.users[i]["suicide"] = 0;
+				}
+				if(canDie == 1){
+					message.channel.send(`You're too scared to try again.`);
+				}
+				else if(bullet == 0){
 					console.log("suicide " + data.users[i].name);
 					data.users.splice(i,1);
 					data.econ -= balance;
 					message.channel.send(`You pull the trigger... a click, a boom and darkness...\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
 				}
 				else{
+					data.users[i]["suicide"] = 1;
 					console.log(data.users[i].name + " tried to commit suicide");
-					message.channel.send(`You pull the trigger... an empty click. You don't die today.`);
+					message.channel.send(`You pull the trigger... an empty click. You're too scared to try again.`);
 				}
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
