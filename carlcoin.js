@@ -39,8 +39,17 @@ client.on('ready', () => {
   });
   console.log('I am ready!');
 });
+
 // Create an event listener for messages
 client.on('message', message => {
+	//set presence
+   client.user.setPresence({
+      status: 'online',
+		activity: {
+         name: 'for !cc help',
+         type: "WATCHING"
+      }
+   });
 	//defines the date and time for certain aspects of the bot
 	let universalDate = new Date();
 	let timeRightNow = universalDate.getMinutes();
@@ -50,15 +59,6 @@ client.on('message', message => {
 		messageCounter += 1;
 		recentId = message.author.id;
 	}
-	//set presence
-   client.user.setPresence({
-      status: 'online',
-		activity: {
-         name: 'for !cc help',
-         type: "WATCHING"
-      }
-   });
-	
 	//raffle functionality
 	//message failsafe incase countery somehow goes past value
 	if(messageCounter > raffleRNG){
@@ -92,6 +92,87 @@ client.on('message', message => {
 			}
 		});
 	}
+	//home payouts
+	if(today != prevDate){
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		prevDate = universalDate.getDay();
+		for(let i=0;i<data.users.length;i++){
+			let homePrice = data.users[i]["house"] * 10;
+			let taxAmount = 0;
+			if(isNaN(homePrice)){
+				homePrice = 0;
+			}
+			taxAmount = (homePrice/10) * 2;
+			let apartPrice = data.users[i]["apartment"] * 25;
+			if(isNaN(apartPrice)){
+				apartPrice = 0;
+			}
+			taxAmount += (apartPrice/25) * 2;
+			let amount = homePrice + apartPrice;
+			amount -= taxAmount;
+			data.users[i].balance += amount;
+			data.welfare += taxAmount;
+			data.econ += taxAmount;
+			data.econ += amount;
+			data.users[i]["activity"] = Date.now();
+			if(amount != 0){
+				console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
+			}
+		}
+		let newData = JSON.stringify(data);
+		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+	}
+	//lottery payout
+	if(today != prevDate2){
+		prevDate2 = today;
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+			let lotteryFile = JSON.parse(lotteryRead);
+			let closestId = 0;
+			let value = lotteryFile.value;
+			for(let i=0;i<lotteryFile.users.length;i++){
+				if(parseInt(lotteryFile.users[i].guess) == value){
+					closestId = lotteryFile.users[i].id;
+					break;
+				}
+			}
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			if(closestId == 0){
+				client.guilds.cache.forEach((guild) => {
+					try{
+						guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nNo one has won the lottery today!`);
+					}
+					catch(err){
+						console.log("no general chat in "+guild.name);
+					}
+				});
+			}
+			else{
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == closestId){
+						data.users[i].balance += data.carlball;
+						data.carlball = 0;
+						data.users[i]["activity"] = Date.now();
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						client.guilds.cache.forEach((guild) => {
+							try{
+								guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
+							}
+							catch(err){
+								console.log("no general chat in "+guild.name);
+							}
+						});
+					}
+				}
+			}
+			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
+		}
+	}
+	
+	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
 		message.delete({timeout:60000}).catch(error => {console.log(error)});
@@ -253,7 +334,7 @@ client.on('message', message => {
 		}	
 	}
 	//accept or deny battle
-	else if((message.content.startsWith('!cc denyBattle') || message.content.startsWith('!cc acceptBattle'))){
+	else if(message.content === '!cc denyBattle' || message.content === '!cc acceptBattle'){
 		//save message author id
 		let personsId = message.author.id;
 		//find if opponent file exists
@@ -331,7 +412,7 @@ client.on('message', message => {
 	}
 	//end of battle functionality
     //join command
-	else if (message.content.startsWith('!cc join')) {
+	else if (message.content === '!cc join') {
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -360,7 +441,7 @@ client.on('message', message => {
 		}
 	}
 	//check balance
-	else if(message.content.startsWith('!cc balance')){
+	else if(message.content === '!cc balance'){
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -568,7 +649,7 @@ client.on('message', message => {
 		}
 	}
 	//chance game
-	else if(message.content.startsWith('!cc chance')){ /*!cc chance*/ 
+	else if(message.content === '!cc chance'){ /*!cc chance*/ 
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let noUser = true;
@@ -631,7 +712,7 @@ client.on('message', message => {
 		}
 	}
 	//work
-	else if(message.content.startsWith('!cc work')){
+	else if(message.content === '!cc work'){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let noUser = true;
@@ -808,35 +889,7 @@ client.on('message', message => {
 			}
 		}
 	}
-	//home payouts
-	else if(today != prevDate){
-		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-		let data = JSON.parse(database);
-		prevDate = universalDate.getDay();
-		for(let i=0;i<data.users.length;i++){
-			let homePrice = data.users[i]["house"] * 10;
-			let taxAmount = 0;
-			if(isNaN(homePrice)){
-				homePrice = 0;
-			}
-			taxAmount = (homePrice/10) * 2;
-			let apartPrice = data.users[i]["apartment"] * 25;
-			if(isNaN(apartPrice)){
-				apartPrice = 0;
-			}
-			taxAmount += (apartPrice/25) * 2;
-			let amount = homePrice + apartPrice;
-			amount -= taxAmount;
-			data.users[i].balance += amount;
-			data.welfare += taxAmount;
-			data.econ += taxAmount;
-			data.econ += amount;
-			data.users[i]["activity"] = Date.now();
-			console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
-		}
-		let newData = JSON.stringify(data);
-		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-	}
+	
 	//sell to someone
 	else if(message.content.startsWith('!cc userSell')){ /* !cc sellTo person offer amount*/
 		let chop = message.content.split(" ");
@@ -930,7 +983,7 @@ client.on('message', message => {
 		}			
 	}
 	//accept offer
-	else if((message.content.startsWith('!cc acceptPurchase') || message.content.startsWith('!cc denyPurchase'))){
+	else if(message.content === '!cc acceptPurchase' || message.content === '!cc denyPurchase'){
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`)){
 			let sellFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
@@ -976,7 +1029,7 @@ client.on('message', message => {
 		}
 	}
 	//economy function
-	else if(message.content.startsWith('!cc econ')){
+	else if(message.content === '!cc econ'){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let highestEarnerName = "";
@@ -1002,54 +1055,6 @@ client.on('message', message => {
 			}
 		}
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
-	}
-	//lottery payout
-	else if(today != prevDate2){
-		prevDate2 = today;
-		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
-			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
-			let lotteryFile = JSON.parse(lotteryRead);
-			let closestId = 0;
-			let value = lotteryFile.value;
-			for(let i=0;i<lotteryFile.users.length;i++){
-				if(parseInt(lotteryFile.users[i].guess) == value){
-					closestId = lotteryFile.users[i].id;
-					break;
-				}
-			}
-			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-			let data = JSON.parse(database);
-			if(closestId == 0){
-				client.guilds.cache.forEach((guild) => {
-					try{
-						guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nNo one has won the lottery today!`);
-					}
-					catch(err){
-						console.log("no general chat in "+guild.name);
-					}
-				});
-			}
-			else{
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id == closestId){
-						data.users[i].balance += data.carlball;
-						data.carlball = 0;
-						data.users[i]["activity"] = Date.now();
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						client.guilds.cache.forEach((guild) => {
-							try{
-								guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
-							}
-							catch(err){
-								console.log("no general chat in "+guild.name);
-							}
-						});
-					}
-				}
-			}
-			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
-		}
 	}
 	//lottery
 	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-500 */
@@ -1148,12 +1153,12 @@ client.on('message', message => {
 			}
 		}
 	}
-
 	//blackjack
-	else if(message.content.startsWith('!cc blackjack')){
+	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */
+		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		let chop = message.content.split(" ");
 		if(chop.length != 3){
-			message.channel.send('Command arguments incorrect!');
+			message.channel.send('Command arguments incorrect!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 		}
 		else{
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -1168,23 +1173,23 @@ client.on('message', message => {
 				}
 				else{
 					playing = false;
-					message.channel.send('You are already playing BlackJack!');
+					message.channel.send('You are already playing BlackJack!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 				}
 			}
 			if(playing){
 				let wager = parseInt(chop[chop.length-1]);
 				if(isNaN(wager) || wager < 2){
-					message.channel.send('Invalid amount entered!');
+					message.channel.send('Invalid amount entered!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 				}
 				else if(Math.floor((wager * .25) * 2.5) > data.blackjack){
-					message.channel.send('The blackjack pot doesnt have enough CC!');
+					message.channel.send('The blackjack pot doesnt have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 				}
 				else{
 					let noUser = true;
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == challenger){
 							if(data.users[i].balance - wager < 0){
-								message.channel.send('You dont have enough CC!');
+								message.channel.send('You dont have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 							}
 							else{
 								let welfareSupport = Math.floor(wager * .25);
@@ -1239,7 +1244,7 @@ client.on('message', message => {
 									let blackjackInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"wager":`${wager}`,"blackjackEnder":`${blackjackEnder}`,usedCards,playerCards,dealerCards};
 									let jsonBlackjack = JSON.stringify(blackjackInfo);
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
-									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`);
+									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 								}
 								data.users[i]["activity"] = Date.now();
 								let newData = JSON.stringify(data);
@@ -1251,14 +1256,14 @@ client.on('message', message => {
 						}
 					}
 					if(noUser){
-						message.channel.send('You are not registered for CC!');
+						message.channel.send('You are not registered for CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});;
 					}
 				}
 			}
 		}
 	}
 	//hit
-	else if(message.content.startsWith('!cc hit')){
+	else if(message.content === '!cc hit'){
 		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
@@ -1311,7 +1316,7 @@ client.on('message', message => {
 		}
 	}
 	//stay
-	else if(message.content.startsWith('!cc stand')){
+	else if(message.content === '!cc stand'){
 		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
@@ -1418,7 +1423,7 @@ client.on('message', message => {
 	}
 
 	//help menu
-	else if(message.content.startsWith('!cc help')){
+	else if(message.content === '!cc help'){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
 	}
 	//helper function to get user
