@@ -1154,8 +1154,7 @@ client.on('message', message => {
 		}
 	}
 	//blackjack
-	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */
-		message.delete({timeout:60000}).catch(error => {console.log(error)});
+	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */	
 		let chop = message.content.split(" ");
 		if(chop.length != 3){
 			message.channel.send('Command arguments incorrect!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
