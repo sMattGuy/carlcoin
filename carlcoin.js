@@ -643,7 +643,7 @@ client.on('message', message => {
 			//if user name found
 			if(data.users[j].id == id){
 				let currentTime = new Date();
-				let randomAmount = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+				let randomAmount = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
 				//if user has already played
 				try{
 					if(data.users[j].claim == currentTime.getDate()){
@@ -1259,7 +1259,7 @@ client.on('message', message => {
 	}
 	//hit
 	else if(message.content.startsWith('!cc hit')){
-		message.delete({timeout:5000}).catch(error => {console.log(error)});
+		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
 			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1312,7 +1312,7 @@ client.on('message', message => {
 	}
 	//stay
 	else if(message.content.startsWith('!cc stand')){
-		message.delete({timeout:5000}).catch(error => {console.log(error)});
+		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		let personsId = message.author.id;
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`)){
 			let blackjackFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
