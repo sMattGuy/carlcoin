@@ -1420,7 +1420,34 @@ client.on('message', message => {
 			}
 		}
 	}
-
+	//uh oh
+	else if(message.content === '!cc suicide'){
+		//fetch and store data
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		//checks for name
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id){
+				let bullet = Math.floor(Math.random() * 6);
+				message.channel.send(`You load in one bullet and spin the barrel.`);
+				let balance = data.users[i].balance;
+				if(bullet == 0){
+					console.log("suicide " + data.users[i]);
+					data.users.splice(i,1);
+					data.econ -= balance;
+					message.channel.send(`You pull the trigger... a click, a boom and darkness...\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
+				}
+				else{
+					console.log(data.users[i].name + " tried to commit suicide");
+					message.channel.send(`You pull the trigger... an empty click. You don't die today.`);
+				}
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				break;
+			}
+		}
+	}
 	//help menu
 	else if(message.content === '!cc help'){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
