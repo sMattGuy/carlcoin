@@ -1433,7 +1433,7 @@ client.on('message', message => {
 				message.channel.send(`You load in one bullet and spin the barrel.`);
 				let balance = data.users[i].balance;
 				if(bullet == 0){
-					console.log("suicide " + data.users[i]);
+					console.log("suicide " + data.users[i].name);
 					data.users.splice(i,1);
 					data.econ -= balance;
 					message.channel.send(`You pull the trigger... a click, a boom and darkness...\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
