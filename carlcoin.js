@@ -1496,7 +1496,7 @@ client.on('message', message => {
 						
 						//instability counter
 						data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
-						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+						if(isNaN(data.users[blackjackParse.challIndex]["unstable"]) || data.users[blackjackParse.challIndex]["unstable"] < 0){
 							data.users[blackjackParse.challIndex]["unstable"] = 0;
 						}
 						if(data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) > 100 && data.users[blackjackParse.challIndex]["unstable"] < 100 && data.users[blackjackParse.challIndex]["suicide"] == 0){
@@ -1504,7 +1504,6 @@ client.on('message', message => {
 							message.channel.send(`You come to your senses.`);
 							console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
 						}
-						
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
