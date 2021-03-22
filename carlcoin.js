@@ -115,7 +115,6 @@ client.on('message', message => {
 			data.welfare += taxAmount;
 			data.econ += taxAmount;
 			data.econ += amount;
-			data.users[i]["activity"] = Date.now();
 			if(amount != 0){
 				console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
 			}
@@ -154,7 +153,6 @@ client.on('message', message => {
 					if(data.users[i].id == closestId){
 						data.users[i].balance += data.carlball;
 						data.carlball = 0;
-						data.users[i]["activity"] = Date.now();
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						client.guilds.cache.forEach((guild) => {
