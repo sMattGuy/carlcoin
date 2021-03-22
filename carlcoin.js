@@ -612,6 +612,15 @@ client.on('message', message => {
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
+										//instability counter
+										data.users[j]["unstable"] -= amount;
+										if(isNaN(data.users[j]["unstable"])){
+											data.users[j]["unstable"] = 0;
+										}
+										if(data.users[j]["unstable"] + amount > 100 && data.users[j]["unstable"] < 100 && data.users[j]["suicide"] == 0){
+											data.users[j]["suicide"] = 1;
+											message.channel.send(`You come to your senses.`);
+										}
 									}
 									//if lottery win
 									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA < optB){
@@ -619,10 +628,31 @@ client.on('message', message => {
 										data.users[j].balance += pot;
 										data.pot -= pot;
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
+										//instability counter
+										data.users[j]["unstable"] -= amount;
+										if(isNaN(data.users[j]["unstable"])){
+											data.users[j]["unstable"] = 0;
+										}
+										if(data.users[j]["unstable"] + amount > 100 && data.users[j]["unstable"] < 100 && data.users[j]["suicide"] == 0){
+											data.users[j]["suicide"] = 1;
+											message.channel.send(`You come to your senses.`);
+										}
 									}
 									//if lottery lose
 									else{
 										message.channel.send(`You've lost! The pot is now ${data.pot}CC. You have ${data.users[j].balance}CC.`);
+										//instability counter
+										data.users[j]["unstable"] += amount;
+										if(isNaN(data.users[j]["unstable"])){
+											data.users[j]["unstable"] = amount;
+										}
+										if(isNaN(data.users[j]["suicide"])){
+											data.users[j]["suicide"] = 0;
+										}
+										if(data.users[j]["unstable"] > 100 && data.users[j]["suicide"] == 1){
+											data.users[j]["suicide"] = 0;
+											message.channel.send(`You are starting to feel irrational.`);
+										}
 									}
 									data.users[j]["activity"] = Date.now();
 									let newData = JSON.stringify(data);
@@ -684,6 +714,15 @@ client.on('message', message => {
 						data.users[j].chanceTime = currentTime.getDate();
 						data.econ += amount;
 						message.channel.send(`You've won! You now have ${data.users[j].balance}CC`);
+						//instability counter
+						data.users[j]["unstable"] -= amount;
+						if(isNaN(data.users[j]["unstable"])){
+							data.users[j]["unstable"] = 0;
+						}
+						if(data.users[j]["unstable"] + amount > 100 && data.users[j]["unstable"] < 100 && data.users[j]["suicide"] == 0){
+							data.users[j]["suicide"] = 1;
+							message.channel.send(`You come to your senses.`);
+						}
 					}
 					//lose chance time
 					else{
@@ -697,6 +736,18 @@ client.on('message', message => {
 						data.welfare += welfPot;
 						data.users[j].chanceTime = currentTime.getDate();
 						message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
+						//instability counter
+						data.users[j]["unstable"] += amount;
+						if(isNaN(data.users[j]["unstable"])){
+							data.users[j]["unstable"] = amount;
+						}
+						if(isNaN(data.users[j]["suicide"])){
+							data.users[j]["suicide"] = 0;
+						}
+						if(data.users[j]["unstable"] > 100 && data.users[j]["suicide"] == 1){
+							data.users[j]["suicide"] = 0;
+							message.channel.send(`You are starting to feel irrational.`);
+						}
 					}
 				}
 				data.users[j]["activity"] = Date.now();
@@ -1230,12 +1281,36 @@ client.on('message', message => {
 										data.users[i].balance += Math.floor(wager * 2.5);
 										data.blackjack -= Math.floor(wager * 2.5);
 										message.channel.send(`You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
+										
+										//instability counter
+										data.users[i]["unstable"] -= Math.floor(wager * 2.5);
+										if(isNaN(data.users[i]["unstable"])){
+											data.users[i]["unstable"] = 0;
+										}
+										if(data.users[i]["unstable"] + Math.floor(wager * 2.5) > 100 && data.users[i]["unstable"] < 100 && data.users[i]["suicide"] == 0){
+											data.users[i]["suicide"] = 1;
+											message.channel.send(`You come to your senses.`);
+										}
 									}
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
 								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									message.channel.send(`Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
+									
+									//instability counter
+									data.users[i]["unstable"] += wager;
+									if(isNaN(data.users[i]["unstable"])){
+										data.users[i]["unstable"] = wager;
+									}
+									if(isNaN(data.users[i]["suicide"])){
+										data.users[i]["suicide"] = 1;
+									}
+									if(data.users[i]["unstable"] > 100 && data.users[i]["suicide"] == 1){
+										data.users[i]["suicide"] = 0;
+										message.channel.send(`You are starting to feel irrational.`);
+									}
+									
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
@@ -1298,7 +1373,23 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(currentTotal > 21){
-					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}\nYou:${cardViewer}`);
+					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}, You lose!\nYou:${cardViewer}`);
+					
+					//instability counter
+					data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+					if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+						data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+					}
+					if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
+						data.users[blackjackParse.challIndex]["suicide"] = 1;
+					}
+					if(data.users[blackjackParse.challIndex]["unstable"] > 100 && data.users[blackjackParse.challIndex]["suicide"] == 1){
+						data.users[blackjackParse.challIndex]["suicide"] = 0;
+						message.channel.send(`You are starting to feel irrational.`);
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
@@ -1371,6 +1462,17 @@ client.on('message', message => {
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
+					
+					//instability counter
+					data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
+					if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+						data.users[blackjackParse.challIndex]["unstable"] = 0;
+					}
+					if(data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) > 100 && data.users[blackjackParse.challIndex]["unstable"] < 100 && data.users[blackjackParse.challIndex]["suicide"] == 0){
+						data.users[blackjackParse.challIndex]["suicide"] = 1;
+						message.channel.send(`You come to your senses.`);
+					}
+					
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1394,6 +1496,17 @@ client.on('message', message => {
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
+						
+						//instability counter
+						data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
+						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+							data.users[blackjackParse.challIndex]["unstable"] = 0;
+						}
+						if(data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) > 100 && data.users[blackjackParse.challIndex]["unstable"] < 100 && data.users[blackjackParse.challIndex]["suicide"] == 0){
+							data.users[blackjackParse.challIndex]["suicide"] = 1;
+							message.channel.send(`You come to your senses.`);
+						}
+						
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1402,6 +1515,20 @@ client.on('message', message => {
 						//player lose
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
+						
+						//instability counter
+						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+							data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+						}
+						if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
+							data.users[blackjackParse.challIndex]["suicide"] = 1;
+						}
+						if(data.users[blackjackParse.challIndex]["unstable"] > 100 && data.users[blackjackParse.challIndex]["suicide"] == 1){
+							data.users[blackjackParse.challIndex]["suicide"] = 0;
+							message.channel.send(`You are starting to feel irrational.`);
+						}
+						
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1433,10 +1560,11 @@ client.on('message', message => {
 				let balance = data.users[i].balance;
 				let canDie = data.users[i]["suicide"];
 				if(isNaN(canDie)){
-					data.users[i]["suicide"] = 0;
+					data.users[i]["suicide"] = 1;
+					canDie = data.users[i]["suicide"];
 				}
 				if(canDie == 1){
-					message.channel.send(`You're too scared to try again.`);
+					message.channel.send(`You're too scared to try.`);
 				}
 				else if(bullet == 0){
 					console.log("suicide " + data.users[i].name);
