@@ -526,7 +526,6 @@ client.on('message', message => {
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
-									add else to below statement if reactivate*/
 									if(data.users[j].id == recpid){
 										noRecp = false;
 										data.users[i].balance -= amount;
