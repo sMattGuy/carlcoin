@@ -1430,7 +1430,6 @@ client.on('message', message => {
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
 				let bullet = Math.floor(Math.random() * 6);
-				message.channel.send(`You load in one bullet and spin the barrel.`);
 				let balance = data.users[i].balance;
 				let canDie = data.users[i]["suicide"];
 				if(isNaN(canDie)){
@@ -1443,11 +1442,13 @@ client.on('message', message => {
 					console.log("suicide " + data.users[i].name);
 					data.users.splice(i,1);
 					data.econ -= balance;
+					message.channel.send(`You load in one bullet and spin the barrel.`);
 					message.channel.send(`You pull the trigger... a click, a boom and darkness...\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
 				}
 				else{
 					data.users[i]["suicide"] = 1;
 					console.log(data.users[i].name + " tried to commit suicide");
+					message.channel.send(`You load in one bullet and spin the barrel.`);
 					message.channel.send(`You pull the trigger... an empty click. You're too scared to try again.`);
 				}
 				let newData = JSON.stringify(data);
