@@ -43,7 +43,7 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
 	//set presence
-   client.user.setPresence({
+    client.user.setPresence({
       status: 'online',
 		activity: {
          name: 'for !cc help',
@@ -432,7 +432,7 @@ client.on('message', message => {
 		//add user
 		if(addUser){
 			//create user variables
-			data.users.push({"id":`${id}`,"name":`${user}`,"balance":0,"chanceTime":0,"claim":0,"house":0,"apartment":0,"activity":`${Date.now()}`});
+			data.users.push({"id":`${id}`,"name":`${user}`,"balance":0,"chanceTime":0,"claim":0,"house":0,"apartment":0,"activity":`${Date.now()}`,"suicide":1,"unstable":0});
 			//write new data and alert new user
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -481,7 +481,7 @@ client.on('message', message => {
 		let corrUser = true;
 		//if too many arguments
 		if(chop.length != 4){
-			message.channel.send(`Too many arguments supplied!`);
+			message.channel.send(`Invalid arguments supplied!`);
 		}
 		else{
 			let recipient = "";
@@ -521,20 +521,11 @@ client.on('message', message => {
 							if(balance - amount < 0){
 								message.channel.send(`You don't have enough CC!`);
 							}
-							/*
-							else if(data.users[i].claim == currentDate.getDate()){
-								message.channel.send(`You claimed welfare today, you've been locked out of transfering funds today`);
-							}
-							*/
 							else{
 								let noRecp = true;
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts paying
-									/*
-									if(data.users[j].claim == currentDate.getDate()){
-										message.channel.send(`Recipient claimed welfare today, they are locked out of recieveing funds!`);
-									}
 									add else to below statement if reactivate*/
 									if(data.users[j].id == recpid){
 										noRecp = false;
@@ -565,8 +556,8 @@ client.on('message', message => {
 	//lottery game
 	else if(message.content.startsWith('!cc roll')){
 		let chop = message.content.split(" ");
-		if(chop.length > 3){
-			message.channel.send(`Too many arguments supplied!`);
+		if(chop.length != 3){
+			message.channel.send(`Invalid arguments supplied!`);
 		}
 		else{
 			let strats = ["alwaysA", "alwaysB", "random"];
@@ -945,7 +936,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	
 	//sell to someone
 	else if(message.content.startsWith('!cc userSell')){ /* !cc sellTo person offer amount*/
 		let chop = message.content.split(" ");
