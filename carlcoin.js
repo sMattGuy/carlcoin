@@ -1705,7 +1705,7 @@ client.on('message', message => {
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id && !isNaN(data.users[i]["unstable"])){
 				if(isNaN(data.users[i]["relax"])){
-					data.users[i]["relax"] = Date.now() + 3600000;
+					data.users[i]["relax"] = Date.now() + 1800000;
 					let relaxed = Math.random();
 					if(relaxed >= 0.5){
 						data.users[i]["unstable"] -= 10;
@@ -1724,7 +1724,7 @@ client.on('message', message => {
 				}
 				else{
 					if(data.users[i]["relax"] < Date.now()){
-						data.users[i]["relax"] = Date.now() + 3600000;
+						data.users[i]["relax"] = Date.now() + 1800000;
 						let relaxed = Math.random();
 						if(relaxed >= 0.5){
 							data.users[i]["unstable"] -= 10;
