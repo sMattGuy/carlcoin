@@ -469,6 +469,8 @@ client.on('message', message => {
 					let fakeApartments = Math.floor(Math.random() * 1001);
 					let fakePercent = Math.floor(Math.random() * 1001);
 					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes and ${fakeApartments} apartments!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
+					notFound = false;
+					break;
 				}
 				else{
 					let balance = data.users[i].balance;
