@@ -1628,9 +1628,61 @@ client.on('message', message => {
 				}
 				else{
 					data.users[i]["suicide"] = 1;
+					data.users[i]["unstable"] -= 50;
+					if(data.users[i]["unstable"] < 0){
+						data.users[i]["unstable"] = 0;
+					}
 					console.log(data.users[i].name + " tried to commit suicide");
 					message.channel.send(`You load in one bullet and spin the barrel.`);
 					message.channel.send(`You pull the trigger... an empty click. You're too scared to try again.`);
+				}
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				break;
+			}
+		}
+	}
+	//relax
+	else if(message.content === '!cc relax'){
+		//fetch and store data
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		//checks for name
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id && !isNaN(data.users[i]["unstable"])){
+				if(isNaN(data.users[i]["relax"])){
+					data.users[i]["relax"] = Date.now() + 3600000;
+					let relaxed = Math.random();
+					if(relaxed >= 0.5){
+						data.users[i]["unstable"] -= 10;
+						if(data.users[i]["unstable"] < 0){
+							data.users[i]["unstable"] = 0;
+						}
+						message.channel.send(`You managed to relax a bit`);
+					}
+					else{
+						message.channel.send(`You couldn't relax at all`);
+					}
+				}
+				else{
+					if(data.users[i]["relax"] < Date.now()){
+						data.users[i]["relax"] = Date.now() + 3600000;
+						let relaxed = Math.random();
+						if(relaxed >= 0.5){
+							data.users[i]["unstable"] -= 10;
+							if(data.users[i]["unstable"] < 0){
+								data.users[i]["unstable"] = 0;
+							}
+							message.channel.send(`You managed to relax a bit`);
+						}
+						else{
+							message.channel.send(`You couldn't relax at all`);
+						}
+					}
+					else{
+						message.channel.send(`You already tried relaxing, come back in around an hour`);
+					}
 				}
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
