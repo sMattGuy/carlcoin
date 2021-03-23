@@ -879,7 +879,7 @@ client.on('message', message => {
 							message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
 						}
 						data.users[j].balance += randomAmount;
-						data.users[j].claim = currentTime + 14400000;
+						data.users[j].claim = currentTime + 21600000;
 						data.welfare -= randomAmount;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -892,7 +892,7 @@ client.on('message', message => {
 						message.channel.send(`The mine has dried up! Come back soon!`);
 					}
 					else{
-						data.users[j]["claim"] = currentTime + 14400000;
+						data.users[j]["claim"] = currentTime + 21600000;
 						data.users[j].balance += randomAmount;
 						data.welfare -= randomAmount;
 						let newData = JSON.stringify(data);
