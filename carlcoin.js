@@ -419,7 +419,7 @@ client.on('message', message => {
 	}
 	//end of battle functionality
     //join command
-	else if (message.content === '!cc join') {
+	else if (message.content === '!cc join' && !message.author.bot) {
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -1681,7 +1681,7 @@ client.on('message', message => {
 				}
 				else{
 					data.users[i]["suicide"] = 1;
-					data.users[i]["unstable"] -= 50;
+					data.users[i]["unstable"] -= 100;
 					if(data.users[i]["unstable"] < 0){
 						data.users[i]["unstable"] = 0;
 					}
@@ -1803,9 +1803,11 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		let formatedNames = "";
 		for(let i=0;i<data.users.length;i++){
-			let balance = data.users[i].balance.toString();
-			let user = data.users[i].name + ":" + balance + "\n";
-			formatedNames += user;
+			if(data.users[i].balance != 0){
+				let balance = data.users[i].balance.toString();
+				let user = data.users[i].name + ":" + balance + "\n";
+				formatedNames += user;
+			}
 		}
 		message.channel.send(`${formatedNames}`,{"code":true});
 	}
