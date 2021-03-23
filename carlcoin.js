@@ -118,6 +118,15 @@ client.on('message', message => {
 			if(amount != 0){
 				console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
 			}
+			if(isNaN(data.users[i]["unstable"])){
+				data.users[i]["unstable"] = 0;
+			}
+			else{
+				data.users[i]["unstable"] -= 5;
+				if(data.users[i]["unstable"] < 0){
+					data.users[i]["unstable"] = 0;
+				}
+			}
 		}
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -451,22 +460,34 @@ client.on('message', message => {
 		//checks for name
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
-				let balance = data.users[i].balance;
-				let perc = (balance / data.econ) * 100;
-				let homes = data.users[i]["house"];
-				if(isNaN(homes)){
-					homes = 0;
+				if(isNaN(data.users[i]["unstable"])){
+					data.users[i]["unstable"] = 0;
 				}
-				let apartments = data.users[i]["apartment"];
-				if(isNaN(apartments)){
-					apartments = 0;
+				if(data.users[i]["unstable"] > 100){
+					let fakeBalance = Math.floor(Math.random() * 1001);
+					let fakeHouses = Math.floor(Math.random() * 1001);
+					let fakeApartments = Math.floor(Math.random() * 1001);
+					let fakePercent = Math.floor(Math.random() * 1001);
+					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes and ${fakeApartments} apartments!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
 				}
-				perc = perc.toFixed(2);
-				message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
-				notFound = false;
-				let newData = JSON.stringify(data);
-				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-				break;
+				else{
+					let balance = data.users[i].balance;
+					let perc = (balance / data.econ) * 100;
+					let homes = data.users[i]["house"];
+					if(isNaN(homes)){
+						homes = 0;
+					}
+					let apartments = data.users[i]["apartment"];
+					if(isNaN(apartments)){
+						apartments = 0;
+					}
+					perc = perc.toFixed(2);
+					message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
+					notFound = false;
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					break;	
+				}
 			}
 		}
 		if(notFound){
@@ -594,7 +615,15 @@ client.on('message', message => {
 									data.blackjack += 1;
 									data.users[j].balance -= amount;
 									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
+									
 									//if lottery win
+									if(isNaN(data.users[j]["unstable"])){
+										data.users[j]["unstable"] = 0;
+									}
+									if(data.users[j]["unstable"] > 100){
+										type = "random";
+										message.channel.send(`Something doesn't feel right... you can't remember what strategy you picked...`);
+									}
 									if((type == "alwaysA" || (type == "random" && random == 0))&& optA > optB){
 										let pot = 10;
 										data.users[j].balance += pot;
@@ -696,6 +725,14 @@ client.on('message', message => {
 				else{
 					//starts chance time
 					let random = Math.floor(Math.random() * 4);
+					
+					if(isNaN(data.users[j]["unstable"])){
+						data.users[j]["unstable"] = 0;
+					}
+					if(data.users[j]["unstable"] > 100){
+						amount = data.users[j].balance;
+						message.channel.send(`Something doesn't feel right... I think you bet too much money....`);
+					}
 					data.users[j].balance -= amount;
 					message.channel.send(`Quad. 0 wins\n+-0-+-1-+\n| W | L |\n+---+---+\n| L | L |\n+-2-+-3-+\nYou rolled Quad. ${random}`,{"code":true});
 					//if victory
@@ -778,6 +815,13 @@ client.on('message', message => {
 						message.channel.send(`The mine has dried up! Come back soon!`);
 					}
 					else{
+						if(isNaN(data.users[j]["unstable"])){
+							data.users[j]["unstable"] = 0;
+						}
+						if(data.users[j]["unstable"] > 100){
+							randomAmount = 1;
+							message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
+						}
 						data.users[j].balance += randomAmount;
 						data.users[j].claim = currentTime.getDate();
 						data.welfare -= randomAmount;
@@ -1312,7 +1356,16 @@ client.on('message', message => {
 									let blackjackInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"wager":`${wager}`,"blackjackEnder":`${blackjackEnder}`,usedCards,playerCards,dealerCards};
 									let jsonBlackjack = JSON.stringify(blackjackInfo);
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
-									message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+									
+									if(isNaN(data.users[i]["unstable"])){
+										data.users[i]["unstable"] = 0;
+									}
+									if(data.users[i]["unstable"] > 100){
+										message.channel.send(`Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+									}
+									else{
+										message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+									}
 								}
 								data.users[i]["activity"] = Date.now();
 								let newData = JSON.stringify(data);
