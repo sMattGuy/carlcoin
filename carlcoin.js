@@ -1660,6 +1660,10 @@ client.on('message', message => {
 							data.users[i]["unstable"] = 0;
 						}
 						message.channel.send(`You managed to relax a bit`);
+						if(data.users[i]["unstable"] + 10 > 100 && data.users[i]["unstable"] < 100){
+							message.channel.send(`You have come to your senses`);
+						}
+
 					}
 					else{
 						message.channel.send(`You couldn't relax at all`);
@@ -1675,6 +1679,10 @@ client.on('message', message => {
 								data.users[i]["unstable"] = 0;
 							}
 							message.channel.send(`You managed to relax a bit`);
+							if(data.users[i]["unstable"] + 10 > 100 && data.users[i]["unstable"] < 100){
+								message.channel.send(`You have come to your senses`);
+							}
+
 						}
 						else{
 							message.channel.send(`You couldn't relax at all`);
@@ -1700,7 +1708,7 @@ client.on('message', message => {
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
