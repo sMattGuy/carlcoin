@@ -521,7 +521,7 @@ client.on('message', message => {
 				message.channel.send(`Invalid recipient`);
 				corrUser = false;
 			}
-			if(corrUser){
+			if(corrUser && id != message.author.id){
 				//checks for name
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
@@ -1742,7 +1742,10 @@ client.on('message', message => {
 						}
 					}
 					else{
-						message.channel.send(`You already tried relaxing, come back in around an hour`);
+						let timeLeft = data.users[i]["relax"] - Date.now();
+						timeLeft = Math.floor(timeLeft / 1000);
+						timeLeft = Math.floor(timeLeft / 60);
+						message.channel.send(`You already tried relaxing, come back in ${timeLeft} mins.`);
 					}
 				}
 				let newData = JSON.stringify(data);
