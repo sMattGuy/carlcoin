@@ -109,7 +109,12 @@ client.on('message', message => {
 				apartPrice = 0;
 			}
 			taxAmount += (apartPrice/25) * 2;
-			let amount = homePrice + apartPrice;
+			let skyPrice = data.users[i]["apartment"] * 50;
+			if(isNaN(skyPrice)){
+				skyPrice = 0;
+			}
+			taxAmount += (skyPrice/50) * 2;
+			let amount = homePrice + apartPrice + skyPrice;
 			amount -= taxAmount;
 			data.users[i].balance += amount;
 			data.welfare += taxAmount;
@@ -483,8 +488,12 @@ client.on('message', message => {
 					if(isNaN(apartments)){
 						apartments = 0;
 					}
+					let skyscrapers = data.users[i]["skyscraper"];
+					if(isNaN(skyscrapers)){
+						skyscrapers = 0;
+					}
 					perc = perc.toFixed(2);
-					message.channel.send(`You have ${balance}CC and own ${homes} homes and ${apartments} apartments!\nYou control ${perc}% of the economy!`);
+					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${scyscrapers} skyscrapers!\nYou control ${perc}% of the economy!`);
 					notFound = false;
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -535,8 +544,12 @@ client.on('message', message => {
 						if(isNaN(apartments)){
 							apartments = 0;
 						}
+						let skyscrapers = data.users[i]["skyscraper"];
+						if(isNaN(skyscrapers)){
+							skyscrapers = 0;
+						}
 						perc = perc.toFixed(2);
-						message.channel.send(`${user} has ${balance}CC and own ${homes} homes and ${apartments} apartments!\They control ${perc}% of the economy!`);
+						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\They control ${perc}% of the economy!`);
 						notFound = false;
 						break;	
 					}
@@ -911,7 +924,7 @@ client.on('message', message => {
 		}
 	}
 	//purchase home
-	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment */
+	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment/skyscraper */
 		let chop = message.content.split(" ");
 		if(chop.length > 3){
 			message.channel.send('Too many arguments supplied!');
@@ -965,8 +978,29 @@ client.on('message', message => {
 							console.log(data.users[i].name + " bought an apartment");
 						}
 					}
+					else if(type == "skyscraper"){
+						if(data.users[i].balance - 500 < 0){
+							message.channel.send('You do not have enough CC! (Costs 250)');
+						}
+						else{
+							data.users[i]["skyscraper"] += 1;
+							if(isNaN(data.users[i].skyscraper)){
+								data.users[i].skyscraper = 1;
+							}
+							data.users[i].balance -= 500;
+							data.pot += 50;
+							data.econ -= 250;
+							data.welfare += 100;
+							data.blackjack += 100;
+							data.users[i]["activity"] = Date.now();
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have purchased a skyscraper! You now own ${data.users[i].skyscraper}\nEvery day you will get some rent payments!`);
+							console.log(data.users[i].name + " bought a skyscraper");
+						}
+					}
 					else{
-						message.channel.send('Invalid purchase! Try house or apartment');
+						message.channel.send('Invalid purchase! Try house, apartment or skyscraper');
 					}
 					noUser = false;
 					break;
@@ -1020,8 +1054,23 @@ client.on('message', message => {
 							console.log(data.users[i].name + " sold an apartment");
 						}
 					}
+					else if(type == "skyscraper"){
+						if(data.users[i]["skyscraper"] - 1 < 0 || isNaN(data.users[i]["skyscraper"])){
+							message.channel.send('You do not have any skyscrapers!');
+						}
+						else{
+							data.users[i]["skyscraper"] -= 1;
+							data.users[i].balance += 250;
+							data.econ += 250;
+							data.users[i]["activity"] = Date.now();
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have sold a skyscraper! You now own ${data.users[i].skyscraper} skyscrapers`);
+							console.log(data.users[i].name + " sold a skyscraper");
+						}
+					}
 					else{
-						message.channel.send('Invalid sell! Try house or apartment');
+						message.channel.send('Invalid sell! Try house, apartment or skyscraper');
 					}
 					noUser = false;
 					break;
@@ -1085,7 +1134,7 @@ client.on('message', message => {
 										if(data.users[j].id == buyer){
 											let offerType = chop[chop.length-2]
 											//check if house
-											if(offerType == "house" || offerType == "apartment"){
+											if(offerType == "house" || offerType == "apartment" || offerType == "skyscraper"){
 												if(data.users[j].balance - price < 0){
 													message.channel.send('Buyer doesnt have enough CC!');
 												}
@@ -1159,6 +1208,13 @@ client.on('message', message => {
 							data.users[sellParse.buyerIndex]["apartment"] = 1;
 						}
 					}
+					else if(sellParse.type == "skyscraper"){
+						data.users[sellParse.sellerIndex]["skyscraper"] -= 1;
+						data.users[sellParse.buyerIndex]["skyscraper"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["skyscraper"])){
+							data.users[sellParse.buyerIndex]["skyscraper"] = 1;
+						}
+					}
 					data.users[sellParse.sellerIndex]["activity"] = Date.now();
 					data.users[sellParse.buyerIndex]["activity"] = Date.now();
 					let newData = JSON.stringify(data);
@@ -1179,6 +1235,7 @@ client.on('message', message => {
 		let poorPeople = 0;
 		let houseCount = 0;
 		let apartmentCount = 0;
+		let skyCount = 0;
 		let carlball = data.carlball;
 		//searches for highest and lowest earner
 		for(let i=0;i<data.users.length;i++){
@@ -1195,8 +1252,11 @@ client.on('message', message => {
 			if(data.users[i]["apartment"] > 0 && !isNaN(data.users[i]["apartment"])){
 				apartmentCount += 1;
 			}
+			if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
+				skyCount += 1;
+			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes and ${apartmentCount} apartments\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes, ${apartmentCount} apartments and ${skyCount} skyscrapers\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery
 	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-500 */
