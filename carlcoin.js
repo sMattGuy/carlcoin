@@ -496,6 +496,57 @@ client.on('message', message => {
 			message.channel.send('You are not registered for CC!');
 		}
 	}
+	//audit user
+	else if(message.content.startsWith('!cc audit')){
+		let chop = message.content.split(" ");
+		//if too many arguments
+		if(chop.length != 3){
+			message.channel.send(`Invalid arguments supplied!`);
+		}
+		else{
+			//fetch and store data
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			//stores user
+			let user = "";
+			let id = 0;
+			let corrUser = true;
+			let notFound = true;
+			try{
+				user = getUserFromMention(chop[chop.length-1]).username;
+				id = getUserFromMention(chop[chop.length-1]).id;
+			}
+			//if username cannot be gotten
+			catch(err){
+				message.channel.send(`Invalid recipient`);
+				corrUser = false;
+			}
+			if(corrUser){
+				//checks for name
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == id){
+						let balance = data.users[i].balance;
+						let perc = (balance / data.econ) * 100;
+						let homes = data.users[i]["house"];
+						if(isNaN(homes)){
+							homes = 0;
+						}
+						let apartments = data.users[i]["apartment"];
+						if(isNaN(apartments)){
+							apartments = 0;
+						}
+						perc = perc.toFixed(2);
+						message.channel.send(`${user} has ${balance}CC and own ${homes} homes and ${apartments} apartments!\They control ${perc}% of the economy!`);
+						notFound = false;
+						break;	
+					}
+				}
+				if(notFound){
+					message.channel.send('User is not registered for CC!');
+				}
+			}
+		}
+	}
 	//pay user
 	else if(message.content.startsWith('!cc pay')){
 		let chop = message.content.split(" ");
