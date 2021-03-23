@@ -865,7 +865,7 @@ client.on('message', message => {
 						let returnToWork = data.users[j].claim - currentTime;
 						returnToWork = Math.floor(returnToWork / 1000); //seconds
 						returnToWork = Math.floor(returnToWork / 60); //mins
-						message.channel.send(`You've worked recently, Come back in 4 hours!`);
+						message.channel.send(`You've worked recently, Come back in ${returnToWork} mins!`);
 					}
 					else if(data.welfare < randomAmount){
 						message.channel.send(`The mine has dried up! Come back soon!`);
