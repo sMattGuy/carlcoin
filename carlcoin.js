@@ -1708,7 +1708,50 @@ client.on('message', message => {
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling`);
+	}
+	//check sanity
+	else if(message.content === '!cc sanity'){
+		//fetch and store data
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		//checks for name
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id && !isNaN(data.users[i]["unstable"])){
+				if(data.users[i]["unstable"] < 10){
+					message.channel.send(`You are fine`);
+				}
+				else if(data.users[i]["unstable"] > 10 && data.users[i]["unstable"] < 25){
+					message.channel.send(`You are feeling uneasy`);
+				}
+				else if(data.users[i]["unstable"] > 25 && data.users[i]["unstable"] < 50){
+					message.channel.send(`You are feeling awful`);
+				}
+				else if(data.users[i]["unstable"] > 50 && data.users[i]["unstable"] < 75){
+					message.channel.send(`You are feeling stressed`);
+				}
+				else if(data.users[i]["unstable"] > 75 && data.users[i]["unstable"] < 100){
+					message.channel.send(`You are feeling paranoid`);
+				}
+				else if(data.users[i]["unstable"] > 100){
+					message.channel.send(`You are unstable`);
+				}
+				break;
+			}
+		}
+	}
+	//leaderboard
+	else if(message.content === '!cc leaderboard'){
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let formatedNames = "";
+		for(let i=0;i<data.users.length;i++){
+			let balance = data.users[i].balance.toString();
+			let user = data.users[i].name + ":" + balance + "\n";
+			formatedNames += user;
+		}
+		message.channel.send(`${formatedNames}`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
