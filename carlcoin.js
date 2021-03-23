@@ -857,12 +857,15 @@ client.on('message', message => {
 		for(let j=0;j<data.users.length;j++){
 			//if user name found
 			if(data.users[j].id == id){
-				let currentTime = new Date();
+				let currentTime = Date.now();
 				let randomAmount = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
 				//if user has already played
 				try{
-					if(data.users[j].claim == currentTime.getDate()){
-						message.channel.send(`You've already worked today! Come back tomorrow`);
+					if(data.users[j].claim > currentTime){
+						let returnToWork = data.users[j].claim - currentTime;
+						returnToWork = Math.floor(returnToWork / 1000); //seconds
+						returnToWork = Math.floor(returnToWork / 60); //mins
+						message.channel.send(`You've worked recently, Come back in 4 hours!`);
 					}
 					else if(data.welfare < randomAmount){
 						message.channel.send(`The mine has dried up! Come back soon!`);
@@ -876,7 +879,7 @@ client.on('message', message => {
 							message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
 						}
 						data.users[j].balance += randomAmount;
-						data.users[j].claim = currentTime.getDate();
+						data.users[j].claim = currentTime + 14400000;
 						data.welfare -= randomAmount;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -889,9 +892,8 @@ client.on('message', message => {
 						message.channel.send(`The mine has dried up! Come back soon!`);
 					}
 					else{
-						data.users[j]["claim"] = currentTime.getDate();
+						data.users[j]["claim"] = currentTime + 14400000;
 						data.users[j].balance += randomAmount;
-						data.users[j].claim = currentTime.getDate();
 						data.welfare -= randomAmount;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
