@@ -472,8 +472,9 @@ client.on('message', message => {
 					let fakeBalance = Math.floor(Math.random() * 1001);
 					let fakeHouses = Math.floor(Math.random() * 1001);
 					let fakeApartments = Math.floor(Math.random() * 1001);
+					let fakeSkys = Math.floor(Math.random() * 1001);
 					let fakePercent = Math.floor(Math.random() * 1001);
-					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes and ${fakeApartments} apartments!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
+					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes, ${fakeApartments} apartments and ${fakeSkys} skyscrapers!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
 					notFound = false;
 					break;
 				}
@@ -493,7 +494,7 @@ client.on('message', message => {
 						skyscrapers = 0;
 					}
 					perc = perc.toFixed(2);
-					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${scyscrapers} skyscrapers!\nYou control ${perc}% of the economy!`);
+					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\nYou control ${perc}% of the economy!`);
 					notFound = false;
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -980,7 +981,7 @@ client.on('message', message => {
 					}
 					else if(type == "skyscraper"){
 						if(data.users[i].balance - 500 < 0){
-							message.channel.send('You do not have enough CC! (Costs 250)');
+							message.channel.send('You do not have enough CC! (Costs 500)');
 						}
 						else{
 							data.users[i]["skyscraper"] += 1;
@@ -1824,7 +1825,7 @@ client.on('message', message => {
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house) or (apartment)! It pays out every day!\nuse !cc sell <type> to sell a house or apartment!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house), (apartment) or (skyscraper)! It pays out every day!\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance`);
 	}
 	//check sanity
 	else if(message.content === '!cc sanity'){
