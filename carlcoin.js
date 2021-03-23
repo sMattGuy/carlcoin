@@ -122,7 +122,7 @@ client.on('message', message => {
 				data.users[i]["unstable"] = 0;
 			}
 			else{
-				data.users[i]["unstable"] -= 5;
+				data.users[i]["unstable"] -= 10;
 				if(data.users[i]["unstable"] < 0){
 					data.users[i]["unstable"] = 0;
 				}
