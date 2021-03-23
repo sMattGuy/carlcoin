@@ -1751,7 +1751,7 @@ client.on('message', message => {
 			let user = data.users[i].name + ":" + balance + "\n";
 			formatedNames += user;
 		}
-		message.channel.send(`${formatedNames}`);
+		message.channel.send(`${formatedNames}`,{"code":true});
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
