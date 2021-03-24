@@ -740,6 +740,11 @@ client.on('message', message => {
 											message.channel.send(`You are starting to feel irrational.`);
 											console.log(data.users[j].name + " has become irrational");
 										}
+										if(data.users[j]["unstable"] > 250){
+											message.channel.send(`You are completely unstable`);
+											console.log(data.users[j].name + " has become unstable");
+											data.users[j]["unstable"] = 250
+										}
 									}
 									data.users[j]["activity"] = Date.now();
 									let newData = JSON.stringify(data);
@@ -843,7 +848,12 @@ client.on('message', message => {
 						if(data.users[j]["unstable"] > 100 && data.users[j]["suicide"] == 1){
 							data.users[j]["suicide"] = 0;
 							message.channel.send(`You are starting to feel irrational.`);
-							console.log(data.users[j].name + " has calmed down");
+							console.log(data.users[j].name + " has become irrational");
+						}
+						if(data.users[j]["unstable"] > 250){
+							data.users[j]["unstable"] = 250;
+							message.channel.send(`You are completely unstable`);
+							console.log(data.users[j].name + " has become unstable");
 						}
 					}
 				}
@@ -1464,7 +1474,11 @@ client.on('message', message => {
 										message.channel.send(`You are starting to feel irrational.`);
 										console.log(data.users[i].name + " has become irrational");
 									}
-									
+									if(data.users[i]["unstable"] > 250){
+										message.channel.send(`You are completely unstable`);
+										console.log(data.users[i].name + " has become unstable");
+										data.users[i]["unstable"] = 250;
+									}
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
@@ -1551,6 +1565,11 @@ client.on('message', message => {
 						message.channel.send(`You are starting to feel irrational.`);
 						console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
 
+					}
+					if(data.users[blackjackParse.challIndex]["unstable"] > 250){
+						message.channel.send(`You are completely unstable`);
+						console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
+						data.users[blackjackParse.challIndex]["unstable"] = 250
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1695,6 +1714,11 @@ client.on('message', message => {
 							message.channel.send(`You are starting to feel irrational.`);
 							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
 						}
+						if(data.users[blackjackParse.challIndex]["unstable"] > 250){
+							message.channel.send(`You are completely unstable`);
+							console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
+							data.users[blackjackParse.challIndex]["unstable"] = 250
+						}
 						
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1742,10 +1766,7 @@ client.on('message', message => {
 				}
 				else{
 					data.users[i]["suicide"] = 1;
-					data.users[i]["unstable"] -= 100;
-					if(data.users[i]["unstable"] < 0){
-						data.users[i]["unstable"] = 0;
-					}
+					data.users[i]["unstable"] = 0;
 					console.log(data.users[i].name + " tried to commit suicide");
 					message.channel.send(`You load in one bullet and spin the barrel.`);
 					message.channel.send(`You pull the trigger... an empty click. You're too scared to try again.`);
@@ -1769,12 +1790,12 @@ client.on('message', message => {
 					data.users[i]["relax"] = Date.now() + 1800000;
 					let relaxed = Math.random();
 					if(relaxed >= 0.5){
-						data.users[i]["unstable"] -= 10;
+						data.users[i]["unstable"] -= 25;
 						if(data.users[i]["unstable"] < 0){
 							data.users[i]["unstable"] = 0;
 						}
 						message.channel.send(`You managed to relax a bit`);
-						if(data.users[i]["unstable"] + 10 > 100 && data.users[i]["unstable"] < 100){
+						if(data.users[i]["unstable"] + 25 > 100 && data.users[i]["unstable"] < 100){
 							message.channel.send(`You have come to your senses`);
 						}
 
@@ -1788,12 +1809,12 @@ client.on('message', message => {
 						data.users[i]["relax"] = Date.now() + 1800000;
 						let relaxed = Math.random();
 						if(relaxed >= 0.5){
-							data.users[i]["unstable"] -= 10;
+							data.users[i]["unstable"] -= 25;
 							if(data.users[i]["unstable"] < 0){
 								data.users[i]["unstable"] = 0;
 							}
 							message.channel.send(`You managed to relax a bit`);
-							if(data.users[i]["unstable"] + 10 > 100 && data.users[i]["unstable"] < 100){
+							if(data.users[i]["unstable"] + 25 > 100 && data.users[i]["unstable"] < 100){
 								message.channel.send(`You have come to your senses`);
 							}
 
