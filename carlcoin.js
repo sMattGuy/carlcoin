@@ -1876,7 +1876,7 @@ client.on('message', message => {
 					message.channel.send(`You are unstable`);
 				}
 				else if(data.users[i]["unstable"] > 200){
-					message.channel.send(`Suicide might be the only option`);
+					message.channel.send(`Suicide might be the only option for you`);
 					data.users[i]["suicide"] = 0;
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
