@@ -466,7 +466,8 @@ client.on('message', message => {
 					let fakeApartments = Math.floor(Math.random() * 1001);
 					let fakeSkys = Math.floor(Math.random() * 1001);
 					let fakePercent = Math.floor(Math.random() * 1001);
-					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes, ${fakeApartments} apartments and ${fakeSkys} skyscrapers!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
+					let fakeAssets = Math.floor(Math.random() * 1001);
+					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes, ${fakeApartments} apartments and ${fakeSkys} skyscrapers! Your assets equal ${fakeAssets}CC!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
 					notFound = false;
 					break;
 				}
@@ -485,8 +486,9 @@ client.on('message', message => {
 					if(isNaN(skyscrapers)){
 						skyscrapers = 0;
 					}
+					let assets = (homes * 50) + (apartments * 150) + (skyscrapers * 250);
 					perc = perc.toFixed(2);
-					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\nYou control ${perc}% of the economy!`);
+					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Your assets equal ${assets}CC!\nYou control ${perc}% of the economy!`);
 					notFound = false;
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -541,8 +543,9 @@ client.on('message', message => {
 						if(isNaN(skyscrapers)){
 							skyscrapers = 0;
 						}
+						let assets = (homes * 50) + (apartments * 150) + (skyscrapers * 250);
 						perc = perc.toFixed(2);
-						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\nThey control ${perc}% of the economy!`);
+						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Their assets are equal to ${assets}CC!\nThey control ${perc}% of the economy!`);
 						notFound = false;
 						break;	
 					}
