@@ -5,10 +5,8 @@ const fs = require('fs');
 const md5 = require('md5');
 // Create an instance of a Discord client
 const client = new Discord.Client();
-
 // import token and database
 const credentials = require('./auth.json');
-
 //raffle variables
 let startupDay = new Date();
 let raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
@@ -19,7 +17,6 @@ let md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 console.log("rafflerng",raffleRNG);
 //new day checking variables
 let prevDate = startupDay.getDay();
-let prevDate2 = startupDay.getDay();
 //anti spam stuff
 let recentId;
 //cards
@@ -39,11 +36,10 @@ client.on('ready', () => {
   });
   console.log('I am ready!');
 });
-
 // Create an event listener for messages
 client.on('message', message => {
 	//set presence
-    client.user.setPresence({
+   client.user.setPresence({
       status: 'online',
 		activity: {
          name: 'for !cc help',
@@ -92,7 +88,7 @@ client.on('message', message => {
 			}
 		});
 	}
-	//home payouts
+	//daily events
 	if(today != prevDate){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -135,10 +131,7 @@ client.on('message', message => {
 		}
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-	}
-	//lottery payout
-	if(today != prevDate2){
-		prevDate2 = today;
+
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
@@ -150,8 +143,8 @@ client.on('message', message => {
 					break;
 				}
 			}
-			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-			let data = JSON.parse(database);
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
 			if(closestId == 0){
 				client.guilds.cache.forEach((guild) => {
 					try{
@@ -183,7 +176,6 @@ client.on('message', message => {
 			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 		}
 	}
-	
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
@@ -423,7 +415,7 @@ client.on('message', message => {
 		}
 	}
 	//end of battle functionality
-    //join command
+   //join command
 	else if (message.content === '!cc join' && !message.author.bot) {
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -550,7 +542,7 @@ client.on('message', message => {
 							skyscrapers = 0;
 						}
 						perc = perc.toFixed(2);
-						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\They control ${perc}% of the economy!`);
+						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers!\nThey control ${perc}% of the economy!`);
 						notFound = false;
 						break;	
 					}
@@ -1011,7 +1003,7 @@ client.on('message', message => {
 						}
 					}
 					else{
-						message.channel.send('Invalid purchase! Try house, apartment or skyscraper');
+						message.channel.send('Invalid purchase! !cc purchaseList to see all items');
 					}
 					noUser = false;
 					break;
@@ -1021,6 +1013,10 @@ client.on('message', message => {
 				message.channel.send('You are not registered for Carl Coin!');
 			}
 		}
+	}
+	//purchase items
+	else if(message.content === '!cc purchaseList'){
+		message.content.send(`Purchase List:\n1. house (100CC)\n2. apartment (250CC)\n3. skyscraper (500CC)`);
 	}
 	//sell house
 	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */
@@ -1836,18 +1832,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	//help menu
-	else if(message.content === '!cc help'){
-		message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands\nCheck out this link for more detailed info https://tinyurl.com/carlcoin`);
-	}
-	//gamble help
-	else if(message.content === '!cc gameHelp'){
-		message.channel.send(`use !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack`);
-	}
-	//user help
-	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house), (apartment) or (skyscraper)! It pays out every day!\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance`);
-	}
 	//check sanity
 	else if(message.content === '!cc sanity'){
 		//fetch and store data
@@ -1898,6 +1882,18 @@ client.on('message', message => {
 			}
 		}
 		message.channel.send(`${formatedNames}`,{"code":true});
+	}
+	//help menu
+	else if(message.content === '!cc help'){
+		message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands`);
+	}
+	//gamble help
+	else if(message.content === '!cc gameHelp'){
+		message.channel.send(`use !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery <guess> to guess a number between 1 and 500, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack`);
+	}
+	//user help
+	else if(message.content === '!cc userHelp'){
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase a (house), (apartment) or (skyscraper)! It pays out every day!\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance`);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
