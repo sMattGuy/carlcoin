@@ -1240,7 +1240,7 @@ client.on('message', message => {
 					if(buyer == seller){
 						message.channel.send('You cannot sell to yourself!');
 					}
-					else if(isNaN(price) || price <= 0){
+					else if(isNaN(price) || price < 0){
 						message.channel.send('Invalid amount entered!');
 					}
 					else{
