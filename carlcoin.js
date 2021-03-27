@@ -992,46 +992,36 @@ client.on('message', message => {
 				let currentTime = Date.now();
 				let randomAmount = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
 				//if user has already played
-				try{
-					if(data.users[j].claim > currentTime){
-						let returnToWork = data.users[j].claim - currentTime;
-						returnToWork = Math.floor(returnToWork / 1000); //seconds
-						returnToWork = Math.floor(returnToWork / 60); //mins
-						message.channel.send(`You've worked recently, Come back in ${returnToWork} mins!`);
-					}
-					else if(data.welfare < randomAmount){
-						message.channel.send(`The mine has dried up! Come back soon!`);
-					}
-					else{
-						if(isNaN(data.users[j]["unstable"])){
-							data.users[j]["unstable"] = 0;
-						}
-						if(data.users[j]["unstable"] >= 100){
-							randomAmount = 1;
-							message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
-						}
-						data.users[j].balance += randomAmount;
-						data.users[j].claim = currentTime + 21600000;
-						data.welfare -= randomAmount;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
-						console.log(data.users[j].name + " mined CC");
-					}
+				if(data.users[j].claim > currentTime){
+					let returnToWork = data.users[j].claim - currentTime;
+					returnToWork = Math.floor(returnToWork / 1000); //seconds
+					returnToWork = Math.floor(returnToWork / 60); //mins
+					message.channel.send(`You've worked recently, Come back in ${returnToWork} mins!`);
 				}
-				catch(err){
-					if(data.welfare < randomAmount){
-						message.channel.send(`The mine has dried up! Come back soon!`);
+				else if(data.welfare < randomAmount*2){
+					message.channel.send(`The mine has dried up! Come back soon!`);
+				}
+				else{
+					if(isNaN(data.users[j]["unstable"])){
+						data.users[j]["unstable"] = 0;
 					}
-					else{
-						data.users[j]["claim"] = currentTime + 21600000;
+					if(data.users[j]["unstable"] >= 100){
+						randomAmount = 1;
+						message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
+					}
+					data.users[j].balance += randomAmount;
+					data.welfare -= randomAmount;
+					message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
+					console.log(data.users[j].name + " mined CC");
+					if(data.users[j]["office"] === 1){
 						data.users[j].balance += randomAmount;
 						data.welfare -= randomAmount;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
+						message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
 						console.log(data.users[j].name + " mined CC");
 					}
+					data.users[j].claim = currentTime + 21600000;
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				}
 				noUser = false;
 				break;
@@ -1118,8 +1108,32 @@ client.on('message', message => {
 							console.log(data.users[i].name + " bought a skyscraper");
 						}
 					}
+					else if(type == "office"){
+						if(isNaN(data.users[i]["office"])){
+							data.users[i]["office"] = 0;
+						}
+						if(data.users[i]["office"] == 1){
+							message.channel.send(`You already own an office`);
+						}
+						else if(data.users[i].balance - 200 < 0){
+							message.channel.send('You do not have enough CC! (Costs 200)');
+						}
+						else{
+							data.users[i]["office"] = 1;
+							data.users[i].balance -= 200;
+							data.pot += 50;
+							data.econ -= 50;
+							data.welfare += 50;
+							data.blackjack += 50;
+							data.users[i]["activity"] = Date.now();
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have purchased an office! You can now file paperwork after working in the carl mines!`);
+							console.log(data.users[i].name + " bought an office");
+						}
+					}
 					else{
-						message.channel.send('Invalid purchase! !cc purchaseList to see all items');
+						message.channel.send('Invalid purchase! !cc catalog to see all items');
 					}
 					noUser = false;
 					break;
@@ -1132,7 +1146,7 @@ client.on('message', message => {
 	}
 	//purchase items
 	else if(message.content === '!cc catalog'){
-		message.channel.send(`Purchase List:\n1. house (100CC)\n2. apartment (250CC)\n3. skyscraper (500CC)`);
+		message.channel.send(`Purchase List:\n1. house (100CC)\n2. apartment (250CC)\n3. skyscraper (500CC)\n4. office (200CC)`);
 	}
 	//sell house
 	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */
