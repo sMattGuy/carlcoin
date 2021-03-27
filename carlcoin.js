@@ -208,6 +208,18 @@ client.on('message', message => {
 							data.users[i].balance += md5Val;
 							data.econ += md5Val;
 							data.users[i]["activity"] = Date.now();
+							if(isNaN(data.users[i]["DEX"])){
+								data.users[i]["DEX"] = 0;
+							}
+							if(isNaN(data.users[i]["dexExp"])){
+								data.users[i]["dexExp"] = 0;
+							}
+							data.users[i]["dexExp"] += 1;
+							if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
+								data.users[i]["dexExp"] = 0;
+								data.users[i]["DEX"] += 1;
+								message.channel.send(`You were quick to get the right answer, your DEX has increased!`);
+							}
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							client.guilds.cache.forEach((guild) => {
@@ -932,6 +944,18 @@ client.on('message', message => {
 							message.channel.send(`You come to your senses.`);
 							console.log(data.users[j].name + " has calmed down");
 						}
+						if(isNaN(data.users[j]["WIS"])){
+							data.users[j]["WIS"] = 0;
+						}
+						if(isNaN(data.users[j]["wisExp"])){
+							data.users[j]["wisExp"] = 0;
+						}
+						data.users[j]["wisExp"] += amount;
+						if(data.users[j]["WIS"] * 2 + 10 < data.users[j]["wisExp"]){
+							data.users[j]["wisExp"] = 0;
+							data.users[j]["WIS"] += 1;
+							message.channel.send(`Chancing was a wise choice, your WIS increased!`);
+						}
 					}
 					//lose chance time
 					else{
@@ -1005,19 +1029,32 @@ client.on('message', message => {
 					if(isNaN(data.users[j]["unstable"])){
 						data.users[j]["unstable"] = 0;
 					}
+					if(isNaN(data.users[j]["strEXP"])){
+						data.users[j]["strEXP"] = 0;
+					}
 					if(data.users[j]["unstable"] >= 100){
 						randomAmount = 1;
 						message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
 					}
 					data.users[j].balance += randomAmount;
 					data.welfare -= randomAmount;
+					data.users[j]["strEXP"] += randomAmount;
 					message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
 					console.log(data.users[j].name + " mined CC");
 					if(data.users[j]["office"] === 1){
 						data.users[j].balance += randomAmount;
 						data.welfare -= randomAmount;
+						data.users[j]["strEXP"] += randomAmount;
 						message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
 						console.log(data.users[j].name + " mined CC");
+					}
+					if(isNaN(data.users[j]["STR"])){
+						data.users[j]["STR"] = 0;
+					}
+					if(data.users[j]["STR"] * 2 + 10 < data.users[j]["strEXP"]){
+						data.users[j]["STR"] += 1;
+						data.users[j]["strEXP"] = 0;
+						message.channel.send(`Your hard work paid off, your STR has increased!`);
 					}
 					data.users[j].claim = currentTime + 21600000;
 					let newData = JSON.stringify(data);
@@ -1060,6 +1097,18 @@ client.on('message', message => {
 							data.blackjack += 12
 							data.econ -= 50;
 							data.users[i]["activity"] = Date.now();
+							if(isNaN(data.users[i]["INT"])){
+								data.users[i]["INT"] = 0;
+							}
+							if(isNaN(data.users[i]["intExp"])){
+								data.users[i]["intExp"] = 0;
+							}
+							data.users[i]["intExp"] += 1;
+							if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+								data.users[i]["intExp"] = 0;
+								data.users[i]["INT"] += 1;
+								message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+							}
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased a home! You now own ${data.users[i].house}\nEvery day you will get some rent payments!`);
@@ -1081,6 +1130,18 @@ client.on('message', message => {
 							data.welfare += 25;
 							data.blackjack += 25;
 							data.users[i]["activity"] = Date.now();
+							if(isNaN(data.users[i]["INT"])){
+								data.users[i]["INT"] = 0;
+							}
+							if(isNaN(data.users[i]["intExp"])){
+								data.users[i]["intExp"] = 0;
+							}
+							data.users[i]["intExp"] += 2;
+							if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+								data.users[i]["intExp"] = 0;
+								data.users[i]["INT"] += 1;
+								message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+							}
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased an apartment! You now own ${data.users[i].apartment}\nEvery day you will get some rent payments!`);
@@ -1102,6 +1163,18 @@ client.on('message', message => {
 							data.welfare += 100;
 							data.blackjack += 100;
 							data.users[i]["activity"] = Date.now();
+							if(isNaN(data.users[i]["INT"])){
+								data.users[i]["INT"] = 0;
+							}
+							if(isNaN(data.users[i]["intExp"])){
+								data.users[i]["intExp"] = 0;
+							}
+							data.users[i]["intExp"] += 4;
+							if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+								data.users[i]["intExp"] = 0;
+								data.users[i]["INT"] += 1;
+								message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+							}
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							message.channel.send(`You have purchased a skyscraper! You now own ${data.users[i].skyscraper}\nEvery day you will get some rent payments!`);
@@ -1580,6 +1653,18 @@ client.on('message', message => {
 											message.channel.send(`You come to your senses.`);
 											console.log(data.users[i].name + " has calmed down");
 										}
+										if(isNaN(data.users[i]["CHR"])){
+											data.users[i]["CHR"] = 0;
+										}
+										if(isNaN(data.users[i]["chrExp"])){
+											data.users[i]["chrExp"] = 0;
+										}
+										data.users[i]["chrExp"] += Math.floor(blackjackParse.wager * 2.5);
+										if(data.users[i]["CHR"] * 2 + 20 < data.users[i]["chrExp"]){
+											data.users[i]["CHR"] += 1;
+											data.users[i]["chrExp"] = 0;
+											message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
+										}
 									}
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1783,7 +1868,18 @@ client.on('message', message => {
 						message.channel.send(`You come to your senses.`);
 						console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
 					}
-					
+					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+						data.users[blackjackParse.challIndex]["CHR"] = 0;
+					}
+					if(isNaN(data.users[blackjackParse.challIndex]["chrExp"])){
+						data.users[blackjackParse.challIndex]["chrExp"] = 0;
+					}
+					data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(blackjackParse.wager * 2);
+					if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
+						data.users[blackjackParse.challIndex]["CHR"] += 1;
+						data.users[blackjackParse.challIndex]["chrExp"] = 0;
+						message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
+					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
@@ -1817,6 +1913,18 @@ client.on('message', message => {
 							data.users[blackjackParse.challIndex]["suicide"] = 1;
 							message.channel.send(`You come to your senses.`);
 							console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
+						}
+						if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+							data.users[blackjackParse.challIndex]["CHR"] = 0;
+						}
+						if(isNaN(data.users[blackjackParse.challIndex]["chrExp"])){
+							data.users[blackjackParse.challIndex]["chrExp"] = 0;
+						}
+						data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(blackjackParse.wager * 2);
+						if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
+							data.users[blackjackParse.challIndex]["CHR"] += 1;
+							data.users[blackjackParse.challIndex]["chrExp"] = 0;
+							message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
 						}
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1943,7 +2051,18 @@ client.on('message', message => {
 							if(data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
 								message.channel.send(`You have come to your senses`);
 							}
-
+							if(isNaN(data.users[i]["CON"])){
+								data.users[i]["CON"] = 0;
+							}
+							if(isNaN(data.users[i]["conExp"])){
+								data.users[i]["conExp"] = 0;
+							}
+							data.users[i]["conExp"] += 1;
+							if(data.users[i]["CON"]*2 +  5 < data.users[i]["conExp"]){
+								data.users[i]["CON"] += 1;
+								data.users[i]["conExp"] = 0;
+								message.channel.send(`Relaxing helped clear your mind, your CON has increased!`);
+							}
 						}
 						else{
 							message.channel.send(`You couldn't relax at all`);
