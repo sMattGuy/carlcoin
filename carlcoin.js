@@ -1659,7 +1659,7 @@ client.on('message', message => {
 										if(isNaN(data.users[i]["chrExp"])){
 											data.users[i]["chrExp"] = 0;
 										}
-										data.users[i]["chrExp"] += Math.floor(blackjackParse.wager * 2.5);
+										data.users[i]["chrExp"] += Math.floor(wager * 2.5);
 										if(data.users[i]["CHR"] * 2 + 20 < data.users[i]["chrExp"]){
 											data.users[i]["CHR"] += 1;
 											data.users[i]["chrExp"] = 0;
