@@ -1301,6 +1301,8 @@ client.on('message', message => {
 				message.channel.send('Time has expired to accept the offer');
 			}
 			else{
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
 				if(message.content.startsWith('!cc denyPurchase')){
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
 					message.channel.send('You have declined the offer');
@@ -1310,8 +1312,6 @@ client.on('message', message => {
 						message.channel.send(`You don't have enough CC!`);
 					}
 					else{
-						let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-						let data = JSON.parse(database);
 						let price = parseInt(sellParse.price);
 						data.users[sellParse.sellerIndex].balance += price;
 						data.users[sellParse.buyerIndex].balance -= price;
