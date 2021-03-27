@@ -159,12 +159,13 @@ client.on('message', message => {
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == closestId){
 						data.users[i].balance += data.carlball;
+						let winner = data.carlball;
 						data.carlball = 0;
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						client.guilds.cache.forEach((guild) => {
 							try{
-								guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${data.carlball}CC in todays lottery!`);
+								guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${winner}CC in todays lottery!`);
 							}
 							catch(err){
 								console.log("no general chat in "+guild.name);
