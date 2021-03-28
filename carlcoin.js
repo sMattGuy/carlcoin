@@ -104,12 +104,12 @@ client.on('message', message => {
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
-			taxAmount += (apartPrice/25) * 2;
-			let skyPrice = data.users[i]["apartment"] * 50;
+			taxAmount += (apartPrice/25) * 4;
+			let skyPrice = data.users[i]["skyscraper"] * 50;
 			if(isNaN(skyPrice)){
 				skyPrice = 0;
 			}
-			taxAmount += (skyPrice/50) * 2;
+			taxAmount += (skyPrice/50) * 8;
 			let amount = homePrice + apartPrice + skyPrice;
 			amount -= taxAmount;
 			data.users[i].balance += amount;
@@ -131,7 +131,7 @@ client.on('message', message => {
 		}
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-
+		//lottery
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
