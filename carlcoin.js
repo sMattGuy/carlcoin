@@ -817,11 +817,15 @@ client.on('message', message => {
 										data.pot -= pot;
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 										//instability counter
+										let insane = false;
+										if(data.users[j]["unstable"] >= 100){
+											insane = true;
+										}
 										data.users[j]["unstable"] -= amount;
 										if(isNaN(data.users[j]["unstable"]) || data.users[j]["unstable"] < 0){
 											data.users[j]["unstable"] = 0;
 										}
-										if(data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
+										if(insane && data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
 											data.users[j]["suicide"] = 1;
 											message.channel.send(`You come to your senses.`);
 											console.log(data.users[j].name + " has calmed down");
@@ -834,11 +838,15 @@ client.on('message', message => {
 										data.pot -= pot;
 										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
 										//instability counter
+										let insane = false;
+										if(data.users[j]["unstable"] >= 100){
+											insane = true;
+										}
 										data.users[j]["unstable"] -= amount;
 										if(isNaN(data.users[j]["unstable"]) || data.users[j]["unstable"] < 0){
 											data.users[j]["unstable"] = 0;
 										}
-										if(data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
+										if(insane && data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
 											data.users[j]["suicide"] = 1;
 											message.channel.send(`You come to your senses.`);
 											console.log(data.users[j].name + " has calmed down");
@@ -935,11 +943,15 @@ client.on('message', message => {
 						data.econ += amount;
 						message.channel.send(`You've won! You now have ${data.users[j].balance}CC`);
 						//instability counter
+						let insane = false;
+						if(data.users[j]["unstable"] >= 100){
+							insane = true;
+						}
 						data.users[j]["unstable"] -= amount;
 						if(isNaN(data.users[j]["unstable"]) || data.users[j]["unstable"] < 0){
 							data.users[j]["unstable"] = 0;
 						}
-						if(data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
+						if(insane && data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
 							data.users[j]["suicide"] = 1;
 							message.channel.send(`You come to your senses.`);
 							console.log(data.users[j].name + " has calmed down");
@@ -1644,11 +1656,15 @@ client.on('message', message => {
 										message.channel.send(`You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
 										
 										//instability counter
+										let insane = false;
+										if(data.users[i]["unstable"] >= 100){
+											insane = true;
+										}
 										data.users[i]["unstable"] -= Math.floor(wager * 2.5);
 										if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
 											data.users[i]["unstable"] = 0;
 										}
-										if(data.users[i]["unstable"] + Math.floor(wager * 2.5) >= 100 && data.users[i]["unstable"] < 100){
+										if(insane && data.users[i]["unstable"] + Math.floor(wager * 2.5) >= 100 && data.users[i]["unstable"] < 100){
 											data.users[i]["suicide"] = 1;
 											message.channel.send(`You come to your senses.`);
 											console.log(data.users[i].name + " has calmed down");
@@ -1859,11 +1875,15 @@ client.on('message', message => {
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
 					
 					//instability counter
+					let insane = false;
+					if(data.users[blackjackParse.challIndex]["unstable"] >= 100){
+						insane = true;
+					}
 					data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
 					if(isNaN(data.users[blackjackParse.challIndex]["unstable"]) || data.users[blackjackParse.challIndex]["unstable"] < 0){
 						data.users[blackjackParse.challIndex]["unstable"] = 0;
 					}
-					if(data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
+					if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 1;
 						message.channel.send(`You come to your senses.`);
 						console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
@@ -1905,11 +1925,15 @@ client.on('message', message => {
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						
 						//instability counter
+						let insane = false;
+						if(data.users[blackjackParse.challIndex]["unstable"] >= 100){
+							insane = true;
+						}
 						data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
 						if(isNaN(data.users[blackjackParse.challIndex]["unstable"]) || data.users[blackjackParse.challIndex]["unstable"] < 0){
 							data.users[blackjackParse.challIndex]["unstable"] = 0;
 						}
-						if(data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
+						if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 							data.users[blackjackParse.challIndex]["suicide"] = 1;
 							message.channel.send(`You come to your senses.`);
 							console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
@@ -2024,12 +2048,16 @@ client.on('message', message => {
 					data.users[i]["relax"] = Date.now() + 1800000;
 					let relaxed = Math.random();
 					if(relaxed >= 0.5){
+						let insane = false;
+						if(data.users[i]["unstable"] >= 100){
+							insane = true;
+						}
 						data.users[i]["unstable"] -= 25;
 						if(data.users[i]["unstable"] < 0){
 							data.users[i]["unstable"] = 0;
 						}
 						message.channel.send(`You managed to relax a bit`);
-						if(data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
+						if(insane && data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
 							message.channel.send(`You have come to your senses`);
 						}
 
@@ -2043,12 +2071,16 @@ client.on('message', message => {
 						data.users[i]["relax"] = Date.now() + 1800000;
 						let relaxed = Math.random();
 						if(relaxed >= 0.5){
+							let insane = false;
+							if(data.users[i]["unstable"] >= 100){
+								insane = true;
+							}
 							data.users[i]["unstable"] -= 25;
 							if(data.users[i]["unstable"] < 0){
 								data.users[i]["unstable"] = 0;
 							}
 							message.channel.send(`You managed to relax a bit`);
-							if(data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
+							if(insane && data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
 								message.channel.send(`You have come to your senses`);
 							}
 							if(isNaN(data.users[i]["CON"])){
@@ -2094,13 +2126,17 @@ client.on('message', message => {
 					message.channel.send(`You don't have enough CC! (Costs 2)`);
 				}
 				else{
+					let insane = false;
+					if(data.users[i]["unstable"] >= 100){
+						insane = true;
+					}
 					data.users[i]["unstable"] -= 50;
 					data.users[i].balance -= 2;
 					if(data.users[i]["unstable"] < 0){
 						data.users[i]["unstable"] = 0;
 					}
 					message.channel.send(`The doctor gave you some medicine; You feel a bit better.`);
-					if(data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
+					if(insane && data.users[i]["unstable"] + 50 >= 100 && data.users[i]["unstable"] < 100){
 						message.channel.send(`You have come to your senses`);
 					}
 				}
