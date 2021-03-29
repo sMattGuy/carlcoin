@@ -2132,6 +2132,7 @@ client.on('message', message => {
 					}
 					data.users[i]["unstable"] -= 50;
 					data.users[i].balance -= 2;
+					data.welfare += 2;
 					if(data.users[i]["unstable"] < 0){
 						data.users[i]["unstable"] = 0;
 					}
