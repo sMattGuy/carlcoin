@@ -418,6 +418,8 @@ client.on('message', message => {
 							message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 							message.channel.send(`A draw?! How lame!`);
 						}
+						data.users[battleParse.challIndex]["bitterness"] = 0;
+						data.users[battleParse.oppIndex]["bitterness"] = 0;
 						//write new data to database and delete cache file
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -722,29 +724,41 @@ client.on('message', message => {
 					for(let i=0;i<data.users.length;i++){
 						//if username found
 						if(data.users[i].id == id){
-							let balance = data.users[i].balance;
-							let currentDate = new Date();
-							if(balance - amount < 0){
-								message.channel.send(`You don't have enough CC!`);
+							if(isNaN(data.users[i]["bitterness"])){
+								data.users[i]["bitterness"] = 0;
+							}
+							if(data.users[i]["bitterness"] >= 100){
+								message.channel.send(`You are too bitter to give away your money`);
 							}
 							else{
-								let noRecp = true;
-								//finds other user
-								for(let j=0;j<data.users.length;j++){
-									//starts paying
-									if(data.users[j].id == recpid){
-										noRecp = false;
-										data.users[i].balance -= amount;
-										data.users[j].balance += amount;
-										let newData = JSON.stringify(data);
-										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-										message.channel.send(`You have paid ${recipient} ${amount} CC!\n${recipient}'s Balance ${data.users[j].balance}\n${user}'s Balance ${data.users[i].balance}`);
-										console.log(data.users[i].name + " has paid " + data.users[j].name + " " + amount + "CC");
-									}
+								let balance = data.users[i].balance;
+								let currentDate = new Date();
+								if(balance - amount < 0){
+									message.channel.send(`You don't have enough CC!`);
 								}
-								//other user not found
-								if(noRecp){
-									message.channel.send('Recipient not found!');
+								else{
+									let noRecp = true;
+									//finds other user
+									for(let j=0;j<data.users.length;j++){
+										//starts paying
+										if(data.users[j].id == recpid){
+											noRecp = false;
+											data.users[i].balance -= amount;
+											data.users[j].balance += amount;
+											data.users[i]["bitterness"] += amount;
+											if(data.users[i]["bitterness"] >= 100){
+												message.channel.send(`Giving away all your money has made you bitter!`);
+											}
+											let newData = JSON.stringify(data);
+											fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+											message.channel.send(`You have paid ${recipient} ${amount} CC!\n${recipient}'s Balance ${data.users[j].balance}\n${user}'s Balance ${data.users[i].balance}`);
+											console.log(data.users[i].name + " has paid " + data.users[j].name + " " + amount + "CC");
+										}
+									}
+									//other user not found
+									if(noRecp){
+										message.channel.send('Recipient not found!');
+									}
 								}
 							}
 							notFound = false;
@@ -875,6 +889,7 @@ client.on('message', message => {
 										}
 									}
 									data.users[j]["activity"] = Date.now();
+									data.users[j]["bitterness"] = 0;
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
@@ -1002,6 +1017,7 @@ client.on('message', message => {
 					}
 				}
 				data.users[j]["activity"] = Date.now();
+				data.users[j]["bitterness"] = 0;
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				noUser = false;
@@ -1620,6 +1636,7 @@ client.on('message', message => {
 								data.blackjack += blackjackSupport;
 								data.welfare += welfareSupport;
 								data.users[i].balance -= wager;
+								data.users[i]["bitterness"] = 0;
 								let blackjackEnder = parseInt(Date.now()) + 60000;
 								let usedCards = {"usedCards":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]};
 								//dealer
@@ -1687,7 +1704,22 @@ client.on('message', message => {
 								}
 								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									message.channel.send(`Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
-									
+									//seduce dealer
+									let seduceChance = Math.random();
+									if(isNaN(data.users[i]["CHR"])){
+										data.users[i]["CHR"] = 0;
+									}
+									let chrBonus = data.users[i]["CHR"] * .01;
+									if(chrBonus > .1){
+										chrBonus = .1;
+									}
+									if(1 - seduceChance < chrBonus){
+										let wagerHalf = Math.floor(wager / 2);
+										let wager = wager - wagerHalf;
+										data.users[i].balance += wagerHalf;
+										data.blackjack -= wager;
+										message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+									}
 									//instability counter
 									data.users[i]["unstable"] += wager;
 									if(isNaN(data.users[i]["unstable"])){
@@ -1778,6 +1810,23 @@ client.on('message', message => {
 				}
 				if(currentTotal > 21){
 					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}, You lose!\nYou:${cardViewer}`);
+					
+					//seduce dealer
+					let seduceChance = Math.random();
+					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+						data.users[blackjackParse.challIndex]["CHR"] = 0;
+					}
+					let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
+					if(chrBonus > .1){
+						chrBonus = .1;
+					}
+					if(1 - seduceChance < chrBonus){
+						let wagerHalf = Math.floor(blackjackParse.wager / 2);
+						let blackjackParse.wager = blackjackParse.wager - wagerHalf;
+						data.users[blackjackParse.challIndex].balance += wagerHalf;
+						data.blackjack -= blackjackParse.wager;
+						message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+					}
 					
 					//instability counter
 					data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
@@ -1958,7 +2007,22 @@ client.on('message', message => {
 						//player lose
 						message.channel.send(`You have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
-						
+						//seduce dealer
+						let seduceChance = Math.random();
+						if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+							data.users[blackjackParse.challIndex]["CHR"] = 0;
+						}
+						let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
+						if(chrBonus > .1){
+							chrBonus = .1;
+						}
+						if(1 - seduceChance < chrBonus){
+							let wagerHalf = Math.floor(blackjackParse.wager / 2);
+							let blackjackParse.wager = blackjackParse.wager - wagerHalf;
+							data.users[blackjackParse.challIndex].balance += wagerHalf;
+							data.blackjack -= blackjackParse.wager;
+							message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+						}
 						//instability counter
 						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
 						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
@@ -2215,6 +2279,7 @@ client.on('message', message => {
 			}
 		}
 	}
+	//oh man dab lol
 	else if(message.content === '!cc dab'){
 		message.channel.send(`Oh man you are one funny guy! you did it! you hit that mf dab bruh holy shit you just fuckinnn were all like im gonna type !cc dab and see that it wont do anything! but suprise bitch! it fuckinnn dabbed LOL it did the dab! can you believe this??? it fucking dabbed!!! thats so crazy and quirky that the silly money bot had a dab feature built in! lol LOL LAMO I CANT BELIEVE IT ACTUALLY DABBED LOOL wow it dabbed you know what also dabs??? DAB PENS FOR $14.99 ON https://www.olivegarden.com`);
 	}
