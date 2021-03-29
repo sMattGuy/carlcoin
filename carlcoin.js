@@ -2214,6 +2214,9 @@ client.on('message', message => {
 			}
 		}
 	}
+	else if(message.content === '!cc dab'){
+		message.channel.send(`Oh man you are one funny guy! you did it! you hit that mf dab bruh holy shit you just fuckinnn were all like im gonna type !cc dab and see that it wont do anything! but suprise bitch! it fuckinnn dabbed LOL it did the dab! can you believe this??? it fucking dabbed!!! thats so crazy and quirky that the silly money bot had a dab feature built in! lol LOL LAMO I CANT BELIEVE IT ACTUALLY DABBED LOOL wow it dabbed you know what also dabs??? DAB PENS FOR $14.99 ON https://www.olivegarden.com`);
+	}
 	//help menu
 	else if(message.content === '!cc help'){
 		message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands`);
