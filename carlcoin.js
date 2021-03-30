@@ -135,43 +135,26 @@ client.on('message', message => {
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
-			let closestId = 0;
-			let value = lotteryFile.value;
-			for(let i=0;i<lotteryFile.users.length;i++){
-				if(parseInt(lotteryFile.users[i].guess) == value){
-					closestId = lotteryFile.users[i].id;
-					break;
-				}
-			}
+			let winner = Math.floor(Math.random() * (lotteryFile.users.length + 1));
 			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			data = JSON.parse(database);
-			if(closestId == 0){
-				client.guilds.cache.forEach((guild) => {
-					try{
-						guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nNo one has won the lottery today!`);
-					}
-					catch(err){
-						console.log("no general chat in "+guild.name);
-					}
-				});
-			}
-			else{
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id == closestId){
-						data.users[i].balance += data.carlball;
-						let winner = data.carlball;
-						data.carlball = 0;
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						client.guilds.cache.forEach((guild) => {
-							try{
-								guild.channels.cache.find((x) => x.name == 'general').send(`The number was ${value}\nCongradulations ${data.users[i].name}! You have won ${winner}CC in todays lottery!`);
-							}
-							catch(err){
-								console.log("no general chat in "+guild.name);
-							}
-						});
-					}
+			let winnerID = lotteryFile.users[winner].id;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == winnerID){
+					data.users[i].balance += data.carlball;
+					let winnerAmount = data.carlball;
+					data.carlball = 0;
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					client.guilds.cache.forEach((guild) => {
+						try{
+							guild.channels.cache.find((x) => x.name == 'general').send(`Congradulations ${data.users[i].name}! You have won ${winnerAmount}CC in todays lottery!`);
+						}
+						catch(err){
+							console.log("no general chat in "+guild.name);
+						}
+					});
+					break;
 				}
 			}
 			fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
@@ -772,7 +755,7 @@ client.on('message', message => {
 			}
 		}
 	}
-	//lottery game
+	//roll game
 	else if(message.content.startsWith('!cc roll')){
 		let chop = message.content.split(" ");
 		if(chop.length != 3){
@@ -1512,99 +1495,77 @@ client.on('message', message => {
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes, ${apartmentCount} apartments and ${skyCount} skyscrapers\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
 	}
 	//lottery
-	else if(message.content.startsWith('!cc lottery')){ /* !cc lottery 1-500 */
+	else if(message.content === '!cc lottery'){
 		let personsId = message.author.id;
-		let chop = message.content.split(" ");
-		if(chop.length != 3){
-			message.channel.send('Command arguments incorrect!');
-		}
-		else if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
-			let lotteryGuess = parseInt(chop[chop.length-1]);
-			if(lotteryGuess < 1 || lotteryGuess > 500 || isNaN(lotteryGuess)){
-				message.channel.send(`Invalid guess!`);
-			}
-			else{
-				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-				let data = JSON.parse(database);
-				let noUser = true;
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id ==  personsId){
-						if(data.users[i].balance - 5 < 0){
-							message.channel.send(`You don't have enough CC!`);
-						}
-						else{
-							let play = true;
-							for(let j=0;j<lotteryFile.users.length;j++){
-								if(lotteryFile.users[j].id == personsId){
-									message.channel.send('You already played today!');
-									play = false;
-									break;
-								}
-								if(lotteryFile.users[j].guess == lotteryGuess){
-									message.channel.send('Someone already guessed that number!');
-									play = false;
-									break;
-								}
-							}
-							if(play){
-								data.users[i].balance -= 5;
-								lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
-								data["carlball"] += 5;
-								let newLottery = JSON.stringify(lotteryFile);
-								fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
-								data.users[i]["activity"] = Date.now();
-								let newData = JSON.stringify(data);
-								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-								message.channel.send(`You have been added to the lottery! Drawing happens at midnight!`);
-								console.log(data.users[i].name + " has guessed " + lotteryGuess);
-							}
-						}
-						noUser = false;
-						break;
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let noUser = true;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id ==  personsId){
+					if(data.users[i].balance - 5 < 0){
+						message.channel.send(`You don't have enough CC!`);
 					}
+					else{
+						let play = true;
+						for(let j=0;j<lotteryFile.users.length;j++){
+							if(lotteryFile.users[j].id == personsId){
+								message.channel.send('You already played today!');
+								play = false;
+								break;
+							}
+						}
+						if(play){
+							data.users[i].balance -= 5;
+							lotteryFile.users.push({"id":`${personsId}`});
+							data["carlball"] += 5;
+							let newLottery = JSON.stringify(lotteryFile);
+							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
+							data.users[i]["activity"] = Date.now();
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							message.channel.send(`You have been added to the lottery! Drawing happens at midnight!`);
+							console.log(data.users[i].name + " has entered the lottery");
+						}
+					}
+					noUser = false;
+					break;
 				}
-				if(noUser){
-					message.channel.send(`You are not registered for CarlCoin!`);
-				}
+			}
+			if(noUser){
+				message.channel.send(`You are not registered for CarlCoin!`);
 			}
 		}
 		else{
-			let lotteryGuess = parseInt(chop[chop.length-1]);
-			if(lotteryGuess < 1 || lotteryGuess > 500 || isNaN(lotteryGuess)){
-				message.channel.send(`Invalid guess!`);
-			}
-			else{
-				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-				let data = JSON.parse(database);
-				let noUser = true;
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id ==  personsId){
-						if(data.users[i].balance - 5 < 0){
-							message.channel.send(`You don't have enough CC!`);
-						}
-						else{
-							data.users[i].balance -= 5;
-							let lotteryFile = {"users":[]};
-							lotteryFile.users.push({"id":`${personsId}`,"guess":`${lotteryGuess}`});
-							lotteryFile["value"] = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
-							data["carlball"] += 5;
-							data.users[i]["activity"] = Date.now();
-							let newLottery = JSON.stringify(lotteryFile);
-							fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
-							let newData = JSON.stringify(data);
-							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-							message.channel.send(`You have been added to the lottery!`);
-							console.log(data.users[i].name + " has guessed " + lotteryGuess);
-						}
-						noUser = false;
-						break;
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let noUser = true;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id ==  personsId){
+					if(data.users[i].balance - 5 < 0){
+						message.channel.send(`You don't have enough CC!`);
 					}
+					else{
+						data.users[i].balance -= 5;
+						let lotteryFile = {"users":[]};
+						lotteryFile.users.push({"id":`${personsId}`});
+						data["carlball"] += 5;
+						data.users[i]["activity"] = Date.now();
+						let newLottery = JSON.stringify(lotteryFile);
+						fs.writeFileSync('/home/mattguy/carlcoin/cache/dailyLottery.json',newLottery);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have been added to the lottery!`);
+						console.log(data.users[i].name + " has entered the lottery");
+					}
+					noUser = false;
+					break;
 				}
-				if(noUser){
-					message.channel.send(`You are not registered for CarlCoin!`);
-				}
+			}
+			if(noUser){
+				message.channel.send(`You are not registered for CarlCoin!`);
 			}
 		}
 	}
