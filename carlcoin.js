@@ -1483,13 +1483,13 @@ client.on('message', message => {
 				poorPeople += 1;
 			}
 			if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
-				houseCount += 1;
+				houseCount += data.users[i]["house"];
 			}
 			if(data.users[i]["apartment"] > 0 && !isNaN(data.users[i]["apartment"])){
-				apartmentCount += 1;
+				apartmentCount += data.users[i]["apartment"];
 			}
 			if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
-				skyCount += 1;
+				skyCount += data.users[i]["skyscraper"];
 			}
 		}
 		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\nThe CarlBall Jackpot is ${carlball}CC!\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes, ${apartmentCount} apartments and ${skyCount} skyscrapers\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
