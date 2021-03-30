@@ -1064,10 +1064,25 @@ client.on('message', message => {
 						randomAmount = 1;
 						message.channel.send(`Something doesn't feel right... You can't focus on work today...`);
 					}
+					//str check
+					let bonusChance = Math.random();
+					if(isNaN(data.users[j]["STR"])){
+						data.users[j]["STR"] = 0;
+					}
+					let strBonus = data.users[j]["STR"] * .01;
+					if(strBonus > .1){
+						strBonus = .1;
+					}
 					data.users[j].balance += randomAmount;
 					data.welfare -= randomAmount;
 					data.users[j]["strEXP"] += randomAmount;
 					message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
+					if(1 - bonusChance < strBonus){
+						let bonusAmount = randomAmount;
+						data.econ += bonusAmount;
+						data.users[j].balance += bonusAmount;
+						message.channel.send(`Your STR lets you work extra hard today, You earned an extra ${bonusAmount}CC!`);
+					}
 					console.log(data.users[j].name + " mined CC");
 					if(data.users[j]["office"] === 1){
 						data.users[j].balance += randomAmount;
@@ -1710,8 +1725,8 @@ client.on('message', message => {
 										data.users[i]["CHR"] = 0;
 									}
 									let chrBonus = data.users[i]["CHR"] * .01;
-									if(chrBonus > .1){
-										chrBonus = .1;
+									if(chrBonus > .05){
+										chrBonus = .05;
 									}
 									if(1 - seduceChance < chrBonus){
 										let wagerHalf = Math.floor(wager / 2);
@@ -1817,8 +1832,8 @@ client.on('message', message => {
 						data.users[blackjackParse.challIndex]["CHR"] = 0;
 					}
 					let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-					if(chrBonus > .1){
-						chrBonus = .1;
+					if(chrBonus > .05){
+						chrBonus = .05;
 					}
 					if(1 - seduceChance < chrBonus){
 						let wagerHalf = Math.floor(blackjackParse.wager / 2);
@@ -2013,8 +2028,8 @@ client.on('message', message => {
 							data.users[blackjackParse.challIndex]["CHR"] = 0;
 						}
 						let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-						if(chrBonus > .1){
-							chrBonus = .1;
+						if(chrBonus > .05){
+							chrBonus = .05;
 						}
 						if(1 - seduceChance < chrBonus){
 							let wagerHalf = Math.floor(blackjackParse.wager / 2);
@@ -2161,7 +2176,25 @@ client.on('message', message => {
 							}
 						}
 						else{
-							message.channel.send(`You couldn't relax at all`);
+							//str check
+							let bonusChance = Math.random();
+							if(isNaN(data.users[i]["CON"])){
+								data.users[i]["CON"] = 0;
+							}
+							let conBonus = data.users[i]["CON"] * .01;
+							if(conBonus > .1){
+								conBonus = .1;
+							}
+							if(1 - bonusChance < conBonus){
+								data.users[i]["unstable"] -= 10;
+								if(data.users[i]["unstable"] < 0){
+									data.users[i]["unstable"] = 0;
+								}
+								message.channel.send(`Your CON helps you calm down despite everything`);
+							}
+							else{
+								message.channel.send(`You couldn't relax at all`);
+							}
 						}
 					}
 					else{
