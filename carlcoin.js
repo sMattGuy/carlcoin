@@ -184,10 +184,9 @@ client.on('message', message => {
 				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 				let data = JSON.parse(database);
 				//find user loop
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id == id){
-						console.log(data.users[i].name + " " + guess);
-						if(mysteryNumber == guess){
+				if(mysteryNumber == guess){
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].id == id){
 							data.users[i].balance += md5Val;
 							data.econ += md5Val;
 							data.users[i]["activity"] = Date.now();
@@ -214,15 +213,15 @@ client.on('message', message => {
 								}
 							});
 							raffleStart = false;
+							break;
 						}
-						else if(mysteryNumber > guess){
-							message.channel.send(`Incorrect, try a higher number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
-						}
-						else{
-							message.channel.send(`Incorrect, try a lower number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
-						}
-						break;
 					}
+				}
+				else if(mysteryNumber > guess){
+					message.channel.send(`Incorrect, try a higher number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+				}
+				else{
+					message.channel.send(`Incorrect, try a lower number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 			}
 		}
