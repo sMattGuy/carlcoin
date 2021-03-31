@@ -9,7 +9,7 @@ const client = new Discord.Client();
 const credentials = require('./auth.json');
 //raffle variables
 let startupDay = new Date();
-let raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
+let raffleRNG = Math.floor(Math.random() * (300 - 250 + 1)) + 250;
 let messageCounter = 0;
 let raffleStart = false;
 let mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
@@ -63,7 +63,7 @@ client.on('message', message => {
 	//detects when md5 raffle should begin
 	if(messageCounter == raffleRNG && !raffleStart){
 		//create new raffle rng
-		raffleRNG = Math.floor(Math.random() * (500 - 400 + 1)) + 400;
+		raffleRNG = Math.floor(Math.random() * (300 - 250 + 1)) + 250;
 		console.log("rafflerng",raffleRNG);
 		//create new mystery number for people to guess
 		mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
