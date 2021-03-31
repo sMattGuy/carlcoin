@@ -135,7 +135,7 @@ client.on('message', message => {
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 			let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 			let lotteryFile = JSON.parse(lotteryRead);
-			let winner = Math.floor(Math.random() * (lotteryFile.users.length + 1));
+			let winner = Math.floor(Math.random() * (lotteryFile.users.length));
 			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			data = JSON.parse(database);
 			let winnerID = lotteryFile.users[winner].id;
