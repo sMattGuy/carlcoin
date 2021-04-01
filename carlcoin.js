@@ -96,6 +96,7 @@ client.on('message', message => {
 		for(let i=0;i<data.users.length;i++){
 			let homePrice = data.users[i]["house"] * 10;
 			let taxAmount = 0;
+			let blackjackAmount = 0;
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
@@ -109,11 +110,14 @@ client.on('message', message => {
 			if(isNaN(skyPrice)){
 				skyPrice = 0;
 			}
-			taxAmount += (skyPrice/50) * 5;
+			taxAmount += (skyPrice/50) * 4;
 			let amount = homePrice + apartPrice + skyPrice;
 			amount -= taxAmount;
 			data.users[i].balance += amount;
+			blackjackAmount = Math.flooor(taxAmount/2);
+			taxAmount -= blackjackAmount;
 			data.welfare += taxAmount;
+			data.blackjack += blackjackAmount;
 			data.econ += taxAmount;
 			data.econ += amount;
 			if(amount != 0){
@@ -969,10 +973,9 @@ client.on('message', message => {
 					//lose chance time
 					else{
 						let welfPot = Math.floor(amount / 2);
+						amount -= welfPot;
 						let blackPot = Math.floor(welfPot / 2);
-						welfPot = welfPot - blackPot;
-						amount = amount - welfPot;
-						amount = amount - blackPot
+						welfPot -= blackPot;
 						data.blackjack += blackPot;
 						data.pot += amount;
 						data.welfare += welfPot;
@@ -1689,7 +1692,7 @@ client.on('message', message => {
 										chrBonus = .05;
 									}
 									if(1 - seduceChance < chrBonus){
-										let wagerHalf = Math.floor(wager / 2);
+										let wagerHalf = Math.ceil(wager / 2);
 										wager = wager - wagerHalf;
 										data.users[i].balance += wagerHalf;
 										data.blackjack -= wager;
@@ -1796,7 +1799,7 @@ client.on('message', message => {
 						chrBonus = .05;
 					}
 					if(1 - seduceChance < chrBonus){
-						let wagerHalf = Math.floor(blackjackParse.wager / 2);
+						let wagerHalf = Math.ceil(blackjackParse.wager / 2);
 						blackjackParse.wager = blackjackParse.wager - wagerHalf;
 						data.users[blackjackParse.challIndex].balance += wagerHalf;
 						data.blackjack -= blackjackParse.wager;
@@ -1992,7 +1995,7 @@ client.on('message', message => {
 							chrBonus = .05;
 						}
 						if(1 - seduceChance < chrBonus){
-							let wagerHalf = Math.floor(blackjackParse.wager / 2);
+							let wagerHalf = Math.ceil(blackjackParse.wager / 2);
 							blackjackParse.wager = blackjackParse.wager - wagerHalf;
 							data.users[blackjackParse.challIndex].balance += wagerHalf;
 							data.blackjack -= blackjackParse.wager;
