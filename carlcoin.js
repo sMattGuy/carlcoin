@@ -1111,18 +1111,19 @@ client.on('message', message => {
 				if(data.users[i].id == message.author.id){
 					let type = chop[chop.length-1];
 					if(type == "house"){
-						if(data.users[i].balance - 100 < 0){
-							message.channel.send('You do not have enough CC! (Costs 100)');
+						if(isNaN(data.users[i]["house"])){
+							data.users[i]["house"] = 0;
+						}
+						let cost = 100 + (data.users[i]["house"] * 50);
+						if(data.users[i].balance - cost < 0){
+							message.channel.send(`You do not have enough CC! (Costs ${cost})`);
 						}
 						else{
 							data.users[i]["house"] += 1;
-							if(isNaN(data.users[i].house)){
-								data.users[i].house = 1;
-							}
-							data.users[i].balance -= 100;
+							data.users[i].balance -= cost;
 							data.pot += 25;
-							data.welfare += 13;
-							data.blackjack += 12
+							data.welfare += 25;
+							data.blackjack += cost - 100;
 							data.econ -= 50;
 							data.users[i]["activity"] = Date.now();
 							if(isNaN(data.users[i]["INT"])){
@@ -1144,19 +1145,20 @@ client.on('message', message => {
 						}
 					}
 					else if(type == "apartment"){
-						if(data.users[i].balance - 250 < 0){
-							message.channel.send('You do not have enough CC! (Costs 250)');
+						if(isNaN(data.users[i]["apartment"])){
+							data.users[i]["apartment"] = 0;
+						}
+						let cost = 250 + (data.users[i]["apartment"] * 125);
+						if(data.users[i].balance - cost < 0){
+							message.channel.send(`You do not have enough CC! (Costs ${cost})`);
 						}
 						else{
 							data.users[i]["apartment"] += 1;
-							if(isNaN(data.users[i].apartment)){
-								data.users[i].apartment = 1;
-							}
-							data.users[i].balance -= 250;
-							data.pot += 50;
-							data.econ -= 150;
-							data.welfare += 25;
-							data.blackjack += 25;
+							data.users[i].balance -= cost;
+							data.pot += 25;
+							data.econ -= 175;
+							data.welfare += 50;
+							data.blackjack += cost - 250;
 							data.users[i]["activity"] = Date.now();
 							if(isNaN(data.users[i]["INT"])){
 								data.users[i]["INT"] = 0;
@@ -1177,19 +1179,20 @@ client.on('message', message => {
 						}
 					}
 					else if(type == "skyscraper"){
+						if(isNaN(data.users[i]["skyscraper"])){
+							data.users[i]["skyscraper"] = 0;
+						}
+						let cost = 500 + (data.users[i]["skyscraper"] * 250);
 						if(data.users[i].balance - 500 < 0){
-							message.channel.send('You do not have enough CC! (Costs 500)');
+							message.channel.send(`You do not have enough CC! (Costs ${cost})`);
 						}
 						else{
 							data.users[i]["skyscraper"] += 1;
-							if(isNaN(data.users[i].skyscraper)){
-								data.users[i].skyscraper = 1;
-							}
-							data.users[i].balance -= 500;
+							data.users[i].balance -= cost;
 							data.pot += 50;
-							data.econ -= 250;
+							data.econ -= 350;
 							data.welfare += 100;
-							data.blackjack += 100;
+							data.blackjack += cost - 500;
 							data.users[i]["activity"] = Date.now();
 							if(isNaN(data.users[i]["INT"])){
 								data.users[i]["INT"] = 0;
@@ -1247,7 +1250,7 @@ client.on('message', message => {
 	}
 	//purchase items
 	else if(message.content === '!cc catalog'){
-		message.channel.send(`Purchase List:\n1. house (100CC) pays 10 daily\n2. apartment (250CC) pays 25 daily\n3. skyscraper (500CC) pays 50 daily\n4. office (200CC) doubles work output`);
+		message.channel.send(`Purchase List:\n1. house (100CC + 50CC per home owned) pays 10 daily\n2. apartment (250CC + 125CC per apartment owned) pays 25 daily\n3. skyscraper (500CC + 250CC per skyscraper owned) pays 50 daily\n4. office (200CC) doubles work output`);
 	}
 	//sell house
 	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */
@@ -2295,6 +2298,7 @@ client.on('message', message => {
 	else if(message.content === '!cc userHelp'){
 		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase something\nuse !cc catalog to see all things for sale\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance\nuse !cc playercard to see your characters player information\nuse !cc doctor to get some medicine for your insanity\nuse !cc name to update to your current name`);
 	}
+	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
 	}
