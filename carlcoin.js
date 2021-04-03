@@ -1183,7 +1183,7 @@ client.on('message', message => {
 							data.users[i]["skyscraper"] = 0;
 						}
 						let cost = 500 + (data.users[i]["skyscraper"] * 250);
-						if(data.users[i].balance - 500 < 0){
+						if(data.users[i].balance - cost < 0){
 							message.channel.send(`You do not have enough CC! (Costs ${cost})`);
 						}
 						else{
