@@ -120,6 +120,7 @@ client.on('message', message => {
 			data.blackjack += blackjackAmount;
 			data.econ += taxAmount;
 			data.econ += amount;
+			data.econ += blackjackAmount;
 			if(amount != 0){
 				console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
 			}
