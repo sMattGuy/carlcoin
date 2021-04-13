@@ -1602,7 +1602,7 @@ client.on('message', message => {
 				if(isNaN(wager) || wager < 2){
 					message.channel.send('Invalid amount entered!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 				}
-				else if(Math.floor((wager * .25) * 2.5) > data.blackjack){
+				else if((wager * 2.5)+wager >= data.blackjack){
 					message.channel.send('The blackjack pot doesnt have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 				}
 				else{
