@@ -2157,7 +2157,7 @@ client.on('message', message => {
 								if(data.users[i]["unstable"] < 0){
 									data.users[i]["unstable"] = 0;
 								}
-								else if(data.users[i]["unstable"] + 10 >= 100 && data.user[i]["unstable"] < 100){
+								else if(data.users[i]["unstable"] + 10 >= 100 && data.users[i]["unstable"] < 100){
 									message.channel.send(`You have come to your senses`);
 								}
 								message.channel.send(`Your CON helps you calm down despite everything`);
