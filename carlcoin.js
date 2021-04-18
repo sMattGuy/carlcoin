@@ -2397,6 +2397,7 @@ client.on('message', message => {
 													message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 													turnCount++;
 												}
+												nextMessage = ``;
 											}
 											if(attackerHP == 0){
 												//attacker lost
