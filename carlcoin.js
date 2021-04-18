@@ -2358,6 +2358,9 @@ client.on('message', message => {
 										if(data.users[j].balance - robAmount < 0){
 											message.channel.send(`User doesn't have any money to rob`);
 										}
+										else if(data.users[i].balance - robAmount < 0){
+											message.channel.send(`You can't even afford a skimask!`);
+										}
 										else{
 											noRecp = false;
 											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under','matrixs under','grabs'];
@@ -2383,7 +2386,6 @@ client.on('message', message => {
 														nextMessage += `${user} ${damageVerbs[Math.floor(Math.random() * damageVerbs.length)]} ${recipient}!\n`;
 														defenderHP -= 1;
 													}
-													message.channel.send(nextMessage).then(msg => msg.delete({timeout:30000})).catch(error => {console.log(error)});
 													turnCount++;
 												}
 												else{
@@ -2396,14 +2398,15 @@ client.on('message', message => {
 														nextMessage += `${recipient} ${damageVerbs[Math.floor(Math.random() * damageVerbs.length)]} ${user}!\n`;
 														attackerHP -= 1;
 													}
-													message.channel.send(nextMessage).then(msg => msg.delete({timeout:30000})).catch(error => {console.log(error)});
 													turnCount++;
 												}
-												nextMessage = ``;
 											}
+											message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 											if(attackerHP == 0){
 												//attacker lost
-												message.channel.send(`${user} tried to rob ${recipient} and lost! What a massive embarassment!`);
+												message.channel.send(`${user} tried to rob ${recipient} and lost! What a massive embarassment! They dropped ${robAmount}CC while running away!`);
+												data.users[i].balance -= robAmount;
+												data.econ -= robAmount;
 											}
 											else{
 												//attacker won
