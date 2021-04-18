@@ -2340,6 +2340,7 @@ client.on('message', message => {
 				//finds robber
 				if(id == recpid){
 					message.channel.send(`Try meditation instead`);
+					notFound = false;
 				}
 				else{
 					for(let i=0;i<data.users.length;i++){
