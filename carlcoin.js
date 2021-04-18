@@ -2354,6 +2354,7 @@ client.on('message', message => {
 								for(let j=0;j<data.users.length;j++){
 									//starts robbing
 									if(data.users[j].id == recpid){
+										noRecp = false;
 										let robAmount = Math.floor(Math.random() * 3) + 1;
 										if(data.users[j].balance - robAmount < 0){
 											message.channel.send(`User doesn't have any money to rob`);
