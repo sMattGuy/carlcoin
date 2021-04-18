@@ -2306,6 +2306,126 @@ client.on('message', message => {
 	else if(message.content === '!cc fuck'){
 		message.channel.send(`Whoa whoa whoa whoa whoa there partner, that right there is a swear word in my Christian Carl Coin no sir I cannot let you be swearing in my CCC (Christian Carl Coin)`);
 	}
+	//robbery
+	else if(message.content.startsWith('!cc rob')){
+		let chop = message.content.split(" ");
+		let corrUser = true;
+		//if too many arguments
+		if(chop.length != 3){
+			message.channel.send(`Invalid arguments supplied!`);
+		}
+		else{
+			let recipient = "";
+			let recpid = "";
+			//attempts to get username
+			try{
+				recipient = getUserFromMention(chop[chop.length-1]).username;
+				recpid = getUserFromMention(chop[chop.length-1]).id;
+			}
+			//if username cannot be gotten
+			catch(err){
+				message.channel.send(`Invalid person`);
+				corrUser = false;
+			}
+			//if username works
+			if(corrUser){
+				//fetch and store data
+				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				let data = JSON.parse(database);
+				//store user
+				let user = message.author.username;
+				let id = message.author.id;
+				//flag
+				let notFound = true;
+				//finds robber
+				for(let i=0;i<data.users.length;i++){
+					//if username found
+					if(data.users[i].id == id){
+						if(isNaN(data.users[i]["robTimer"]) || data.users[i]["robTimer"] < Date.now()){
+							let balance = data.users[i].balance;
+							let currentDate = new Date();
+							let noRecp = true;
+							//finds other user
+							for(let j=0;j<data.users.length;j++){
+								//starts robbing
+								if(data.users[j].id == recpid){
+									if(data.users[j].balance <= 0){
+										message.channel.send(`User doesn't have any money to rob`);
+									}
+									else{
+										noRecp = false;
+										const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under'];
+										const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults'];
+										const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated'];
+										let attackerHP = 3;
+										let defenderHP = 3;
+										let turnCount = 0;
+										while(attackerHP != 0 && defenderHP != 0){
+											let attackerRoll = Math.random();
+											let defenderRoll = Math.random();
+											if(turnCount % 2 == 0){
+												//attacker turn
+												message.channel.send(`${user} ${attackVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`);
+												if(attackerRoll <= defenderRoll){
+													message.channel.send(`${recipient} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${user} attack!`);
+												}
+												else{
+													message.channel.send(`${user} ${damageVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`);
+													defenderHP -= 1;
+												}
+												turnCount++;
+											}
+											else{
+												//defender turn
+												message.channel.send(`${recipient} ${attackVerbs[Math.floor(Math.random() * 7)]} ${user}!`);
+												if(defenderRoll <= attackerRoll){
+													message.channel.send(`${user} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${recipient} attack!`);
+												}
+												else{
+													message.channel.send(`${recipient} ${damageVerbs[Math.floor(Math.random() * 7)]} ${user}!`);
+													attackerHP -= 1;
+												}
+												turnCount++;
+											}
+										}
+										if(attackerHP == 0){
+											//attacker lost
+											message.channel.send(`You tried to rob someone and lost! What a massive embarassment!`);
+										}
+										else{
+											//attacker won
+											message.channel.send(`You managed to beat ${recipient} to submission.... and got 1CC`);
+											data.users[i].balance += 1;
+											data.users[j].balance -= 1;
+										}
+										data.users[i]["robTimer"] = Date.now() + 1800000;
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+									}
+									break;
+								}
+							}
+							//other user not found
+							if(noRecp){
+								message.channel.send('Person not found');
+							}
+							notFound = false;
+							break;
+						}
+						else{
+							let timeLeft = data.users[i]["robTimer"] - Date.now();
+							timeLeft = Math.floor(timeLeft / 1000);
+							timeLeft = Math.floor(timeLeft / 60);
+							message.channel.send(`You already tried robbing someone, come back in ${timeLeft} mins.`);
+						}
+					}
+				}
+				if(notFound){
+					message.channel.send('You are not registered for CC!');
+				}
+			}
+		}
+	}
 	//help menu
 	else if(message.content === '!cc help'){
 		message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands`);
