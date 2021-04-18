@@ -2359,9 +2359,9 @@ client.on('message', message => {
 										}
 										else{
 											noRecp = false;
-											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under'];
-											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults'];
-											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated'];
+											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under','matrixs under','grabs'];
+											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults','bombards','hits','monkey punches','grabs','hooks'];
+											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated','hurt','messed up','damaged','clipped'];
 											let attackerHP = 3;
 											let defenderHP = 3;
 											let turnCount = 0;
@@ -2373,28 +2373,28 @@ client.on('message', message => {
 												let defenderRoll = Math.random();
 												if(turnCount % 2 == 0){
 													//attacker turn
-													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * 7)]} ${recipient}!\n`;
+													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}!\n`;
 													if(attackerRoll <= defenderRoll){
-														nextMessage += `${recipient} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${user} attack!\n`;
+														nextMessage += `${recipient} ${dodgeVerbs[Math.floor(Math.random() * dodgeVerbs.length)]} ${user} attack!\n`;
 													}
 													else{
-														nextMessage += `${user} ${damageVerbs[Math.floor(Math.random() * 7)]} ${recipient}!\n`;
+														nextMessage += `${user} ${damageVerbs[Math.floor(Math.random() * damageVerbs.length)]} ${recipient}!\n`;
 														defenderHP -= 1;
 													}
-													message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													message.channel.send(nextMessage).then(msg => msg.delete({timeout:30000})).catch(error => {console.log(error)});
 													turnCount++;
 												}
 												else{
 													//defender turn
-													nextMessage += `${recipient} ${attackVerbs[Math.floor(Math.random() * 7)]} ${user}!\n`;
+													nextMessage += `${recipient} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${user}!\n`;
 													if(defenderRoll <= attackerRoll){
-														nextMessage += `${user} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${recipient} attack!\n`;
+														nextMessage += `${user} ${dodgeVerbs[Math.floor(Math.random() * dodgeVerbs.length)]} ${recipient} attack!\n`;
 													}
 													else{
-														nextMessage += `${recipient} ${damageVerbs[Math.floor(Math.random() * 7)]} ${user}!\n`;
+														nextMessage += `${recipient} ${damageVerbs[Math.floor(Math.random() * damageVerbs.length)]} ${user}!\n`;
 														attackerHP -= 1;
 													}
-													message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													message.channel.send(nextMessage).then(msg => msg.delete({timeout:30000})).catch(error => {console.log(error)});
 													turnCount++;
 												}
 												nextMessage = ``;
