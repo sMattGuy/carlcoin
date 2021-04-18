@@ -2354,7 +2354,8 @@ client.on('message', message => {
 								for(let j=0;j<data.users.length;j++){
 									//starts robbing
 									if(data.users[j].id == recpid){
-										if(data.users[j].balance <= 0){
+										let robAmount = Math.floor(Math.random() * 3) + 1;
+										if(data.users[j].balance - robAmount < 0){
 											message.channel.send(`User doesn't have any money to rob`);
 										}
 										else{
@@ -2405,9 +2406,9 @@ client.on('message', message => {
 											}
 											else{
 												//attacker won
-												message.channel.send(`${user} managed to beat ${recipient} to submission.... and got 1CC`);
-												data.users[i].balance += 1;
-												data.users[j].balance -= 1;
+												message.channel.send(`${user} managed to beat ${recipient} to submission.... and got ${robAmount}CC`);
+												data.users[i].balance += robAmount;
+												data.users[j].balance -= robAmount;
 											}
 											data.users[i]["robTimer"] = Date.now() + 600000;
 											let newData = JSON.stringify(data);
