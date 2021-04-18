@@ -2367,6 +2367,7 @@ client.on('message', message => {
 											let defenderHP = 3;
 											let turnCount = 0;
 											message.channel.send(`${user} is trying to rob ${recipient}!`);
+											console.log(user + ' is trying to rob ' + recipient);
 											let nextMessage = ``;
 											while(attackerHP != 0 && defenderHP != 0){
 												nextMessage += `TURN ${turnCount}\n-----------------------------\n`;
@@ -2447,7 +2448,7 @@ client.on('message', message => {
 	}
 	//gamble help
 	else if(message.content === '!cc gameHelp'){
-		message.channel.send(`use !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack`);
+		message.channel.send(`use !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rob @user to attempt to steal some coin from them!`);
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
