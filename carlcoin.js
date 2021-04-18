@@ -2338,85 +2338,94 @@ client.on('message', message => {
 				//flag
 				let notFound = true;
 				//finds robber
-				for(let i=0;i<data.users.length;i++){
-					//if username found
-					if(data.users[i].id == id){
-						if(isNaN(data.users[i]["robTimer"]) || data.users[i]["robTimer"] < Date.now()){
-							let balance = data.users[i].balance;
-							let currentDate = new Date();
-							let noRecp = true;
-							//finds other user
-							for(let j=0;j<data.users.length;j++){
-								//starts robbing
-								if(data.users[j].id == recpid){
-									if(data.users[j].balance <= 0){
-										message.channel.send(`User doesn't have any money to rob`);
-									}
-									else{
-										noRecp = false;
-										const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under'];
-										const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults'];
-										const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated'];
-										let attackerHP = 3;
-										let defenderHP = 3;
-										let turnCount = 0;
-										while(attackerHP != 0 && defenderHP != 0){
-											let attackerRoll = Math.random();
-											let defenderRoll = Math.random();
-											if(turnCount % 2 == 0){
-												//attacker turn
-												message.channel.send(`${user} ${attackVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`);
-												if(attackerRoll <= defenderRoll){
-													message.channel.send(`${recipient} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${user} attack!`);
-												}
-												else{
-													message.channel.send(`${user} ${damageVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`);
-													defenderHP -= 1;
-												}
-												turnCount++;
-											}
-											else{
-												//defender turn
-												message.channel.send(`${recipient} ${attackVerbs[Math.floor(Math.random() * 7)]} ${user}!`);
-												if(defenderRoll <= attackerRoll){
-													message.channel.send(`${user} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${recipient} attack!`);
-												}
-												else{
-													message.channel.send(`${recipient} ${damageVerbs[Math.floor(Math.random() * 7)]} ${user}!`);
-													attackerHP -= 1;
-												}
-												turnCount++;
-											}
-										}
-										if(attackerHP == 0){
-											//attacker lost
-											message.channel.send(`You tried to rob someone and lost! What a massive embarassment!`);
+				if(id == recpid){
+					message.channel.send(`Try meditation instead`);
+				}
+				else{
+					for(let i=0;i<data.users.length;i++){
+						//if username found
+						if(data.users[i].id == id){
+							if(isNaN(data.users[i]["robTimer"]) || data.users[i]["robTimer"] < Date.now()){
+								let balance = data.users[i].balance;
+								let currentDate = new Date();
+								let noRecp = true;
+								//finds other user
+								for(let j=0;j<data.users.length;j++){
+									//starts robbing
+									if(data.users[j].id == recpid){
+										if(data.users[j].balance <= 0){
+											message.channel.send(`User doesn't have any money to rob`);
 										}
 										else{
-											//attacker won
-											message.channel.send(`You managed to beat ${recipient} to submission.... and got 1CC`);
-											data.users[i].balance += 1;
-											data.users[j].balance -= 1;
+											noRecp = false;
+											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under'];
+											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults'];
+											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated'];
+											let attackerHP = 3;
+											let defenderHP = 3;
+											let turnCount = 0;
+											message.channel.send(`${user} is trying to rob ${recipient}!`);
+											while(attackerHP != 0 && defenderHP != 0){
+												message.channel.send(`TURN ${turnCount}\n-----------------------------`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+												let attackerRoll = Math.random();
+												let defenderRoll = Math.random();
+												if(turnCount % 2 == 0){
+													//attacker turn
+													message.channel.send(`${user} ${attackVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													if(attackerRoll <= defenderRoll){
+														message.channel.send(`${recipient} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${user} attack!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													}
+													else{
+														message.channel.send(`${user} ${damageVerbs[Math.floor(Math.random() * 7)]} ${recipient}!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+														defenderHP -= 1;
+													}
+													turnCount++;
+												}
+												else{
+													//defender turn
+													message.channel.send(`${recipient} ${attackVerbs[Math.floor(Math.random() * 7)]} ${user}!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													if(defenderRoll <= attackerRoll){
+														message.channel.send(`${user} ${dodgeVerbs[Math.floor(Math.random() * 7)]} ${recipient} attack!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+													}
+													else{
+														message.channel.send(`${recipient} ${damageVerbs[Math.floor(Math.random() * 7)]} ${user}!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+														attackerHP -= 1;
+													}
+													turnCount++;
+												}
+											}
+											if(attackerHP == 0){
+												//attacker lost
+												message.channel.send(`${user} tried to rob ${recipient} and lost! What a massive embarassment!`);
+											}
+											else{
+												//attacker won
+												message.channel.send(`${user} managed to beat ${recipient} to submission.... and got 1CC`);
+												data.users[i].balance += 1;
+												data.users[j].balance -= 1;
+											}
+											data.users[i]["robTimer"] = Date.now() + 600000;
+											let newData = JSON.stringify(data);
+											fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										}
-										data.users[i]["robTimer"] = Date.now() + 1800000;
-										let newData = JSON.stringify(data);
-										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										break;
 									}
-									break;
 								}
+								//other user not found
+								if(noRecp){
+									message.channel.send('Person not found');
+								}
+								notFound = false;
+								break;
 							}
-							//other user not found
-							if(noRecp){
-								message.channel.send('Person not found');
+							else{
+								let timeLeft = data.users[i]["robTimer"] - Date.now();
+								timeLeft = Math.floor(timeLeft / 1000);
+								timeLeft = Math.floor(timeLeft / 60);
+								message.channel.send(`You already tried robbing someone, come back in ${timeLeft} mins.`);
+								notFound = false;
+								break;
 							}
-							notFound = false;
-							break;
-						}
-						else{
-							let timeLeft = data.users[i]["robTimer"] - Date.now();
-							timeLeft = Math.floor(timeLeft / 1000);
-							timeLeft = Math.floor(timeLeft / 60);
-							message.channel.send(`You already tried robbing someone, come back in ${timeLeft} mins.`);
 						}
 					}
 				}
