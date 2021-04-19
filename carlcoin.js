@@ -2371,8 +2371,8 @@ client.on('message', message => {
 											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under','matrixs under','grabs'];
 											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults','bombards','hits','monkey punches','grabs','hooks'];
 											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated','hurt','messed up','damaged','clipped'];
-											let attackerHP = 3;
-											let defenderHP = 3;
+											let attackerHP = 2;
+											let defenderHP = 2;
 											let turnCount = 0;
 											message.channel.send(`${user} is trying to rob ${recipient}!`);
 											console.log(user + ' is trying to rob ' + recipient);
@@ -2386,10 +2386,16 @@ client.on('message', message => {
 											if(isNaN(data.users[j]["DEX"])){
 												data.users[j]["DEX"] = 0;
 											}
+											if(isNaN(data.users[i]["unstable"])){
+												data.users[i]["unstable"] = 0;
+											}
+											if(isNaN(data.users[j]["unstable"])){
+												data.users[j]["unstable"] = 0;
+											}
 											while(attackerHP != 0 && defenderHP != 0){
 												nextMessage += `TURN ${turnCount}\n-----------------------------\n`;
-												let attackerRoll = Math.random() + (parseInt(data.users[i]["STR"]) * 0.001);
-												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001);
+												let attackerRoll = Math.random() + (parseInt(data.users[i]["STR"]) * 0.001) + (parseInt(data.users[i]["unstable"]) * 0.0001);
+												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001) + (parseInt(data.users[j]["unstable"]) * 0.0001);
 												if(turnCount % 2 == 0){
 													//attacker turn
 													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}!\n`;
@@ -2413,6 +2419,9 @@ client.on('message', message => {
 														attackerHP -= 1;
 													}
 													turnCount++;
+												}
+												if(turnCount == 7){
+													message.channel.send(`Police have been called, they are on the way!`);
 												}
 												if(turnCount > 10){
 													message.channel.send(`Police have arrived, ${user} is under arrest!`);
