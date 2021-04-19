@@ -2692,9 +2692,9 @@ client.on('message', message => {
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
-									}).catch(oppChoice => {message.channel.send(`Someone didn't type their response correctly or time expired to respond`)});
+									}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`)});
 								});
-							}).catch(challChoice => {message.channel.send(`Someone didn't type their response correctly or time expired to respond`)});
+							}).catch(challChoice => {message.channel.send(`Challenger didn't type their response correctly or time expired to respond`)});
 						});
 					}
 				}
