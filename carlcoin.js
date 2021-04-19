@@ -2642,7 +2642,7 @@ client.on('message', message => {
 					else{
 						//set the winning amount
 						let winnerAmount = wager * 2;
-						const filter = m => return true;
+						const filter = m => {return true};
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
 							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
