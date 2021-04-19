@@ -1629,6 +1629,7 @@ client.on('message', message => {
 								message.channel.send('You dont have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 							}
 							else{
+								console.log(data.users[i].name + ' has started blackjack');	
 								let welfareSupport = Math.floor(wager * .25);
 								let blackjackSupport = wager - welfareSupport;
 								data.blackjack += blackjackSupport;
