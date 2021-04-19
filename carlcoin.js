@@ -2645,9 +2645,9 @@ client.on('message', message => {
 						const filter = '';
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
-							client.users.cache.get(data.users[rpsParse.challIndex].id).awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
+							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
 								client.users.cache.get(data.users[rpsParse.oppIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
-									client.users.cache.get(data.users[rpsParse.oppIndex].id).awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(oppChoice => {
+									client.users.cache.get(data.users[rpsParse.oppIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(oppChoice => {
 										let challThrow = challChoice.first().content;
 										let oppThrow = oppChoice.first().content;
 										
