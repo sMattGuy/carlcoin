@@ -2646,55 +2646,56 @@ client.on('message', message => {
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
 							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
-								client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Got it, going to get opponents choice now`).then(() => {
-									client.users.cache.get(data.users[rpsParse.oppIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
-										client.users.cache.get(data.users[rpsParse.oppIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(oppChoice => {
-											let challThrow = challChoice.first().content;
-											let oppThrow = oppChoice.first().content;
-											console.log(challThrow);
-											console.log(oppThrow);
-											
-											if(challThrow != 'rock' && challThrow != 'scissors' && challThrow != 'paper' && oppThrow != 'rock' && oppThrow != 'scissors' && oppThrow != 'paper'){
-												message.channel.send(`Someone didn't choose correctly, the match is cancelled!`)
-											}
-											else if(challThrow == 'rock' && oppThrow == 'scissors'){
-												message.channel.send(`${data.users[rpsParse.challIndex].name} threw rock, ${data.users[rpsParse.oppIndex].name} threw scissors`);
-												message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
-												data.users[rpsParse.challIndex].balance += wager;
-												data.users[rpsParse.oppIndex].balance -= wager;
-											}
-											else if(challThrow == 'scissors' && oppThrow == 'paper'){
-												message.channel.send(`${data.users[rpsParse.challIndex].name} threw scissors, ${data.users[rpsParse.oppIndex].name} threw paper`);
-												message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
-												data.users[rpsParse.challIndex].balance += wager;
-												data.users[rpsParse.oppIndex].balance -= wager;
-											}
-											else if(challThrow == 'paper' && oppThrow == 'rock'){
-												message.channel.send(`${data.users[rpsParse.challIndex].name} threw paper, ${data.users[rpsParse.oppIndex].name} threw rock`);
-												message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
-												data.users[rpsParse.challIndex].balance += wager;
-												data.users[rpsParse.oppIndex].balance -= wager;
-											}
-											else if(challThrow == oppThrow){
-												message.channel.send(`${data.users[rpsParse.challIndex].name} threw ${challThrow}, ${data.users[rpsParse.oppIndex].name} threw ${oppThrow}`);
-												message.channel.send(`It's a tie!`);
-											}
-											else{
-												message.channel.send(`${data.users[rpsParse.challIndex].name} threw ${challThrow}, ${data.users[rpsParse.oppIndex].name} threw ${oppThrow}`);
-												message.channel.send(`${data.users[rpsParse.oppIndex].name} won!`);
-												data.users[rpsParse.challIndex].balance -= wager;
-												data.users[rpsParse.oppIndex].balance += wager;
-											}
-											data.users[rpsParse.challIndex]["activity"] = Date.now();
-											data.users[rpsParse.oppIndex]["activity"] = Date.now();
-											data.users[rpsParse.challIndex]["bitterness"] = 0;
-											data.users[rpsParse.oppIndex]["bitterness"] = 0;
-											//write new data to database and delete cache file
-											let newData = JSON.stringify(data);
-											fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-											fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
-										}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`)});
-									});
+								client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Got it, going to get opponents choice now`);
+								client.users.cache.get(data.users[rpsParse.oppIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
+									client.users.cache.get(data.users[rpsParse.oppIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(oppChoice => {
+										client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Go back to the channel you were challenged to see who wins!`);
+										client.users.cache.get(data.users[rpsParse.oppIndex].id).send(`Go back to the channel you were challenged to see who wins!`);
+										let challThrow = challChoice.first().content;
+										let oppThrow = oppChoice.first().content;
+										console.log(challThrow);
+										console.log(oppThrow);
+										
+										if(challThrow != 'rock' && challThrow != 'scissors' && challThrow != 'paper' && oppThrow != 'rock' && oppThrow != 'scissors' && oppThrow != 'paper'){
+											message.channel.send(`Someone didn't choose correctly, the match is cancelled!`)
+										}
+										else if(challThrow == 'rock' && oppThrow == 'scissors'){
+											message.channel.send(`${data.users[rpsParse.challIndex].name} threw rock, ${data.users[rpsParse.oppIndex].name} threw scissors`);
+											message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
+											data.users[rpsParse.challIndex].balance += wager;
+											data.users[rpsParse.oppIndex].balance -= wager;
+										}
+										else if(challThrow == 'scissors' && oppThrow == 'paper'){
+											message.channel.send(`${data.users[rpsParse.challIndex].name} threw scissors, ${data.users[rpsParse.oppIndex].name} threw paper`);
+											message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
+											data.users[rpsParse.challIndex].balance += wager;
+											data.users[rpsParse.oppIndex].balance -= wager;
+										}
+										else if(challThrow == 'paper' && oppThrow == 'rock'){
+											message.channel.send(`${data.users[rpsParse.challIndex].name} threw paper, ${data.users[rpsParse.oppIndex].name} threw rock`);
+											message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
+											data.users[rpsParse.challIndex].balance += wager;
+											data.users[rpsParse.oppIndex].balance -= wager;
+										}
+										else if(challThrow == oppThrow){
+											message.channel.send(`${data.users[rpsParse.challIndex].name} threw ${challThrow}, ${data.users[rpsParse.oppIndex].name} threw ${oppThrow}`);
+											message.channel.send(`It's a tie!`);
+										}
+										else{
+											message.channel.send(`${data.users[rpsParse.challIndex].name} threw ${challThrow}, ${data.users[rpsParse.oppIndex].name} threw ${oppThrow}`);
+											message.channel.send(`${data.users[rpsParse.oppIndex].name} won!`);
+											data.users[rpsParse.challIndex].balance -= wager;
+											data.users[rpsParse.oppIndex].balance += wager;
+										}
+										data.users[rpsParse.challIndex]["activity"] = Date.now();
+										data.users[rpsParse.oppIndex]["activity"] = Date.now();
+										data.users[rpsParse.challIndex]["bitterness"] = 0;
+										data.users[rpsParse.oppIndex]["bitterness"] = 0;
+										//write new data to database and delete cache file
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
+									}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`)});
 								});
 							}).catch(challChoice => {message.channel.send(`Challenger didn't type their response correctly or time expired to respond`)});
 						});
