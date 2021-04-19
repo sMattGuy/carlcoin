@@ -2548,7 +2548,7 @@ client.on('message', message => {
 						message.channel.send('You try to verse yourself and lost... how sad');
 					}
 					//check that wager is valid
-					else if(isNaN(wager) || wager < 0){ //CHANGE LATER MATT DO NOT FORGET
+					else if(isNaN(wager) || wager < 1){
 						message.channel.send('Invalid amount entered!');
 					}
 					else{
@@ -2642,7 +2642,7 @@ client.on('message', message => {
 					else{
 						//set the winning amount
 						let winnerAmount = wager * 2;
-						const filter = m => {return true};
+						const filter = m => {return m.content === 'rock' || m.content === 'paper' || m.content === 'scissors'};
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
 							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
@@ -2692,9 +2692,9 @@ client.on('message', message => {
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
-									})
-								})
-							})
+									}).catch(oppChoice => {message.channel.send(`Someone didn't type their response correctly or time expired to respond`)});
+								});
+							}).catch(challChoice => {message.channel.send(`Someone didn't type their response correctly or time expired to respond`)});
 						});
 					}
 				}
