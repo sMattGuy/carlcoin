@@ -2574,7 +2574,7 @@ client.on('message', message => {
 												//begin setting up battle variables
 												let rpsEnder = Date.now() + 60000;
 												let rpsInfo = {"challenger":`${challenger}`,"challIndex":`${i}`,"opponent":`${opponent}`,"oppIndex":`${j}`,"wager":`${wager}`,"rpsEnder":`${rpsEnder}`};
-												let jsonBattle = JSON.stringify(battleInfo);
+												let jsonBattle = JSON.stringify(rpsInfo);
 												//create battle cache file and alert opponent of their challenge
 												fs.writeFileSync(`/home/mattguy/carlcoin/cache/${opponent}rps`,jsonBattle);
 												data.users[i]["activity"] = Date.now();
