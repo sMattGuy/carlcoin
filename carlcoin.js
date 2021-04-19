@@ -2643,10 +2643,10 @@ client.on('message', message => {
 						//set the winning amount
 						let winnerAmount = wager * 2;
 						//take money from both users
-						client.users.fetch(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
-							client.users.fetch(data.users[rpsParse.challIndex].id).awaitMessages(filter, {max:1,time:20000}).then(challChoice => {
-								client.users.fetch(data.users[rpsParse.oppIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
-									client.users.fetch(data.users[rpsParse.oppIndex].id).awaitMessages(filter, {max:1,time:20000}).then(oppChoice => {
+						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
+							client.users.cache.get(data.users[rpsParse.challIndex].id).awaitMessages(filter, {max:1,time:20000}).then(challChoice => {
+								client.users.cache.get(data.users[rpsParse.oppIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
+									client.users.cache.get(data.users[rpsParse.oppIndex].id).awaitMessages(filter, {max:1,time:20000}).then(oppChoice => {
 										let challThrow = challChoice.first().content;
 										let oppThrow = oppChoice.first().content;
 										
