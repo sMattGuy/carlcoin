@@ -2703,30 +2703,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	//sex
-	else if(message.content.startsWith('!cc sex')){
-		if(message.author.id == 96706597224452096){
-			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-			let data = JSON.parse(database);
-			let id = message.author.id;
-			//checks for name
-			for(let i=0;i<data.users.length;i++){
-				if(data.users[i].id == id){
-					data.users[i].balance = 0;
-					data.users[i]["unstable"] = 250;
-					
-					message.channel.send(`it hurts`);
-					
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					break;
-				}
-			}
-		}
-		else{
-			message.channel.send(`you have poggers sex`);
-		}
-	}
 	//help menu
 	else if(message.content === '!cc help'){
 		message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands`);
