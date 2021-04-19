@@ -2640,6 +2640,7 @@ client.on('message', message => {
 					}
 					//begin battle
 					else{
+						message.channel.send(`Getting challengers throw, please wait!`);
 						//set the winning amount
 						let winnerAmount = wager * 2;
 						const filter = m => {return m.content === 'rock' || m.content === 'paper' || m.content === 'scissors'};
