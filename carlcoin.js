@@ -2548,7 +2548,7 @@ client.on('message', message => {
 						message.channel.send('You try to verse yourself and lost... how sad');
 					}
 					//check that wager is valid
-					else if(isNaN(wager) || wager < 1){
+					else if(isNaN(wager) || wager < 0){ //change later
 						message.channel.send('Invalid amount entered!');
 					}
 					else{
