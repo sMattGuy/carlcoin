@@ -2653,7 +2653,7 @@ client.on('message', message => {
 										console.log(challThrow);
 										console.log(oppThrow);
 										
-										if(challThrow != 'rock' || challThrow != 'scissors' || challThrow != 'paper' || oppThrow != 'rock' || oppThrow != 'scissors' || oppThrow != 'paper'){
+										if(challThrow != 'rock' && challThrow != 'scissors' && challThrow != 'paper' && oppThrow != 'rock' && oppThrow != 'scissors' && oppThrow != 'paper'){
 											message.channel.send(`Someone didn't choose correctly, the match is cancelled!`)
 										}
 										else if(challThrow == 'rock' && oppThrow == 'scissors'){
