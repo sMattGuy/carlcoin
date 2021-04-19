@@ -2613,13 +2613,13 @@ client.on('message', message => {
 			let rpsParse = JSON.parse(rpsFile);
 			//check if time has expired for this opponent
 			if(rpsParse.rpsEnder < Date.now()){
-				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
 				message.channel.send('Time has expired to accept the rock paper scissors battle');
 			}
 			else{
 				//if deny battle, mock opponent and delete their cache file
 				if(message.content == '!cc denyRps'){
-					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}battle`);
+					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
 					message.channel.send('You lose by default');
 				}
 				//accept battle protocol
