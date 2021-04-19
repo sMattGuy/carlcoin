@@ -125,12 +125,12 @@ client.on('message', message => {
 			if(data.pot >= 1000){
 				let removeAmount = data.pot - 1000;
 				data.pot = data.pot - removeAmount;
-				data.econ = data.econ - removeAmount;
+				data.welfare = data.welfare + removeAmount;
 			}
 			if(data.welfare >= 5000){
 				let removeAmount = data.welfare - 5000;
 				data.welfare = data.welfare - removeAmount;
-				data.econ = data.econ - removeAmount;
+				data.blackjack = data.blackjack + removeAmount;
 			}
 			if(data.welfare >= 10000){
 				let removeAmount = data.blackjack - 10000;
