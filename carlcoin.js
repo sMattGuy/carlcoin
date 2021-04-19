@@ -2371,16 +2371,25 @@ client.on('message', message => {
 											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under','matrixs under','grabs'];
 											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults','bombards','hits','monkey punches','grabs','hooks'];
 											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated','hurt','messed up','damaged','clipped'];
-											let attackerHP = 2;
-											let defenderHP = 2;
+											let attackerHP = 3;
+											let defenderHP = 3;
 											let turnCount = 0;
 											message.channel.send(`${user} is trying to rob ${recipient}!`);
 											console.log(user + ' is trying to rob ' + recipient);
 											let nextMessage = ``;
+											if(isNaN(data.users[i]["STR"])){
+												data.users[i]["STR"] = 0;
+											}
+											if(isNaN(data.users[j]["STR"])){
+												data.users[j]["STR"] = 0;
+											}
+											if(isNaN(data.users[j]["DEX"])){
+												data.users[j]["DEX"] = 0;
+											}
 											while(attackerHP != 0 && defenderHP != 0){
 												nextMessage += `TURN ${turnCount}\n-----------------------------\n`;
-												let attackerRoll = Math.random();
-												let defenderRoll = Math.random();
+												let attackerRoll = Math.random() + (parseInt(data.users[i]["STR"]) * 0.001);
+												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001);
 												if(turnCount % 2 == 0){
 													//attacker turn
 													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}!\n`;
@@ -2404,6 +2413,10 @@ client.on('message', message => {
 														attackerHP -= 1;
 													}
 													turnCount++;
+												}
+												if(turnCount > 10){
+													message.channel.send(`Police have arrived, ${user} is under arrest!`);
+													attackerHP = 0;
 												}
 											}
 											message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
