@@ -2650,6 +2650,8 @@ client.on('message', message => {
 									client.users.cache.get(data.users[rpsParse.oppIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(oppChoice => {
 										let challThrow = challChoice.first().content;
 										let oppThrow = oppChoice.first().content;
+										console.log(challThrow);
+										console.log(oppThrow);
 										
 										if(challThrow != 'rock' || challThrow != 'scissors' || challThrow != 'paper' || oppThrow != 'rock' || oppThrow != 'scissors' || oppThrow != 'paper'){
 											message.channel.send(`Someone didn't choose correctly, the match is cancelled!`)
