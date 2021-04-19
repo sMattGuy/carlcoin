@@ -2681,19 +2681,18 @@ client.on('message', message => {
 											data.users[rpsParse.challIndex].balance -= wager;
 											data.users[rpsParse.oppIndex].balance += wager;
 										}
+										data.users[rpsParse.challIndex]["activity"] = Date.now();
+										data.users[rpsParse.oppIndex]["activity"] = Date.now();
+										data.users[rpsParse.challIndex]["bitterness"] = 0;
+										data.users[rpsParse.oppIndex]["bitterness"] = 0;
+										//write new data to database and delete cache file
+										let newData = JSON.stringify(data);
+										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
 									})
 								})
 							})
 						});
-						
-						data.users[rpsParse.challIndex]["activity"] = Date.now();
-						data.users[rpsParse.oppIndex]["activity"] = Date.now();
-						data.users[battleParse.challIndex]["bitterness"] = 0;
-						data.users[battleParse.oppIndex]["bitterness"] = 0;
-						//write new data to database and delete cache file
-						let newData = JSON.stringify(data);
-						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
 					}
 				}
 			}
