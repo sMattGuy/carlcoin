@@ -2415,7 +2415,7 @@ client.on('message', message => {
 												data.users[i].balance += robAmount;
 												data.users[j].balance -= robAmount;
 											}
-											data.users[i]["robTimer"] = Date.now() + 600000;
+											data.users[i]["robTimer"] = Date.now() + 1800000;
 											let newData = JSON.stringify(data);
 											fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										}
