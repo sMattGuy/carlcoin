@@ -2525,7 +2525,7 @@ client.on('message', message => {
 			if(mentionOK){
 				let rebattle = true;
 				//check if opponent is in battle
-				if(fs.existsSync(`/home/mattguy/carlcoin/cache/${opponent}battle`)){
+				if(fs.existsSync(`/home/mattguy/carlcoin/cache/${opponent}rps`)){
 					//if opponent file exists, parse data
 					let rpsFile = fs.readFileSync(`/home/mattguy/carlcoin/cache/${opponent}rps`);
 					let rpsParse = JSON.parse(rpsFile);
