@@ -2719,7 +2719,6 @@ client.on('message', message => {
 					
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					message.channel.send(`Your username has been updated`);
 					break;
 				}
 			}
