@@ -2426,10 +2426,10 @@ client.on('message', message => {
 													turnCount++;
 												}
 												if(turnCount == 7){
-													nextMessage += `Police have been called, they are on the way!`;
+													nextMessage += `Police have been called, they are on the way!\n`;
 												}
 												if(turnCount > 10){
-													nextMessage += `Police have arrived, ${user} is under arrest!`;
+													nextMessage += `Police have arrived, ${user} is under arrest!\n`;
 													attackerHP = 0;
 												}
 											}
