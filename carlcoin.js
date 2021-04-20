@@ -93,6 +93,7 @@ client.on('message', message => {
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let totalAdded = 0;
+		let totalTax = 0;
 		prevDate = universalDate.getDay();
 		for(let i=0;i<data.users.length;i++){
 			let homePrice = data.users[i]["house"] * 10;
@@ -120,6 +121,7 @@ client.on('message', message => {
 			}
 			data.users[i].balance += amount;
 			totalAdded += amount;
+			totalTax += taxAmount;
 			blackjackAmount = Math.floor(taxAmount/2);
 			taxAmount -= blackjackAmount;
 			data.welfare += taxAmount;
@@ -157,6 +159,7 @@ client.on('message', message => {
 			}
 		}
 		console.log('users got ' + totalAdded + ' carl coin from realty');
+		console.log(totalTax + ' was collected from taxes');
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 		//lottery
