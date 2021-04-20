@@ -2376,8 +2376,8 @@ client.on('message', message => {
 											const dodgeVerbs = ['dodges','backpedals','sidesteps','jumps over','evades','avoids','ducks under','matrixs under','grabs'];
 											const attackVerbs = ['attacks','charges','pounces','strikes','ambushes','blitzs','assaults','bombards','hits','monkey punches','grabs','hooks'];
 											const damageVerbs = ['injured','harmed','mangled','impaired','hit','wrecked','devistated','hurt','messed up','damaged','clipped'];
-											let attackerHP = 2;
-											let defenderHP = 2;
+											let attackerHP = 3;
+											let defenderHP = 3;
 											let turnCount = 0;
 											message.channel.send(`${user} is trying to rob ${recipient}!`);
 											console.log(user + ' is trying to rob ' + recipient);
