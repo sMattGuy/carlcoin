@@ -1716,8 +1716,8 @@ client.on('message', message => {
 										data.users[i]["CHR"] = 0;
 									}
 									let chrBonus = data.users[i]["CHR"] * .01;
-									if(chrBonus > .05){
-										chrBonus = .05;
+									if(chrBonus > .25){
+										chrBonus = .25;
 									}
 									if(1 - seduceChance < chrBonus){
 										let wagerHalf = Math.ceil(wager / 2);
@@ -1823,8 +1823,8 @@ client.on('message', message => {
 						data.users[blackjackParse.challIndex]["CHR"] = 0;
 					}
 					let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-					if(chrBonus > .05){
-						chrBonus = .05;
+					if(chrBonus > .25){
+						chrBonus = .25;
 					}
 					if(1 - seduceChance < chrBonus){
 						let wagerHalf = Math.ceil(blackjackParse.wager / 2);
@@ -2019,8 +2019,8 @@ client.on('message', message => {
 							data.users[blackjackParse.challIndex]["CHR"] = 0;
 						}
 						let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-						if(chrBonus > .05){
-							chrBonus = .05;
+						if(chrBonus > .25){
+							chrBonus = .25;
 						}
 						if(1 - seduceChance < chrBonus){
 							let wagerHalf = Math.ceil(blackjackParse.wager / 2);
