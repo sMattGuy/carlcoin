@@ -98,6 +98,7 @@ client.on('message', message => {
 			let homePrice = data.users[i]["house"] * 10;
 			let taxAmount = 0;
 			let blackjackAmount = 0;
+			let personalTax = Math.floor((data.users[i].balance / data.econ) * 100);
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
@@ -114,6 +115,10 @@ client.on('message', message => {
 			taxAmount += (skyPrice/50) * 4;
 			let amount = homePrice + apartPrice + skyPrice;
 			amount -= taxAmount;
+			amount -= personalTax;
+			if(amount < 0){
+				amount = 0;
+			}
 			data.users[i].balance += amount;
 			totalAdded += amount;
 			blackjackAmount = Math.floor(taxAmount/2);
