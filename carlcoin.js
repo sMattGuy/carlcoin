@@ -2358,6 +2358,7 @@ client.on('message', message => {
 								let balance = data.users[i].balance;
 								let currentDate = new Date();
 								let noRecp = true;
+								let nextMatch = 3600000;
 								//finds other user
 								for(let j=0;j<data.users.length;j++){
 									//starts robbing
@@ -2430,6 +2431,7 @@ client.on('message', message => {
 												if(turnCount > 10){
 													nextMessage += `Police have arrived, ${user} is under arrest!\n`;
 													attackerHP = 0;
+													nextMatch *= 4;
 												}
 											}
 											message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
@@ -2445,7 +2447,7 @@ client.on('message', message => {
 												data.users[i].balance += robAmount;
 												data.users[j].balance -= robAmount;
 											}
-											data.users[i]["robTimer"] = Date.now() + 3600000;
+											data.users[i]["robTimer"] = Date.now() + nextMatch;
 											let newData = JSON.stringify(data);
 											fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										}
