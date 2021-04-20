@@ -138,7 +138,7 @@ client.on('message', message => {
 				data.welfare = data.welfare - removeAmount;
 				data.blackjack = data.blackjack + removeAmount;
 			}
-			if(data.welfare >= 10000){
+			if(data.blackjack >= 10000){
 				let removeAmount = data.blackjack - 10000;
 				data.blackjack = data.blackjack - removeAmount;
 				data.econ = data.econ - removeAmount;
