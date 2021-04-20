@@ -2607,7 +2607,7 @@ client.on('message', message => {
 												data.users[i]["activity"] = Date.now();
 												let newData = JSON.stringify(data);
 												fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-												message.channel.send(`${data.users[j].name}! Type !cc acceptRps to accept ${data.users[i].name}'s challenge or type !cc denyRps to reject the challenge. You have 1 minute to respond.`);
+												message.channel.send(`${data.users[j].name}! Type !cc acceptRps to accept ${data.users[i].name}'s rock paper scissors request or type !cc denyRps to reject the challenge. You have 1 minute to respond, make sure you can recieve DM's!`);
 											}
 											noOpp = false;
 											break;
@@ -2722,9 +2722,9 @@ client.on('message', message => {
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
 									}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`)});
-								});
+								}).catch(() => {message.channel.send(`Failed to send DM to opponent (make sure you have DM's on for this server!)`)});
 							}).catch(challChoice => {message.channel.send(`Challenger didn't type their response correctly or time expired to respond`)});
-						});
+						}).catch(() => {message.channel.send(`Failed to send DM to challenger (make sure you have DM's on for this server!)`)});
 					}
 				}
 			}
