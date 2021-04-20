@@ -102,20 +102,19 @@ client.on('message', message => {
 			if(isNaN(homePrice)){
 				homePrice = 0;
 			}
-			taxAmount = (homePrice/10) * 2;
+			taxAmount = ((homePrice/10) * (2 * personalTax)) + 2;
 			let apartPrice = data.users[i]["apartment"] * 25;
 			if(isNaN(apartPrice)){
 				apartPrice = 0;
 			}
-			taxAmount += (apartPrice/25) * 3;
+			taxAmount += ((apartPrice/25) * (3 * personalTax)) + 3;
 			let skyPrice = data.users[i]["skyscraper"] * 50;
 			if(isNaN(skyPrice)){
 				skyPrice = 0;
 			}
-			taxAmount += (skyPrice/50) * 4;
+			taxAmount += ((skyPrice/50) * (4 * personalTax)) + 4;
 			let amount = homePrice + apartPrice + skyPrice;
 			amount -= taxAmount;
-			amount -= personalTax;
 			if(amount < 0){
 				amount = 0;
 			}
