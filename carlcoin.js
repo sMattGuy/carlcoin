@@ -2318,23 +2318,29 @@ client.on('message', message => {
 		let chance = Math.random();
 		if(chance >= 0.9999){
 			for(let i=0;i<data.users.length;i++){
-				let balance = data.users[i].balance;
-				console.log("busted ultimate nut " + data.users[i].name);
-				data.users.splice(i,1);
-				data.econ -= balance;
-				
-				let newData = JSON.stringify(data);
-				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-				message.channel.send(`You bust the ultimate nut, draining all of your life force\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
+				if(data.users[i].id == id){
+					let balance = data.users[i].balance;
+					console.log("busted ultimate nut " + data.users[i].name);
+					data.users.splice(i,1);
+					data.econ -= balance;
+					
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`You bust the ultimate nut, draining all of your life force\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
+					break;
+				}
 			}
 		}
 		else{
 			for(let i=0;i<data.users.length;i++){
-				data.users[i]["unstable"] -= 1;
-				
-				let newData = JSON.stringify(data);
-				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-				message.channel.send(`It makes you feel a bit better`);
+				if(data.users[i].id == id){
+					data.users[i]["unstable"] -= 1;
+					
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`It makes you feel a bit better`);
+					break;
+				}
 			}
 		}
 	}
