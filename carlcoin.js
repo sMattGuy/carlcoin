@@ -2316,7 +2316,7 @@ client.on('message', message => {
 		let data = JSON.parse(database);
 		let id = message.author.id;
 		let chance = Math.random();
-		if(chance >= 0.9999){
+		if(chance >= 0.999){
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
 					let balance = data.users[i].balance;
@@ -2334,8 +2334,16 @@ client.on('message', message => {
 		else{
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
-					data.users[i]["unstable"] -= 1;
-					
+					if(isNaN(data.users[i]["unstable"])){
+						data.users[i]["unstable"] = 0;
+					}
+					data.users[i]["unstable"] -= 5;
+					if(data.users[i]["unstable"] < 0){
+						data.users[i]["unstable"] = 0;
+					}
+					if(data.users[i]["unstable"] + 5 >= 100 && data.users[i]["unstable"] < 100){
+						message.channel.send(`You come to your senses`);
+					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					message.channel.send(`It makes you feel a bit better`);
@@ -2417,6 +2425,7 @@ client.on('message', message => {
 											let attackerHP = 3;
 											let defenderHP = 3;
 											let turnCount = 0;
+											let arrested = false;
 											message.channel.send(`${user} is trying to rob ${recipient}!`);
 											console.log(user + ' is trying to rob ' + recipient);
 											let nextMessage = ``;
@@ -2441,13 +2450,21 @@ client.on('message', message => {
 											if(isNaN(data.users[j]["unstable"])){
 												data.users[j]["unstable"] = 0;
 											}
+											
+											let moneyDisparity = (data.users[i].balance / data.users[j].balance) * 100;
+											if(moneyDisparity >= 100){
+												message.channel.send(`**${user} has ${moneyDisparity}% more CC than ${recipient}! ${recipient} gets that percentage as advantage!**`)
+											}
+											else{
+												moneyDisparity = 0;
+											}
 											while(attackerHP != 0 && defenderHP != 0){
-												nextMessage += `TURN ${turnCount}\n-----------------------------\n`;
+												nextMessage += `__TURN ${turnCount}__\n`;
 												let attackerRoll = Math.random() + (parseInt(data.users[i]["STR"]) * 0.001) + (parseInt(data.users[i]["unstable"]) * 0.0001);
-												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001) + (parseInt(data.users[j]["unstable"]) * 0.0001);
+												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001) + (parseInt(data.users[j]["unstable"]) * 0.0001) + (moneyDisparity / 100);
 												if(turnCount % 2 == 0){
 													//attacker turn
-													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}!\n`;
+													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}! --> `;
 													if(attackerRoll <= defenderRoll){
 														nextMessage += `${recipient} ${dodgeVerbs[Math.floor(Math.random() * dodgeVerbs.length)]} ${user} attack!\n`;
 													}
@@ -2459,7 +2476,7 @@ client.on('message', message => {
 												}
 												else{
 													//defender turn
-													nextMessage += `${recipient} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${user}!\n`;
+													nextMessage += `${recipient} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${user}! --> `;
 													if(defenderRoll <= attackerRoll){
 														nextMessage += `${user} ${dodgeVerbs[Math.floor(Math.random() * dodgeVerbs.length)]} ${recipient} attack!\n`;
 													}
@@ -2470,10 +2487,10 @@ client.on('message', message => {
 													turnCount++;
 												}
 												if(turnCount == 7){
-													nextMessage += `Police have been called, they are on the way!\n`;
+													nextMessage += `**Police have been called, they are on the way!**\n`;
 												}
-												if(turnCount > 10){
-													nextMessage += `Police have arrived, ${user} is under arrest!\n`;
+												if(turnCount >= 10){
+													nextMessage += `**Police have arrived, ${user} is under arrest!**\n`;
 													attackerHP = 0;
 													nextMatch *= 4;
 												}
@@ -2485,7 +2502,7 @@ client.on('message', message => {
 												data.users[i].balance -= robAmount;
 												data.econ -= robAmount;
 												let dropChance = Math.random();
-												if(dropChance >= 0.95){
+												if(dropChance >= 0.95 || arrested){
 													//lose chr
 													message.channel.send(`${user} can't handle getting laughed at, their CHR drops!`);
 													data.users[i]["CHR"] -= 1;
@@ -2577,8 +2594,6 @@ client.on('message', message => {
 		}
 	}
 	//rock paper scissors
-	
-	
 	else if(message.content.startsWith('!cc rps')){ /* !cc challenge @user amount */
 		//check command is correctly entered
 		let chop = message.content.split(" ");
