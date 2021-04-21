@@ -2558,7 +2558,9 @@ client.on('message', message => {
 					timeLeftRelax = Math.floor(timeLeftRelax / 60);
 					messageToSend += `You have ${timeLeftRelax} mins left before you can relax again\n`
 				}
-				
+				if(isNaN(data.users[i]["robTimer"])){
+					data.users[i]["robTimer"] = Date.now();
+				}	
 				if(data.users[i]["robTimer"] < Date.now()){
 					messageToSend += `You can rob!\n`
 				}
