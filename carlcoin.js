@@ -1723,10 +1723,10 @@ client.on('message', message => {
 										chrBonus = .25;
 									}
 									if(1 - seduceChance < chrBonus){
-										let wagerHalf = Math.ceil(wager / 2);
+										let wagerHalf = Math.floor(wager / 2);
 										wager = wager - wagerHalf;
 										data.users[i].balance += wagerHalf;
-										data.blackjack -= wager;
+										data.blackjack -= wagerHalf;
 										message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
 									}
 									//instability counter
@@ -1830,10 +1830,10 @@ client.on('message', message => {
 						chrBonus = .25;
 					}
 					if(1 - seduceChance < chrBonus){
-						let wagerHalf = Math.ceil(blackjackParse.wager / 2);
+						let wagerHalf = Math.floor(blackjackParse.wager / 2);
 						blackjackParse.wager = blackjackParse.wager - wagerHalf;
 						data.users[blackjackParse.challIndex].balance += wagerHalf;
-						data.blackjack -= blackjackParse.wager;
+						data.blackjack -= wagerHalf;
 						message.channel.send(`${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
 					}
 					
@@ -2026,10 +2026,10 @@ client.on('message', message => {
 							chrBonus = .25;
 						}
 						if(1 - seduceChance < chrBonus){
-							let wagerHalf = Math.ceil(blackjackParse.wager / 2);
+							let wagerHalf = Math.floor(blackjackParse.wager / 2);
 							blackjackParse.wager = blackjackParse.wager - wagerHalf;
 							data.users[blackjackParse.challIndex].balance += wagerHalf;
-							data.blackjack -= blackjackParse.wager;
+							data.blackjack -= wagerHalf;
 							message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
 						}
 						//instability counter
