@@ -2312,11 +2312,11 @@ client.on('message', message => {
 	//cc sex
 	else if(message.content.startsWith('!cc sex')){
 		message.channel.send(`You have poggers sex`);
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
 		let chance = Math.random();
 		if(chance >= 0.9999){
-			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-			let data = JSON.parse(database);
-			let id = message.author.id;
 			for(let i=0;i<data.users.length;i++){
 				let balance = data.users[i].balance;
 				console.log("busted ultimate nut " + data.users[i].name);
@@ -2326,6 +2326,15 @@ client.on('message', message => {
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				message.channel.send(`You bust the ultimate nut, draining all of your life force\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
+			}
+		}
+		else{
+			for(let i=0;i<data.users.length;i++){
+				data.users[i]["unstable"] -= 1;
+				
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				message.channel.send(`It makes you feel a bit better`);
 			}
 		}
 	}
