@@ -2309,6 +2309,26 @@ client.on('message', message => {
 			}
 		}
 	}
+	//cc sex
+	else if(message.content.startsWith('!cc sex')){
+		message.channel.send(`You have poggers sex`);
+		let chance = Math.random();
+		if(chance >= 0.9999){
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let id = message.author.id;
+			for(let i=0;i<data.users.length;i++){
+				let balance = data.users[i].balance;
+				console.log("busted ultimate nut " + data.users[i].name);
+				data.users.splice(i,1);
+				data.econ -= balance;
+				
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				message.channel.send(`You bust the ultimate nut, draining all of your life force\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
+			}
+		}
+	}
 	//oh man dab lol
 	else if(message.content === '!cc dab'){
 		message.channel.send(`Oh man you are one funny guy! you did it! you hit that mf dab bruh holy shit you just fuckinnn were all like im gonna type !cc dab and see that it wont do anything! but suprise bitch! it fuckinnn dabbed LOL it did the dab! can you believe this??? it fucking dabbed!!! thats so crazy and quirky that the silly money bot had a dab feature built in! lol LOL LAMO I CANT BELIEVE IT ACTUALLY DABBED LOOL wow it dabbed you know what also dabs??? DAB PENS FOR $14.99 ON https://www.olivegarden.com`);
