@@ -2388,6 +2388,12 @@ client.on('message', message => {
 											if(isNaN(data.users[i]["STR"])){
 												data.users[i]["STR"] = 0;
 											}
+											if(isNaN(data.users[i]["CHR"])){
+												data.users[i]["CHR"] = 0;
+											}
+											if(isNaN(data.users[j]["CHR"])){
+												data.users[j]["CHR"] = 0;
+											}
 											if(isNaN(data.users[j]["STR"])){
 												data.users[j]["STR"] = 0;
 											}
@@ -2443,6 +2449,12 @@ client.on('message', message => {
 												message.channel.send(`${user} tried to rob ${recipient} and lost! What a massive embarassment! They dropped ${robAmount}CC while running away!`);
 												data.users[i].balance -= robAmount;
 												data.econ -= robAmount;
+												let dropChance = Math.random();
+												if(dropChance >= 0.95){
+													//lose chr
+													message.channel.send(`${user} can't handle getting laughed at, their CHR drops!`);
+													data.users[i]["CHR"] -= 1;
+												}
 											}
 											else{
 												//attacker won
