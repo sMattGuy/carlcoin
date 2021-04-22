@@ -2452,6 +2452,7 @@ client.on('message', message => {
 											}
 											
 											let moneyDisparity = (data.users[i].balance / data.users[j].balance) * 100;
+											moneyDisparity.toFixed(2);
 											if(moneyDisparity >= 100){
 												message.channel.send(`**${user} has ${moneyDisparity}% more CC than ${recipient}! ${recipient} gets that percentage as advantage!**`)
 											}
