@@ -2462,7 +2462,7 @@ client.on('message', message => {
 											while(attackerHP != 0 && defenderHP != 0){
 												nextMessage += `__TURN ${turnCount}__\n`;
 												let attackerRoll = Math.random() + (parseInt(data.users[i]["STR"]) * 0.001) + (parseInt(data.users[i]["unstable"]) * 0.0001);
-												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001) + (parseInt(data.users[j]["unstable"]) * 0.0001) + (moneyDisparity / 100);
+												let defenderRoll = Math.random() + ((parseInt(data.users[j]["DEX"]) + parseInt(data.users[j]["STR"])) * 0.001) + (parseInt(data.users[j]["unstable"]) * 0.0001) + (moneyDisparity / 1000);
 												if(turnCount % 2 == 0){
 													//attacker turn
 													nextMessage += `${user} ${attackVerbs[Math.floor(Math.random() * attackVerbs.length)]} ${recipient}! --> `;
