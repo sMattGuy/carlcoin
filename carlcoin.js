@@ -2452,7 +2452,7 @@ client.on('message', message => {
 											}
 											
 											let moneyDisparity = (data.users[i].balance / data.users[j].balance) * 100;
-											moneyDisparity.toFixed(2);
+											moneyDisparity = moneyDisparity.toFixed(2);
 											if(moneyDisparity >= 100){
 												message.channel.send(`**${user} has ${moneyDisparity}% more CC than ${recipient}! ${recipient} gets that percentage as advantage!**`)
 											}
@@ -2494,6 +2494,7 @@ client.on('message', message => {
 													nextMessage += `**Police have arrived, ${user} is under arrest!**\n`;
 													attackerHP = 0;
 													nextMatch *= 4;
+													arrested = true;
 												}
 											}
 											message.channel.send(nextMessage).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
@@ -2502,6 +2503,13 @@ client.on('message', message => {
 												message.channel.send(`${user} tried to rob ${recipient} and lost! What a massive embarassment! They dropped ${robAmount}CC while running away!`);
 												data.users[i].balance -= robAmount;
 												data.econ -= robAmount;
+
+												data.users[i]["unstable"] += 10;
+
+												if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"]-10 < 100){
+													message.channel.send(`You are starting to feel irrational`);
+												}
+
 												let dropChance = Math.random();
 												if(dropChance >= 0.95 || arrested){
 													//lose chr
