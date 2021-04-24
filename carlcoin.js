@@ -2798,10 +2798,10 @@ client.on('message', message => {
 										let newData = JSON.stringify(data);
 										fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 										fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);
-									}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`)});
-								}).catch(() => {message.channel.send(`Failed to send DM to opponent (make sure you have DM's on for this server!)`)});
-							}).catch(challChoice => {message.channel.send(`Challenger didn't type their response correctly or time expired to respond`)});
-						}).catch(() => {message.channel.send(`Failed to send DM to challenger (make sure you have DM's on for this server!)`)});
+									}).catch(oppChoice => {message.channel.send(`Opponent didn't type their response correctly or time expired to respond`);fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);});
+								}).catch(() => {message.channel.send(`Failed to send DM to opponent (make sure you have DM's on for this server!)`);fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);});
+							}).catch(challChoice => {message.channel.send(`Challenger didn't type their response correctly or time expired to respond`);fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);});
+						}).catch(() => {message.channel.send(`Failed to send DM to challenger (make sure you have DM's on for this server!)`);fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}rps`);});
 					}
 				}
 			}
