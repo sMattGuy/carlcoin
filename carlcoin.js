@@ -634,7 +634,26 @@ client.on('message', message => {
 					let fakeWis = -1 * Math.floor(Math.random() * 1001);
 					let fakeChr = -1 * Math.floor(Math.random() * 1001);
 					message.channel.send(`Something doesn't feel right...`);
+					
+					/**
 					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${fakeBalance}\n|  /|\\    buildings: ${fakeBuildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${fakeStr}\tCON: ${fakeCon}\tWIS: ${fakeWis}\n| DEX: ${fakeDex}\tINT: ${fakeInt}\tCHR: ${fakeChr}\n+----------------------------`,{"code":true});
+					**/
+					const playercardEmbed = new Discord.MessageEmbed()
+						.setColor('#FA2700')
+						.setTitle(`${data.users[i].name}'s playercard?`)
+						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+						.setThumbnail('https://i.imgur.com/0aDFif9.png')
+						.addFields(
+							{ name: 'Clerical Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}` },
+							{ name: '\u200B', value: 'Stats' },
+							{ name: 'STR', value: `${fakeStr}`, inline: true },
+							{ name: 'CON', value: `${fakeCon}`, inline: true },
+							{ name: 'WIS', value: `${fakeWis}`, inline: true },
+							{ name: 'DEX', value: `${fakeDex}`, inline: true },
+							{ name: 'INT', value: `${fakeInt}`, inline: true },
+							{ name: 'CHR', value: `${fakeChr}`, inline: true },
+						)
+					message.channel.send(playercardEmbed);
 					message.channel.send(`...Maybe you need to relax`);
 				}
 				else{
