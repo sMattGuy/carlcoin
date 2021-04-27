@@ -690,7 +690,7 @@ client.on('message', message => {
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#0099ff')
 						.setTitle(`${data.users[i].name}'s playercard`)
-						.setAuthor(`${data.users[i].name}`, `${message.author.avatarURL}`)
+						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
 							{ name: 'Clerical Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}` },
