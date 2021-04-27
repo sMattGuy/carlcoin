@@ -695,7 +695,7 @@ client.on('message', message => {
 						.addFields(
 							{ name: 'Clerical Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}` },
 							{ name: '\u200B', value: '\u200B' },
-							{ name: '', value: 'Stats' },
+							{ name: '\u200B', value: 'Stats' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
 							{ name: 'WIS', value: `${wis}`, inline: true },
