@@ -684,7 +684,26 @@ client.on('message', message => {
 						data.users[i]["CHR"] = 0;
 					}
 					let buildings = homes + apartments + skyscrapers;
+					/**
 					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
+					**/
+					const playercardEmbed = new Discord.MessageEmbed()
+						.setColor('#0099ff')
+						.setTitle(`${data.users[i].name}'s playercard`)
+						.setAuthor(`${data.users[i].name}`, `${message.author.avatarURL}`)
+						.setThumbnail('https://i.imgur.com/0aDFif9.png')
+						.addFields(
+							{ name: 'Clerical Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}` },
+							{ name: '\u200B', value: '\u200B' },
+							{ name: '', value: 'Stats' },
+							{ name: 'STR', value: `${str}`, inline: true },
+							{ name: 'CON', value: `${con}`, inline: true },
+							{ name: 'WIS', value: `${wis}`, inline: true },
+							{ name: 'DEX', value: `${dex}`, inline: true },
+							{ name: 'INT', value: `${inte}`, inline: true },
+							{ name: 'CHR', value: `${chr}`, inline: true },
+						)
+					message.channel.send(playercardEmbed);
 				}
 				notFound = false;
 				let newData = JSON.stringify(data);
