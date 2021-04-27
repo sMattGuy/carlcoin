@@ -688,13 +688,12 @@ client.on('message', message => {
 					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
 					**/
 					const playercardEmbed = new Discord.MessageEmbed()
-						.setColor('#0099ff')
+						.setColor('#F7931A')
 						.setTitle(`${data.users[i].name}'s playercard`)
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
 							{ name: 'Clerical Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}` },
-							{ name: '\u200B', value: '\u200B' },
 							{ name: '\u200B', value: 'Stats' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
