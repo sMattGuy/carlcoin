@@ -605,7 +605,7 @@ client.on('message', message => {
 							data.users[i]["CHR"] = 0;
 						}
 						let buildings = homes + apartments + skyscrapers;
-						let userImage = client.users.fetch(id).displayAvatarURL();
+						let userImage = client.users.cache.get(id).displayAvatarURL();
 						let perc = (balance / data.econ) * 100;
 						perc = perc.toFixed(2);
 						/**
