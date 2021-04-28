@@ -2379,7 +2379,7 @@ client.on('message', message => {
 		for(let i=0;i<userArray.length;i++){
 			messageBox += `${i+1}. ${userArray[i].name}\t${userArray[i].balance}\n`;
 		}
-		message.channel.send(`__Leaderboard of Carl Coin__\nmessageBox`);
+		message.channel.send(`__Leaderboard of Carl Coin__\n${messageBox}`);
 		//message.channel.send(`__Leaderboard: Top 3 Carl Coin Users__\n1. ${numberOneName} : ${numberOne}\n2. ${numberTwoName} : ${numberTwo}\n3. ${numberThreeName} : ${numberThree}`);
 	}
 	//update name
