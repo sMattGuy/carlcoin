@@ -252,10 +252,10 @@ client.on('message', message => {
 					}
 				}
 				else if(mysteryNumber > guess){
-					message.react('+23EC').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react('⏬').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 				else{
-					message.react('+23EB').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react('⏫').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 			}
 		}
