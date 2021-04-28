@@ -2945,7 +2945,7 @@ client.on('message', message => {
 		
 		
 		let currentCard = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png')
-		ctx.drawImage(currentCard,25,25,346,528);
+		ctx.drawImage(currentCard,25,25,173,264);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
 		channel.send(`Test of print function`,attachment);
