@@ -2919,12 +2919,7 @@ client.on('message', message => {
 		message.channel.send(`Stop yelling :|`);
 	}
 	else if(message.content === 'print the board'){
-		const canvas = Canvas.createCanvas(626,365);
-		const ctx = canvas.getContext('2d');
-		const background = Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
-		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
-		message.channel.send(`Test of print function`,attachment);
+		drawBoard(message.channel);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
@@ -2938,6 +2933,14 @@ client.on('message', message => {
 
 			return client.users.cache.get(mention);
 		}
+	}
+	async function drawBoard(channel){
+		const canvas = Canvas.createCanvas(626,365);
+		const ctx = canvas.getContext('2d');
+		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
+		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
+		message.channel.send(`Test of print function`,attachment);
 	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
