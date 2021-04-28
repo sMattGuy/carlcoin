@@ -2945,10 +2945,21 @@ client.on('message', message => {
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 		
 		let testCards = [5,14,48,32,22,7];
+		let dealersCards = [23,12,39,25,44,1];
+		boolean hiddenDealer = true;
 		
 		for(let i=0;i<testCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[testCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 50) ,210,130,200);
+		}
+		for(let i=0;i<dealersCards.length;i++){
+			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealersCards[i]]}`);
+			ctx.drawImage(dealerCard,470 - (i * 50) ,-210,130,200);
+			if(hiddenDealer){
+				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(dealerCard,470 - ((i+1) * 50) ,-210,130,200);
+				break;
+			}
 		}
 		
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
