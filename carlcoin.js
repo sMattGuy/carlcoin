@@ -2819,7 +2819,7 @@ client.on('message', message => {
 						let winnerAmount = wager * 2;
 						const filter = m => {
 							if(m.content !== 'rock' && m.content !== 'paper' && m.content !== 'scissors'){
-								m.send('Invalid choice, make sure you spelt it correctly!');
+								m.channel.send('Invalid choice, make sure you spelt it correctly!');
 							}
 							return m.content === 'rock' || m.content === 'paper' || m.content === 'scissors'
 							};
