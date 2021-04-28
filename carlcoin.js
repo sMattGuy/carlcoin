@@ -2921,7 +2921,7 @@ client.on('message', message => {
 	else if(message.content === 'print the board'){
 		const canvas = Canvas.createCanvas(626,365);
 		const ctx = canvas.getContext('2d');
-		const background = Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
+		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
 		message.channel.send(`Test of print function`,attachment);
