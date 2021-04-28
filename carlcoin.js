@@ -653,8 +653,8 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\nYou own ${fakePercent}% of the economy` },
-							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`'},
+							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\nYou own ${fakePercent}% of the economy`},
+							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`},
 							{ name: '\u200B', value: 'Stats?' },
 							{ name: 'STR', value: `${fakeStr}`, inline: true },
 							{ name: 'CON', value: `${fakeCon}`, inline: true },
@@ -725,8 +725,8 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\nYou own ${perc}% of the economy` },
-							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}}`'},
+							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\nYou own ${perc}% of the economy`},
+							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}}`},
 							{ name: '\u200B', value: 'Stats' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
