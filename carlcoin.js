@@ -472,64 +472,6 @@ client.on('message', message => {
 			console.log(user + " has joined carlcoin");
 		}
 	}
-	//check balance
-	/**
-	else if(message.content === '!cc balance'){
-		//fetch and store data
-		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-		let data = JSON.parse(database);
-		//stores user
-		let user = message.author.username;
-		let id = message.author.id;
-		//flag
-		let notFound = true;
-		//checks for name
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].id == id){
-				if(isNaN(data.users[i]["unstable"])){
-					data.users[i]["unstable"] = 0;
-				}
-				if(data.users[i]["unstable"] >= 100){
-					let fakeBalance = Math.floor(Math.random() * 1001);
-					let fakeHouses = Math.floor(Math.random() * 1001);
-					let fakeApartments = Math.floor(Math.random() * 1001);
-					let fakeSkys = Math.floor(Math.random() * 1001);
-					let fakePercent = Math.floor(Math.random() * 1001);
-					let fakeAssets = Math.floor(Math.random() * 1001);
-					message.channel.send(`Something doesn't feel right\nYou have ${fakeBalance}CC and own ${fakeHouses} homes, ${fakeApartments} apartments and ${fakeSkys} skyscrapers! Your assets equal ${fakeAssets}CC!\nYou control ${fakePercent}% of the economy!\n...maybe you need to relax`);
-					notFound = false;
-					break;
-				}
-				else{
-					let balance = data.users[i].balance;
-					let perc = (balance / data.econ) * 100;
-					let homes = data.users[i]["house"];
-					if(isNaN(homes)){
-						homes = 0;
-					}
-					let apartments = data.users[i]["apartment"];
-					if(isNaN(apartments)){
-						apartments = 0;
-					}
-					let skyscrapers = data.users[i]["skyscraper"];
-					if(isNaN(skyscrapers)){
-						skyscrapers = 0;
-					}
-					let assets = (homes * 50) + (apartments * 150) + (skyscrapers * 250);
-					perc = perc.toFixed(2);
-					message.channel.send(`You have ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Your assets equal ${assets}CC!\nYou control ${perc}% of the economy!`);
-					notFound = false;
-					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					break;	
-				}
-			}
-		}
-		if(notFound){
-			message.channel.send('You are not registered for CC!');
-		}
-	}
-	**/
 	//audit user
 	else if(message.content.startsWith('!cc audit')){
 		let chop = message.content.split(" ");
@@ -633,9 +575,6 @@ client.on('message', message => {
 						let userImage = client.users.cache.get(id).displayAvatarURL();
 						let perc = (balance / data.econ) * 100;
 						perc = perc.toFixed(2);
-						/**
-						message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
-						**/
 						const playercardEmbed = new Discord.MessageEmbed()
 							.setColor('#F7931A')
 							.setTitle(`${data.users[i].name}'s playercard`)
@@ -653,8 +592,6 @@ client.on('message', message => {
 								{ name: 'CHR', value: `${chr}`, inline: true },
 							)
 						message.channel.send(playercardEmbed);
-						
-						//message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Their assets are equal to ${assets}CC!\nThey control ${perc}% of the economy!`);
 						notFound = false;
 						break;	
 					}
@@ -719,10 +656,6 @@ client.on('message', message => {
 					let fakeChr = -1 * Math.floor(Math.random() * 1001);
 					let fakePercent = Math.floor(Math.random() * 1001);
 					message.channel.send(`Something doesn't feel right...`);
-					
-					/**
-					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${fakeBalance}\n|  /|\\    buildings: ${fakeBuildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${fakeStr}\tCON: ${fakeCon}\tWIS: ${fakeWis}\n| DEX: ${fakeDex}\tINT: ${fakeInt}\tCHR: ${fakeChr}\n+----------------------------`,{"code":true});
-					**/
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#FA2700')
 						.setTitle(`${data.users[i].name}'s playercard?`)
@@ -792,9 +725,6 @@ client.on('message', message => {
 					
 					let perc = (balance / data.econ) * 100;
 					perc = perc.toFixed(2);
-					/**
-					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
-					**/
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#F7931A')
 						.setTitle(`${data.users[i].name}'s playercard`)
