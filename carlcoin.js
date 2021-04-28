@@ -2946,7 +2946,7 @@ client.on('message', message => {
 		
 		let testCards = [5,14,48,32,22,7];
 		let dealersCards = [23,12,39,25,44,1];
-		let hiddenDealer = true;
+		let hiddenDealer = false;
 		
 		for(let i=0;i<testCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[testCards[i]]}`);
