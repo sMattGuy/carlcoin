@@ -252,10 +252,10 @@ client.on('message', message => {
 					}
 				}
 				else if(mysteryNumber > guess){
-					message.react(':arrow_double_up:').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react('U+23EB').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 				else{
-					message.react(':arrow_double_down:').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react('U+23EC').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 			}
 		}
