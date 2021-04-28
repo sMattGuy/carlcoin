@@ -726,7 +726,7 @@ client.on('message', message => {
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\nYou own ${perc}% of the economy`},
-							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}}`},
+							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
 							{ name: '\u200B', value: 'Stats' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
