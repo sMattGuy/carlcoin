@@ -2942,7 +2942,7 @@ client.on('message', message => {
 		ctx.strokeStyle = '#74037b';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 		let cards = [];
-		cards.push(await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg'));
+		cards.push(await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png'));
 		
 		for(let i=0;i<cards.length;i++){
 			ctx.drawImage(cards[i],25,-528,346,528);
