@@ -2350,10 +2350,14 @@ client.on('message', message => {
 				let balance = data.users[i].balance
 				let user = data.users[i].name;
 				if(balance > numberOne){
+					numberTwo = numberOne;
+					numberTwoName = numberOneName;
 					numberOne = balance;
 					numberOneName = user;
 				}
 				else if(balance > numberTwo){
+					numberThree = numberTwo;
+					numberThreeName = numberTwoName;
 					numberTwo = balance;
 					numberTwoName = user;
 				}
