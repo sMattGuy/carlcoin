@@ -560,6 +560,31 @@ client.on('message', message => {
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
 						//buildings and balance
+						let sanity = "Fine";
+						if(isNaN(data.users[i]["unstable"])){
+							data.users[i]["unstable"] = 0;
+						}
+						if(data.users[i]["unstable"] < 10){
+							sanity = "Fine";
+						}
+						else if(data.users[i]["unstable"] >= 10 && data.users[i]["unstable"] < 25){
+							sanity = "Uneasy";
+						}
+						else if(data.users[i]["unstable"] >= 25 && data.users[i]["unstable"] < 50){
+							sanity = "Awful";
+						}
+						else if(data.users[i]["unstable"] >= 50 && data.users[i]["unstable"] < 75){
+							sanity = "Stressed";
+						}
+						else if(data.users[i]["unstable"] >= 75 && data.users[i]["unstable"] < 100){
+							sanity = "Paranoid";
+						}
+						else if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] < 200){
+							sanity = "Irrational";
+						}
+						else if(data.users[i]["unstable"] >= 200){
+							sanity = "Unstable";
+						}
 						let balance = data.users[i].balance;
 						let homes = data.users[i]["house"];
 						if(isNaN(homes)){
