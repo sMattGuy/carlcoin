@@ -2951,8 +2951,8 @@ client.on('message', message => {
 		ctx.strokeStyle = '#74037b';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 		
-		for(let i=0;i<testCards.length;i++){
-			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[testCards[i]]}`);
+		for(let i=0;i<playerCards.length;i++){
+			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 50) ,210,130,200);
 			if(unstable){
 				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
@@ -2960,8 +2960,8 @@ client.on('message', message => {
 				break;
 			}
 		}
-		for(let i=0;i<dealersCards.length;i++){
-			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealersCards[i]]}`);
+		for(let i=0;i<dealerCards.length;i++){
+			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
 			ctx.drawImage(dealerCard,470 - (i * 50) ,-100,130,200);
 			if(hiddenDealer){
 				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
