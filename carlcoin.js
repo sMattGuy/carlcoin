@@ -3,6 +3,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const md5 = require('md5');
+const Canvas = require('canvas');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
@@ -2916,6 +2917,14 @@ client.on('message', message => {
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
+	}
+	else if(message.content === 'print the board'){
+		const canvas = Canvas.createCanvas(626,365);
+		const ctx = canvas.getContext('2d');
+		const background = Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
+		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
+		message.channel.send(`Test of print function`,attachment);
 	}
 	//helper function to get user
 	function getUserFromMention(mention) {
