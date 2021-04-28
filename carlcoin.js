@@ -2345,10 +2345,14 @@ client.on('message', message => {
 		let numberOne = 0;
 		let numberTwo = 0;
 		let numberThree = 0;
+		let userArray = [];
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance != 0){
 				let balance = data.users[i].balance
 				let user = data.users[i].name;
+				let userObject = {name:`${user}`,balance:`${balance}`};
+				userArray.push(userObject);
+				/**
 				if(balance > numberOne){
 					numberTwo = numberOne;
 					numberTwoName = numberOneName;
@@ -2365,9 +2369,18 @@ client.on('message', message => {
 					numberThree = balance;
 					numberThreeName = user;
 				}
+				**/
 			}
 		}
-		message.channel.send(`__Leaderboard: Top 3 Carl Coin Users__\n1. ${numberOneName} : ${numberOne}\n2. ${numberTwoName} : ${numberTwo}\n3. ${numberThreeName} : ${numberThree}`);
+		userArray.sort(function (a,b){
+			return a.balance - b.balance;
+		});
+		let messageBox = '';
+		for(let i=0;i<userArray.length;i++){
+			messageBox += `${i+1}. ${userArray[i].name}\t${userArray[i].balance}\n`;
+		}
+		message.channel.send(`__Leaderboard of Carl Coin__\nmessageBox`);
+		//message.channel.send(`__Leaderboard: Top 3 Carl Coin Users__\n1. ${numberOneName} : ${numberOne}\n2. ${numberTwoName} : ${numberTwo}\n3. ${numberThreeName} : ${numberThree}`);
 	}
 	//update name
 	else if(message.content === '!cc name'){
