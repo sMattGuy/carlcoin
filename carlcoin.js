@@ -2377,7 +2377,7 @@ client.on('message', message => {
 		});
 		let messageBox = '';
 		for(let i=0;i<userArray.length;i++){
-			messageBox += `${i+1}. ${userArray[i].name}\t${userArray[i].balance}\n`;
+			messageBox += `${i+1}. ${userArray[i].name}:${userArray[i].balance}\n`;
 		}
 		message.channel.send(`Leaderboard of Carl Coin\n${messageBox}`,{"code":true});
 		//message.channel.send(`__Leaderboard: Top 3 Carl Coin Users__\n1. ${numberOneName} : ${numberOne}\n2. ${numberTwoName} : ${numberTwo}\n3. ${numberThreeName} : ${numberThree}`);
