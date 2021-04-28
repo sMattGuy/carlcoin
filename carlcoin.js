@@ -2339,15 +2339,31 @@ client.on('message', message => {
 	else if(message.content === '!cc leaderboard'){
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
-		let formatedNames = "";
+		let numberOneName = '';
+		let numberTwoName = '';
+		let numberThreeName = '';
+		let numberOne = 0;
+		let numberTwo = 0;
+		let numberThree = 0;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].balance != 0){
-				let balance = data.users[i].balance.toString();
-				let user = data.users[i].name + ":" + balance + "\n";
-				formatedNames += user;
+				let balance = data.users[i].balance
+				let user = data.users[i].name;
+				if(balance > numberOne){
+					numberOne = balance;
+					numberOneName = user;
+				}
+				else if(balance > numberTwo){
+					numberTwo = balance;
+					numberTwoName = user;
+				}
+				else if(balance > numberThree){
+					numberThree = balance;
+					numberThreeName = user;
+				}
 			}
 		}
-		message.channel.send(`${formatedNames}`,{"code":true});
+		message.channel.send(`__Leaderboard: Top 3 Carl Coin Users__\n1. ${numberOneName} : ${numberOne}\n2. ${numberTwoName} : ${numberTwo}\n3. ${numberThreeName} : ${numberThree}`);
 	}
 	//update name
 	else if(message.content === '!cc name'){
