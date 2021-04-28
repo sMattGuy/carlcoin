@@ -2939,8 +2939,16 @@ client.on('message', message => {
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+		ctx.strokeStyle = '#74037b';
+		ctx.strokeRect(0,0,canvas.width,canvas.height);
+		let cards = [];
+		cards.push(await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg'));
+		
+		for(let i=0;i<cards.length;i++){
+			ctx.drawImage(cards[i],25,-528,346,528);
+		}
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
-		message.channel.send(`Test of print function`,attachment);
+		channel.send(`Test of print function`,attachment);
 	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
