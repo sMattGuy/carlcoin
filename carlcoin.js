@@ -571,6 +571,38 @@ client.on('message', message => {
 							chr = 0;
 							data.users[i]["CHR"] = 0;
 						}
+						let messageToSend = ``;
+						if(data.users[i]["claim"] < Date.now()){
+						messageToSend += `You can work!\n`
+						}
+						else{
+							let timeLeftClaim = data.users[i]["claim"] - Date.now();
+							timeLeftClaim = Math.floor(timeLeftClaim / 1000);
+							timeLeftClaim = Math.floor(timeLeftClaim / 60);
+							messageToSend += `You have ${timeLeftClaim} mins left before you can work again\n`
+						}
+						
+						if(data.users[i]["relax"] < Date.now()){
+							messageToSend += `You can relax!\n`
+						}
+						else{
+							let timeLeftRelax = data.users[i]["relax"] - Date.now();
+							timeLeftRelax = Math.floor(timeLeftRelax / 1000);
+							timeLeftRelax = Math.floor(timeLeftRelax / 60);
+							messageToSend += `You have ${timeLeftRelax} mins left before you can relax again\n`
+						}
+						if(isNaN(data.users[i]["robTimer"])){
+							data.users[i]["robTimer"] = Date.now();
+						}	
+						if(data.users[i]["robTimer"] < Date.now()){
+							messageToSend += `You can rob!`
+						}
+						else{
+							let timeLeftRob = data.users[i]["robTimer"] - Date.now();
+							timeLeftRob = Math.floor(timeLeftRob / 1000);
+							timeLeftRob = Math.floor(timeLeftRob / 60);
+							messageToSend += `You have ${timeLeftRob} mins left before you can rob again`
+						}
 						let buildings = homes + apartments + skyscrapers;
 						let userImage = client.users.cache.get(id).displayAvatarURL();
 						let perc = (balance / data.econ) * 100;
@@ -583,7 +615,8 @@ client.on('message', message => {
 							.addFields(
 								{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 								{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
-								{ name: 'Stats', value: '_____' },
+								{ name: 'Cooldowns', value: `${messageToSend}`},
+								{ name: 'Stats', value: '' },
 								{ name: 'STR', value: `${str}`, inline: true },
 								{ name: 'CON', value: `${con}`, inline: true },
 								{ name: 'WIS', value: `${wis}`, inline: true },
@@ -641,6 +674,38 @@ client.on('message', message => {
 				else if(data.users[i]["unstable"] >= 200){
 					sanity = "Unstable";
 				}
+				let messageToSend = ``;
+				if(data.users[i]["claim"] < Date.now()){
+				messageToSend += `You can work!\n`
+				}
+				else{
+					let timeLeftClaim = data.users[i]["claim"] - Date.now();
+					timeLeftClaim = Math.floor(timeLeftClaim / 1000);
+					timeLeftClaim = Math.floor(timeLeftClaim / 60);
+					messageToSend += `You have ${timeLeftClaim} mins left before you can work again\n`
+				}
+				
+				if(data.users[i]["relax"] < Date.now()){
+					messageToSend += `You can relax!\n`
+				}
+				else{
+					let timeLeftRelax = data.users[i]["relax"] - Date.now();
+					timeLeftRelax = Math.floor(timeLeftRelax / 1000);
+					timeLeftRelax = Math.floor(timeLeftRelax / 60);
+					messageToSend += `You have ${timeLeftRelax} mins left before you can relax again\n`
+				}
+				if(isNaN(data.users[i]["robTimer"])){
+					data.users[i]["robTimer"] = Date.now();
+				}	
+				if(data.users[i]["robTimer"] < Date.now()){
+					messageToSend += `You can rob!`
+				}
+				else{
+					let timeLeftRob = data.users[i]["robTimer"] - Date.now();
+					timeLeftRob = Math.floor(timeLeftRob / 1000);
+					timeLeftRob = Math.floor(timeLeftRob / 60);
+					messageToSend += `You have ${timeLeftRob} mins left before you can rob again`
+				}
 				//crazy stats
 				if(data.users[i]["unstable"] >= 100){
 					let fakeBalance = Math.floor(Math.random() * 1001);
@@ -663,7 +728,8 @@ client.on('message', message => {
 						.addFields(
 							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
 							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`},
-							{ name: 'Stats?', value: '_____' },
+							{ name: 'Cooldowns', value: `${messageToSend}`},
+							{ name: 'Stats?', value: '' },
 							{ name: 'STR', value: `${fakeStr}`, inline: true },
 							{ name: 'CON', value: `${fakeCon}`, inline: true },
 							{ name: 'WIS', value: `${fakeWis}`, inline: true },
@@ -720,7 +786,7 @@ client.on('message', message => {
 						data.users[i]["CHR"] = 0;
 					}
 					let buildings = homes + apartments + skyscrapers;
-					
+				
 					let perc = (balance / data.econ) * 100;
 					perc = perc.toFixed(2);
 					const playercardEmbed = new Discord.MessageEmbed()
@@ -731,7 +797,8 @@ client.on('message', message => {
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
-							{ name: 'Stats', value: '_____' },
+							{ name: 'Cooldowns', value: `${messageToSend}`},
+							{ name: 'Stats', value: '' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
 							{ name: 'WIS', value: `${wis}`, inline: true },
@@ -2624,54 +2691,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	else if(message.content === '!cc cd'){
-		//fetch and store data
-		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-		let data = JSON.parse(database);
-		let id = message.author.id;
-		//checks for name
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].id == id){
-				
-				let messageToSend = ``;
-				
-				if(data.users[i]["claim"] < Date.now()){
-					messageToSend += `You can work!\n`
-				}
-				else{
-					let timeLeftClaim = data.users[i]["claim"] - Date.now();
-					timeLeftClaim = Math.floor(timeLeftClaim / 1000);
-					timeLeftClaim = Math.floor(timeLeftClaim / 60);
-					messageToSend += `You have ${timeLeftClaim} mins left before you can work again\n`
-				}
-				
-				if(data.users[i]["relax"] < Date.now()){
-					messageToSend += `You can relax!\n`
-				}
-				else{
-					let timeLeftRelax = data.users[i]["relax"] - Date.now();
-					timeLeftRelax = Math.floor(timeLeftRelax / 1000);
-					timeLeftRelax = Math.floor(timeLeftRelax / 60);
-					messageToSend += `You have ${timeLeftRelax} mins left before you can relax again\n`
-				}
-				if(isNaN(data.users[i]["robTimer"])){
-					data.users[i]["robTimer"] = Date.now();
-				}	
-				if(data.users[i]["robTimer"] < Date.now()){
-					messageToSend += `You can rob!\n`
-				}
-				else{
-					let timeLeftRob = data.users[i]["robTimer"] - Date.now();
-					timeLeftRob = Math.floor(timeLeftRob / 1000);
-					timeLeftRob = Math.floor(timeLeftRob / 60);
-					messageToSend += `You have ${timeLeftRob} mins left before you can rob again\n`
-				}
-				
-				message.channel.send(messageToSend);
-				break;
-			}
-		}
-	}
 	//rock paper scissors
 	else if(message.content.startsWith('!cc rps')){ /* !cc challenge @user amount */
 		//check command is correctly entered
@@ -2892,7 +2911,7 @@ client.on('message', message => {
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase something\nuse !cc catalog to see all things for sale\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance\nuse !cc doctor to get some medicine for your insanity\nuse !cc name to update to your current name\nuse !cc cd to see when you can do timed activities again`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase something\nuse !cc catalog to see all things for sale\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance\nuse !cc doctor to get some medicine for your insanity\nuse !cc name to update to your current name`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
