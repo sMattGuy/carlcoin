@@ -559,8 +559,8 @@ client.on('message', message => {
 				//checks for name
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
+						//buildings and balance
 						let balance = data.users[i].balance;
-						let perc = (balance / data.econ) * 100;
 						let homes = data.users[i]["house"];
 						if(isNaN(homes)){
 							homes = 0;
@@ -573,9 +573,63 @@ client.on('message', message => {
 						if(isNaN(skyscrapers)){
 							skyscrapers = 0;
 						}
-						let assets = (homes * 50) + (apartments * 150) + (skyscrapers * 250);
+						//stats
+						let str = data.users[i]["STR"];
+						if(isNaN(str)){
+							str = 0;
+							data.users[i]["STR"] = 0;
+						}
+						let dex = data.users[i]["DEX"];
+						if(isNaN(dex)){
+							dex = 0;
+							data.users[i]["DEX"] = 0;
+						}
+						let con = data.users[i]["CON"];
+						if(isNaN(con)){
+							con = 0;
+							data.users[i]["CON"] = 0;
+						}
+						let inte = data.users[i]["INT"];
+						if(isNaN(inte)){
+							inte = 0;
+							data.users[i]["INT"] = 0;
+						}
+						let wis = data.users[i]["WIS"];
+						if(isNaN(wis)){
+							wis = 0;
+							data.users[i]["WIS"] = 0;
+						}
+						let chr = data.users[i]["CHR"];
+						if(isNaN(chr)){
+							chr = 0;
+							data.users[i]["CHR"] = 0;
+						}
+						let buildings = homes + apartments + skyscrapers;
+						let userImage = client.users.fetch(id).displayAvatarURL();
+						let perc = (balance / data.econ) * 100;
 						perc = perc.toFixed(2);
-						message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Their assets are equal to ${assets}CC!\nThey control ${perc}% of the economy!`);
+						/**
+						message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
+						**/
+						const playercardEmbed = new Discord.MessageEmbed()
+							.setColor('#F7931A')
+							.setTitle(`${data.users[i].name}'s playercard`)
+							.setAuthor(`${data.users[i].name}`, `${userImage}`)
+							.setThumbnail('https://i.imgur.com/0aDFif9.png')
+							.addFields(
+								{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\nYou own ${perc}% of the economy`},
+								{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
+								{ name: '\u200B', value: 'Stats' },
+								{ name: 'STR', value: `${str}`, inline: true },
+								{ name: 'CON', value: `${con}`, inline: true },
+								{ name: 'WIS', value: `${wis}`, inline: true },
+								{ name: 'DEX', value: `${dex}`, inline: true },
+								{ name: 'INT', value: `${inte}`, inline: true },
+								{ name: 'CHR', value: `${chr}`, inline: true },
+							)
+						message.channel.send(playercardEmbed);
+						
+						//message.channel.send(`${user} has ${balance}CC and own ${homes} homes, ${apartments} apartments and ${skyscrapers} skyscrapers! Their assets are equal to ${assets}CC!\nThey control ${perc}% of the economy!`);
 						notFound = false;
 						break;	
 					}
