@@ -192,11 +192,8 @@ client.on('message', message => {
 		}
 	}
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
-	if(message.content === 'summon md5' && message.author.id === '492850107038040095'){
-		messageCounter = raffleRNG;
-	}
 	//guess command
-	else if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
+	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
 		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		//chop message to parse
 		let chop = message.content.split(" ");
