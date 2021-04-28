@@ -2941,12 +2941,12 @@ client.on('message', message => {
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 		ctx.strokeStyle = '#74037b';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
-		let cards = [];
-		cards.push(await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png'));
 		
-		for(let i=0;i<cards.length;i++){
-			ctx.drawImage(cards[i],25,-528,346,528);
-		}
+		
+		
+		currentCard = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png')
+		ctx.drawImage(currentCard,25,25,346,528);
+
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
 		channel.send(`Test of print function`,attachment);
 	}
