@@ -2944,7 +2944,7 @@ client.on('message', message => {
 		
 		
 		
-		currentCard = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png')
+		let currentCard = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/9S.png')
 		ctx.drawImage(currentCard,25,25,346,528);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
