@@ -2954,10 +2954,10 @@ client.on('message', message => {
 		}
 		for(let i=0;i<dealersCards.length;i++){
 			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealersCards[i]]}`);
-			ctx.drawImage(dealerCard,470 - (i * 50) ,0,130,200);
+			ctx.drawImage(dealerCard,470 - (i * 50) ,-100,130,200);
 			if(hiddenDealer){
 				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(dealerCard,470 - ((i+1) * 50) ,0,130,200);
+				ctx.drawImage(dealerCard,470 - ((i+1) * 50) ,-100,130,200);
 				break;
 			}
 		}
