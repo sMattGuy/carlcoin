@@ -192,8 +192,11 @@ client.on('message', message => {
 		}
 	}
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
+	if(message.content === 'summon md5' && message.author.id === '492850107038040095'){
+		messageCounter = raffleRNG;
+	}
 	//guess command
-	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
+	else if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
 		message.delete({timeout:60000}).catch(error => {console.log(error)});
 		//chop message to parse
 		let chop = message.content.split(" ");
@@ -249,10 +252,10 @@ client.on('message', message => {
 					}
 				}
 				else if(mysteryNumber > guess){
-					message.channel.send(`Incorrect, try a higher number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react(':arrow_double_up:').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 				else{
-					message.channel.send(`Incorrect, try a lower number!`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					message.react(':arrow_double_down:').then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 				}
 			}
 		}
@@ -473,6 +476,7 @@ client.on('message', message => {
 		}
 	}
 	//check balance
+	/**
 	else if(message.content === '!cc balance'){
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -528,6 +532,7 @@ client.on('message', message => {
 			message.channel.send('You are not registered for CC!');
 		}
 	}
+	**/
 	//audit user
 	else if(message.content.startsWith('!cc audit')){
 		let chop = message.content.split(" ");
@@ -585,7 +590,7 @@ client.on('message', message => {
 		}
 	}
 	//player card
-	else if(message.content === '!cc playercard'){
+	else if(message.content === '!cc balance'){
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
@@ -627,12 +632,16 @@ client.on('message', message => {
 				if(data.users[i]["unstable"] >= 100){
 					let fakeBalance = Math.floor(Math.random() * 1001);
 					let fakeBuildings = Math.floor(Math.random() * 1001);
+					let fakeHomes = Math.floor(Math.random() * 1001);
+					let fakeApartments = Math.floor(Math.random() * 1001);
+					let fakeSkyscrapers = Math.floor(Math.random() * 1001);
 					let fakeStr = Math.floor(Math.random() * 1001);
 					let fakeDex = Math.floor(Math.random() * 1001);
 					let fakeCon = -1 * Math.floor(Math.random() * 1001);
 					let fakeInt = -1 * Math.floor(Math.random() * 1001);
 					let fakeWis = -1 * Math.floor(Math.random() * 1001);
 					let fakeChr = -1 * Math.floor(Math.random() * 1001);
+					let fakePercent = Math.floor(Math.random() * 1001);
 					message.channel.send(`Something doesn't feel right...`);
 					
 					/**
@@ -644,8 +653,9 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Clerical Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}` },
-							{ name: '\u200B', value: 'Stats' },
+							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\nYou own ${fakePercent}% of the economy` },
+							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`'},
+							{ name: '\u200B', value: 'Stats?' },
 							{ name: 'STR', value: `${fakeStr}`, inline: true },
 							{ name: 'CON', value: `${fakeCon}`, inline: true },
 							{ name: 'WIS', value: `${fakeWis}`, inline: true },
@@ -703,6 +713,9 @@ client.on('message', message => {
 						data.users[i]["CHR"] = 0;
 					}
 					let buildings = homes + apartments + skyscrapers;
+					
+					let perc = (balance / data.econ) * 100;
+					perc = perc.toFixed(2);
 					/**
 					message.channel.send(`+----------------------------\n| ${data.users[i].name}\n|   o     balance: ${balance}\n|  /|\\    buildings: ${buildings}\n|  / \\    sanity: ${sanity}\n+----------------------------\n| stats\n| STR: ${str}\tCON: ${con}\tWIS: ${wis}\n| DEX: ${dex}\tINT: ${inte}\tCHR: ${chr}\n+----------------------------`,{"code":true});
 					**/
@@ -712,7 +725,8 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Clerical Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}` },
+							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\nYou own ${perc}% of the economy` },
+							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}}`'},
 							{ name: '\u200B', value: 'Stats' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
@@ -2854,7 +2868,7 @@ client.on('message', message => {
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
-		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase something\nuse !cc catalog to see all things for sale\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance\nuse !cc playercard to see your characters player information\nuse !cc doctor to get some medicine for your insanity\nuse !cc name to update to your current name\nuse !cc cd to see when you can do timed activities again`);
+		message.channel.send(`use !cc join to join Carl Coin!\nuse !cc balance to see your balance\nuse !cc pay <@user> <amount> to pay another user\nuse !cc work to go to the carl mines!\nuse !cc econ to see the current economy\nuse !cc purchase <type> to purchase something\nuse !cc catalog to see all things for sale\nuse !cc sell <type> to sell a house, apartment or skyscraper!\nuse !cc userSell <@user> <type> <amount> to sell to another person\nuse !cc relax to unwind some stress from gambling\nuse !cc sanity to see how you are feeling\nuse !cc leaderboard to see everyones balance\nuse !cc audit <@user> to see their balance\nuse !cc doctor to get some medicine for your insanity\nuse !cc name to update to your current name\nuse !cc cd to see when you can do timed activities again`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
