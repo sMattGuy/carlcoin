@@ -2818,7 +2818,7 @@ client.on('message', message => {
 						//set the winning amount
 						let winnerAmount = wager * 2;
 						const filter = m => {
-							if(m.content !== 'rock' && m.content !== 'paper' && m.content !== 'scissors' && !m.author.bot){
+							if((m.content !== 'rock' && m.content !== 'paper' && m.content !== 'scissors') && !m.author.bot){
 								m.channel.send('Invalid choice, make sure you spelt it correctly!');
 							}
 							return (m.content === 'rock' || m.content === 'paper' || m.content === 'scissors')
