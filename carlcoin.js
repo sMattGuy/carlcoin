@@ -2951,10 +2951,6 @@ client.on('message', message => {
 		ctx.strokeStyle = '#74037b';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 		
-		let testCards = [5,14,48,32,22,7];
-		let dealersCards = [23,12,39,25,44,1];
-		let hiddenDealer = false;
-		
 		for(let i=0;i<testCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[testCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 50) ,210,130,200);
