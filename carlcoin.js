@@ -152,7 +152,7 @@ client.on('message', message => {
 				data.users[i]["unstable"] = 0;
 			}
 			else{
-				data.users[i]["unstable"] -= 10;
+				data.users[i]["unstable"] -= 100;
 				if(data.users[i]["unstable"] < 0){
 					data.users[i]["unstable"] = 0;
 				}
@@ -583,7 +583,7 @@ client.on('message', message => {
 							.addFields(
 								{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 								{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
-								{ name: '\u200B', value: 'Stats' },
+								{ name: 'Stats', value: '_____' },
 								{ name: 'STR', value: `${str}`, inline: true },
 								{ name: 'CON', value: `${con}`, inline: true },
 								{ name: 'WIS', value: `${wis}`, inline: true },
@@ -655,7 +655,6 @@ client.on('message', message => {
 					let fakeWis = -1 * Math.floor(Math.random() * 1001);
 					let fakeChr = -1 * Math.floor(Math.random() * 1001);
 					let fakePercent = Math.floor(Math.random() * 1001);
-					message.channel.send(`Something doesn't feel right...`);
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#FA2700')
 						.setTitle(`${data.users[i].name}'s playercard?`)
@@ -664,7 +663,7 @@ client.on('message', message => {
 						.addFields(
 							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
 							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`},
-							{ name: '\u200B', value: 'Stats?' },
+							{ name: 'Stats?', value: '_____' },
 							{ name: 'STR', value: `${fakeStr}`, inline: true },
 							{ name: 'CON', value: `${fakeCon}`, inline: true },
 							{ name: 'WIS', value: `${fakeWis}`, inline: true },
@@ -672,8 +671,7 @@ client.on('message', message => {
 							{ name: 'INT', value: `${fakeInt}`, inline: true },
 							{ name: 'CHR', value: `${fakeChr}`, inline: true },
 						)
-					message.channel.send(playercardEmbed);
-					message.channel.send(`...Maybe you need to relax`);
+					message.channel.send(`Something doesn't feel right...\n${playercardEmbed}\n...Maybe you need to relax`);
 				}
 				else{
 					//buildings and balance
@@ -733,7 +731,7 @@ client.on('message', message => {
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
-							{ name: '\u200B', value: 'Stats' },
+							{ name: 'Stats', value: '_____' },
 							{ name: 'STR', value: `${str}`, inline: true },
 							{ name: 'CON', value: `${con}`, inline: true },
 							{ name: 'WIS', value: `${wis}`, inline: true },
@@ -2819,7 +2817,12 @@ client.on('message', message => {
 						message.channel.send(`Getting challengers throw, please wait!`);
 						//set the winning amount
 						let winnerAmount = wager * 2;
-						const filter = m => {return m.content === 'rock' || m.content === 'paper' || m.content === 'scissors'};
+						const filter = m => {
+							if(m.content !== 'rock' && m.content !== 'paper' && m.content !== 'scissors'){
+								m.send('Invalid choice, make sure you spelt it correctly!');
+							}
+							return m.content === 'rock' || m.content === 'paper' || m.content === 'scissors'
+							};
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
 							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
