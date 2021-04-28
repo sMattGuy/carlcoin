@@ -2352,24 +2352,6 @@ client.on('message', message => {
 				let user = data.users[i].name;
 				let userObject = {name:`${user}`,balance:`${balance}`};
 				userArray.push(userObject);
-				/**
-				if(balance > numberOne){
-					numberTwo = numberOne;
-					numberTwoName = numberOneName;
-					numberOne = balance;
-					numberOneName = user;
-				}
-				else if(balance > numberTwo){
-					numberThree = numberTwo;
-					numberThreeName = numberTwoName;
-					numberTwo = balance;
-					numberTwoName = user;
-				}
-				else if(balance > numberThree){
-					numberThree = balance;
-					numberThreeName = user;
-				}
-				**/
 			}
 		}
 		userArray.sort(function (a,b){
