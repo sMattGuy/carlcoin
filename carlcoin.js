@@ -1799,13 +1799,14 @@ client.on('message', message => {
 									if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 										data.users[i].balance += wager;
 										data.blackjack -= wager;
-										message.channel.send(`You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
+										let resultsOfGame = `You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false);
 									}
 									else{
 										data.users[i].balance += Math.floor(wager * 2.5);
 										data.blackjack -= Math.floor(wager * 2.5);
-										message.channel.send(`You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
-										
+										let resultsOfGame = `You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false);
 										//instability counter
 										let insane = false;
 										if(data.users[i]["unstable"] >= 100){
@@ -1837,8 +1838,9 @@ client.on('message', message => {
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
 								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
-									message.channel.send(`Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`);
 									//seduce dealer
+									let resultsOfGame = `Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
+									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false);
 									let seduceChance = Math.random();
 									if(isNaN(data.users[i]["CHR"])){
 										data.users[i]["CHR"] = 0;
@@ -1884,10 +1886,12 @@ client.on('message', message => {
 										data.users[i]["unstable"] = 0;
 									}
 									if(data.users[i]["unstable"] >= 100){
-										message.channel.send(`Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+										let resultsOfGame = `Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`;
+										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true);
 									}
 									else{
-										message.channel.send(`${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+										let resultsOfGame = `${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
+										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false);
 									}
 								}
 								data.users[i]["activity"] = Date.now();
@@ -1943,8 +1947,8 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(currentTotal > 21){
-					message.channel.send(`Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}`);
-					
+					let resultsOfGame = `Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}`;
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 					//seduce dealer
 					let seduceChance = Math.random();
 					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
@@ -1989,12 +1993,14 @@ client.on('message', message => {
 				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					let resultsOfGame = `${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`;
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 				}
 				else{
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
-					message.channel.send(`${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+					let resultsOfGame = `${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`;
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 				}
 			}
 		}
@@ -2052,7 +2058,8 @@ client.on('message', message => {
 					playerViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(dealerTotal > 21){
-					message.channel.send(`Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+					let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -2102,7 +2109,8 @@ client.on('message', message => {
 					}
 					if(playerValue > dealerTotal){
 						//player wins
-						message.channel.send(`${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -2139,7 +2147,8 @@ client.on('message', message => {
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
-						message.channel.send(`${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						//seduce dealer
 						let seduceChance = Math.random();
@@ -2182,7 +2191,8 @@ client.on('message', message => {
 					}
 					else{
 						//draw
-						message.channel.send(`${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`);
+						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false);
 						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= blackjackParse.wager;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -2920,9 +2930,6 @@ client.on('message', message => {
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
 	}
-	else if(message.content === 'print the board'){
-		drawBoard(message.channel);
-	}
 	//helper function to get user
 	function getUserFromMention(mention) {
 		if (!mention) return;
@@ -2936,7 +2943,7 @@ client.on('message', message => {
 			return client.users.cache.get(mention);
 		}
 	}
-	async function drawBoard(channel){
+	async function drawBoard(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable){
 		const canvas = Canvas.createCanvas(626,365);
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
@@ -2951,6 +2958,11 @@ client.on('message', message => {
 		for(let i=0;i<testCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[testCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 50) ,210,130,200);
+			if(unstable){
+				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(currentCard,25 + ((i+1) * 50) ,210,130,200);
+				break;
+			}
 		}
 		for(let i=0;i<dealersCards.length;i++){
 			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealersCards[i]]}`);
@@ -2963,7 +2975,7 @@ client.on('message', message => {
 		}
 		
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
-		channel.send(`Test of print function`,attachment);
+		channel.send(`${gameMessage}`,attachment).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
