@@ -740,7 +740,7 @@ client.on('message', message => {
 							{ name: 'INT', value: `${fakeInt}`, inline: true },
 							{ name: 'CHR', value: `${fakeChr}`, inline: true },
 						)
-					message.channel.send(`Something doesn't feel right...\n ${playercardEmbed} \n...Maybe you need to relax`);
+					message.channel.send(playercardEmbed);
 				}
 				else{
 					//buildings and balance
