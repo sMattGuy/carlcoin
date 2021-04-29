@@ -1657,7 +1657,6 @@ client.on('message', message => {
 			.addFields(
 				{ name: 'Carl Coin Circulating', value: `${data.econ}`},
 				{ name: 'Users Registered', value: `${data.users.length}`},
-				{ name: 'Building Info', value: `Homes: ${homes}\nApartments: ${apartments}\nSkyscrapers: ${skyscrapers}`},
 				{ name: 'Roll Pot', value: `${data.pot}`, inline: true },
 				{ name: 'CarlBall Jackpot', value: `${carlball}`, inline: true },
 				{ name: 'Blackjack Pot', value: `${data.blackjack}`, inline: true },
