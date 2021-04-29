@@ -1661,6 +1661,8 @@ client.on('message', message => {
 				{ name: 'CarlBall Jackpot', value: `${carlball}`, inline: true },
 				{ name: 'Blackjack Pot', value: `${data.blackjack}`, inline: true },
 				{ name: 'Mines', value: `${data.welfare}`, inline: true },
+				{ name: '\u200B', value: `\u200B`, inline: true },
+				{ name: '\u200B', value: `\u200B`, inline: true },
 				{ name: 'Homes', value: `${houseCount}`, inline: true },
 				{ name: 'Apartments', value: `${apartmentCount}`, inline: true },
 				{ name: 'Skyscrapers', value: `${skyCount}`, inline: true },
