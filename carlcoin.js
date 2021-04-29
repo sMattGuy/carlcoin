@@ -2972,7 +2972,7 @@ client.on('message', message => {
 		}
 		
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
-		if(ender){
+		if(!ender){
 			channel.send(`${gameMessage}`,attachment).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
 		}
 		else{
