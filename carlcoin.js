@@ -2076,7 +2076,7 @@ client.on('message', message => {
 					playerViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(dealerTotal > 21){
-					let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+					let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
