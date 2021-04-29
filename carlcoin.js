@@ -740,7 +740,7 @@ client.on('message', message => {
 							{ name: 'INT', value: `${fakeInt}`, inline: true },
 							{ name: 'CHR', value: `${fakeChr}`, inline: true },
 						)
-					message.channel.send(`Something doesn't feel right...\n${playercardEmbed}\n...Maybe you need to relax`);
+					message.channel.send(`Something doesn't feel right...\n ${playercardEmbed} \n...Maybe you need to relax`);
 				}
 				else{
 					//buildings and balance
@@ -1649,7 +1649,25 @@ client.on('message', message => {
 				skyCount += data.users[i]["skyscraper"];
 			}
 		}
-		message.channel.send(`There are currently ${data.econ} CC circulating\nThere is currently ${data.users.length} users registered for CC\nThe roll pot is currently ${data.pot}CC\n<a:BOOBA:772993852210020402>The CarlBall Jackpot is ${carlball}CC!<a:BOOBA:772993852210020402>\nThe Blackjack pot is currently ${data.blackjack}CC\nThe mines have an estimated ${data.welfare}CC in them\nThere are currently ${houseCount} homes, ${apartmentCount} apartments and ${skyCount} skyscrapers\n${highestEarnerName} has the most CC with ${highestEarnerAmount}CC\nCurrently, ${poorPeople} people have absolutely no CC!`);
+		const econEmbed = new Discord.MessageEmbed()
+			.setColor('#F7931A')
+			.setTitle(`The Carl Coin Economy`)
+			.setDescription(`Highest earner: ${highestEarnerName} with ${highestEarnerAmount}CC`)
+			.setThumbnail('https://i.imgur.com/0aDFif9.png')
+			.addFields(
+				{ name: 'Carl Coin Circulating', value: `${data.econ}`},
+				{ name: 'Users Registered', value: `${data.users.length}`},
+				{ name: 'Building Info', value: `Homes: ${homes}\nApartments: ${apartments}\nSkyscrapers: ${skyscrapers}`},
+				{ name: 'Roll Pot', value: `${data.pot}`, inline: true },
+				{ name: 'CarlBall Jackpot', value: `${carlball}`, inline: true },
+				{ name: 'Blackjack Pot', value: `${data.blackjack}`, inline: true },
+				{ name: 'Mines', value: `${data.welfare}`, inline: true },
+				{ name: 'Homes', value: `${houseCount}`, inline: true },
+				{ name: 'Apartments', value: `${apartmentCount}`, inline: true },
+				{ name: 'Skyscrapers', value: `${skyCount}`, inline: true },
+				{ name: 'Poor People', value: `${poorPeople}`},
+			)
+		message.channel.send(econEmbed);
 	}
 	//lottery
 	else if(message.content === '!cc lottery'){
@@ -1805,8 +1823,7 @@ client.on('message', message => {
 									else{
 										data.users[i].balance += Math.floor(wager * 2.5);
 										data.blackjack -= Math.floor(wager * 2.5);
-										let resultsOfGame = `You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
-										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true);
+										let resultsOfGame = `You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.\n`;
 										//instability counter
 										let insane = false;
 										if(data.users[i]["unstable"] >= 100){
@@ -1818,7 +1835,7 @@ client.on('message', message => {
 										}
 										if(insane && data.users[i]["unstable"] + Math.floor(wager * 2.5) >= 100 && data.users[i]["unstable"] < 100){
 											data.users[i]["suicide"] = 1;
-											message.channel.send(`You come to your senses.`);
+											resultsOfGame += `You come to your senses.\n`;
 											console.log(data.users[i].name + " has calmed down");
 										}
 										if(isNaN(data.users[i]["CHR"])){
@@ -1831,16 +1848,16 @@ client.on('message', message => {
 										if(data.users[i]["CHR"] * 2 + 20 < data.users[i]["chrExp"]){
 											data.users[i]["CHR"] += 1;
 											data.users[i]["chrExp"] = 0;
-											message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
+											resultsOfGame += `Winning blackjack made you more slick, your CHR increased!\n`;
 										}
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true);
 									}
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
 								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									//seduce dealer
-									let resultsOfGame = `Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
-									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true);
+									let resultsOfGame = `Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.\n`;
 									let seduceChance = Math.random();
 									if(isNaN(data.users[i]["CHR"])){
 										data.users[i]["CHR"] = 0;
@@ -1854,7 +1871,7 @@ client.on('message', message => {
 										wager = wager - wagerHalf;
 										data.users[i].balance += wagerHalf;
 										data.blackjack -= wagerHalf;
-										message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+										resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 									}
 									//instability counter
 									data.users[i]["unstable"] += wager;
@@ -1866,14 +1883,15 @@ client.on('message', message => {
 									}
 									if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
 										data.users[i]["suicide"] = 0;
-										message.channel.send(`You are starting to feel irrational.`);
+										resultsOfGame += `You are starting to feel irrational.\n`;
 										console.log(data.users[i].name + " has become irrational");
 									}
 									if(data.users[i]["unstable"] > 250){
-										message.channel.send(`You are completely unstable`);
+										resultsOfGame += `You are completely unstable\n`;
 										console.log(data.users[i].name + " has become unstable");
 										data.users[i]["unstable"] = 250;
 									}
+									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true);
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
@@ -1947,8 +1965,7 @@ client.on('message', message => {
 					cardViewer += blackjackCards[blackjackParse.playerCards.playerCards[i]];
 				}
 				if(currentTotal > 21){
-					let resultsOfGame = `Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}`;
-					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
+					let resultsOfGame = `Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}\n`;
 					//seduce dealer
 					let seduceChance = Math.random();
 					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
@@ -1963,7 +1980,7 @@ client.on('message', message => {
 						blackjackParse.wager = blackjackParse.wager - wagerHalf;
 						data.users[blackjackParse.challIndex].balance += wagerHalf;
 						data.blackjack -= wagerHalf;
-						message.channel.send(`${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+						resultsOfGame += `${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 					}
 					
 					//instability counter
@@ -1976,18 +1993,18 @@ client.on('message', message => {
 					}
 					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 0;
-						message.channel.send(`You are starting to feel irrational.`);
+						resultsOfGame += `You are starting to feel irrational.\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
 
 					}
 					if(data.users[blackjackParse.challIndex]["unstable"] > 250){
-						message.channel.send(`You are completely unstable`);
+						resultsOfGame += `You are completely unstable\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
 						data.users[blackjackParse.challIndex]["unstable"] = 250
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
@@ -2059,7 +2076,6 @@ client.on('message', message => {
 				}
 				if(dealerTotal > 21){
 					let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
-					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 					data.blackjack -= Math.floor(blackjackParse.wager * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -2075,7 +2091,7 @@ client.on('message', message => {
 					}
 					if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 1;
-						message.channel.send(`You come to your senses.`);
+						resultsOfGame += `You come to your senses.\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
 					}
 					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
@@ -2088,10 +2104,11 @@ client.on('message', message => {
 					if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
 						data.users[blackjackParse.challIndex]["CHR"] += 1;
 						data.users[blackjackParse.challIndex]["chrExp"] = 0;
-						message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
+						resultsOfGame += `Winning blackjack made you more slick, your CHR increased!`;
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else{
@@ -2110,7 +2127,6 @@ client.on('message', message => {
 					if(playerValue > dealerTotal){
 						//player wins
 						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
-						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -2126,7 +2142,7 @@ client.on('message', message => {
 						}
 						if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 							data.users[blackjackParse.challIndex]["suicide"] = 1;
-							message.channel.send(`You come to your senses.`);
+							resultsOfGame += `You come to your senses.\n`;
 							console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
 						}
 						if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
@@ -2139,16 +2155,16 @@ client.on('message', message => {
 						if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
 							data.users[blackjackParse.challIndex]["CHR"] += 1;
 							data.users[blackjackParse.challIndex]["chrExp"] = 0;
-							message.channel.send(`Winning blackjack made you more slick, your CHR increased!`);
+							resultsOfGame += `Winning blackjack made you more slick, your CHR increased!`;
 						}
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
 						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`;
-						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						//seduce dealer
 						let seduceChance = Math.random();
@@ -2164,7 +2180,7 @@ client.on('message', message => {
 							blackjackParse.wager = blackjackParse.wager - wagerHalf;
 							data.users[blackjackParse.challIndex].balance += wagerHalf;
 							data.blackjack -= wagerHalf;
-							message.channel.send(`You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!`);
+							resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 						}
 						//instability counter
 						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
@@ -2176,17 +2192,18 @@ client.on('message', message => {
 						}
 						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
 							data.users[blackjackParse.challIndex]["suicide"] = 0;
-							message.channel.send(`You are starting to feel irrational.`);
+							resultsOfGame += `You are starting to feel irrational.\n`;
 							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
 						}
 						if(data.users[blackjackParse.challIndex]["unstable"] > 250){
-							message.channel.send(`You are completely unstable`);
+							resultsOfGame += `You are completely unstable`;
 							console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
 							data.users[blackjackParse.challIndex]["unstable"] = 250
 						}
 						
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true);
 						fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 					}
 					else{
