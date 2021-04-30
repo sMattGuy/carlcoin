@@ -2127,7 +2127,7 @@ client.on('message', message => {
 					}
 					if(playerValue > dealerTotal){
 						//player wins
-						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
 						data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
 						data.blackjack -= Math.floor(blackjackParse.wager * 2);
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
