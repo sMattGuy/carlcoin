@@ -2165,7 +2165,7 @@ client.on('message', message => {
 					}
 					else if(dealerTotal > playerValue){
 						//player lose
-						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
 						//seduce dealer
 						let seduceChance = Math.random();
@@ -2872,7 +2872,7 @@ client.on('message', message => {
 								m.channel.send('Invalid choice, make sure you spelt it correctly!');
 							}
 							return (m.content === 'rock' || m.content === 'paper' || m.content === 'scissors')
-							};
+						};
 						//take money from both users
 						client.users.cache.get(data.users[rpsParse.challIndex].id).send(`Type rock, paper, or scissors`).then(()=>{
 							client.users.cache.get(data.users[rpsParse.challIndex].id).dmChannel.awaitMessages(filter, {max:1,time:20000,errors:['time']}).then(challChoice => {
