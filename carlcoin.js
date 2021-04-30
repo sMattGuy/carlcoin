@@ -2974,36 +2974,36 @@ client.on('message', message => {
 						if(reel1%9 == 8 && reel2%9 == 8 && reel3%9 == 8){
 							//jackpot
 							data.users[i].balance += wager * 12;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nJACKPOT BABY!!!!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nJACKPOT BABY!!!!`);
 						}
 						else if(reel1%9 == 8 || reel2%9 == 8 || reel3%9 == 8){
 							//7 appears and wasnt a win
 							data.users[i].balance -= wager;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nSorry, You've lost!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`);
 						}
 						else if((reel1%9 == 4 && reel2%9 == 5 && reel3%9 == 6) || (reel1%9 == 5 && reel2%9 == 6 && reel3%9 == 7)){
 							//straight suits
 							data.users[i].balance += wager * 8;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nA straight! You've won!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`);
 						}
 						else if((reel1%9 == 4 && reel2%9 == 4 && reel3%9 == 4)||(reel1%9 == 5 && reel2%9 == 5 && reel3%9 == 5)||(reel1%9 == 6 && reel2%9 == 6 && reel3%9 == 6)||(reel1%9 == 7 && reel2%9 == 7 && reel3%9 == 7)){
 							//3 of a kind suit
 							data.users[i].balance += wager * 8;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\n3 of a kind! You've won!`);
 						}
 						else if((reel1%9 == 0 && reel2%9 == 1 && reel3%9 == 2) || (reel1%9 == 1 && reel2%9 == 2 && reel3%9 == 3)){
 							//straight fruit (lol)
 							data.users[i].balance += wager * 4;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nStraight Fruit! You've won!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nStraight Fruit! You've won!`);
 						}
 						else if((reel1%9 == 0 && reel2%9 == 0 && reel3%9 == 0)||(reel1%9 == 1 && reel2%9 == 1 && reel3%9 == 1)||(reel1%9 == 2 && reel2%9 == 2 && reel3%9 == 2)||(reel1%9 == 3 && reel2%9 == 3 && reel3%9 == 3)){
 							//3 of a kind fruit
 							data.users[i].balance += wager * 4;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\n3 of a kind! You've won!`);
 						}
 						else{
 							data.users[i].balance -= wager;
-							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nSorry, You've lost!`);
+							message.channel.send(`${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`);
 						}
 					}
 					let newData = JSON.stringify(data);
