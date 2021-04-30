@@ -2987,7 +2987,7 @@ client.on('message', message => {
 							data.users[i].balance += wager * 2;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nStraight Fruit! You've won!`);
 						}
-						else if((reel1%4 == reel2%4) &&  (reel2%4 == reel3%4)){
+						else if(((reel1%4 == reel2%4) && (reel1 < 16 && reel2 < 16)) && ((reel2%4 == reel3%4) && (reel2<16 && reel3 < 16))){
 							//3 of a kind fruit
 							data.users[i].balance += wager * 2;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
