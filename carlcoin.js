@@ -2972,22 +2972,18 @@ client.on('message', message => {
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
-			ctx.shadowBlur(10);
 			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
 			if(unstable){
 				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.shadowBlur(10);
 				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,188,130,200);
 				break;
 			}
 		}
 		for(let i=0;i<dealerCards.length;i++){
 			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
-			ctx.shadowBlur(10);
 			ctx.drawImage(dealerCard,340 - (i * 25) ,-100,130,200);
 			if(hiddenDealer){
 				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.shadowBlur(10);
 				ctx.drawImage(dealerCard,340 - ((i+1) * 25) ,-100,130,200);
 				break;
 			}
