@@ -2963,7 +2963,7 @@ client.on('message', message => {
 	}
 	//create board for blackjack
 	async function drawBoard(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender){
-		const canvas = Canvas.createCanvas(496,365);
+		const canvas = Canvas.createCanvas(496,288);
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -2972,10 +2972,10 @@ client.on('message', message => {
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
-			ctx.drawImage(currentCard,25 + (i * 25) ,210,130,200);
+			ctx.drawImage(currentCard,25 + (i * 25) ,133,130,200);
 			if(unstable){
 				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,210,130,200);
+				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,133,130,200);
 				break;
 			}
 		}
