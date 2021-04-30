@@ -2958,37 +2958,45 @@ client.on('message', message => {
 					}
 					else{
 						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>']
-						let slotReel = [symbols[0],symbols[1],symbols[2],symbols[3],symbols[0],symbols[1],symbols[2],symbols[3],symbols[0],symbols[1],symbols[2],symbols[3],symbols[0],symbols[1],symbols[2],symbols[3],symbols[4],symbols[5],symbols[6],symbols[7],symbols[4],symbols[5],symbols[6],symbols[7],symbols[8]];
 						message.channel.send(`You spin the slot machine`);
-						let reel1 = Math.floor(Math.random() * slotReel.length);
-						let reel2 = Math.floor(Math.random() * slotReel.length);
-						let reel3 = Math.floor(Math.random() * slotReel.length);
-						if(reel1 == 24 && reel2 == 24 && reel3 == 24){
+						let reel1 = Math.floor(Math.random() * 54);
+						while(reel1 == 26 || reel1 == 35 || reel1 == 44 || (reel1 >= 49 && reel1 <= 53) || (reel1 >= 58 && reel1 <= 62) || (reel1 >= 67 && reel1 <= 71)){
+							reel1 = Math.floor(Math.random() * 54);
+						}
+						let reel2 = Math.floor(Math.random() * 54);
+						while(reel2 == 26 || reel2 == 35 || reel2 == 44 || (reel2 >= 49 && reel2 <= 53) || (reel2 >= 58 && reel2 <= 62) || (reel2 >= 67 && reel2 <= 71)){
+							reel2 = Math.floor(Math.random() * 54);
+						}
+						let reel3 = Math.floor(Math.random() * 54);
+						while(reel3 == 26 || reel3 == 35 || reel3 == 44 || (reel3 >= 49 && reel3 <= 53) || (reel3 >= 58 && reel3 <= 62) || (reel3 >= 67 && reel3 <= 71)){
+							reel3 = Math.floor(Math.random() * 54);
+						}
+						if(reel1%9 == 8 && reel2%9 == 8 && reel3%9 == 8){
 							//jackpot
 							data.users[i].balance += wager * 12;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nJACKPOT BABY!!!!`);
 						}
-						else if(reel1 == 24 || reel2 == 24 || reel3 == 24){
+						else if(reel1%9 == 8 || reel2%9 == 8 || reel3%9 == 8){
 							//7 appears and wasnt a win
 							data.users[i].balance -= wager;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nSorry, You've lost!`);
 						}
-						else if(((reel1 == 16 || reel1 == 20) && (reel2 == 17 || reel2 == 21) && (reel3 == 18 || reel3 == 22)) || ((reel1 == 17 || reel1 == 21) && (reel2 == 18 || reel2 == 22) && (reel3 == 19 || reel3 == 23))){
+						else if((reel1%9 == 4 && reel2%9 == 5 && reel3%9 == 6) || (reel1%9 == 5 && reel2%9 == 6 && reel3%9 == 7)){
 							//straight suits
 							data.users[i].balance += wager * 8;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nA straight! You've won!`);
 						}
-						else if(((reel1 == 16 || reel1 == 20) && (reel2 == 16 || reel2 == 20) && (reel3 == 16 || reel3 == 20)) || ((reel1 == 17 || reel1 == 21) && (reel2 == 17 || reel2 == 21) && (reel3 == 17 || reel3 == 21)) || ((reel1 == 18 || reel1 == 22) && (reel2 == 18 || reel2 == 22) && (reel3 == 18 || reel3 == 22)) || ((reel1 == 19 || reel1 == 23) && (reel2 == 19 || reel2 == 23) && (reel3 == 19 || reel3 == 23))){
+						else if((reel1%9 == 4 && reel2%9 == 4 && reel3%9 == 4)||(reel1%9 == 5 && reel2%9 == 5 && reel3%9 == 5)||(reel1%9 == 6 && reel2%9 == 6 && reel3%9 == 6)||(reel1%9 == 7 && reel2%9 == 7 && reel3%9 == 7)){
 							//3 of a kind suit
 							data.users[i].balance += wager * 8;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
 						}
-						else if(((reel1 == 0 || reel1 == 4  || reel1 == 8  || reel1 == 12) && (reel2 == 1 || reel2 == 5  || reel2 == 9  || reel2 == 13) && (reel3 == 2 || reel3 == 6  || reel3 == 10 || reel3 == 14)) || ((reel1 == 1 || reel1 == 5  || reel1 == 9  || reel1 == 13) && (reel2 == 2 || reel2 == 6  || reel2 == 10 || reel2 == 14) && (reel3 == 3 || reel3 == 7  || reel3 == 11 || reel3 == 15))){
+						else if((reel1%9 == 0 && reel2%9 == 1 && reel3%9 == 2) || (reel1%9 == 1 && reel2%9 == 2 && reel3%9 == 3)){
 							//straight fruit (lol)
 							data.users[i].balance += wager * 4;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nStraight Fruit! You've won!`);
 						}
-						else if(((reel1%4 == reel2%4) && (reel1 < 16 && reel2 < 16)) && ((reel2%4 == reel3%4) && (reel2<16 && reel3 < 16))){
+						else if((reel1%9 == 0 && reel2%9 == 0 && reel3%9 == 0)||(reel1%9 == 1 && reel2%9 == 1 && reel3%9 == 1)||(reel1%9 == 2 && reel2%9 == 2 && reel3%9 == 2)||(reel1%9 == 3 && reel2%9 == 3 && reel3%9 == 3)){
 							//3 of a kind fruit
 							data.users[i].balance += wager * 4;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
