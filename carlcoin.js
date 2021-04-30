@@ -2977,10 +2977,7 @@ client.on('message', message => {
 							data.users[i].balance += wager * 5;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nA straight! You've won!`);
 						}
-						else if((reel1 == 16 || reel1 == 20) && (reel2 == 16 || reel2 == 20) && (reel3 == 16 || reel3 == 20)) || 
-						       ((reel1 == 17 || reel1 == 21) && (reel2 == 17 || reel2 == 21) && (reel3 == 17 || reel3 == 21)) || 
-						       ((reel1 == 18 || reel1 == 22) && (reel2 == 18 || reel2 == 22) && (reel3 == 18 || reel3 == 22)) || 
-						       ((reel1 == 19 || reel1 == 23) && (reel2 == 19 || reel2 == 23) && (reel3 == 19 || reel3 == 23))){
+						else if((reel1 == 16 || reel1 == 20) && (reel2 == 16 || reel2 == 20) && (reel3 == 16 || reel3 == 20)) || ((reel1 == 17 || reel1 == 21) && (reel2 == 17 || reel2 == 21) && (reel3 == 17 || reel3 == 21)) || ((reel1 == 18 || reel1 == 22) && (reel2 == 18 || reel2 == 22) && (reel3 == 18 || reel3 == 22)) || ((reel1 == 19 || reel1 == 23) && (reel2 == 19 || reel2 == 23) && (reel3 == 19 || reel3 == 23))){
 							//3 of a kind suit
 							data.users[i].balance += wager * 5;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
