@@ -2965,34 +2965,36 @@ client.on('message', message => {
 						let reel3 = Math.floor(Math.random() * slotReel.length);
 						if(reel1 == 24 && reel2 == 24 && reel3 == 24){
 							//jackpot
-							data.users[i].balance += wager * 8;
+							data.users[i].balance += wager * 12;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nJACKPOT BABY!!!!`);
 						}
 						else if(reel1 == 24 || reel2 == 24 || reel3 == 24){
 							//7 appears and wasnt a win
+							data.users[i].balance -= wager;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nSorry, You've lost!`);
 						}
 						else if(((reel1 == 16 || reel1 == 20) && (reel2 == 17 || reel2 == 21) && (reel3 == 18 || reel3 == 22)) || ((reel1 == 17 || reel1 == 21) && (reel2 == 18 || reel2 == 22) && (reel3 == 19 || reel3 == 23))){
 							//straight suits
-							data.users[i].balance += wager * 5;
+							data.users[i].balance += wager * 8;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nA straight! You've won!`);
 						}
 						else if(((reel1 == 16 || reel1 == 20) && (reel2 == 16 || reel2 == 20) && (reel3 == 16 || reel3 == 20)) || ((reel1 == 17 || reel1 == 21) && (reel2 == 17 || reel2 == 21) && (reel3 == 17 || reel3 == 21)) || ((reel1 == 18 || reel1 == 22) && (reel2 == 18 || reel2 == 22) && (reel3 == 18 || reel3 == 22)) || ((reel1 == 19 || reel1 == 23) && (reel2 == 19 || reel2 == 23) && (reel3 == 19 || reel3 == 23))){
 							//3 of a kind suit
-							data.users[i].balance += wager * 5;
+							data.users[i].balance += wager * 8;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
 						}
 						else if(((reel1 == 0 || reel1 == 4  || reel1 == 8  || reel1 == 12) && (reel2 == 1 || reel2 == 5  || reel2 == 9  || reel2 == 13) && (reel3 == 2 || reel3 == 6  || reel3 == 10 || reel3 == 14)) || ((reel1 == 1 || reel1 == 5  || reel1 == 9  || reel1 == 13) && (reel2 == 2 || reel2 == 6  || reel2 == 10 || reel2 == 14) && (reel3 == 3 || reel3 == 7  || reel3 == 11 || reel3 == 15))){
 							//straight fruit (lol)
-							data.users[i].balance += wager * 2;
+							data.users[i].balance += wager * 4;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nStraight Fruit! You've won!`);
 						}
 						else if(((reel1%4 == reel2%4) && (reel1 < 16 && reel2 < 16)) && ((reel2%4 == reel3%4) && (reel2<16 && reel3 < 16))){
 							//3 of a kind fruit
-							data.users[i].balance += wager * 2;
+							data.users[i].balance += wager * 4;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\n3 of a kind! You've won!`);
 						}
 						else{
+							data.users[i].balance -= wager;
 							message.channel.send(`${slotReel[reel1]}|${slotReel[reel2]}|${slotReel[reel3]}\nSorry, You've lost!`);
 						}
 					}
