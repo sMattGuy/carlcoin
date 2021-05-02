@@ -2109,9 +2109,21 @@ client.on('message', message => {
 						data.users[blackjackParse.challIndex]["chrExp"] = 0;
 						resultsOfGame += `Winning blackjack made you more slick, your CHR increased!`;
 					}
+					let playerValueBust = 0;
+					let playerAceBust = false;
+					for(let i=0;i<blackjackParse.playerCards.playerCards.length;i++){
+						let currentCardValue = cardValue[blackjackParse.playerCards.playerCards[i]%13];
+						if(currentCardValue == 1){
+							playerAceBust = true;
+						}
+						playerValueBust += currentCardValue;
+					}
+					if(playerAceBust && playerValueBust + 10 <= 21){
+						playerValueBust += 10;
+					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,playerValue,blackjackParse.name,dealerTotal,message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,playerValueBust,blackjackParse.name,dealerTotal,message.author.displayAvatarURL({format:'png'}));
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else{
