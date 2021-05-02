@@ -3102,6 +3102,10 @@ client.on('message', message => {
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(421,105,75,75);
 		
+		ctx.font = '60px arial-black';
+		ctx.fillStyle = '#ffffff';
+		context.fillText(playerName, canvas.width / 2.5, canvas.height / 1.8);
+		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
