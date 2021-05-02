@@ -3097,6 +3097,10 @@ client.on('message', message => {
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(0,105,75,75);
 		
+		const carlCoinImage = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/carlcoin2.png`);
+		ctx.drawImage(avatar,421,105,75,75);
+		ctx.strokeStyle = '#358a54';
+		ctx.strokeRect(421,105,75,75);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
