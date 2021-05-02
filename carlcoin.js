@@ -3102,9 +3102,12 @@ client.on('message', message => {
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(421,105,75,75);
 		
-		ctx.font = '30px sans-serif';
+		ctx.font = 'bold 30px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerName, canvas.width / 2.5, canvas.height / 1.8);
+		ctx.fillText(playerName, 80, 105);
+		ctx.font = 'bold 30px sans-serif';
+		ctx.fillStyle = '#ffffff';
+		ctx.fillText(playerName, 150, 105);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
