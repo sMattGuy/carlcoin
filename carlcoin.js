@@ -3092,10 +3092,10 @@ client.on('message', message => {
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
-			ctx.drawImage(currentCard,25 + (i * 25) ,300,60,110);
+			ctx.drawImage(currentCard,25 + (i * 25) ,200,60,110);
 			if(unstable){
 				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,300,50,110);
+				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,200,50,110);
 				break;
 			}
 		}
