@@ -3098,7 +3098,7 @@ client.on('message', message => {
 		ctx.strokeRect(0,105,75,75);
 		
 		const carlCoinImage = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/carlcoin2.png`);
-		ctx.drawImage(avatar,421,105,75,75);
+		ctx.drawImage(carlCoinImage,421,105,75,75);
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(421,105,75,75);
 		
