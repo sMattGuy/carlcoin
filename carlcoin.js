@@ -3090,7 +3090,7 @@ client.on('message', message => {
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.png');
 		ctx.drawImage(background, 25, 25, canvas.width-50, canvas.height-50);
 		const userImageLoad = await Canvas.loadImage(userImage);
-		ctx.drawImage(userImageLoad,25, 0, 50, 50);
+		ctx.drawImage(userImageLoad,25, 150, 50, 50);
 		//draw cards
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
