@@ -3078,6 +3078,50 @@ client.on('message', message => {
 			channel.send(`${gameMessage}`,attachment);
 		}
 	}
+	
+	if(message.content === 'draw test board'){
+		let playercards = [5,2,7,4,2,5,1,2,6,4,5];
+		let dealercards = [5,2,7,4,2,5,1,2,6,4,5];
+		drawBoardTest(message.channel,false,'test board drawn',playercards,dealercards,false,true,15,message.author.username,15,message.author.displayAvatarURL({ format: 'jpg' }));
+	}
+	async function drawBoardTest(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerVal, playerName, dealerVal,userIcon){
+		const canvas = Canvas.createCanvas(496,288);
+		const ctx = canvas.getContext('2d');
+		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
+		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+		ctx.strokeStyle = '#358a54';
+		ctx.strokeRect(0,0,canvas.width,canvas.height);
+		
+		const avatar = await Canvas.loadImage(userIcon);
+		ctx.drawImage(avatar,25,100,50,50);
+		
+		for(let i=0;i<playerCards.length;i++){
+			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
+			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
+			if(unstable){
+				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,188,130,200);
+				break;
+			}
+		}
+		for(let i=0;i<dealerCards.length;i++){
+			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
+			ctx.drawImage(dealerCard,340 - (i * 25) ,-100,130,200);
+			if(hiddenDealer){
+				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(dealerCard,340 - ((i+1) * 25) ,-100,130,200);
+				break;
+			}
+		}
+		
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
+		if(!ender){
+			channel.send(`${gameMessage}`,attachment).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+		}
+		else{
+			channel.send(`${gameMessage}`,attachment);
+		}
+	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
 client.login(`${credentials.token}`);
