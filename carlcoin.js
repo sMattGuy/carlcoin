@@ -729,7 +729,7 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
+							{ name: 'Summary Info?', value: `Balance: ${fakeBalance}CC\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
 							{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}}`},
 							{ name: 'Cooldowns', value: `${messageToSend}`},
 							{ name: 'Stats?', value: '\u200B' },
@@ -798,7 +798,7 @@ client.on('message', message => {
 						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
-							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
+							{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
 							{ name: 'Cooldowns', value: `${messageToSend}`},
 							{ name: 'Stats', value: '\u200B' },
@@ -1655,12 +1655,12 @@ client.on('message', message => {
 			.setDescription(`Highest earner: ${highestEarnerName} with ${highestEarnerAmount}CC`)
 			.setThumbnail('https://i.imgur.com/0aDFif9.png')
 			.addFields(
-				{ name: 'Carl Coin Circulating', value: `${data.econ}`},
+				{ name: 'Carl Coin Circulating', value: `${data.econ}CC`},
 				{ name: 'Users Registered', value: `${data.users.length}`},
-				{ name: 'Roll Pot', value: `${data.pot}`, inline: true },
-				{ name: 'CarlBall Jackpot', value: `${carlball}`, inline: true },
-				{ name: 'Blackjack Pot', value: `${data.blackjack}`, inline: true },
-				{ name: 'Mines', value: `${data.welfare}`, inline: true },
+				{ name: 'Roll Pot', value: `${data.pot}CC`, inline: true },
+				{ name: 'CarlBall Jackpot', value: `${carlball}CC`, inline: true },
+				{ name: 'Blackjack Pot', value: `${data.blackjack}CC`, inline: true },
+				{ name: 'Mines', value: `${data.welfare}CC`, inline: true },
 				{ name: '\u200B', value: `\u200B`, inline: true },
 				{ name: '\u200B', value: `\u200B`, inline: true },
 				{ name: 'Homes', value: `${houseCount}`, inline: true },
@@ -3050,6 +3050,45 @@ client.on('message', message => {
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
+		
+		for(let i=0;i<playerCards.length;i++){
+			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
+			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
+			if(unstable){
+				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,188,130,200);
+				break;
+			}
+		}
+		for(let i=0;i<dealerCards.length;i++){
+			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
+			ctx.drawImage(dealerCard,340 - (i * 25) ,-100,130,200);
+			if(hiddenDealer){
+				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
+				ctx.drawImage(dealerCard,340 - ((i+1) * 25) ,-100,130,200);
+				break;
+			}
+		}
+		
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'board.png');
+		if(!ender){
+			channel.send(`${gameMessage}`,attachment).then(msg => msg.delete({timeout:60000})).catch(error => {console.log(error)});
+		}
+		else{
+			channel.send(`${gameMessage}`,attachment);
+		}
+	}
+	
+	if(message.content === 'draw test board'){
+		let playercards = [5,2,7,4,2,5,1,2,6,4,5];
+		let dealercards = [5,2,7,4,2,5,1,2,6,4,5];
+		drawBoardTest(message.channel,false,'test board drawn',playercards,dealercards,false,true,15,message.author.username,15,message.author.displayAvatarURL());
+	}
+	async function drawBoardTest(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerValue, playerName, dealerValue, userImage){
+		const canvas = Canvas.createCanvas(400,200);
+		const ctx = canvas.getContext('2d');
+		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.png');
+		ctx.drawImage(background, 0, 0, canvas.width-50, canvas.height-50);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
