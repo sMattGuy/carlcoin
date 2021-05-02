@@ -3088,23 +3088,23 @@ client.on('message', message => {
 		const canvas = Canvas.createCanvas(400,300);
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.png');
-		ctx.drawImage(background, 0, 0, canvas.width-50, canvas.height-50);
+		ctx.drawImage(background, 0, 0, canvas.width-100, canvas.height-100);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
-			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
+			ctx.drawImage(currentCard,25 + (i * 25) ,188,100,160);
 			if(unstable){
 				let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,188,130,200);
+				ctx.drawImage(currentCard,25 + ((i+1) * 25) ,188,100,160);
 				break;
 			}
 		}
 		for(let i=0;i<dealerCards.length;i++){
 			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
-			ctx.drawImage(dealerCard,340 - (i * 25) ,-100,130,200);
+			ctx.drawImage(dealerCard,340 - (i * 25) ,-100,100,160);
 			if(hiddenDealer){
 				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(dealerCard,340 - ((i+1) * 25) ,-100,130,200);
+				ctx.drawImage(dealerCard,340 - ((i+1) * 25) ,-100,100,160);
 				break;
 			}
 		}
