@@ -1783,6 +1783,7 @@ client.on('message', message => {
 								message.channel.send('You dont have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 							}
 							else{
+								let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
 								console.log(data.users[i].name + ' has started blackjack');	
 								let welfareSupport = Math.floor(wager * .25);
 								let blackjackSupport = wager - welfareSupport;
@@ -1819,7 +1820,7 @@ client.on('message', message => {
 										data.users[i].balance += wager;
 										data.blackjack -= wager;
 										let resultsOfGame = `You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
-										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,playerCards.playerCards[0] + playerCards.playerCards[1],message.author.username,dealerCards.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,21,message.author.username,21,message.author.displayAvatarURL({format:'png'}));
 									}
 									else{
 										data.users[i].balance += Math.floor(wager * 2.5);
@@ -1851,7 +1852,7 @@ client.on('message', message => {
 											data.users[i]["chrExp"] = 0;
 											resultsOfGame += `Winning blackjack made you more slick, your CHR increased!\n`;
 										}
-										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,playerCards.playerCards[0] + playerCards.playerCards[1],message.author.username,dealerCards.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,21,message.author.username,cardValue[dealerCards.dealerCards[0]%13]+cardValue[dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
 									}
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1892,7 +1893,7 @@ client.on('message', message => {
 										console.log(data.users[i].name + " has become unstable");
 										data.users[i]["unstable"] = 250;
 									}
-									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,playerCards.playerCards[0] + playerCards.playerCards[1],message.author.username,dealerCards.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,21,message.author.displayAvatarURL({format:'png'}));
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								}
@@ -1907,11 +1908,11 @@ client.on('message', message => {
 									if(data.users[i]["unstable"] >= 100){
 										let resultsOfGame = `Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`;
 										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false);
-										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false,playerCards.playerCards[0],message.author.username,dealerCards.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false,cardValue[playerCards.playerCards[0]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 									}
 									else{
 										let resultsOfGame = `${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
-										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,playerCards.playerCards[0] + playerCards.playerCards[1],message.author.username,dealerCards.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 									}
 								}
 								data.users[i]["activity"] = Date.now();
@@ -2006,20 +2007,20 @@ client.on('message', message => {
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,blackjackParse.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards[0]%13]+cardValue[blackjackParse.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
 					let resultsOfGame = `${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`;
-					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,currentTotal,blackjackParse.name,blackjackParse.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 				}
 				else{
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
 					let resultsOfGame = `${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal}\nYou:${cardViewer}`;
-					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,currentTotal,blackjackParse.name,blackjackParse.dealerCards[0],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 				}
 			}
 		}
