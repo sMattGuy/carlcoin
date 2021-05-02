@@ -3088,7 +3088,7 @@ client.on('message', message => {
 		const canvas = Canvas.createCanvas(400,300);
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.png');
-		ctx.drawImage(background, 0, 0, canvas.width-100, canvas.height-100);
+		ctx.drawImage(background, 50, 50, canvas.width-50, canvas.height-50);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
