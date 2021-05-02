@@ -3111,10 +3111,10 @@ client.on('message', message => {
 		//carl name and val
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText('CarlCoin', 300, 135);
+		ctx.fillText('CarlCoin', 330, 135);
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerVal, 300, 160);
+		ctx.fillText(playerVal, 330, 160);
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
