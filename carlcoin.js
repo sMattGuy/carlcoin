@@ -3085,7 +3085,7 @@ client.on('message', message => {
 		drawBoardTest(message.channel,false,'test board drawn',playercards,dealercards,false,true,15,message.author.username,15,message.author.displayAvatarURL());
 	}
 	async function drawBoardTest(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerValue, playerName, dealerValue, userImage){
-		const canvas = Canvas.createCanvas(400,200);
+		const canvas = Canvas.createCanvas(400,300);
 		const ctx = canvas.getContext('2d');
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.png');
 		ctx.drawImage(background, 0, 0, canvas.width-50, canvas.height-50);
