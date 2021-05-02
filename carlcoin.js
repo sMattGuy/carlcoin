@@ -3082,7 +3082,7 @@ client.on('message', message => {
 	if(message.content === 'draw test board'){
 		let playercards = [5,2,7,4,2,5,1,2,6,4,5];
 		let dealercards = [5,2,7,4,2,5,1,2,6,4,5];
-		drawBoardTest(message.channel,false,'test board drawn',playercards,dealercards,false,true,15,message.author.username,15,message.author.displayAvatarURL({ format: 'jpg' }));
+		drawBoardTest(message.channel,false,'test board drawn',playercards,dealercards,false,true,15,message.author.username,21,message.author.displayAvatarURL({ format: 'jpg' }));
 	}
 	async function drawBoardTest(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerVal, playerName, dealerVal,userIcon){
 		const canvas = Canvas.createCanvas(496,288);
@@ -3111,10 +3111,10 @@ client.on('message', message => {
 		//carl name and val
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText('CarlCoin', 330, 135);
+		ctx.fillText('CarlCoin', 320, 135);
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerVal, 330, 160);
+		ctx.fillText(dealerVal, 400, 160);
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
 			ctx.drawImage(currentCard,25 + (i * 25) ,188,130,200);
