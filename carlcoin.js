@@ -3107,7 +3107,7 @@ client.on('message', message => {
 		ctx.fillText(playerName, 75, 135);
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerVal, 75, 150);
+		ctx.fillText(playerVal, 75, 160);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
