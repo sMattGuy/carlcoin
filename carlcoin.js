@@ -3102,7 +3102,7 @@ client.on('message', message => {
 		ctx.strokeStyle = '#358a54';
 		ctx.strokeRect(421,105,75,75);
 		
-		ctx.font = '60px arial-black';
+		ctx.font = '30px sans-serif';
 		ctx.fillStyle = '#ffffff';
 		ctx.fillText(playerName, canvas.width / 2.5, canvas.height / 1.8);
 		
