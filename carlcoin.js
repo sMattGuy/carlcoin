@@ -3093,7 +3093,7 @@ client.on('message', message => {
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 		
 		const avatar = await Canvas.loadImage(userIcon);
-		ctx.drawImage(avatar,25,100,50,50);
+		ctx.drawImage(avatar,0,100,75,75);
 		
 		for(let i=0;i<playerCards.length;i++){
 			let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[playerCards[i]]}`);
