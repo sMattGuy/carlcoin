@@ -3101,10 +3101,10 @@ client.on('message', message => {
 		}
 		for(let i=0;i<dealerCards.length;i++){
 			let dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/${blackjackCardsImages[dealerCards[i]]}`);
-			ctx.drawImage(dealerCard,275 - (i * 25) ,-100,50,110);
+			ctx.drawImage(dealerCard,275 - (i * 25) ,-50,50,110);
 			if(hiddenDealer){
 				dealerCard = await Canvas.loadImage(`/home/mattguy/carlcoin/cardImages/purple_back.png`);
-				ctx.drawImage(dealerCard,275 - ((i+1) * 25) ,-100,50,110);
+				ctx.drawImage(dealerCard,275 - ((i+1) * 25) ,-50,50,110);
 				break;
 			}
 		}
