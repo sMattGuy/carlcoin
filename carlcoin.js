@@ -2007,7 +2007,7 @@ client.on('message', message => {
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards.dealerCards[0]%13]+cardValue[blackjackParse.dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards.dealerCards[0]%13]+cardValue[blackjackParse.dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
