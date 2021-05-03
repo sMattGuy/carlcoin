@@ -1946,7 +1946,8 @@ client.on('message', message => {
 				blackjackParse.blackjackEnder = parseInt(blackjackParse.blackjackEnder) + 60000;
 				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 				let data = JSON.parse(database);
-				let cardValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
+				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+				let dealerValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
 				let newCard = (Math.floor(Math.random() * 52));
 				while(blackjackParse.usedCards.usedCards[newCard]){
 					newCard = (Math.floor(Math.random() * 52));
@@ -2007,14 +2008,14 @@ client.on('message', message => {
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards.dealerCards[0]%13]+cardValue[blackjackParse.dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,currentTotal,blackjackParse.name,dealerValue[blackjackParse.dealerCards.dealerCards[0]%13]+dealerValue[blackjackParse.dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'}));
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`);
 				}
 				else if(ace && currentTotal + 10 <= 21){
 					let jsonBlackjack = JSON.stringify(blackjackParse);
 					fs.writeFileSync(`/home/mattguy/carlcoin/cache/${personsId}blackjack`,jsonBlackjack);
 					let resultsOfGame = `${blackjackParse.name}, you drew a ${blackjackCards[newCard]} you now have ${currentTotal} (or ${currentTotal + 10} since you have an ace)\nYou:${cardViewer}`;
-					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,currentTotal,blackjackParse.name,cardValue[blackjackParse.dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
+					drawBoard(message.channel, true, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,false,`${currentTotal} (or ${currentTotal + 10})`,blackjackParse.name,cardValue[blackjackParse.dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 				}
 				else{
 					let jsonBlackjack = JSON.stringify(blackjackParse);
