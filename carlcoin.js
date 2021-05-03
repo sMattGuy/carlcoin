@@ -3480,9 +3480,9 @@ client.on('message', message => {
 			
 		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel1%9]}.png`);
 		ctx.drawImage(currentCard,25,188,130,200);
-		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel2%9]}.png`);
+		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel2%9]}.png`);
 		ctx.drawImage(currentCard,50,188,130,200);
-		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel3%9]}.png`);
+		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel3%9]}.png`);
 		ctx.drawImage(currentCard,75,188,130,200);
 			
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'machine.png');
