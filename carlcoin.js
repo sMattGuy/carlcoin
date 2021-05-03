@@ -2971,8 +2971,8 @@ client.on('message', message => {
 						message.channel.send('You dont have enough CC!');
 					}
 					else{
-						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>'];
 						let gameMessage = '';
+						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>'];
 						message.channel.send(`You spin the slot machine`);
 						let reel1 = Math.floor(Math.random() * 54);
 						while(reel1 == 26 || reel1 == 35 || reel1 == 44 || (reel1 >= 49 && reel1 <= 53) || (reel1 >= 58 && reel1 <= 62) || (reel1 >= 67 && reel1 <= 71)){
@@ -3369,8 +3369,8 @@ client.on('message', message => {
 							data.users[i].balance -= wager;
 							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
 						}
+						drawSlots(message.channel, gameMessage, reel1, reel2, reel3);
 					}
-					drawSlots(message.channel, gameMessage, reel1, reel2, reel3);
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					break;
