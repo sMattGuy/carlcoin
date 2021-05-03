@@ -3077,10 +3077,10 @@ client.on('message', message => {
 		//player name and val
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerName, 75, 135);
+		ctx.fillText(playerName, 80, 135);
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText(playerVal, 75, 160);
+		ctx.fillText(playerVal, 80, 160);
 		//carl name and val
 		ctx.font = 'bold 20px sans-serif';
 		ctx.fillStyle = '#ffffff';
