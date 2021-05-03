@@ -1783,7 +1783,7 @@ client.on('message', message => {
 								message.channel.send('You dont have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
 							}
 							else{
-								let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+								let cardValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
 								console.log(data.users[i].name + ' has started blackjack');	
 								let welfareSupport = Math.floor(wager * .25);
 								let blackjackSupport = wager - welfareSupport;
@@ -1946,7 +1946,7 @@ client.on('message', message => {
 				blackjackParse.blackjackEnder = parseInt(blackjackParse.blackjackEnder) + 60000;
 				let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 				let data = JSON.parse(database);
-				let cardValue = [1,2,3,4,5,6,7,8,9,10,10,10,10];
+				let cardValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
 				let newCard = (Math.floor(Math.random() * 52));
 				while(blackjackParse.usedCards.usedCards[newCard]){
 					newCard = (Math.floor(Math.random() * 52));
