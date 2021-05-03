@@ -2986,6 +2986,7 @@ client.on('message', message => {
 						while(reel3 == 26 || reel3 == 35 || reel3 == 44 || (reel3 >= 49 && reel3 <= 53) || (reel3 >= 58 && reel3 <= 62) || (reel3 >= 67 && reel3 <= 71)){
 							reel3 = Math.floor(Math.random() * 54);
 						}
+						console.log(reel1 + " " + reel2 + " " + reel3);
 						if(reel1%9 == 8 && reel2%9 == 8 && reel3%9 == 8){
 							//jackpot
 							data.blackjack -= wager * 12;
