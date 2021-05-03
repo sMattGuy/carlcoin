@@ -3464,6 +3464,30 @@ client.on('message', message => {
 			channel.send(`${gameMessage}`,attachment);
 		}
 	}
+	
+	if(message.content === 'test slot board'){
+		drawSlots(message.channel,'test board',22,45,11);
+	}
+	//draw slot machine function
+	async function drawSlots(channel, gameMessage, reel1, reel2, reel3){
+		const canvas = Canvas.createCanvas(440,440);
+		const ctx = canvas.getContext('2d');
+		let value = ['cherry','grape','watermelon','apple','heart','diamond','club','spades','7'];
+		const background = await Canvas.loadImage('/home/mattguy/carlcoin/slotmachine/slotmachinebackground.png');
+		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+		ctx.strokeStyle = '#0000';
+		ctx.strokeRect(0,0,canvas.width,canvas.height);
+			
+		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel1%9]}.png`);
+		ctx.drawImage(currentCard,25,188,130,200);
+		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel2%9]}.png`);
+		ctx.drawImage(currentCard,50,188,130,200);
+		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel3%9]}.png`);
+		ctx.drawImage(currentCard,75,188,130,200);
+			
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'machine.png');
+		channel.send(`${gameMessage}`,attachment);
+	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
 client.login(`${credentials.token}`);
