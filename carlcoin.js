@@ -3008,7 +3008,7 @@ client.on('message', message => {
 									data.users[i].balance += wager * 4;
 									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%9 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
 									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
