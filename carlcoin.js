@@ -2964,7 +2964,7 @@ client.on('message', message => {
 					if(isNaN(wager) || wager < 0){
 						message.channel.send('Invalid amount entered!');
 					}
-					else if((wager * 12) >= data.blackjack){
+					else if((wager * 27) >= data.blackjack){
 						message.channel.send('The slot machine doesnt have enough CC!');
 					}
 					else if(data.users[i].balance - wager < 0){
@@ -2972,523 +2972,566 @@ client.on('message', message => {
 					}
 					else{
 						let gameMessage = '';
-						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>'];
+						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>','<:worrycarl:691116720181739552>'];
 						message.channel.send(`You spin the slot machine`);
-						let reel1 = Math.floor(Math.random() * 54);
-						while(reel1 == 26 || reel1 == 35 || reel1 == 44 || (reel1 >= 49 && reel1 <= 53) || (reel1 >= 58 && reel1 <= 62) || (reel1 >= 67 && reel1 <= 71)){
-							reel1 = Math.floor(Math.random() * 54);
+						let reel1 = Math.floor(Math.random() * 80);
+						while(reel1 == 19 || reel1 == 28 || reel1 == 29 || reel1 == 38 || reel1 == 39 || reel1 == 48 || reel1 == 49 || (reel1 >= 54 && reel1 <= 59) || (reel1 >= 64 && reel1 <= 69) || (reel1 >= 74 && reel1 <= 79)){
+							reel1 = Math.floor(Math.random() * 80);
 						}
-						let reel2 = Math.floor(Math.random() * 54);
-						while(reel2 == 26 || reel2 == 35 || reel2 == 44 || (reel2 >= 49 && reel2 <= 53) || (reel2 >= 58 && reel2 <= 62) || (reel2 >= 67 && reel2 <= 71)){
-							reel2 = Math.floor(Math.random() * 54);
+						let reel2 = Math.floor(Math.random() * 80);
+						while(reel2 == 19 || reel2 == 28 || reel2 == 29 || reel2 == 38 || reel2 == 39 || reel2 == 48 || reel2 == 49 || (reel2 >= 54 && reel2 <= 59) || (reel2 >= 64 && reel2 <= 69) || (reel2 >= 74 && reel2 <= 79)){
+							reel2 = Math.floor(Math.random() * 80);
 						}
-						let reel3 = Math.floor(Math.random() * 54);
-						while(reel3 == 26 || reel3 == 35 || reel3 == 44 || (reel3 >= 49 && reel3 <= 53) || (reel3 >= 58 && reel3 <= 62) || (reel3 >= 67 && reel3 <= 71)){
-							reel3 = Math.floor(Math.random() * 54);
+						let reel3 = Math.floor(Math.random() * 80);
+						while(reel3 == 19 || reel3 == 28 || reel3 == 29 || reel3 == 38 || reel3 == 39 || reel3 == 48 || reel3 == 49 || (reel3 >= 54 && reel3 <= 59) || (reel3 >= 64 && reel3 <= 69) || (reel3 >= 74 && reel3 <= 79)){
+							reel3 = Math.floor(Math.random() * 80);
 						}
 						console.log(reel1 + " " + reel2 + " " + reel3);
-						if(reel1%9 == 8 && reel2%9 == 8 && reel3%9 == 8){
+						//carl win
+						if(reel1%10 == 9){
+							if(reel2%10 == 9){
+								if(reel3%10 == 9){
+									//turbo jackpot
+									data.blackjack -= wager * 27;
+									data.users[i].balance += wager * 27;
+									gameMessage = 'HOLY SHIT THE TURBO CARL JACKPOT';
+								}
+								else{
+									data.blackjack -= wager * 9;
+									data.users[i].balance += wager * 9;
+									gameMessage = 'A double carl! Very lucky win!';
+								}
+							}
+							else if(reel3%10 == 9){
+								data.blackjack -= wager * 9;
+								data.users[i].balance += wager * 9;
+								gameMessage = 'A double carl! Very lucky win!';
+							}
+							else{
+								data.blackjack -= wager * 3;
+								data.users[i].balance += wager * 3;
+								gameMessage = 'A carl! You win!';
+							}
+						}
+						else if(reel2%10 == 9){
+							if(reel3%10 == 9){
+								data.blackjack -= wager * 9;
+								data.users[i].balance += wager * 9;
+								gameMessage = 'A double carl! Very lucky win!';
+							}
+							else{
+								data.blackjack -= wager * 3;
+								data.users[i].balance += wager * 3;
+								gameMessage = 'A carl! You win!';
+							}
+						}
+						else if(reel3%10 == 9){
+							data.blackjack -= wager * 3;
+							data.users[i].balance += wager * 3;
+							gameMessage = 'A carl! You win!';
+						}
+						else if(reel1%10 == 8 && reel2%10 == 8 && reel3%10 == 8){
 							//jackpot
 							data.blackjack -= wager * 12;
 							data.users[i].balance += wager * 12;
-							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nJACKPOT BABY!!!!`;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nJACKPOT BABY!!!!`;
 						}
-						else if(reel1%9 == 8 || reel2%9 == 8 || reel3%9 == 8){
+						else if(reel1%10 == 8 || reel2%10 == 8 || reel3%10 == 8){
 							//7 appears and wasnt a win
 							data.users[i].balance -= wager;
 							data.blackjack += wager;
-							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 						}
 						//straight suit checker
 						//heart first
-						else if(reel1%9 == 4){
-							if(reel2%9 == 5){
-								if(reel3%9 == 6){
+						else if(reel1%10 == 4){
+							if(reel2%10 == 5){
+								if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 7){
+								else if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 6){
-								if(reel3%9 == 5){
+							else if(reel2%10 == 6){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 7){
+								else if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 7){
-								if(reel3%9 == 5){
+							else if(reel2%10 == 7){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//diamond
-						else if(reel1%9 == 5){
-							if(reel2%9 == 4){
-								if(reel3%9 == 7){
+						else if(reel1%10 == 5){
+							if(reel2%10 == 4){
+								if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 6){
-								if(reel3%9 == 4){
+							else if(reel2%10 == 6){
+								if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 7){
+								else if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 7){
-								if(reel3%9 == 4){
+							else if(reel2%10 == 7){
+								if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//club
-						else if(reel1%9 == 6){
-							if(reel2%9 == 5){
-								if(reel3%9 == 4){
+						else if(reel1%10 == 6){
+							if(reel2%10 == 5){
+								if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 7){
+								else if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 4){
-								if(reel3%9 == 5){
+							else if(reel2%10 == 4){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 7){
+								else if(reel3%10 == 7){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 7){
-								if(reel3%9 == 5){
+							else if(reel2%10 == 7){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 4){
+								else if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//spade
-						else if(reel1%9 == 7){
-							if(reel2%9 == 4){
-								if(reel3%9 == 5){
+						else if(reel1%10 == 7){
+							if(reel2%10 == 4){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 6){
-								if(reel3%9 == 5){
+							else if(reel2%10 == 6){
+								if(reel3%10 == 5){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 4){
+								else if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							if(reel2%9 == 5){
-								if(reel3%9 == 4){
+							if(reel2%10 == 5){
+								if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 6){
+								else if(reel3%10 == 6){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//3 of a kind suit
-						else if((reel1%9 == 4 && reel2%9 == 4 && reel3%9 == 4)||(reel1%9 == 5 && reel2%9 == 5 && reel3%9 == 5)||(reel1%9 == 6 && reel2%9 == 6 && reel3%9 == 6)||(reel1%9 == 7 && reel2%9 == 7 && reel3%9 == 7)){
+						else if((reel1%10 == 4 && reel2%10 == 4 && reel3%10 == 4)||(reel1%10 == 5 && reel2%10 == 5 && reel3%10 == 5)||(reel1%10 == 6 && reel2%10 == 6 && reel3%10 == 6)||(reel1%10 == 7 && reel2%10 == 7 && reel3%10 == 7)){
 							data.blackjack -= wager * 4
 							data.users[i].balance += wager * 4;
-							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\n3 of a kind! You've won!`;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
 						}
 						//straight for fruit
 						//cherry first
-						else if(reel1%9 == 0){
-							if(reel2%9 == 1){
-								if(reel3%9 == 2){
+						else if(reel1%10 == 0){
+							if(reel2%10 == 1){
+								if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 2){
-								if(reel3%9 == 1){
+							else if(reel2%10 == 2){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 3){
-								if(reel3%9 == 1){
+							else if(reel2%10 == 3){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 2){
+								else if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//grape
-						else if(reel1%9 == 1){
-							if(reel2%9 == 0){
-								if(reel3%9 == 2){
+						else if(reel1%10 == 1){
+							if(reel2%10 == 0){
+								if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 2){
-								if(reel3%9 == 0){
+							else if(reel2%10 == 2){
+								if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 3){
-								if(reel3%9 == 0){
+							else if(reel2%10 == 3){
+								if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 2){
+								else if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//watermelon
-						else if(reel1%9 == 2){
-							if(reel2%9 == 1){
-								if(reel3%9 == 0){
+						else if(reel1%10 == 2){
+							if(reel2%10 == 1){
+								if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 0){
-								if(reel3%9 == 1){
+							else if(reel2%10 == 0){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 3){
+								else if(reel3%10 == 3){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 3){
-								if(reel3%9 == 1){
+							else if(reel2%10 == 3){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 0){
+								else if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//apple
-						else if(reel1%9 == 3){
-							if(reel2%9 == 0){
-								if(reel3%9 == 1){
+						else if(reel1%10 == 3){
+							if(reel2%10 == 0){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 2){
+								else if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							else if(reel2%9 == 2){
-								if(reel3%9 == 1){
+							else if(reel2%10 == 2){
+								if(reel3%10 == 1){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 0){
+								else if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							if(reel2%9 == 1){
-								if(reel3%9 == 2){
+							if(reel2%10 == 1){
+								if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
-								else if(reel3%9 == 0){
+								else if(reel3%10 == 0){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nA straight! You've won!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
 									data.users[i].balance -= wager;
 									data.blackjack += wager;
-									gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
 								data.users[i].balance -= wager;
 								data.blackjack += wager;
-								gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						//3 of a kind fruit
-						else if((reel1%9 == 0 && reel2%9 == 0 && reel3%9 == 0)||(reel1%9 == 1 && reel2%9 == 1 && reel3%9 == 1)||(reel1%9 == 2 && reel2%9 == 2 && reel3%9 == 2)||(reel1%9 == 3 && reel2%9 == 3 && reel3%9 == 3)){
+						else if((reel1%10 == 0 && reel2%10 == 0 && reel3%10 == 0)||(reel1%10 == 1 && reel2%10 == 1 && reel3%10 == 1)||(reel1%10 == 2 && reel2%10 == 2 && reel3%10 == 2)||(reel1%10 == 3 && reel2%10 == 3 && reel3%10 == 3)){
 							data.blackjack -= wager * 2;
 							data.users[i].balance += wager * 2;
-							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\n3 of a kind! You've won!`;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
 						}
 						else{
 							data.blackjack += wager;
 							data.users[i].balance -= wager;
-							gameMessage = `${symbols[reel1%9]}|${symbols[reel2%9]}|${symbols[reel3%9]}\nSorry, You've lost!`;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 						}
 						drawSlots(message.channel, gameMessage, reel1, reel2, reel3);
 					}
@@ -3592,17 +3635,17 @@ client.on('message', message => {
 	async function drawSlots(channel, gameMessage, reel1, reel2, reel3){
 		const canvas = Canvas.createCanvas(440,440);
 		const ctx = canvas.getContext('2d');
-		let value = ['cherry','grape','watermelon','apple','heart','diamond','club','spades','7'];
+		let value = ['cherry','grape','watermelon','apple','heart','diamond','club','spades','7','carl'];
 		const background = await Canvas.loadImage('/home/mattguy/carlcoin/slotmachine/slotmachinebackground.png');
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 		ctx.strokeStyle = '#0000';
 		ctx.strokeRect(0,0,canvas.width,canvas.height);
 			
-		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel1%9]}.png`);
+		let currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel1%10]}.png`);
 		ctx.drawImage(currentCard,35,100,100,100);
-		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel2%9]}.png`);
+		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel2%10]}.png`);
 		ctx.drawImage(currentCard,170,100,100,100);
-		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel3%9]}.png`);
+		currentCard = await Canvas.loadImage(`/home/mattguy/carlcoin/slotmachine/${value[reel3%10]}.png`);
 		ctx.drawImage(currentCard,290,100,90,90);
 			
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'machine.png');
