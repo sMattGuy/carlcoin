@@ -3257,7 +3257,7 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							if(reel2%10 == 5){
+							else if(reel2%10 == 5){
 								if(reel3%10 == 4){
 									data.blackjack -= wager * 4;
 									data.users[i].balance += wager * 4;
@@ -3519,7 +3519,7 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
-							if(reel2%10 == 1){
+							else if(reel2%10 == 1){
 								if(reel3%10 == 2){
 									data.blackjack -= wager * 2;
 									data.users[i].balance += wager * 2;
