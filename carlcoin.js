@@ -3281,7 +3281,26 @@ client.on('message', message => {
 							}
 						}
 						//3 of a kind suit
-						else if((reel1%10 == 4 && reel2%10 == 4 && reel3%10 == 4)||(reel1%10 == 5 && reel2%10 == 5 && reel3%10 == 5)||(reel1%10 == 6 && reel2%10 == 6 && reel3%10 == 6)||(reel1%10 == 7 && reel2%10 == 7 && reel3%10 == 7)){
+						//heart
+						else if((reel1%10 == 4 && reel2%10 == 4) && reel3%10 == 4){
+							data.blackjack -= wager * 4
+							data.users[i].balance += wager * 4;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//diamond
+						else if((reel1%10 == 5 && reel2%10 == 5) && reel3%10 == 5){
+							data.blackjack -= wager * 4
+							data.users[i].balance += wager * 4;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//club
+						else if((reel1%10 == 6 && reel2%10 == 6) && reel3%10 == 6){
+							data.blackjack -= wager * 4
+							data.users[i].balance += wager * 4;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//spade
+						else if((reel1%10 == 7 && reel2%10 == 7) && reel3%10 == 7){
 							data.blackjack -= wager * 4
 							data.users[i].balance += wager * 4;
 							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
@@ -3524,7 +3543,26 @@ client.on('message', message => {
 							}
 						}
 						//3 of a kind fruit
-						else if((reel1%10 == 0 && reel2%10 == 0 && reel3%10 == 0)||(reel1%10 == 1 && reel2%10 == 1 && reel3%10 == 1)||(reel1%10 == 2 && reel2%10 == 2 && reel3%10 == 2)||(reel1%10 == 3 && reel2%10 == 3 && reel3%10 == 3)){
+						//cherry
+						else if((reel1%10 == 0 && reel2%10 == 0) && reel3%10 == 0){
+							data.blackjack -= wager * 2;
+							data.users[i].balance += wager * 2;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//grape
+						else if((reel1%10 == 1 && reel2%10 == 1) && reel3%10 == 1){
+							data.blackjack -= wager * 2;
+							data.users[i].balance += wager * 2;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//watermelon
+						else if((reel1%10 == 2 && reel2%10 == 2) && reel3%10 == 2){
+							data.blackjack -= wager * 2;
+							data.users[i].balance += wager * 2;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+						}
+						//apple
+						else if((reel1%10 == 3 && reel2%10 == 3) && reel3%10 == 3){
 							data.blackjack -= wager * 2;
 							data.users[i].balance += wager * 2;
 							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
