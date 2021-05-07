@@ -609,6 +609,7 @@ client.on('message', message => {
 						let buildings = homes + apartments + skyscrapers;
 						let userImage = client.users.cache.get(id).displayAvatarURL();
 						let perc = (balance / data.econ) * 100;
+						let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
 						perc = perc.toFixed(2);
 						const playercardEmbed = new Discord.MessageEmbed()
 							.setColor('#F7931A')
@@ -617,7 +618,7 @@ client.on('message', message => {
 							.setThumbnail('https://i.imgur.com/0aDFif9.png')
 							.addFields(
 								{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-								{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}`},
+								{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (before tax) daily`},
 								{ name: 'Cooldowns', value: `${messageToSend}`},
 								{ name: 'Stats', value: '\u200B' },
 								{ name: 'STR', value: `${str}`, inline: true },
