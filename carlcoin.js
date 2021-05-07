@@ -3057,7 +3057,6 @@ client.on('message', message => {
 						}
 						else if(reel1%10 == 8 || reel2%10 == 8 || reel3%10 == 8){
 							//7 appears and wasnt a win
-							data.users[i].balance -= wager;
 							data.blackjack += wager;
 							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 						}
@@ -3081,7 +3080,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3098,7 +3096,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3115,13 +3112,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3145,7 +3140,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3162,7 +3156,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3179,13 +3172,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3209,7 +3200,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3226,7 +3216,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3243,13 +3232,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3273,7 +3260,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3290,7 +3276,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3307,13 +3292,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3337,7 +3320,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3354,7 +3336,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3371,13 +3352,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3401,7 +3380,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3418,7 +3396,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3435,13 +3412,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3465,7 +3440,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3482,7 +3456,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3499,13 +3472,11 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
@@ -3529,7 +3500,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3546,7 +3516,6 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
@@ -3563,20 +3532,17 @@ client.on('message', message => {
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
 								}
 								else{
-									data.users[i].balance -= wager;
 									data.blackjack += wager;
 									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 								}
 							}
 							else{
-								data.users[i].balance -= wager;
 								data.blackjack += wager;
 								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 							}
 						}
 						else{
 							data.blackjack += wager;
-							data.users[i].balance -= wager;
 							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
 						}
 						drawSlots(message.channel, gameMessage, reel1, reel2, reel3);
