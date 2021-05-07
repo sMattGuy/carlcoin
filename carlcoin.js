@@ -1902,6 +1902,19 @@ client.on('message', message => {
 									let jsonBlackjack = JSON.stringify(blackjackInfo);
 									fs.writeFileSync(`/home/mattguy/carlcoin/cache/${challenger}blackjack`,jsonBlackjack);
 									
+									let intChanceSuccess = false;
+									let intCheck = Math.random();
+									if(isNaN(data.users[i]["INT"])){
+										data.users[i]["INT"] = 0;
+									}
+									let intBonus = data.users[i]["INT"] * .1;
+									if(chrBonus > .5){
+										chrBonus = .5;
+									}
+									if(1 - intCheck < intBonus){
+										intChanceSuccess = true;
+									}
+									
 									if(isNaN(data.users[i]["unstable"])){
 										data.users[i]["unstable"] = 0;
 									}
@@ -1909,6 +1922,10 @@ client.on('message', message => {
 										let resultsOfGame = `Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`;
 										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false);
 										drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false,cardValue[playerCards.playerCards[0]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
+									}
+									else if(intChanceSuccess){
+										let resultsOfGame = `Your INT helps you count the cards... You're sure the dealer has this hand\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'}));
 									}
 									else{
 										let resultsOfGame = `${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
