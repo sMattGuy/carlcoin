@@ -1908,8 +1908,8 @@ client.on('message', message => {
 										data.users[i]["INT"] = 0;
 									}
 									let intBonus = data.users[i]["INT"] * .1;
-									if(chrBonus > .5){
-										chrBonus = .5;
+									if(intBonus > .5){
+										intBonus = .5;
 									}
 									if(1 - intCheck < intBonus){
 										intChanceSuccess = true;
