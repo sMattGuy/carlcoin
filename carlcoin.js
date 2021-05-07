@@ -2989,6 +2989,7 @@ client.on('message', message => {
 						message.channel.send('You dont have enough CC!');
 					}
 					else{
+						data.users[i].balance -= wager;
 						let gameMessage = '';
 						let symbols = ['🍒','🍇','🍉','🍎','❤️','♦️','♣️','♠️','<a:77:787576141074530314>','<:worrycarl:691116720181739552>'];
 						message.channel.send(`You spin the slot machine`);
