@@ -3017,49 +3017,85 @@ client.on('message', message => {
 									gameMessage = 'HOLY SHIT THE TURBO CARL JACKPOT';
 								}
 								else{
-									data.blackjack -= wager * 9;
-									data.users[i].balance += wager * 9;
+									data.blackjack -= wager * 18;
+									data.users[i].balance += wager * 18;
 									gameMessage = 'A double carl! Very lucky win!';
 								}
 							}
 							else if(reel3%10 == 9){
-								data.blackjack -= wager * 9;
-								data.users[i].balance += wager * 9;
+								data.blackjack -= wager * 18;
+								data.users[i].balance += wager * 18;
 								gameMessage = 'A double carl! Very lucky win!';
 							}
 							else{
-								data.blackjack -= wager * 3;
-								data.users[i].balance += wager * 3;
+								data.blackjack -= wager * 9;
+								data.users[i].balance += wager * 9;
 								gameMessage = 'A carl! You win!';
 							}
 						}
 						else if(reel2%10 == 9){
 							if(reel3%10 == 9){
-								data.blackjack -= wager * 9;
-								data.users[i].balance += wager * 9;
+								data.blackjack -= wager * 18;
+								data.users[i].balance += wager * 18;
 								gameMessage = 'A double carl! Very lucky win!';
 							}
 							else{
-								data.blackjack -= wager * 3;
-								data.users[i].balance += wager * 3;
+								data.blackjack -= wager * 9;
+								data.users[i].balance += wager * 9;
 								gameMessage = 'A carl! You win!';
 							}
 						}
 						else if(reel3%10 == 9){
-							data.blackjack -= wager * 3;
-							data.users[i].balance += wager * 3;
+							data.blackjack -= wager * 9;
+							data.users[i].balance += wager * 9;
 							gameMessage = 'A carl! You win!';
 						}
-						else if(reel1%10 == 8 && reel2%10 == 8 && reel3%10 == 8){
-							//jackpot
-							data.blackjack -= wager * 12;
-							data.users[i].balance += wager * 12;
-							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nJACKPOT BABY!!!!`;
+						else if(reel1%10 == 8){
+							if(reel2%10 == 8){
+								if(reel3%10 == 8){
+									//jackpot
+									data.blackjack -= wager * 12;
+									data.users[i].balance += wager * 12;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nJACKPOT BABY!!!!`;
+								}
+								else{
+									//2 7's
+									data.blackjack -= wager * 8;
+									data.users[i].balance += wager * 8;
+									gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nTwo lucky 7's! You win!`;
+								}
+							}
+							else if(reel3%10 == 8){
+								//2 7's
+								data.blackjack -= wager * 8;
+								data.users[i].balance += wager * 8;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nTwo lucky 7's! You win!`;
+							}
+							//only one
+							else{
+								data.blackjack -= wager * 4;
+								data.users[i].balance += wager * 4;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA lucky 7! You win!`;
+							}	
 						}
-						else if(reel1%10 == 8 || reel2%10 == 8 || reel3%10 == 8){
-							//7 appears and wasnt a win
-							data.blackjack += wager;
-							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
+						else if(reel2%10 == 8){
+							if(reel3%10 == 8){
+								//jackpot
+								data.blackjack -= wager * 8;
+								data.users[i].balance += wager * 8;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nTwo lucky 7's! You win!`;
+							}
+							else{
+								//1 7
+								data.blackjack -= wager * 4;
+								data.users[i].balance += wager * 4;
+								gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA lucky 7! You win!`;
+							}
+						}
+						else if(reel3%10 == 8){
+							data.blackjack -= wager * 4;
+							data.users[i].balance += wager * 4;
+							gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA lucky 7! You win!`;
 						}
 						//straight suit checker
 						//heart first
