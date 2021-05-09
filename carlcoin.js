@@ -1861,38 +1861,53 @@ client.on('message', message => {
 								else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 									//seduce dealer
 									let resultsOfGame = `Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.\n`;
-									let seduceChance = Math.random();
-									if(isNaN(data.users[i]["CHR"])){
-										data.users[i]["CHR"] = 0;
+									//wis check
+									let wisdomChance = Math.random();
+									if(isNaN(data.users[i]["WIS"])){
+										data.users[i]["WIS"] = 0;
 									}
-									let chrBonus = data.users[i]["CHR"] * .01;
-									if(chrBonus > .25){
-										chrBonus = .25;
+									let wisBonus = data.users[i]["WIS"] * .01;
+									if(wisBonus > .1){
+										wisBonus = .1;
 									}
-									if(1 - seduceChance < chrBonus){
-										let wagerHalf = Math.floor(wager / 2);
-										wager = wager - wagerHalf;
-										data.users[i].balance += wagerHalf;
-										data.blackjack -= wagerHalf;
-										resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
+									if(1 - wisdomChance < wisBonus){
+										resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
+										data.users[i].balance += wager;
 									}
-									//instability counter
-									data.users[i]["unstable"] += wager;
-									if(isNaN(data.users[i]["unstable"])){
-										data.users[i]["unstable"] = wager;
-									}
-									if(isNaN(data.users[i]["suicide"])){
-										data.users[i]["suicide"] = 1;
-									}
-									if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
-										data.users[i]["suicide"] = 0;
-										resultsOfGame += `You are starting to feel irrational.\n`;
-										console.log(data.users[i].name + " has become irrational");
-									}
-									if(data.users[i]["unstable"] > 250){
-										resultsOfGame += `You are completely unstable\n`;
-										console.log(data.users[i].name + " has become unstable");
-										data.users[i]["unstable"] = 250;
+									else{
+										let seduceChance = Math.random();
+										if(isNaN(data.users[i]["CHR"])){
+											data.users[i]["CHR"] = 0;
+										}
+										let chrBonus = data.users[i]["CHR"] * .01;
+										if(chrBonus > .25){
+											chrBonus = .25;
+										}
+										if(1 - seduceChance < chrBonus){
+											let wagerHalf = Math.floor(wager / 2);
+											wager = wager - wagerHalf;
+											data.users[i].balance += wagerHalf;
+											data.blackjack -= wagerHalf;
+											resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
+										}
+										//instability counter
+										data.users[i]["unstable"] += wager;
+										if(isNaN(data.users[i]["unstable"])){
+											data.users[i]["unstable"] = wager;
+										}
+										if(isNaN(data.users[i]["suicide"])){
+											data.users[i]["suicide"] = 1;
+										}
+										if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
+											data.users[i]["suicide"] = 0;
+											resultsOfGame += `You are starting to feel irrational.\n`;
+											console.log(data.users[i].name + " has become irrational");
+										}
+										if(data.users[i]["unstable"] > 250){
+											resultsOfGame += `You are completely unstable\n`;
+											console.log(data.users[i].name + " has become unstable");
+											data.users[i]["unstable"] = 250;
+										}
 									}
 									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,21,message.author.displayAvatarURL({format:'png'}));
 									let newData = JSON.stringify(data);
@@ -1989,40 +2004,53 @@ client.on('message', message => {
 				if(currentTotal > 21){
 					let resultsOfGame = `Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}\n`;
 					//seduce dealer
-					let seduceChance = Math.random();
-					if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
-						data.users[blackjackParse.challIndex]["CHR"] = 0;
+					let wisdomChance = Math.random();
+					if(isNaN(data.users[blackjackParse.challIndex]["WIS"])){
+						data.users[blackjackParse.challIndex]["WIS"] = 0;
 					}
-					let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-					if(chrBonus > .25){
-						chrBonus = .25;
+					let wisBonus = data.users[blackjackParse.challIndex]["WIS"] * .01;
+					if(wisBonus > .1){
+						wisBonus = .1;
 					}
-					if(1 - seduceChance < chrBonus){
-						let wagerHalf = Math.floor(blackjackParse.wager / 2);
-						blackjackParse.wager = blackjackParse.wager - wagerHalf;
-						data.users[blackjackParse.challIndex].balance += wagerHalf;
-						data.blackjack -= wagerHalf;
-						resultsOfGame += `${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
+					if(1 - wisdomChance < wisBonus){
+						resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
+						data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
 					}
-					
-					//instability counter
-					data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
-					if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-						data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
-					}
-					if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
-						data.users[blackjackParse.challIndex]["suicide"] = 1;
-					}
-					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
-						data.users[blackjackParse.challIndex]["suicide"] = 0;
-						resultsOfGame += `You are starting to feel irrational.\n`;
-						console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
+					else{
+						let seduceChance = Math.random();
+						if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+							data.users[blackjackParse.challIndex]["CHR"] = 0;
+						}
+						let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
+						if(chrBonus > .25){
+							chrBonus = .25;
+						}
+						if(1 - seduceChance < chrBonus){
+							let wagerHalf = Math.floor(blackjackParse.wager / 2);
+							blackjackParse.wager = blackjackParse.wager - wagerHalf;
+							data.users[blackjackParse.challIndex].balance += wagerHalf;
+							data.blackjack -= wagerHalf;
+							resultsOfGame += `${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
+						}
+						//instability counter
+						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+							data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+						}
+						if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
+							data.users[blackjackParse.challIndex]["suicide"] = 1;
+						}
+						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
+							data.users[blackjackParse.challIndex]["suicide"] = 0;
+							resultsOfGame += `You are starting to feel irrational.\n`;
+							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
 
-					}
-					if(data.users[blackjackParse.challIndex]["unstable"] > 250){
-						resultsOfGame += `You are completely unstable\n`;
-						console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
-						data.users[blackjackParse.challIndex]["unstable"] = 250
+						}
+						if(data.users[blackjackParse.challIndex]["unstable"] > 250){
+							resultsOfGame += `You are completely unstable\n`;
+							console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
+							data.users[blackjackParse.challIndex]["unstable"] = 250
+						}
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -2200,41 +2228,59 @@ client.on('message', message => {
 						//player lose
 						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
-						//seduce dealer
-						let seduceChance = Math.random();
-						if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
-							data.users[blackjackParse.challIndex]["CHR"] = 0;
-						}
-						let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
-						if(chrBonus > .25){
-							chrBonus = .25;
-						}
-						if(1 - seduceChance < chrBonus){
-							let wagerHalf = Math.floor(blackjackParse.wager / 2);
-							blackjackParse.wager = blackjackParse.wager - wagerHalf;
-							data.users[blackjackParse.challIndex].balance += wagerHalf;
-							data.blackjack -= wagerHalf;
-							resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
-						}
-						//instability counter
-						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
-						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-							data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
-						}
-						if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
-							data.users[blackjackParse.challIndex]["suicide"] = 1;
-						}
-						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
-							data.users[blackjackParse.challIndex]["suicide"] = 0;
-							resultsOfGame += `You are starting to feel irrational.\n`;
-							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
-						}
-						if(data.users[blackjackParse.challIndex]["unstable"] > 250){
-							resultsOfGame += `You are completely unstable`;
-							console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
-							data.users[blackjackParse.challIndex]["unstable"] = 250
-						}
 						
+						
+						
+						
+						
+						let wisdomChance = Math.random();
+						if(isNaN(data.users[blackjackParse.challIndex]["WIS"])){
+							data.users[blackjackParse.challIndex]["WIS"] = 0;
+						}
+						let wisBonus = data.users[blackjackParse.challIndex]["WIS"] * .01;
+						if(wisBonus > .1){
+							wisBonus = .1;
+						}
+						if(1 - wisdomChance < wisBonus){
+							resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
+							data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
+						}
+						else{
+							//seduce dealer
+							let seduceChance = Math.random();
+							if(isNaN(data.users[blackjackParse.challIndex]["CHR"])){
+								data.users[blackjackParse.challIndex]["CHR"] = 0;
+							}
+							let chrBonus = data.users[blackjackParse.challIndex]["CHR"] * .01;
+							if(chrBonus > .25){
+								chrBonus = .25;
+							}
+							if(1 - seduceChance < chrBonus){
+								let wagerHalf = Math.floor(blackjackParse.wager / 2);
+								blackjackParse.wager = blackjackParse.wager - wagerHalf;
+								data.users[blackjackParse.challIndex].balance += wagerHalf;
+								data.blackjack -= wagerHalf;
+								resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
+							}
+							//instability counter
+							data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+							if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
+								data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+							}
+							if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
+								data.users[blackjackParse.challIndex]["suicide"] = 1;
+							}
+							if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
+								data.users[blackjackParse.challIndex]["suicide"] = 0;
+								resultsOfGame += `You are starting to feel irrational.\n`;
+								console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
+							}
+							if(data.users[blackjackParse.challIndex]["unstable"] > 250){
+								resultsOfGame += `You are completely unstable`;
+								console.log(data.users[blackjackParse.challIndex].name + " has become unstable");
+								data.users[blackjackParse.challIndex]["unstable"] = 250
+							}
+						}
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,playerValue,blackjackParse.name,dealerTotal,message.author.displayAvatarURL({format:'png'}));
