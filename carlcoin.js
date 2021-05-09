@@ -1873,7 +1873,7 @@ client.on('message', message => {
 									if(1 - wisdomChance < wisBonus){
 										resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
 										data.users[i].balance += wager;
-										data.blackjack -= parseInt(wager);
+										data.blackjack -= wager;
 									}
 									else{
 										let seduceChance = Math.random();
@@ -2015,7 +2015,7 @@ client.on('message', message => {
 					}
 					if(1 - wisdomChance < wisBonus){
 						resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
-						data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
+						data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 						data.blackjack -= parseInt(blackjackParse.wager);
 					}
 					else{
@@ -2240,7 +2240,7 @@ client.on('message', message => {
 						}
 						if(1 - wisdomChance < wisBonus){
 							resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
-							data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
+							data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 							data.blackjack -= parseInt(blackjackParse.wager);
 						}
 						else{
