@@ -1873,6 +1873,7 @@ client.on('message', message => {
 									if(1 - wisdomChance < wisBonus){
 										resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
 										data.users[i].balance += wager;
+										data.blackjack -= wager;
 									}
 									else{
 										let seduceChance = Math.random();
@@ -2015,6 +2016,7 @@ client.on('message', message => {
 					if(1 - wisdomChance < wisBonus){
 						resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
 						data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
+						data.blackjack -= blackjackParse.wager;
 					}
 					else{
 						let seduceChance = Math.random();
@@ -2228,11 +2230,6 @@ client.on('message', message => {
 						//player lose
 						let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
 						data.users[blackjackParse.challIndex]["activity"] = Date.now();
-						
-						
-						
-						
-						
 						let wisdomChance = Math.random();
 						if(isNaN(data.users[blackjackParse.challIndex]["WIS"])){
 							data.users[blackjackParse.challIndex]["WIS"] = 0;
@@ -2244,6 +2241,7 @@ client.on('message', message => {
 						if(1 - wisdomChance < wisBonus){
 							resultsOfGame += `...But it didn't happen, you had enough WIS to know this game would have been a loss, so you never played\n`;
 							data.users[blackjackParse.challIndex].balance += blackjackParse.wager;
+							data.blackjack -= blackjackParse.wager;
 						}
 						else{
 							//seduce dealer
