@@ -1821,7 +1821,7 @@ client.on('message', message => {
 										data.users[i].balance += wager;
 										data.blackjack -= wager;
 										let resultsOfGame = `You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
-										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,21,message.author.username,21,message.author.displayAvatarURL({format:'png'}));
+										drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,21,message.author.username,21,message.author.displayAvatarURL({format:'png'})).catch(error => {message.channel.send(resultsOfGame);});
 									}
 									else{
 										data.users[i].balance += Math.floor(wager * 2.5);
@@ -3712,6 +3712,6 @@ client.on('message', message => {
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'machine.png');
 		channel.send(`${gameMessage}`,attachment);
 	}
-}).catch(error => {console.log(error)});
+});
 // Log our bot in using the token from https://discord.com/developers/applications
 client.login(`${credentials.token}`);
