@@ -3712,6 +3712,6 @@ client.on('message', message => {
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'machine.png');
 		channel.send(`${gameMessage}`,attachment);
 	}
-});
+}).catch(error => {console.log(error)});
 // Log our bot in using the token from https://discord.com/developers/applications
 client.login(`${credentials.token}`);
