@@ -133,11 +133,6 @@ client.on('message', message => {
 			data.econ += amount;
 			data.econ += blackjackAmount;
 			//limit pots
-			if(data.pot >= 500){
-				let removeAmount = data.pot - 500;
-				data.pot = data.pot - removeAmount;
-				data.welfare = data.welfare + removeAmount;
-			}
 			if(data.welfare >= 1000){
 				let removeAmount = data.welfare - 1000;
 				data.welfare = data.welfare - removeAmount;
@@ -911,147 +906,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	//roll game
-	else if(message.content.startsWith('!cc roll')){
-		let chop = message.content.split(" ");
-		if(chop.length != 3){
-			message.channel.send(`Invalid arguments supplied!`);
-		}
-		else{
-			let strats = ["alwaysA", "alwaysB", "random"];
-			let type = chop[chop.length-1];
-			let amount = 5;
-			let noStrat = true;
-			for(let i=0;i<strats.length;i++){
-				//if strat found
-				if(type == strats[i]){
-					let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-					let data = JSON.parse(database);
-					let noUser = true;
-					//store user
-					let user = message.author.username;
-					let id = message.author.id;
-					if(data.pot+3 < 10){
-						message.channel.send(`Pot is empty, try again later!`);
-						noUser = false;
-					}
-					else{
-						//find user and check amount
-						for(let j=0;j<data.users.length;j++){
-							//if username found
-							if(data.users[j].id == id){
-								let balance = data.users[j].balance;
-								//if balance would go negative
-								if(balance - amount < 0){
-									message.channel.send(`You don't have enough CC! (costs 5)`);
-								}
-								else{
-									//starts gambling
-									let optA = Math.floor(Math.random() * 10); 
-									let optB = Math.floor(Math.random() * 10);
-									let random = Math.floor(Math.random() * 2);
-									data.pot += amount - 2;
-									data.welfare += 1;
-									data.blackjack += 1;
-									data.users[j].balance -= amount;
-									message.channel.send(`Higher Value Wins\n+----A----+----B----+\n|    ${optA}    |    ${optB}    |\n+---------+---------+\n`,{"code":true});
-									
-									//if lottery win
-									if(isNaN(data.users[j]["unstable"])){
-										data.users[j]["unstable"] = 0;
-									}
-									if(data.users[j]["unstable"] > 100){
-										type = "random";
-										message.channel.send(`Something doesn't feel right... you can't remember what strategy you picked...`);
-									}
-									if((type == "alwaysA" || (type == "random" && random == 0))&& optA > optB){
-										let pot = 10;
-										data.users[j].balance += pot;
-										data.pot -= pot;
-										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
-										//instability counter
-										let insane = false;
-										if(data.users[j]["unstable"] >= 100){
-											insane = true;
-										}
-										data.users[j]["unstable"] -= amount;
-										if(isNaN(data.users[j]["unstable"]) || data.users[j]["unstable"] < 0){
-											data.users[j]["unstable"] = 0;
-										}
-										if(insane && data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
-											data.users[j]["suicide"] = 1;
-											message.channel.send(`You come to your senses.`);
-											console.log(data.users[j].name + " has calmed down");
-										}
-									}
-									//if lottery win
-									else if((type == "alwaysB" || (type == "random" && random == 1))&& optA < optB){
-										let pot = 10;
-										data.users[j].balance += pot;
-										data.pot -= pot;
-										message.channel.send(`You've won! you got ${pot}CC! You now have ${data.users[j].balance}CC!`);
-										//instability counter
-										let insane = false;
-										if(data.users[j]["unstable"] >= 100){
-											insane = true;
-										}
-										data.users[j]["unstable"] -= amount;
-										if(isNaN(data.users[j]["unstable"]) || data.users[j]["unstable"] < 0){
-											data.users[j]["unstable"] = 0;
-										}
-										if(insane && data.users[j]["unstable"] + amount >= 100 && data.users[j]["unstable"] < 100){
-											data.users[j]["suicide"] = 1;
-											message.channel.send(`You come to your senses.`);
-											console.log(data.users[j].name + " has calmed down");
-										}
-									}
-									//if lottery lose
-									else{
-										message.channel.send(`You've lost! The pot is now ${data.pot}CC. You have ${data.users[j].balance}CC.`);
-										//instability counter
-										data.users[j]["unstable"] += amount;
-										if(isNaN(data.users[j]["unstable"])){
-											data.users[j]["unstable"] = amount;
-										}
-										if(isNaN(data.users[j]["suicide"])){
-											data.users[j]["suicide"] = 0;
-										}
-										if(data.users[j]["unstable"] >= 100 && data.users[j]["unstable"] - amount < 100){
-											data.users[j]["suicide"] = 0;
-											message.channel.send(`You are starting to feel irrational.`);
-											console.log(data.users[j].name + " has become irrational");
-										}
-										if(data.users[j]["unstable"] >= 250){
-											message.channel.send(`You are completely unstable`);
-											console.log(data.users[j].name + " has become unstable");
-											data.users[j]["unstable"] = 250
-										}
-									}
-									data.users[j]["activity"] = Date.now();
-									data.users[j]["bitterness"] = 0;
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-								}
-								//user found, flag triggered
-								noUser = false;
-								break;
-							}
-						}
-					}
-					//if no user found
-					if(noUser){
-						message.channel.send(`You are not registered for CC!`);
-					}
-					noStrat = false;
-					break;
-				}
-			}
-			//if strat not found
-			if(noStrat){
-				message.channel.send(`Invalid strat (try alwaysA, alwaysB or random)`);
-			}
-		}
-	}
 	//chance game
 	else if(message.content === '!cc chance'){ /*!cc chance*/ 
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -1129,8 +983,7 @@ client.on('message', message => {
 						amount -= welfPot;
 						let blackPot = Math.floor(welfPot / 2);
 						welfPot -= blackPot;
-						data.blackjack += blackPot;
-						data.pot += amount;
+						data.blackjack += blackPot + amount;
 						data.welfare += welfPot;
 						data.users[j].chanceTime = currentTime.getDate();
 						message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
@@ -1274,8 +1127,7 @@ client.on('message', message => {
 						else{
 							data.users[i]["house"] += 1;
 							data.users[i].balance -= cost;
-							data.pot += 25;
-							data.welfare += 25;
+							data.welfare += 50;
 							data.blackjack += cost - 100;
 							data.econ -= 50;
 							data.users[i]["activity"] = Date.now();
@@ -1308,9 +1160,8 @@ client.on('message', message => {
 						else{
 							data.users[i]["apartment"] += 1;
 							data.users[i].balance -= cost;
-							data.pot += 25;
 							data.econ -= 175;
-							data.welfare += 50;
+							data.welfare += 75;
 							data.blackjack += cost - 250;
 							data.users[i]["activity"] = Date.now();
 							if(isNaN(data.users[i]["INT"])){
@@ -1342,9 +1193,8 @@ client.on('message', message => {
 						else{
 							data.users[i]["skyscraper"] += 1;
 							data.users[i].balance -= cost;
-							data.pot += 50;
 							data.econ -= 350;
-							data.welfare += 100;
+							data.welfare += 150;
 							data.blackjack += cost - 500;
 							data.users[i]["activity"] = Date.now();
 							if(isNaN(data.users[i]["INT"])){
@@ -1378,10 +1228,9 @@ client.on('message', message => {
 						else{
 							data.users[i]["office"] = 1;
 							data.users[i].balance -= 200;
-							data.pot += 50;
 							data.econ -= 50;
 							data.welfare += 50;
-							data.blackjack += 50;
+							data.blackjack += 100;
 							data.users[i]["activity"] = Date.now();
 							let newData = JSON.stringify(data);
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -1658,7 +1507,6 @@ client.on('message', message => {
 			.addFields(
 				{ name: 'Carl Coin Circulating', value: `${data.econ}CC`},
 				{ name: 'Users Registered', value: `${data.users.length}`},
-				{ name: 'Roll Pot', value: `${data.pot}CC`, inline: true },
 				{ name: 'CarlBall Jackpot', value: `${carlball}CC`, inline: true },
 				{ name: 'Blackjack Pot', value: `${data.blackjack}CC`, inline: true },
 				{ name: 'Mines', value: `${data.welfare}CC`, inline: true },
@@ -1750,7 +1598,7 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */	
 		let chop = message.content.split(" ");
 		if(chop.length != 3){
-			message.channel.send('Command arguments incorrect!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
+			message.channel.send('Command arguments incorrect!');
 		}
 		else{
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -1765,23 +1613,23 @@ client.on('message', message => {
 				}
 				else{
 					playing = false;
-					message.channel.send('You are already playing BlackJack!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
+					message.channel.send('You are already playing BlackJack!');
 				}
 			}
 			if(playing){
 				let wager = parseInt(chop[chop.length-1]);
 				if(isNaN(wager) || wager < 2){
-					message.channel.send('Invalid amount entered!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
+					message.channel.send('Invalid amount entered!');
 				}
 				else if((wager * 2.5) >= data.blackjack + (wager - Math.floor(wager * .25))){
-					message.channel.send('The blackjack pot doesnt have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
+					message.channel.send('The blackjack pot doesnt have enough CC!');
 				}
 				else{
 					let noUser = true;
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == challenger){
 							if(data.users[i].balance - wager < 0){
-								message.channel.send('You dont have enough CC!').then(msg => msg.delete({timeout:5000})).catch(error => {console.log(error)});
+								message.channel.send('You dont have enough CC!');
 							}
 							else{
 								let cardValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
@@ -3608,7 +3456,7 @@ client.on('message', message => {
 	}
 	//gamble help
 	else if(message.content === '!cc gameHelp'){
-		message.channel.send(`use !cc roll <type> to play the Game. types: alwaysA, alwaysB, random\nuse !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rob <@user> to attempt to steal some coin from them!\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
+		message.channel.send(`use !cc chance to maybe double your money!\nuse !cc guess <number> when theres a solve chance! numbers are between 1 and 100\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rob <@user> to attempt to steal some coin from them!\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
