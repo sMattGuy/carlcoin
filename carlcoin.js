@@ -1509,6 +1509,7 @@ client.on('message', message => {
 				{ name: 'Users Registered', value: `${data.users.length}`},
 				{ name: 'CarlBall Jackpot', value: `${carlball}CC`, inline: true },
 				{ name: 'Blackjack Pot', value: `${data.blackjack}CC`, inline: true },
+				{ name: '\u200B', value: `\u200B`, inline: true },
 				{ name: 'Mines', value: `${data.welfare}CC`, inline: true },
 				{ name: '\u200B', value: `\u200B`, inline: true },
 				{ name: '\u200B', value: `\u200B`, inline: true },
