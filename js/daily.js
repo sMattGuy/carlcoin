@@ -6,7 +6,6 @@ function dailyEvents(client,message){
 	let data = JSON.parse(database);
 	let totalAdded = 0;
 	let totalTax = 0;
-	prevDate = universalDate.getDay();
 	for(let i=0;i<data.users.length;i++){
 		let homePrice = data.users[i]["house"] * 10;
 		let taxAmount = 0;
