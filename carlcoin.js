@@ -79,7 +79,9 @@ client.on('message', message => {
 	}
 	//raffle functionality
 	//message failsafe incase countery somehow goes past value
-	if(messageCounter > raffleRNG){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	if(messageCounter > data.raffleRNG){
 		messageCounter = 0;
 	}
 	//detects when md5 raffle should begin
