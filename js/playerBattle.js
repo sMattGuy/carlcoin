@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function battlePlayer(){
+function battlePlayer(message){
 	//check command is correctly entered
 	let chop = message.content.split(" ");
 	if(chop.length != 4){

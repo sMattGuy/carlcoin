@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function auditUser(){
+function auditUser(message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
@@ -162,6 +162,19 @@ function auditUser(){
 				message.channel.send('User is not registered for CC!');
 			}
 		}
+	}
+}
+//helper function to get user
+function getUserFromMention(mention) {
+	if (!mention) return;
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return client.users.cache.get(mention);
 	}
 }
 

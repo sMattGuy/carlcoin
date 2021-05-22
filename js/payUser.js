@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function payUser(){
+function payUser(message){
 	let chop = message.content.split(" ");
 	let corrUser = true;
 	//if too many arguments
@@ -87,6 +87,19 @@ function payUser(){
 				}
 			}
 		}
+	}
+}
+//helper function to get user
+function getUserFromMention(mention) {
+	if (!mention) return;
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return client.users.cache.get(mention);
 	}
 }
 
