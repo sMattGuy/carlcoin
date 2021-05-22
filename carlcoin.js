@@ -85,7 +85,7 @@ client.on('message', message => {
 		messageCounter = 0;
 	}
 	//detects when md5 raffle should begin
-	if(messageCounter == raffleRNG && !raffleStart){
+	if(messageCounter == data.raffleRNG && !raffleStart){
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
