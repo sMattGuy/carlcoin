@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function battlePlayer(message){
+function battlePlayer(client,message){
 	//check command is correctly entered
 	let chop = message.content.split(" ");
 	if(chop.length != 4){
@@ -17,7 +17,7 @@ function battlePlayer(message){
 		let opponent = 0;
 		//check if opponent exists or is correctly entered
 		try{
-			opponent = getUserFromMention(chop[chop.length-2]).id;
+			opponent = getUserFromMention(client,chop[chop.length-2]).id;
 		}
 		catch(err){
 			message.channel.send('Invalid user selected!');
@@ -181,6 +181,19 @@ function acceptDenyBattle(){
 				}
 			}
 		}
+	}
+}
+
+function getUserFromMention(client,mention) {
+	if (!mention) return;
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return client.users.cache.get(mention);
 	}
 }
 

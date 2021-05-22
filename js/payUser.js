@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function payUser(message){
+function payUser(client,message){
 	let chop = message.content.split(" ");
 	let corrUser = true;
 	//if too many arguments
@@ -13,8 +13,8 @@ function payUser(message){
 		let recpid = "";
 		//attempts to get username
 		try{
-			recipient = getUserFromMention(chop[chop.length-2]).username;
-			recpid = getUserFromMention(chop[chop.length-2]).id;
+			recipient = getUserFromMention(client,chop[chop.length-2]).username;
+			recpid = getUserFromMention(client,chop[chop.length-2]).id;
 		}
 		//if username cannot be gotten
 		catch(err){
@@ -90,7 +90,7 @@ function payUser(message){
 	}
 }
 //helper function to get user
-function getUserFromMention(mention) {
+function getUserFromMention(client,mention) {
 	if (!mention) return;
 	if (mention.startsWith('<@') && mention.endsWith('>')) {
 		mention = mention.slice(2, -1);

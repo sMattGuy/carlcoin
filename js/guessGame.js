@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function startGuessGame(message){
+function startGuessGame(client,message){
 	//create new raffle rng
 	raffleRNG = Math.floor(Math.random() * (300 - 250 + 1)) + 250;
 	console.log("rafflerng",raffleRNG);

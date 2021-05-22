@@ -76,56 +76,56 @@ client.on('message', message => {
 	}
 	//detects when md5 raffle should begin
 	if(messageCounter == raffleRNG && !raffleStart){
-		guessingGame.startGuessGame(message);
+		guessingGame.startGuessGame(client,message);
 	}
 	//daily events
 	if(today != prevDate){
-		dailyEvents.dailyEvents(message);
+		dailyEvents.dailyEvents(client,message);
 	}
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
-		guessingGame.guessNumber(message);
+		guessingGame.guessNumber(client,message);
 	}
 	//battle start command
 	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
-		playerBattle.battlePlayer(message);
+		playerBattle.battlePlayer(client,message);
 	}
 	//accept or deny battle
 	else if(message.content === '!cc denyBattle' || message.content === '!cc acceptBattle'){
-		playerBattle.acceptDenyBattle(message);
+		playerBattle.acceptDenyBattle(client,message);
 	}
    //join command
 	else if (message.content === '!cc join' && !message.author.bot) {
-		joinCarl.joinCarlCoin(message);
+		joinCarl.joinCarlCoin(client,message);
 	}
 	//audit user
 	else if(message.content.startsWith('!cc audit')){
-		audit.auditUser(message);
+		audit.auditUser(client,message);
 	}
 	//player card
 	else if(message.content === '!cc balance'){
-		balance.checkBalance(message);
+		balance.checkBalance(client,message);
 	}
 	//pay user
 	else if(message.content.startsWith('!cc pay')){
-		pay.payUser(message);
+		pay.payUser(client,message);
 	}
 	//chance game
 	else if(message.content === '!cc chance'){ /*!cc chance*/ 
-		chance.chanceGame(message);
+		chance.chanceGame(client,message);
 	}
 	//work
 	else if(message.content === '!cc work'){
-		work.workPlayer(message);
+		work.workPlayer(client,message);
 	}
 	//purchase home
 	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment/skyscraper */
-		purchase.purchaseItem(message);
+		purchase.purchaseItem(client,message);
 	}
 	//purchase items
 	else if(message.content === '!cc catalog'){
-		purchase.purchaseList(message);
+		purchase.purchaseList(client,message);
 	}
 	//sell house
 	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */

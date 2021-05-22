@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function purchaseItem(message){
+function purchaseItem(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length > 3){
 		message.channel.send('Too many arguments supplied!');
