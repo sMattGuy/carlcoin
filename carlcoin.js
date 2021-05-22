@@ -38,7 +38,6 @@ const credentials = require('./auth.json');
 let startupDay = new Date();
 let messageCounter = 0;
 let raffleStart = false;
-console.log("rafflerng",raffleRNG);
 //new day checking variables
 let prevDate = startupDay.getDay();
 //anti spam stuff
