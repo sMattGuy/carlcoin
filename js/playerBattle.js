@@ -105,7 +105,7 @@ function battlePlayer(client,message){
 	}	
 }
 
-function acceptDenyBattle(){
+function acceptDenyBattle(client,message){
 	//save message author id
 	let personsId = message.author.id;
 	//find if opponent file exists
