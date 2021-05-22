@@ -148,7 +148,7 @@ function purchaseItem(client,message){
 	}
 }
 
-function purchaseList(){
+function purchaseList(client,message){
 	message.channel.send(`Purchase List:\n1. house (100CC + 50CC per home owned) pays 10 daily\n2. apartment (250CC + 125CC per apartment owned) pays 25 daily\n3. skyscraper (500CC + 250CC per skyscraper owned) pays 50 daily\n4. office (200CC) doubles work output`);
 }
 
