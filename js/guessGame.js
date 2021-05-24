@@ -10,13 +10,13 @@ function startGuessGame(client,message){
 	console.log("rafflerng",data.raffleRNG);
 	//create new mystery number for people to guess
 	data.mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-	console.log("mystery",mysteryNumber);
+	console.log("mystery",data.mysteryNumber);
 	//sets the value of the coin to claim
 	data.md5Val = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
 	//reset message counter
 	messageCounter = 0;
 	//hash number
-	let mysteryMD5 = md5(mysteryNumber);
+	let mysteryMD5 = md5(data.mysteryNumber);
 	console.log("md5",mysteryMD5);
 	let newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -32,7 +32,7 @@ function startGuessGame(client,message){
 	});
 }
 
-function guessNumber(){
+function guessNumber(client,message){
 	message.delete({timeout:60000}).catch(error => {console.log(error)});
 	//chop message to parse
 	let chop = message.content.split(" ");
@@ -82,8 +82,7 @@ function guessNumber(){
 								console.log("no general chat in "+guild.name);
 							}
 						});
-						raffleStart = false;
-						break;
+						return true;
 					}
 				}
 			}
@@ -93,6 +92,7 @@ function guessNumber(){
 			else{
 				message.react('⏬');
 			}
+			return false;
 		}
 	}
 }

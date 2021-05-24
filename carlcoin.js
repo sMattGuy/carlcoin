@@ -85,7 +85,7 @@ client.on('message', message => {
 		messageCounter = 0;
 	}
 	//detects when md5 raffle should begin
-	if(messageCounter == data.raffleRNG && !raffleStart){
+	if((messageCounter == data.raffleRNG && !raffleStart) || message.content === 'come forth my creation! for it is time to summon the giant coin!'){
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
@@ -97,7 +97,9 @@ client.on('message', message => {
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
-		guessingGame.guessNumber(client,message);
+		if(guessingGame.guessNumber(client,message)){
+			raffleStart = false;
+		}
 	}
 	//battle start command
 	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
