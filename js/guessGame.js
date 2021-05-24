@@ -7,7 +7,7 @@ function startGuessGame(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	data.raffleRNG = Math.floor(Math.random() * (300 - 250 + 1)) + 250;
-	console.log("rafflerng",raffleRNG);
+	console.log("rafflerng",data.raffleRNG);
 	//create new mystery number for people to guess
 	data.mysteryNumber = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 	console.log("mystery",mysteryNumber);
