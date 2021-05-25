@@ -85,7 +85,7 @@ function dailyEvents(client,message){
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				client.guilds.cache.forEach((guild) => {
 					try{
-						guild.channels.cache.find((x) => x.name == 'general').send(`Congradulations ${data.users[i].name}! You have won ${winnerAmount}CC in todays lottery!`);
+						guild.channels.cache.find((x) => x.name == 'general').send(`Congratulations ${data.users[i].name}! You have won ${winnerAmount}CC in todays lottery!`);
 					}
 					catch(err){
 						console.log("no general chat in "+guild.name);
