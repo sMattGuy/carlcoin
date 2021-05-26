@@ -108,7 +108,7 @@ function raceHorse(client,message){
 					}
 					else{
 						let horseRace = {"total":`${total}`,"racers":[]};
-						horseRace.push(userPacket);
+						horseRace.racers.push(userPacket);
 						let raceFile = JSON.stringify(horseRace);
 						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
 					}
