@@ -124,9 +124,9 @@ function horseSell(client,message){
 								noBuy = false;
 								break;
 							}
-						}
-						if(noBuy){
-							message.channel.send('Buyer doesnt exist!');
+							if(noBuy){
+								message.channel.send('Buyer doesnt exist!');
+							}
 						}
 						noUser = false;
 						break;
@@ -265,7 +265,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!\nUse !cc horseSell user horseIndex price to sell your horse!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
