@@ -59,6 +59,9 @@ function dailyEvents(client,message){
 		}
 		else{
 			data.users[i]["unstable"] -= 100;
+			if(data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+			}
 			if(data.users[i]["unstable"] < 0){
 				data.users[i]["unstable"] = 0;
 			}

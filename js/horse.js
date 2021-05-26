@@ -25,7 +25,7 @@ function createHorse(){
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
 	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"isBirthday":"true","birthday":`${today.getDate()}`};
+	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"isBirthday":"true","birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
 	console.log(newHorse);
 	return newHorse;
 }
@@ -70,6 +70,7 @@ function purchaseHorse(client,message){
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			}
+			break;
 		}
 	}
 }
@@ -86,8 +87,47 @@ function breedHorse(client,message){
 	
 }
 
-function horseHelp(client,message){
+function horseSell(client,message){
 	
+}
+
+function horseList(client,message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	let id = message.author.id;
+	for(let i=0;i<data.users.length;i++){
+		if(data.users[i].id == id){
+			if(isNaN(data.users[i].horses)){
+				data.users[i].horses = [];
+			}
+			if(data.users[i].horses.length == 0){
+				message.channel.send(`You do not own any horses!`);
+			}
+			else{
+				let horseList = "";
+				for(let j=0;j<data.users[i].horses.length;j++){
+					horseList += `${j}. ${data.users[i].horses[j].name}\n`;
+				}
+				const playercardEmbed = new Discord.MessageEmbed()
+					.setColor('#F7931A')
+					.setTitle(`${data.users[i].name}'s horses`)
+					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+					.addFields(
+						{ name: 'Horses', value: `${horseList}`, inline: true }
+					)
+				message.channel.send(playercardEmbed);
+			}
+			break;
+		}
+	}
+}
+
+function horseStats(client,message){
+	
+}
+
+function horseHelp(client,message){
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!`);
 }
 
 function horseDeath(client,message){
@@ -96,11 +136,11 @@ function horseDeath(client,message){
 
 //export functions
 module.exports = {
-	createHorse,
 	purchaseHorse,
 	raceHorse,
 	trainHorse,
 	breedHorse,
+	horseSell,
 	horseHelp,
 	horseDeath
 };
