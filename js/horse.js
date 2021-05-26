@@ -48,21 +48,7 @@ function purchaseHorse(client,message){
 				else{
 					data.users[i].horses.push(newHorse);
 				}
-				const playercardEmbed = new Discord.MessageEmbed()
-					.setColor('#F7931A')
-					.setTitle(`${newHorse.name}'s stats`)
-					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
-					.addFields(
-						{ name: 'Stamina', value: `${newHorse.stamina}`, inline: true },
-						{ name: 'Speed', value: `${newHorse.speed}`, inline: true },
-						{ name: 'Color', value: `${newHorse.color}`, inline: true },
-						{ name: 'Height', value: `${newHorse.height}`, inline: true },
-						{ name: 'Weight', value: `${newHorse.weight}`, inline: true },
-						{ name: 'Gender', value: `${newHorse.gender}`, inline: true },
-						{ name: 'Age', value: `${newHorse.age}`, inline: true },
-						{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
-						{ name: 'Special', value: `${newHorse.special}`, inline: true },
-					)
+				const playercardEmbed = makeHorseEmbed(newHorse,data,message)
 				message.channel.send(playercardEmbed);
 				message.channel.send(`You have purchased ${newHorse.name}!`);
 				data.users[i].balance -= horsePrice;
@@ -123,7 +109,48 @@ function horseList(client,message){
 }
 
 function horseStats(client,message){
-	
+	let chop = message.content.split(" ");
+	//if too many arguments
+	if(chop.length != 3){
+		message.channel.send(`Invalid arguments supplied!`);
+	}
+	else{
+		let horseIndex = 0;
+		try{
+			horseIndex = parseInt(chop[chop.length-1]);
+		}
+		//if username cannot be gotten
+		catch(err){
+			message.channel.send(`Invalid index supplied`);
+			return;
+		}
+		if(horseIndex < 0){
+			message.channel.send(`Horse selection cannot be negative!`);
+		}
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id){
+				if(isNaN(data.users[i].horses)){
+					data.users[i].horses = [];
+				}
+				if(data.users[i].horses.length == 0){
+					message.channel.send(`You do not own any horses!`);
+					return;
+				}
+				else{
+					if(horseIndex >= data.users[i].horses.length){
+						message.channel.send(`Invalid horse selected! Use !cc horseList to see your horses!`);
+						return;
+					}
+					else{
+						let horse = data.users[i].horses[horseIndex];
+						const playercardEmbed = makeHorseEmbed(horse,data,message);
+						message.channel.send(playercardEmbed);
+					}
+				}
+				return;
+			}
+		}
+	}
 }
 
 function horseHelp(client,message){
@@ -132,6 +159,25 @@ function horseHelp(client,message){
 
 function horseDeath(client,message){
 	
+}
+
+function makeHorseEmbed(newHorse,data,message){
+	const playercardEmbed = new Discord.MessageEmbed()
+		.setColor('#F7931A')
+		.setTitle(`${newHorse.name}'s stats`)
+		.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+		.addFields(
+			{ name: 'Stamina', value: `${newHorse.stamina}`, inline: true },
+			{ name: 'Speed', value: `${newHorse.speed}`, inline: true },
+			{ name: 'Color', value: `${newHorse.color}`, inline: true },
+			{ name: 'Height', value: `${newHorse.height}`, inline: true },
+			{ name: 'Weight', value: `${newHorse.weight}`, inline: true },
+			{ name: 'Gender', value: `${newHorse.gender}`, inline: true },
+			{ name: 'Age', value: `${newHorse.age}`, inline: true },
+			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
+			{ name: 'Special', value: `${newHorse.special}`, inline: true },
+		)
+	return playercardEmbed;
 }
 
 //export functions
