@@ -140,6 +140,7 @@ function actualRace(client,message){
 				horses.push(airacer);
 			}
 		}
+		console.log(horses);
 		let racePos = [];
 		for(let i=0;i<horses.length;i++){
 			racePos.push(i);
