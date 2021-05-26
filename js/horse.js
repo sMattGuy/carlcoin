@@ -178,8 +178,8 @@ function acceptDenyHorse(client,message){
 					let price = parseInt(sellParse.price);
 					data.users[sellParse.sellerIndex].balance += price;
 					data.users[sellParse.buyerIndex].balance -= price;
-					let horse = data.users[sellParse.sellerIndex].horse[parseInt(sellParse.type)];
-					data.users[sellParse.sellerIndex].horse.splice(parseInt(sellParse.type),1);
+					let horse = data.users[sellParse.sellerIndex].horses[parseInt(sellParse.type)];
+					data.users[sellParse.sellerIndex].horses.splice(parseInt(sellParse.type),1);
 					if(data.users[sellParse.buyerIndex].hasOwnProperty("horses")){
 						data.users[sellParse.buyerIndex].horses.push(horse);
 					}
