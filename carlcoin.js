@@ -243,6 +243,9 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseStats')){
 		horse.horseStats(client,message);
 	}
+	else if(message.content === '!cc horseHelp'){
+		horse.horseHelp(client,message);
+	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);

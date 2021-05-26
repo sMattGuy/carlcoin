@@ -64,6 +64,9 @@ function horseList(client,message){
 	let id = message.author.id;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
+			if(isNaN(data.users[i]["horses"])){
+				data.users[i].horses = [];
+			}
 			if(data.users[i].horses.length == 0){
 				message.channel.send(`You do not own any horses!`);
 			}
@@ -110,6 +113,9 @@ function horseStats(client,message){
 		let id = message.author.id;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
+				if(isNaN(data.users[i]["horses"])){
+					data.users[i].horses = [];
+				}
 				if(data.users[i].horses.length == 0){
 					message.channel.send(`You do not own any horses!`);
 					return;
@@ -136,7 +142,11 @@ function horseHelp(client,message){
 }
 
 function horseDeath(client,message){
-	
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	for(let i=0;i<data.users.length;i++){
+		for()
+	}
 }
 
 function makeHorseEmbed(newHorse,name,message){
