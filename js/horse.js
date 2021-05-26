@@ -51,7 +51,7 @@ function purchaseHorse(client,message){
 				const playercardEmbed = new Discord.MessageEmbed()
 					.setColor('#F7931A')
 					.setTitle(`${newHorse.name}'s stats`)
-					.setAuthor(`${data.users[i].name}`, `${userImage}`)
+					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Stamina', value: `${newHorse.stamina}`, inline: true },
