@@ -91,7 +91,7 @@ function raceHorse(client,message){
 					let horse = data.users[i].horses[horseIndex];
 					let userID = data.users[i].id;
 					let total = bet;
-					let userPacket = {"id":`${userID}`,"horse":`${horse}`,"bet":`${bet}`};
+					let userPacket = {"id":`${userID}`,"horse":horse,"bet":`${bet}`};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 						let raceFile = JSON.parse(raceRead);
