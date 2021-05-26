@@ -107,7 +107,7 @@ function dailyEvents(client,message){
 		if(!data.users[i].hasOwnProperty("horses")){
 			data.users[i].horses = [];
 		}
-		for(int j=0;j<data.users[i].horses.length;j++){
+		for(let j=0;j<data.users[i].horses.length;j++){
 			if(data.users[i].horses[j].age > 10){
 				console.log(data.users[i].horses[j].name + ' has died of old age');
 				data.users[i].horses.splice(j,1);
