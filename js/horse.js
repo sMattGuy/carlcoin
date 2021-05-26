@@ -145,7 +145,7 @@ function horseDeath(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	for(let i=0;i<data.users.length;i++){
-		for()
+		
 	}
 }
 
