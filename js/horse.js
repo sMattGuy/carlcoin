@@ -143,9 +143,10 @@ function actualRace(client,message){
 				horses.push(airacer);
 			}
 		}
-		console.log(horses);
 		let racePos = [];
 		for(let i=0;i<horses.length;i++){
+			//pushes horseID onto race position
+			console.log(i + '. ' + horses[i].horse.name);
 			racePos.push(i);
 		}
 		raceEvents += `Welcome to todays race of ${horses.length} horses\n`;
