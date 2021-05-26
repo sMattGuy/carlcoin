@@ -72,6 +72,7 @@ function horseSell(client,message){
 			message.channel.send('Invalid user selected!');
 			mentionOK = false;
 		}
+		console.log(buyer);
 		if(mentionOK){
 			let resell = true;
 			if(fs.existsSync(`/home/mattguy/carlcoin/cache/${buyer}horseSell`)){
@@ -108,9 +109,11 @@ function horseSell(client,message){
 									//check if house
 									if(horseIndex < 0 || horseIndex >= data.users[i].horses.length){
 										message.channel.send('Invalid horse selected!');
+										return;
 									}
 									else if(data.users[j].balance - price < 0){
 										message.channel.send('Buyer doesnt have enough CC!');
+										return;
 									}
 									else{
 										let sellEnder = Date.now() + 60000;
@@ -127,6 +130,7 @@ function horseSell(client,message){
 							}
 							if(noBuy){
 								message.channel.send('Buyer doesnt exist!');
+								return;
 							}
 						}
 						noUser = false;
@@ -134,6 +138,7 @@ function horseSell(client,message){
 					}
 					if(noUser){
 						message.channel.send('You are not registered for CC!');
+						return;
 					}
 				}
 			}
