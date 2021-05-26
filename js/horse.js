@@ -64,7 +64,7 @@ function horseList(client,message){
 	let id = message.author.id;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
-			if(!data.users[i].has("horses")){
+			if(!data.users[i].hasOwnProperty("horses")){
 				data.users[i].horses = [];
 			}
 			if(data.users[i].horses.length == 0){
@@ -113,7 +113,7 @@ function horseStats(client,message){
 		let id = message.author.id;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
-				if(!data.users[i].has("horses")){
+				if(!data.users[i].hasOwnProperty("horses")){
 					data.users[i].horses = [];
 				}
 				if(data.users[i].horses.length == 0){
