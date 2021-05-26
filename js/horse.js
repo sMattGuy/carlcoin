@@ -10,13 +10,13 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 
 function createHorse(){
 	//metaphorical stats
-	let stamina = Math.floor(Math.random() * 120) + 80;
-	let speed = Math.floor(Math.random() * 120) + 80;
+	let stamina = Math.floor(Math.random() * 40) + 80;
+	let speed = Math.floor(Math.random() * 40) + 80;
 	//cosmetic stats
 	let color = colors[Math.floor(Math.random() * colors.length)];
 	let height = Math.random() + 1;
 	height = height.toFixed(2);
-	let weight = Math.floor(Math.random() * 1000) + 380;
+	let weight = Math.floor(Math.random() * 620) + 380;
 	let gender = genderType[Math.floor(Math.random() * genderType.length)];
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
