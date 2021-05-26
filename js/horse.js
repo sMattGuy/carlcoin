@@ -119,6 +119,7 @@ function horseSell(client,message){
 										fs.writeFileSync(`/home/mattguy/carlcoin/cache/${buyer}horseSell`,jsonBattle);
 										message.channel.send(`${data.users[j].name}! Type !cc horseAccept to accept ${data.users[i].name}'s offer or type !cc horseDeny to reject the offer. You have 1 minute to respond.`);
 										console.log(data.users[i].name + " trying to sell to " + data.users[j].name);
+										return;
 									}
 								}
 								noBuy = false;
@@ -137,6 +138,7 @@ function horseSell(client,message){
 				}
 			}
 		}
+		console.log('something went wrong while selling horse');
 	}
 }
 
