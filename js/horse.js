@@ -211,6 +211,7 @@ function actualRace(client,message){
 				else{
 					raceEvents += `${horses[racePos[pos]].horse.name} is in first!\n`;
 				}
+				//special ability
 				let specialChance = Math.random();
 				if(horses[racePos[newPos]].horse.specialAbility == 'Speed Boost' && specialChance >= 0.80){
 					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
@@ -261,6 +262,15 @@ function actualRace(client,message){
 					}
 				}
 				horses[racePos[newPos]].horse.stamina -= 1;
+				if(horses[racePos[newPos]].horse.stamina < 0){
+					raceEvents += `${horses[racePos[newPos]].horse.name} looks tired!\n`;
+					horses[racePos[newPos]].horse.stamina = 0;
+					horses[racePos[newPos]].horse.speed -= 5;
+					if(horses[racePos[newPos]].horse.speed < 0){
+						raceEvents += `${horses[racePos[newPos]].horse.name} is exhasted!\n`;
+						horses[racePos[newPos]].horse.speed = 0;
+					}
+				}
 			}
 		}
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
