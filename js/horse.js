@@ -67,7 +67,8 @@ function horseList(client,message){
 			if(isNaN(data.users[i].horses)){
 				data.users[i].horses = [];
 			}
-			if(parseInt(data.users[i].horses.length) == 0){
+			console.log(data.users[i].horses.length);
+			if(data.users[i].horses.length == 0){
 				message.channel.send(`You do not own any horses!`);
 			}
 			else{
@@ -80,7 +81,7 @@ function horseList(client,message){
 					.setTitle(`${data.users[i].name}'s horses`)
 					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 					.addFields(
-						{ name: 'Horses', value: `${horseList}`, inline: true }
+						{ name: 'Horses', value: `${horseList}`}
 					)
 				message.channel.send(playercardEmbed);
 			}
