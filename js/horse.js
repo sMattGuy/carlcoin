@@ -105,6 +105,7 @@ function horseSell(client,message){
 							}
 							for(let j=0;j<data.users.length;j++){
 								if(data.users[j].id == buyer){
+									console.log('horse buyer found');
 									let horseIndex = parseInt(chop[chop.length-2]);
 									//check if house
 									if(horseIndex < 0 || horseIndex >= data.users[i].horses.length){
