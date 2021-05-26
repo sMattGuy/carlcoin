@@ -41,17 +41,369 @@ function purchaseHorse(client,message){
 		}
 	}
 }
-
+// !cc horseRace index bet
 function raceHorse(client,message){
-	
+	let chop = message.content.split(" ");
+	//if too many arguments
+	if(chop.length != 4){
+		message.channel.send(`Invalid arguments supplied!`);
+		return;
+	}
+	let bet = parseInt(chop[chop.length-1]);
+	if(isNaN(bet) || bet < 0){
+		message.channel.send('Invalid amount entered!');
+		return;
+	}
+	else{
+		let horseIndex = 0;
+		try{
+			horseIndex = parseInt(chop[chop.length-2]);
+		}
+		//if username cannot be gotten
+		catch(err){
+			message.channel.send(`Invalid index supplied`);
+			return;
+		}
+		if(horseIndex < 0){
+			message.channel.send(`Horse selection cannot be negative!`);
+		}
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id){
+				if(!data.users[i].hasOwnProperty("horses")){
+					data.users[i].horses = [];
+				}
+				if(data.users[i].horses.length == 0){
+					message.channel.send(`You do not own any horses!`);
+					return;
+				}
+				else if(data.users[i].balance - bet < 0){
+					message.channel.send(`You do not have enough CC!`);
+					return;
+				}
+				if(horseIndex >= data.users[i].horses.length){
+					message.channel.send(`Invalid horse selected! Use !cc horseList to see your horses!`);
+					return;
+				}
+				else{
+					let horse = data.users[i].horses[horseIndex];
+					let userID = data.users[i].id;
+					let total = bet;
+					let userPacket = {"id":`${userID}`,"horse":`${horse}`,"bet":`${bet}`};
+					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
+						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
+						let raceFile = JSON.parse(raceRead);
+						for(let j=0;j<raceFile.racers.length;j++){
+							if(userID == raceFile.racers[j].id){
+								message.channel.send(`You are already enrolled for the race!`);
+								return;
+							}
+						}
+						raceFile.total += bet;
+						raceFile.racers.push(userPacket);
+						let raceFile = JSON.stringify(horseRace);
+						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
+					}
+					else{
+						let horseRace = {"total":`${total}`,"racers":[`${userPacket}`]};
+						let raceFile = JSON.stringify(horseRace);
+						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
+					}
+					message.channel.send(`You have been enrolled for the race! The results will be in general at midnight!`);
+				}
+				return;
+			}
+		}
+	}
+}
+
+function actualRace(client,message){
+	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
+		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
+		let raceFile = JSON.parse(raceRead);
+		let total = raceFile.total;
+		let horses = [];
+		let raceEvents = "";
+		for(let i=0;i<raceFile.racers.length;i++){
+			let currentHorse = {"id":`${raceFile.racers[i].id}`,"horse":`${raceFile.racers[i].horse}`};
+			horses.push(currentHorse);
+		}
+		if(horses.length < 10){
+			let i = 10-horses.length;
+			for(i;i!=0;i--){
+				let AIHorse = createHorse();
+				total += 10;
+				let owner = `AI${i}`;
+				let airacer = {"id":`${owner}`,"horse":`${AIHorse}`};
+				horses.push(airacer);
+			}
+		}
+		let racePos = [];
+		for(let i=0;i<horses.length;i++){
+			racePos.push(i);
+		}
+		raceEvents += `Welcome to todays race of ${horses.length} horses\n`;
+		for(let raceSize=100;raceSize!=0;raceSize--){
+			raceEvents += `Current standings:\n`;
+			for(let places = 0;places < racePos.length;places++){
+				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name}\n`;
+			}
+			raceEvents += `SPRINTS LEFT: ${raceSize}\n`;
+			//each frame will go through every horses decision
+			for(let frame = 0;frame<horses.length;frame++){
+				let pos = 0;
+				let newPos = 0;
+				let horseBehind = {"id":"noPerson"};
+				let horseInFront = {"id":"noPerson"};
+				//get horses position
+				for(pos;pos < racePos.length;pos++){
+					if(racePos[pos] == frame){
+						break;
+					}
+				}
+				//get horse behinds info
+				if(pos - 1 > 0){
+					horseInFront = horses[racePos[pos-1]];
+				}
+				//get horse infront
+				if(pos + 1 < racePos.length){
+					horseBehind = horses[racePos[pos+1]];
+				}
+				if(horses[racePos[pos]].horse.speed > horseInFront.horse.speed && horseInFront.id != 'noPerson'){
+					//current horse
+					let overtakerHorse = racePos[pos];
+					//horse being overtaken
+					racePos[pos] = racePos[pos-1];
+					//changing who's in front
+					racePos[pos-1] = overtakerHorse;
+					newPos = pos-1;
+					raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
+				}
+				else if(horses[racePos[pos]].horse.speed == horseInFront.horse.speed && horseInFront.id != 'noPerson'){
+					let passChance = Math.random();
+					if(passChance > 0.5){
+						//current horse
+						let overtakerHorse = racePos[pos];
+						//horse being overtaken
+						racePos[pos] = racePos[pos-1];
+						//changing who's in front
+						racePos[pos-1] = overtakerHorse;
+						newPos = pos-1;
+						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
+					}
+					else{
+						raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
+						newPos = pos;
+					}
+				}
+				else if(horseInFront.id != 'noPerson'){
+					raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
+					newPos = pos;
+				}
+				else{
+					raceEvents += `${horses[racePos[pos]].horse.name} is in first!\n`;
+				}
+				let specialChance = Math.random();
+				if(horses[racePos[newPos]].horse.specialAbility == 'Speed Boost' && specialChance >= 0.80){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					horses[racePos[newPos]].horse.speed += 10;
+				}
+				else if(horses[racePos[newPos]].horse.specialAbility == 'Stamina Boost' && specialChance >= 0.80){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					horses[racePos[newPos]].horse.stamina += 10;
+				}
+				else if(horses[racePos[newPos]].horse.specialAbility == 'Full Force' && specialChance >= 0.90){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					horses[racePos[newPos]].horse.stamina += 10;
+					horses[racePos[newPos]].horse.speed += 10;
+				}
+				else if(horses[racePos[newPos]].horse.specialAbility == 'Slipstream' && specialChance >= 0.85){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					horseInFront = {"id":"noPerson"};
+					if(newPos - 1 > 0){
+						horseInFront = horses[racePos[newPos-1]];
+					}
+					if(horseInFront.id != 'noPerson'){
+						//current horse
+						let tempPos = racePos[newPos];
+						//horse being overtaken
+						racePos[newPos] = racePos[newPos-1];
+						//changing who's in front
+						racePos[newPos-1] = tempPos;
+						newPos = newPos-1;
+						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[newPos+1]].horse.name}!\n`;
+					}
+					else{
+						raceEvents += `${horses[racePos[newPos]].horse.name} is already in first!\n`;
+					}
+				}
+				else if(horses[racePos[newPos]].horse.specialAbility == 'Vicious' && specialChance >= 0.90){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					horseBehind = {"id":"noPerson"};
+					if(newPos + 1 < racePos.length){
+						horseBehind = horses[racePos[newPos+1]];
+					}
+					if(horseBehind.id != 'noPerson'){
+						horses[racePos[newPos+1]].horse.stamina -= 10;
+						horses[racePos[newPos+1]].horse.speed -= 5;
+						raceEvents += `${horses[racePos[newPos]].horse.name} has kicked up rocks onto ${horses[racePos[newPos+1]].horse.name}!\n`;
+					}
+					else{
+						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;
+					}
+				}
+				horses[racePos[newPos]].horse.stamina -= 1;
+			}
+		}
+		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
+	}
+	else{
+		console.log('No horse race occured');
+	}
 }
 
 function trainHorse(client,message){
-	
+	let chop = message.content.split(" ");
+	//if too many arguments
+	if(chop.length != 3){
+		message.channel.send(`Invalid arguments supplied!`);
+	}
+	else{
+		let horseIndex = 0;
+		try{
+			horseIndex = parseInt(chop[chop.length-1]);
+		}
+		//if username cannot be gotten
+		catch(err){
+			message.channel.send(`Invalid index supplied`);
+			return;
+		}
+		if(horseIndex < 0){
+			message.channel.send(`Horse selection cannot be negative!`);
+		}
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id){
+				if(!data.users[i].hasOwnProperty("horses")){
+					data.users[i].horses = [];
+				}
+				if(data.users[i].horses.length == 0){
+					message.channel.send(`You do not own any horses!`);
+					return;
+				}
+				else{
+					if(horseIndex >= data.users[i].horses.length){
+						message.channel.send(`Invalid horse selected! Use !cc horseList to see your horses!`);
+						return;
+					}
+					else if(data.users[i].horses[horseIndex].trainingCooldown > Date.now()){
+						let timeLeftClaim = data.users[i].horses[horseIndex].trainingCooldown - Date.now();
+						timeLeftClaim = Math.floor(timeLeftClaim / 1000);
+						timeLeftClaim = Math.floor(timeLeftClaim / 60);
+						message.channel.send(`You trained ${data.users[i].horses[horseIndex].name} recently! Try again in ${timeLeftClaim} mins!`);
+					}
+					else{
+						let staminaChance = Math.random();
+						let speedChance = Math.random();
+						let staminaAmount = Math.floor(Math.random()*5)+1;
+						let speedAmount = Math.floor(Math.random()*5)+1;
+						let results = `You start training ${data.users[i].horses[horseIndex].name}...\n`;
+						if(staminaChance >= 0.25){
+							data.users[i].horses[horseIndex].stamina += staminaAmount;
+							if(data.users[i].horses[horseIndex].stamina > 150){
+								data.users[i].horses[horseIndex].stamina = 150;
+							}
+							results += `${data.users[i].horses[horseIndex].name} improved their stamina by ${staminaAmount} points!\n`;
+						}
+						if(speedChance >= 0.75){
+							data.users[i].horses[horseIndex].speed += speedAmount;
+							if(data.users[i].horses[horseIndex].speed > 150){
+								data.users[i].horses[horseIndex].speed = 150;
+							}
+							results += `${data.users[i].horses[horseIndex].name} improved their speed by ${speedAmount} points!\n`;
+						}
+						results += `Training complete!`;
+						message.channel.send(results);
+						data.users[i].horses[horseIndex].trainingCooldown = Date.now() + 21600000;
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					}
+				}
+				return;
+			}
+		}
+	}
 }
 
 function breedHorse(client,message){
-	
+	let chop = message.content.split(" ");
+	if(chop.length != 4){
+		message.channel.send('Command arguments incorrect!');
+	}
+	else{
+		let horseIndex1 = 0;
+		let horseIndex2 = 0;
+		try{
+			horseIndex1 = parseInt(chop[chop.length-2]);
+			horseIndex2 = parseInt(chop[chop.length-1]);
+		}
+		catch(err){
+			message.channel.send(`Invalid indexs supplied`);
+			return;
+		}
+		if(horseIndex1 == horseIndex2){
+			message.channel.send(`Horses cannot reproduce asexually`);
+			return;
+		}
+		else if(horseIndex1 < 0 || horseIndex2 < 0){
+			message.channel.send(`Index cannot be negative!`);
+			return;
+		}
+		else{
+			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			let data = JSON.parse(database);
+			let id = message.author.id;
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == id){
+					if(!data.users[i].hasOwnProperty("horses")){
+						data.users[i].horses = [];
+					}
+					if(data.users[i].horses.length < 2){
+						message.channel.send(`You do not have enough horses!`);
+						return;
+					}
+					else if(data.users[i].horses[horseIndex1].gender == data.users[i].horses[horseIndex2].gender){
+						message.channel.send(`Only opposite gender horses can breed!`);
+						return;
+					}
+					else{
+						let newHorse = createHorse();
+						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
+						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
+						newHorse.timeline = `${data.users[i].horses[horseIndex1].timeline}->${data.users[i].horses[horseIndex1].name}\n${data.users[i].horses[horseIndex2].timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
+						let name = data.users[i].horses[horseIndex2].name;
+						data.users[i].horses.splice(horseIndex1,1);
+						for(let j=0;j<data.users[i].horses.length;j++){
+							if(name == data.users[i].horses[j].name){
+								horseIndex2 = j;
+								break;
+							}
+						}
+						data.users[i].horses.splice(horseIndex2,1);
+						data.users[i].horses.push(newHorse);
+						let horseEmbed = makeHorseEmbed(newHorse,data.users[i].name,message);
+						message.channel.send(horseEmbed);
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				}
+			}
+		}
+	}
 }
 
 function horseSell(client,message){
@@ -192,7 +544,7 @@ function acceptDenyHorse(client,message){
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}horseSell`);
 					message.channel.send('You have accepted the offer!');
-					console.log(data.users[sellParse.sellerIndex].name + " has sold to " + data.users[sellParse.buyerIndex]);
+					console.log(data.users[sellParse.sellerIndex].name + " has sold to " + data.users[sellParse.buyerIndex].name);
 				}
 			}
 		}
@@ -279,7 +631,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!\nUse !cc horseSell user horseIndex price to sell your horse!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!\nUse !cc horseSell user horseIndex price to sell your horse!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
@@ -337,12 +689,13 @@ function getUserFromMention(client,mention) {
 //export functions
 module.exports = {
 	purchaseHorse,
-	//raceHorse,
-	//trainHorse,
-	//breedHorse,
+	raceHorse,
+	trainHorse,
+	breedHorse,
 	horseSell,
 	acceptDenyHorse,
 	horseHelp,
 	horseStats,
-	horseList
+	horseList,
+	actualRace
 };

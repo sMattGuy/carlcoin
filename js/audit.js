@@ -131,6 +131,9 @@ function auditUser(client,message){
 						timeLeftRob = Math.floor(timeLeftRob / 60);
 						messageToSend += `You have ${timeLeftRob} mins left before you can rob again`
 					}
+					if(!data.users[i].hasOwnProperty("horses")){
+						data.users[i].horses = [];
+					}
 					let buildings = homes + apartments + skyscrapers;
 					let userImage = client.users.cache.get(id).displayAvatarURL();
 					let perc = (balance / data.econ) * 100;
@@ -144,6 +147,7 @@ function auditUser(client,message){
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (before tax) daily`},
+							{ name: 'Horses', value: `${data.users[i].horses.length}`},
 							{ name: 'Cooldowns', value: `${messageToSend}`},
 							{ name: 'Stats', value: '\u200B' },
 							{ name: 'STR', value: `${str}`, inline: true },

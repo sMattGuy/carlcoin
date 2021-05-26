@@ -251,8 +251,25 @@ client.on('message', message => {
 	else if(message.content === '!cc horseDeny' || message.content === '!cc horseAccept'){
 		horse.acceptDenyHorse(client,message);
 	}
+	//horse help
 	else if(message.content === '!cc horseHelp'){
 		horse.horseHelp(client,message);
+	}
+	//horse train
+	else if(message.content.startsWith('!cc horseTrain')){
+		horse.trainHorse(client,message);
+	}
+	//horse breed
+	else if(message.channel.startsWith('!cc horseBreed')){
+		horse.breedHorse(client,message);
+	}
+	//race
+	else if(message.content.startsWith('!cc horseRace')){
+		horse.raceHorse(client,message);
+	}
+	else if(message.content === 'test the races'){
+		horse.actualRace(client,message);
+		message.channel.send('results of race',{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
