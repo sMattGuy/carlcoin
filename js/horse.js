@@ -67,7 +67,7 @@ function horseList(client,message){
 			if(isNaN(data.users[i].horses)){
 				data.users[i].horses = [];
 			}
-			if(data.users[i].horses.length == 0){
+			if(parseInt(data.users[i].horses.length) == 0){
 				message.channel.send(`You do not own any horses!`);
 			}
 			else{
