@@ -243,6 +243,14 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseStats')){
 		horse.horseStats(client,message);
 	}
+	//sell horse
+	else if(message.content.startsWith('!cc horseSell')){
+		horse.horseSell(client,message);
+	}
+	//agree to offer
+	else if(message.content === '!cc horseDeny' || message.content === '!cc horseAccept'){
+		horse.acceptDenyHorse(client,message);
+	}
 	else if(message.content === '!cc horseHelp'){
 		horse.horseHelp(client,message);
 	}

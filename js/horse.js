@@ -53,7 +53,7 @@ function trainHorse(client,message){
 function breedHorse(client,message){
 	
 }
-//!cc horseSell user index price
+
 function horseSell(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 5){
@@ -152,11 +152,11 @@ function acceptDenyHorse(client,message){
 		else{
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
-			if(message.content.startsWith('!cc denyPurchase')){
+			if(message.content.startsWith('!cc horseDeny')){
 				fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}horseSell`);
 				message.channel.send('You have declined the offer');
 			}
-			else if(message.content.startsWith('!cc acceptPurchase')){
+			else if(message.content.startsWith('!cc horseAccept')){
 				if(data.users[sellParse.buyerIndex].balance - sellParse.price < 0){
 					message.channel.send(`You don't have enough CC!`);
 				}
@@ -326,7 +326,8 @@ module.exports = {
 	//raceHorse,
 	//trainHorse,
 	//breedHorse,
-	//horseSell,
+	horseSell,
+	acceptDenyHorse,
 	horseHelp,
 	horseStats,
 	horseList
