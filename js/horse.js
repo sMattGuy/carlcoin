@@ -87,12 +87,15 @@ function horseSell(client,message){
 				}
 			}
 			if(resell){
+				console.log('horse sale ok');
 				let price = parseInt(chop[chop.length-1]);
 				if(buyer == seller){
 					message.channel.send('You cannot sell to yourself!');
+					return;
 				}
 				else if(isNaN(price) || price < 0){
 					message.channel.send('Invalid amount entered!');
+					return;
 				}
 				else{
 					let noUser = true;
