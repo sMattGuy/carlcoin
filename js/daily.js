@@ -107,14 +107,16 @@ function dailyEvents(client,message){
 		if(!data.users[i].hasOwnProperty("horses")){
 			data.users[i].horses = [];
 		}
-		for(let j=0;j<data.users[i].horses.length;j++){
-			if(data.users[i].horses[j].age > 10){
-				console.log(data.users[i].horses[j].name + ' has died of old age');
-				data.users[i].horses.splice(j,1);
-			}
-			else if(data.users[i].horses[j].birthday == today.getDate()){
-				data.users[i].horses[j].age++;
-				console.log(data.users[i].horses[j].name + ' is now ' + data.users[i].horses[j].age);
+		else{
+			for(let j=0;j<data.users[i].horses.length;j++){
+				if(data.users[i].horses[j].age > 10){
+					console.log(data.users[i].horses[j].name + ' has died of old age');
+					data.users[i].horses.splice(j,1);
+				}
+				else if(data.users[i].horses[j].birthday == today.getDate()){
+					data.users[i].horses[j].age++;
+					console.log(data.users[i].horses[j].name + ' is now ' + data.users[i].horses[j].age);
+				}
 			}
 		}
 	}
