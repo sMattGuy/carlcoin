@@ -131,9 +131,9 @@ function horseSell(client,message){
 										console.log(data.users[i].name + " trying to sell to " + data.users[j].name);
 										return;
 									}
+									noBuy = false;
+									break;
 								}
-								noBuy = false;
-								break;
 							}
 							if(noBuy){
 								message.channel.send('Buyer doesnt exist!');
