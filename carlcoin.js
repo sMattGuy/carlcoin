@@ -231,8 +231,9 @@ client.on('message', message => {
 	else if(message.content === '!cc userHelp'){
 		help.userHelp(client,message);
 	}
-	else if(message.content === '!cc horseTest'){
-		horse.createHorse();
+	//purchase horse
+	else if(message.content === '!cc horsePurchase'){
+		horse.purchaseHorse();
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
