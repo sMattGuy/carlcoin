@@ -169,11 +169,11 @@ function actualRace(client,message){
 					}
 				}
 				//get horse behinds info
-				if(pos - 1 > 0){
+				if(pos != 0){
 					horseInFront = horses[racePos[pos-1]];
 				}
 				//get horse infront
-				if(pos + 1 < racePos.length){
+				if(pos != racePos.length - 1){
 					horseBehind = horses[racePos[pos+1]];
 				}
 				if(horseInFront.id != 'noPerson'){
