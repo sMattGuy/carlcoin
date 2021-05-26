@@ -215,20 +215,20 @@ function actualRace(client,message){
 				//special ability
 				let specialChance = Math.random();
 				if(horses[racePos[newPos]].horse.special == 'Speed Boost' && specialChance >= 0.80){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horses[racePos[newPos]].horse.speed += 10;
 				}
 				else if(horses[racePos[newPos]].horse.special == 'Stamina Boost' && specialChance >= 0.80){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horses[racePos[newPos]].horse.stamina += 10;
 				}
 				else if(horses[racePos[newPos]].horse.special == 'Full Force' && specialChance >= 0.90){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horses[racePos[newPos]].horse.stamina += 10;
 					horses[racePos[newPos]].horse.speed += 10;
 				}
 				else if(horses[racePos[newPos]].horse.special == 'Slipstream' && specialChance >= 0.85){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horseInFront = {"id":"noPerson"};
 					if(newPos - 1 > 0){
 						horseInFront = horses[racePos[newPos-1]];
