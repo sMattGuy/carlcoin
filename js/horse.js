@@ -64,10 +64,6 @@ function horseList(client,message){
 	let id = message.author.id;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
-			if(isNaN(data.users[i].horses[0])){
-				data.users[i].horses = [];
-			}
-			console.log(data.users[i].horses.length);
 			if(data.users[i].horses.length == 0){
 				message.channel.send(`You do not own any horses!`);
 			}
