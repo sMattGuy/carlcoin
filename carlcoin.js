@@ -235,6 +235,14 @@ client.on('message', message => {
 	else if(message.content === '!cc horsePurchase'){
 		horse.purchaseHorse(client,message);
 	}
+	//see all horses
+	else if(message.content === '!cc horseList'){
+		horse.horseList(client,message);
+	}
+	//see individual horse
+	else if(message.content.startsWith('!cc horseStats')){
+		horse.horseStats(client,message);
+	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);

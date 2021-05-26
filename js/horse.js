@@ -11,25 +11,6 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 //horse value definition
 const horsePrice = 750;
 
-function createHorse(){
-	//metaphorical stats
-	let today = new Date();
-	let stamina = Math.floor(Math.random() * 40) + 80;
-	let speed = Math.floor(Math.random() * 40) + 80;
-	//cosmetic stats
-	let color = colors[Math.floor(Math.random() * colors.length)];
-	let height = Math.random() + 1;
-	height = height.toFixed(2);
-	let weight = Math.floor(Math.random() * 620) + 380;
-	let gender = genderType[Math.floor(Math.random() * genderType.length)];
-	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
-	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
-	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"isBirthday":"true","birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
-	console.log(newHorse);
-	return newHorse;
-}
-
 function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
@@ -180,13 +161,34 @@ function makeHorseEmbed(newHorse,data,message){
 	return playercardEmbed;
 }
 
+function createHorse(){
+	//metaphorical stats
+	let today = new Date();
+	let stamina = Math.floor(Math.random() * 40) + 80;
+	let speed = Math.floor(Math.random() * 40) + 80;
+	//cosmetic stats
+	let color = colors[Math.floor(Math.random() * colors.length)];
+	let height = Math.random() + 1;
+	height = height.toFixed(2);
+	let weight = Math.floor(Math.random() * 620) + 380;
+	let gender = genderType[Math.floor(Math.random() * genderType.length)];
+	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
+	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
+	let age = Math.floor(Math.random()*4)+2;
+	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"isBirthday":"true","birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
+	console.log(newHorse);
+	return newHorse;
+}
+
 //export functions
 module.exports = {
 	purchaseHorse,
-	raceHorse,
-	trainHorse,
-	breedHorse,
-	horseSell,
+	//raceHorse,
+	//trainHorse,
+	//breedHorse,
+	//horseSell,
 	horseHelp,
-	horseDeath
+	//horseDeath,
+	horseStats,
+	horseList
 };
