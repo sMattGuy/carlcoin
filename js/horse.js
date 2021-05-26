@@ -171,19 +171,8 @@ function actualRace(client,message){
 				if(pos + 1 < racePos.length){
 					horseBehind = horses[racePos[pos+1]];
 				}
-				if(horses[racePos[pos]].horse.speed > horseInFront.horse.speed && horseInFront.id != 'noPerson'){
-					//current horse
-					let overtakerHorse = racePos[pos];
-					//horse being overtaken
-					racePos[pos] = racePos[pos-1];
-					//changing who's in front
-					racePos[pos-1] = overtakerHorse;
-					newPos = pos-1;
-					raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
-				}
-				else if(horses[racePos[pos]].horse.speed == horseInFront.horse.speed && horseInFront.id != 'noPerson'){
-					let passChance = Math.random();
-					if(passChance > 0.5){
+				if(horseInFront.id != 'noPerson'){
+					if(horses[racePos[pos]].horse.speed > horseInFront.horse.speed){
 						//current horse
 						let overtakerHorse = racePos[pos];
 						//horse being overtaken
@@ -193,14 +182,27 @@ function actualRace(client,message){
 						newPos = pos-1;
 						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
 					}
+					else if(horses[racePos[pos]].horse.speed == horseInFront.horse.speed){
+						let passChance = Math.random();
+						if(passChance > 0.5){
+							//current horse
+							let overtakerHorse = racePos[pos];
+							//horse being overtaken
+							racePos[pos] = racePos[pos-1];
+							//changing who's in front
+							racePos[pos-1] = overtakerHorse;
+							newPos = pos-1;
+							raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
+						}
+						else{
+							raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
+							newPos = pos;
+						}
+					}
 					else{
 						raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
 						newPos = pos;
 					}
-				}
-				else if(horseInFront.id != 'noPerson'){
-					raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
-					newPos = pos;
 				}
 				else{
 					raceEvents += `${horses[racePos[pos]].horse.name} is in first!\n`;
@@ -258,6 +260,7 @@ function actualRace(client,message){
 			}
 		}
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
+		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 	}
 	else{
 		console.log('No horse race occured');
