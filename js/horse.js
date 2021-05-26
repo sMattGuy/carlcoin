@@ -9,7 +9,7 @@ const firstPartName = ['Special','Silence','Tokai','Air','Condor','Oguri','Grass
 const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wonder','Ship','Rudolf','Shuttle','Scarlet','Opera','Brian','Amazon','Kiseki','Maruzensky','McQueen','Sky','Bijin','Ticket','Cross','Pearl','Cafe','Jordan','Urara','Princess','Ryan','Matikanefukukitaru','Motion','Falcon','Taishin','Shakur','City','Creek','One','Flower','Pegasus','Akebono','Memory','Sunday','Bourbon','Tosho','Fujin','Hayahide','Bakushin','Windy','Tachyon','Rob Roy','Doto','Shower','Vega','Chan','Digital','Flash','Festa','Top Gun','Dober','Nature','Halo','Tannhauser','Dictus','Helios','Turbo'];
 
 //horse value definition
-const horsePrice = 750;
+const horsePrice = 0;
 
 function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
