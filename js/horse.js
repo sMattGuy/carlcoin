@@ -107,7 +107,8 @@ function raceHorse(client,message){
 						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFileSave);
 					}
 					else{
-						let horseRace = {"total":`${total}`,"racers":[`${userPacket}`]};
+						let horseRace = {"total":`${total}`,"racers":[]};
+						horseRace.push(userPacket);
 						let raceFile = JSON.stringify(horseRace);
 						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
 					}
@@ -138,7 +139,7 @@ function actualRace(client,message){
 				let AIHorse = createHorse();
 				total += 10;
 				let owner = `AI${i}`;
-				let airacer = {"id":`${owner}`,"horse":`${AIHorse}`};
+				let airacer = {"id":`${owner}`,"horse":AIHorse};
 				horses.push(airacer);
 			}
 		}
