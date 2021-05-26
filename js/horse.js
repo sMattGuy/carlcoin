@@ -64,8 +64,7 @@ function horseList(client,message){
 	let id = message.author.id;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
-			console.log(isNaN(data.users[i]["horses"]));
-			if(isNaN(data.users[i]["horses"])){
+			if(!data.users[i].has("horses")){
 				data.users[i].horses = [];
 			}
 			if(data.users[i].horses.length == 0){
@@ -114,7 +113,7 @@ function horseStats(client,message){
 		let id = message.author.id;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
-				if(isNaN(data.users[i]["horses"])){
+				if(!data.users[i].has("horses")){
 					data.users[i].horses = [];
 				}
 				if(data.users[i].horses.length == 0){
