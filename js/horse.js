@@ -127,7 +127,9 @@ function actualRace(client,message){
 		let horses = [];
 		let raceEvents = "";
 		for(let i=0;i<raceFile.racers.length;i++){
-			let currentHorse = {"id":`${raceFile.racers[i].id}`,"horse":`${raceFile.racers[i].horse}`};
+			let id = raceFile.racers[i].id;
+			let horse = raceFile.racers[i].horse;
+			let currentHorse = {"id":`${id}`,"horse":`${horse}`};
 			horses.push(currentHorse);
 		}
 		if(horses.length < 10){
