@@ -98,14 +98,17 @@ function horseSell(client,message){
 					return;
 				}
 				else{
+					console.log('searching for user');
 					let noUser = true;
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == seller){
+							console.log('seller found');
 							let noBuy = true;
 							if(!data.users[i].hasOwnProperty("horses")){
 								message.channel.send('You dont own any horses!');
 								return;
 							}
+							console.log('searching for buyer')
 							for(let j=0;j<data.users.length;j++){
 								if(data.users[j].id == buyer){
 									console.log('horse buyer found');
