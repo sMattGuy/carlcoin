@@ -233,7 +233,7 @@ client.on('message', message => {
 	}
 	//purchase horse
 	else if(message.content === '!cc horsePurchase'){
-		horse.purchaseHorse();
+		horse.purchaseHorse(client,message);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
