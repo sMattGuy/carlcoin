@@ -9,7 +9,7 @@ const firstPartName = ['Special','Silence','Tokai','Air','Condor','Oguri','Grass
 const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wonder','Ship','Rudolf','Shuttle','Scarlet','Opera','Brian','Amazon','Kiseki','Maruzensky','McQueen','Sky','Bijin','Ticket','Cross','Pearl','Cafe','Jordan','Urara','Princess','Ryan','Matikanefukukitaru','Motion','Falcon','Taishin','Shakur','City','Creek','One','Flower','Pegasus','Akebono','Memory','Sunday','Bourbon','Tosho','Fujin','Hayahide','Bakushin','Windy','Tachyon','Rob Roy','Doto','Shower','Vega','Chan','Digital','Flash','Festa','Top Gun','Dober','Nature','Halo','Tannhauser','Dictus','Helios','Turbo'];
 
 //horse value definition
-const horsePrice = 0;
+const horsePrice = 750;
 
 function createHorse(){
 	//metaphorical stats
@@ -52,7 +52,6 @@ function purchaseHorse(client,message){
 					.setColor('#F7931A')
 					.setTitle(`${newHorse.name}'s stats`)
 					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
-					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Stamina', value: `${newHorse.stamina}`, inline: true },
 						{ name: 'Speed', value: `${newHorse.speed}`, inline: true },
@@ -91,6 +90,10 @@ function horseHelp(client,message){
 	
 }
 
+function horseDeath(client,message){
+	
+}
+
 //export functions
 module.exports = {
 	createHorse,
@@ -98,5 +101,6 @@ module.exports = {
 	raceHorse,
 	trainHorse,
 	breedHorse,
-	horseHelp
+	horseHelp,
+	horseDeath
 };
