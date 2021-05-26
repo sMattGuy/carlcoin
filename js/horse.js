@@ -29,7 +29,7 @@ function purchaseHorse(client,message){
 				else{
 					data.users[i].horses.push(newHorse);
 				}
-				const playercardEmbed = makeHorseEmbed(newHorse,data,message)
+				const playercardEmbed = makeHorseEmbed(newHorse,data.users[i].name,message)
 				message.channel.send(playercardEmbed);
 				message.channel.send(`You have purchased ${newHorse.name}!`);
 				data.users[i].balance -= horsePrice;
@@ -121,7 +121,7 @@ function horseStats(client,message){
 					}
 					else{
 						let horse = data.users[i].horses[horseIndex];
-						const playercardEmbed = makeHorseEmbed(horse,data,message);
+						const playercardEmbed = makeHorseEmbed(horse,data.users[i].name,message);
 						message.channel.send(playercardEmbed);
 					}
 				}
@@ -139,11 +139,11 @@ function horseDeath(client,message){
 	
 }
 
-function makeHorseEmbed(newHorse,data,message){
+function makeHorseEmbed(newHorse,name,message){
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
 		.setTitle(`${newHorse.name}'s stats`)
-		.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+		.setAuthor(`${name}`, `${message.author.displayAvatarURL()}`)
 		.addFields(
 			{ name: 'Stamina', value: `${newHorse.stamina}`, inline: true },
 			{ name: 'Speed', value: `${newHorse.speed}`, inline: true },
