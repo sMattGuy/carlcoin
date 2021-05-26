@@ -194,17 +194,25 @@ function blackjackStart(client,message){
 								if(isNaN(data.users[i]["unstable"])){
 									data.users[i]["unstable"] = 0;
 								}
+								let playersValue = cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13];
+								if(playersValue == 22){
+									playersValue = 11;
+								}
+								let dealersValue = cardValue[dealerCards.dealerCards[0]%13]+cardValue[dealerCards.dealerCards[1]%13];
+								if(dealersValue == 22){
+									dealersValue = 11;
+								}
 								if(data.users[i]["unstable"] >= 100){
 									let resultsOfGame = `Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`;
 									drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,true,false,cardValue[playerCards.playerCards[0]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
 								}
 								else if(intChanceSuccess){
 									let resultsOfGame = `Your INT helps you count the cards... You're sure the dealer has this hand\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
-									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13]+cardValue[dealerCards.dealerCards[1]%13],message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
+									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,playersValue,message.author.username,dealersValue,message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
 								}
 								else{
 									let resultsOfGame = `${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},??.`;
-									drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13],message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
+									drawBoard(message.channel, true, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,false,playersValue,message.author.username,cardValue[dealerCards.dealerCards[0]%13],message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
 								}
 							}
 							data.users[i]["activity"] = Date.now();

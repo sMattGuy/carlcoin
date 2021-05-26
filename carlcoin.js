@@ -30,6 +30,8 @@ const rob = require('./js/robbery.js');
 const RPS = require('./js/rockpaperscissors.js');
 const slots = require('./js/slotmachine.js');
 const help = require('./js/help.js');
+const horse = require('./js/horse.js');
+
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
@@ -228,6 +230,9 @@ client.on('message', message => {
 	//user help
 	else if(message.content === '!cc userHelp'){
 		help.userHelp(client,message);
+	}
+	else if(message.content === '!cc horseTest'){
+		horse.createHorse();
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
