@@ -131,9 +131,9 @@ function horseSell(client,message){
 						noUser = false;
 						break;
 					}
-				}
-				if(noUser){
-					message.channel.send('You are not registered for CC!');
+					if(noUser){
+						message.channel.send('You are not registered for CC!');
+					}
 				}
 			}
 		}
