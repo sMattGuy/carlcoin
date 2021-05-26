@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const 
 
 function dailyEvents(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -99,6 +100,27 @@ function dailyEvents(client,message){
 		}
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 	}
+	//horse handler
+	database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	data = JSON.parse(database);
+	let today = new Date();
+	for(let i=0;i<data.users.length;i++){
+		if(!data.users[i].hasOwnProperty("horses")){
+			data.users[i].horses = [];
+		}
+		for(int j=0;j<data.users[i].horses.length;j++){
+			if(data.users[i].horses[j].age > 10){
+				console.log(data.users[i].horses[j].name + ' has died of old age');
+				data.users[i].horses.splice(j,1);
+			}
+			else if(data.users[i].horses[j].birthday == today.getDate()){
+				data.users[i].horses[j].age++;
+				console.log(data.users[i].horses[j].name + ' is now ' + data.users[i].horses[j].age);
+			}
+		}
+	}
+	newData = JSON.stringify(data);
+	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 }
 
 //export functions

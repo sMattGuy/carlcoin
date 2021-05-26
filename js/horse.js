@@ -9,7 +9,7 @@ const firstPartName = ['Special','Silence','Tokai','Air','Condor','Oguri','Grass
 const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wonder','Ship','Rudolf','Shuttle','Scarlet','Opera','Brian','Amazon','Kiseki','Maruzensky','McQueen','Sky','Bijin','Ticket','Cross','Pearl','Cafe','Jordan','Urara','Princess','Ryan','Matikanefukukitaru','Motion','Falcon','Taishin','Shakur','City','Creek','One','Flower','Pegasus','Akebono','Memory','Sunday','Bourbon','Tosho','Fujin','Hayahide','Bakushin','Windy','Tachyon','Rob Roy','Doto','Shower','Vega','Chan','Digital','Flash','Festa','Top Gun','Dober','Nature','Halo','Tannhauser','Dictus','Helios','Turbo'];
 
 //horse value definition
-const horsePrice = 0;
+const horsePrice = 750;
 
 function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -141,14 +141,6 @@ function horseHelp(client,message){
 	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace to enroll your horse in a race!\nUse !cc horseTrain to improve your horse's stats!\nUse !cc horseSell to sell your horse!\nUse !cc horseBreed to breed two of your horses!\nUse !cc horseList to see your horses!\nUse !cc horseStats to get a specific horses stats!`);
 }
 
-function horseDeath(client,message){
-	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	let data = JSON.parse(database);
-	for(let i=0;i<data.users.length;i++){
-		
-	}
-}
-
 function makeHorseEmbed(newHorse,name,message){
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
@@ -164,6 +156,7 @@ function makeHorseEmbed(newHorse,name,message){
 			{ name: 'Age', value: `${newHorse.age}`, inline: true },
 			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
 			{ name: 'Special', value: `${newHorse.special}`, inline: true },
+			{ name: 'Timeline', value: `${newHorse.timeline}`},
 		)
 	return playercardEmbed;
 }
@@ -182,7 +175,7 @@ function createHorse(){
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
 	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"isBirthday":"true","birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
+	let newHorse = {"name":`${name}`,"stamina":`${stamina}`,"speed":`${speed}`,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
 	console.log(newHorse);
 	return newHorse;
 }
@@ -195,7 +188,6 @@ module.exports = {
 	//breedHorse,
 	//horseSell,
 	horseHelp,
-	//horseDeath,
 	horseStats,
 	horseList
 };
