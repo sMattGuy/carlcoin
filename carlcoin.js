@@ -260,7 +260,7 @@ client.on('message', message => {
 		horse.trainHorse(client,message);
 	}
 	//horse breed
-	else if(message.channel.startsWith('!cc horseBreed')){
+	else if(message.content.startsWith('!cc horseBreed')){
 		horse.breedHorse(client,message);
 	}
 	//race
