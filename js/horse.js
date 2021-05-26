@@ -130,7 +130,7 @@ function actualRace(client,message){
 		for(let i=0;i<raceFile.racers.length;i++){
 			let id = raceFile.racers[i].id;
 			let horse = raceFile.racers[i].horse;
-			let currentHorse = {"id":`${id}`,"horse":`${horse}`};
+			let currentHorse = {"id":`${id}`,"horse":horse};
 			horses.push(currentHorse);
 		}
 		if(horses.length < 10){
