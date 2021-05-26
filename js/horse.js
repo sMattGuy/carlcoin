@@ -67,7 +67,7 @@ function horseList(client,message){
 			if(isNaN(data.users[i].horses)){
 				data.users[i].horses = [];
 			}
-			if(data.users[i].horses.length == 0){
+			if(data.users[i].horses.length < 0){
 				message.channel.send(`You do not own any horses!`);
 			}
 			else{
@@ -108,6 +108,9 @@ function horseStats(client,message){
 		if(horseIndex < 0){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
 				if(isNaN(data.users[i].horses)){
