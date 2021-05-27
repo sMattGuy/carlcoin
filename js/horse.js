@@ -724,6 +724,13 @@ function horseHelp(client,message){
 }
 
 function makeHorseEmbed(newHorse,name,message){
+	let trainCD = 'Training available';
+	if(newHorse.trainingCooldown > Date.now()){
+		let timeLeftClaim = newHorse.trainingCooldown - Date.now();
+		timeLeftClaim = Math.floor(timeLeftClaim / 1000);
+		timeLeftClaim = Math.floor(timeLeftClaim / 60);
+		trainCD = `${timeLeftClaim} mins until ready`;
+	}
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
 		.setTitle(`${newHorse.name}'s stats`)
@@ -738,6 +745,7 @@ function makeHorseEmbed(newHorse,name,message){
 			{ name: 'Age', value: `${newHorse.age}`, inline: true },
 			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
 			{ name: 'Special', value: `${newHorse.special}`, inline: true },
+			{ name: 'Training CD', value: `${trainCD}`, inline: true },
 			{ name: 'Timeline', value: `${newHorse.timeline}`},
 		)
 	return playercardEmbed;
@@ -757,7 +765,7 @@ function createHorse(){
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
 	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
+	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"timeline":"Parents:Unknown"};
 	console.log(newHorse);
 	return newHorse;
 }
