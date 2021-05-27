@@ -359,7 +359,7 @@ function trainHorse(client,message){
 			message.channel.send(`Invalid index supplied`);
 			return;
 		}
-		if(horseIndex < 0){
+		if(horseIndex < 0 || isNaN(horseIndex)){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
