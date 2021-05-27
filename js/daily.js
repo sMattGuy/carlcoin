@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const horse = require('horse.js');
+const horse = require('./horse.js');
 
 function dailyEvents(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
