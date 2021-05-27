@@ -727,7 +727,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
