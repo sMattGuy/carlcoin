@@ -16,10 +16,17 @@ function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	let id = message.author.id;
+	let cost = horsePrice;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
-			if(data.users[i].balance < horsePrice){
-				message.channel.send(`You do not have enough CC! (Costs 750CC)`);
+			if(!data.users[i].hasOwnProperty("horses")){
+				cost = 100;
+			}
+			else if(data.users[i].horses.length == 0){
+				cost = 100;
+			}
+			if(data.users[i].balance < cost){
+				message.channel.send(`You do not have enough CC! (Costs ${cost}CC)`);
 				return;
 			}
 			else{
@@ -33,8 +40,8 @@ function purchaseHorse(client,message){
 				const playercardEmbed = makeHorseEmbed(newHorse,data.users[i].name,message)
 				message.channel.send(playercardEmbed);
 				message.channel.send(`You have purchased ${newHorse.name}!`);
-				data.users[i].balance -= horsePrice;
-				data.econ -=  horsePrice;
+				data.users[i].balance -= cost;
+				data.econ -=  cost;
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			}
