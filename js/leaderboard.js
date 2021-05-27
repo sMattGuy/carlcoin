@@ -27,7 +27,7 @@ function checkLeaderboard(client,message){
 		}
 	}
 	userArray.sort(function (a,b){
-		return (b.balance + b.assets) - (a.balance + a.assets);
+		return (parseInt(b.balance) + parseInt(b.assets)) - (parseInt(a.balance) + parseInt(a.assets));
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
