@@ -23,7 +23,7 @@ function purchaseHorse(client,message){
 			}
 			else{
 				let newHorse = createHorse();
-				if(isNaN(data.users[i].horses)){
+				if(!data.users[i].hasOwnProperty("horses")){
 					data.users[i].horses = [newHorse];
 				}
 				else{
