@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const horse = require('./js/horse.js');
 
 function dailyEvents(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -99,6 +100,8 @@ function dailyEvents(client,message){
 		}
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
 	}
+	//horse race
+	horse.actualRace(client,message);
 	//horse handler
 	database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	data = JSON.parse(database);
