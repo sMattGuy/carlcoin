@@ -64,7 +64,7 @@ function raceHorse(client,message){
 			message.channel.send(`Invalid index supplied`);
 			return;
 		}
-		if(horseIndex < 0){
+		if(horseIndex < 0 || isNaN(horseIndex)){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -442,6 +442,10 @@ function breedHorse(client,message){
 			message.channel.send(`Index cannot be negative!`);
 			return;
 		}
+		else if(isNaN(horseIndex1) || isNaN(horseIndex2)){
+			message.channel.send(`Invalid Index!`);
+			return;
+		}
 		else{
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
@@ -545,7 +549,7 @@ function horseSell(client,message){
 									console.log('horse buyer found');
 									let horseIndex = parseInt(chop[chop.length-2]);
 									//check if house
-									if(horseIndex < 0 || horseIndex >= data.users[i].horses.length){
+									if(horseIndex < 0 || horseIndex >= data.users[i].horses.length || isNaN(horseIndex)){
 										message.channel.send('Invalid horse selected!');
 										return;
 									}
@@ -677,7 +681,7 @@ function horseStats(client,message){
 			message.channel.send(`Invalid index supplied`);
 			return;
 		}
-		if(horseIndex < 0){
+		if(horseIndex < 0 || isNaN(horseIndex)){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
