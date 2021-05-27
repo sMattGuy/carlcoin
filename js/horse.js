@@ -426,7 +426,9 @@ function breedHorse(client,message){
 	}
 	else{
 		let horseIndex1 = 0;
+		let horseID1 = 0;
 		let horseIndex2 = 0;
+		let horseID2 = 0;
 		try{
 			horseIndex1 = parseInt(chop[chop.length-2]);
 			horseIndex2 = parseInt(chop[chop.length-1]);
@@ -469,10 +471,12 @@ function breedHorse(client,message){
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
 						newHorse.timeline = `${data.users[i].horses[horseIndex1].timeline}->${data.users[i].horses[horseIndex1].name}\n${data.users[i].horses[horseIndex2].timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
-						let name = data.users[i].horses[horseIndex2].name;
+						horseID1 = data.users[i].horses[horseIndex1].id;
+						horseID2 = data.users[i].horses[horseIndex2].id;
+						
 						data.users[i].horses.splice(horseIndex1,1);
 						for(let j=0;j<data.users[i].horses.length;j++){
-							if(name == data.users[i].horses[j].name){
+							if(horseID2 == data.users[i].horses[j].id){
 								horseIndex2 = j;
 								break;
 							}
@@ -752,7 +756,7 @@ function createHorse(){
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
 	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
+	let newHorse = {"id":`${Date.now()}`"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"raceCooldown":0,"timeline":"Parents:Unknown"};
 	console.log(newHorse);
 	return newHorse;
 }
