@@ -140,8 +140,8 @@ function actualRace(client,message){
 			let i = 10-horses.length;
 			for(i;i!=0;i--){
 				let AIHorse = createHorse();
-				total += 10;
-				data.econ += 10;
+				total += 100;
+				data.econ += 100;
 				let owner = `AI${i}`;
 				let airacer = {"id":`${owner}`,"horse":AIHorse};
 				horses.push(airacer);
@@ -301,27 +301,28 @@ function actualRace(client,message){
 		total -= firstWinnings;
 		let secondWinnings = Math.floor(total / 2);
 		total -= secondWinnings;
-		let thirdWinnings = Math.floor(total / 2);
-		total -= thirdWinnings;
-		data.econ -= total;
+		let thirdWinnings = total;
 
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
 				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
+				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
 				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
+				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
 				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
+				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!`;
 				data.econ += winnings;
 			}
 		}
