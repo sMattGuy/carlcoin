@@ -267,6 +267,9 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseRace')){
 		horse.raceHorse(client,message);
 	}
+	else if(message.content === 'summon me a horse'){
+		horse.createHorse();
+	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
