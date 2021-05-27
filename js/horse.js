@@ -10,6 +10,7 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 
 //horse value definition
 const horsePrice = 750;
+const racerNeededSize = 5;
 
 function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -136,8 +137,8 @@ function actualRace(client,message){
 			let currentHorse = {"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
 			horses.push(currentHorse);
 		}
-		if(horses.length < 10){
-			let i = 10-horses.length;
+		if(horses.length < racerNeededSize){
+			let i = racerNeededSize - horses.length;
 			for(i;i!=0;i--){
 				let AIHorse = createHorse();
 				total += 100;
