@@ -91,6 +91,7 @@ function raceHorse(client,message){
 					let horse = data.users[i].horses[horseIndex];
 					let userID = data.users[i].id;
 					let total = bet;
+					data.users[i].balance -= bet;
 					let userPacket = {"id":`${userID}`,"horse":horse,"bet":`${bet}`};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
@@ -121,6 +122,8 @@ function raceHorse(client,message){
 }
 
 function actualRace(client,message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
 	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 		let raceFile = JSON.parse(raceRead);
@@ -130,7 +133,7 @@ function actualRace(client,message){
 		for(let i=0;i<raceFile.racers.length;i++){
 			let id = raceFile.racers[i].id;
 			let horse = raceFile.racers[i].horse;
-			let currentHorse = {"id":`${id}`,"horse":horse};
+			let currentHorse = {"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
 			horses.push(currentHorse);
 		}
 		if(horses.length < 10){
@@ -138,6 +141,7 @@ function actualRace(client,message){
 			for(i;i!=0;i--){
 				let AIHorse = createHorse();
 				total += 10;
+				data.econ += 10;
 				let owner = `AI${i}`;
 				let airacer = {"id":`${owner}`,"horse":AIHorse};
 				horses.push(airacer);
@@ -275,9 +279,53 @@ function actualRace(client,message){
 			}
 		}
 		raceEvents += `The Race is over, Here are the results:\n`;
+		let firstPlace = {};
+		let secondPlace = {};
+		let thirdPlace = {};
 		for(let i=0;i<racePos.length;i++){
 			raceEvents += `${i + 1}. ${horses[racePos[i]].horse.name}\n`;
+			if(i == 0){
+				firstPlace = horses[racePos[i]];
+			}
+			else if(i == 1){
+				secondPlace = horses[racePos[i]];
+			}
+			else if(i == 2){
+				thirdPlace = horses[racePos[i]];
+			}
 		}
+		
+		let originalTotal = total;
+		
+		let firstWinnings = Math.floor(total / 2);
+		total -= firstWinnings;
+		let secondWinnings = Math.floor(total / 2);
+		total -= secondWinnings;
+		let thirdWinnings = Math.floor(total / 2);
+		total -= thirdWinnings;
+		data.econ -= total;
+
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == firstPlace.id){
+				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal));
+				data.users[i].balance +=  winnings;
+				console.log('First place ' + winnings);
+				data.econ += winnings;
+			}
+			else if(data.users[i].id == secondPlace.id){
+				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal));
+				data.users[i].balance +=  winnings;
+				console.log('Second place ' + winnings);
+				data.econ += winnings;
+			}
+			else if(data.users[i].id == thirdPlace.id){
+				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal));
+				data.users[i].balance +=  winnings;
+				console.log('Third place ' + winnings);
+				data.econ += winnings;
+			}
+		}
+		
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 	}

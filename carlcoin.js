@@ -267,9 +267,35 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseRace')){
 		horse.raceHorse(client,message);
 	}
+	//debug tests
 	else if(message.content === 'test the races'){
 		horse.actualRace(client,message);
 		message.channel.send('results of race',{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
+	}
+	else if(message.content === 'test the dying'){
+		//horse handler
+		database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		data = JSON.parse(database);
+		let today = new Date();
+		for(let i=0;i<data.users.length;i++){
+			if(!data.users[i].hasOwnProperty("horses")){
+				data.users[i].horses = [];
+			}
+			else{
+				for(let j=0;j<data.users[i].horses.length;j++){
+					if(data.users[i].horses[j].age > 10){
+						console.log(data.users[i].horses[j].name + ' has died of old age');
+						data.users[i].horses.splice(j,1);
+					}
+					else if(data.users[i].horses[j].birthday == today.getDate()){
+						data.users[i].horses[j].age++;
+						console.log(data.users[i].horses[j].name + ' is now ' + data.users[i].horses[j].age);
+					}
+				}
+			}
+		}
+		newData = JSON.stringify(data);
+		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
