@@ -230,7 +230,7 @@ function actualRace(client,message){
 				else if(horses[racePos[newPos]].horse.special == 'Slipstream' && specialChance >= 0.85){
 					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horseInFront = {"id":"noPerson"};
-					if(newPos - 1 > 0){
+					if(newPos != 0){
 						horseInFront = horses[racePos[newPos-1]];
 					}
 					if(horseInFront.id != 'noPerson'){
@@ -273,6 +273,10 @@ function actualRace(client,message){
 					}
 				}
 			}
+		}
+		raceEvents += `The Race is over, Here are the results:\n`;
+		for(let i=0;i<racePos.length;i++){
+			raceEvents += `${i + 1}. ${horses[racePos[i]].name}`;
 		}
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
