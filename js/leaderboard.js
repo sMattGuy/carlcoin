@@ -31,7 +31,7 @@ function checkLeaderboard(client,message){
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
-		messageBox += `${i+1}. ${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets})\n`;
+		messageBox += `${i+1}. ${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
 	}
 	message.channel.send(`Leaderboard of Carl Coin\n${messageBox}`,{"code":true});
 }
