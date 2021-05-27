@@ -276,7 +276,7 @@ function actualRace(client,message){
 		}
 		raceEvents += `The Race is over, Here are the results:\n`;
 		for(let i=0;i<racePos.length;i++){
-			raceEvents += `${i + 1}. ${horses[racePos[i]].name}`;
+			raceEvents += `${i + 1}. ${horses[racePos[i]].horse.name}\n`;
 		}
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
