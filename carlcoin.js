@@ -294,7 +294,7 @@ client.on('message', message => {
 				}
 			}
 		}
-		newData = JSON.stringify(data);
+		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	}
 	//caps lock
