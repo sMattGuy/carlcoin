@@ -301,14 +301,14 @@ function blackjackHit(client,message){
 						resultsOfGame += `${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 					}
 					//instability counter
-					data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+					data.users[blackjackParse.challIndex]["unstable"] += blackjackParse.wager;
 					if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-						data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+						data.users[blackjackParse.challIndex]["unstable"] = blackjackParse.wager;
 					}
 					if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
 						data.users[blackjackParse.challIndex]["suicide"] = 1;
 					}
-					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
+					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - blackjackParse.wager < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 0;
 						resultsOfGame += `You are starting to feel irrational.\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
@@ -527,14 +527,14 @@ function blackjackStand(client,message){
 							resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 						}
 						//instability counter
-						data.users[blackjackParse.challIndex]["unstable"] += Math.floor(blackjackParse.wager * 2);
+						data.users[blackjackParse.challIndex]["unstable"] += blackjackParse.wager;
 						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-							data.users[blackjackParse.challIndex]["unstable"] = Math.floor(blackjackParse.wager * 2);
+							data.users[blackjackParse.challIndex]["unstable"] = blackjackParse.wager;
 						}
 						if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
 							data.users[blackjackParse.challIndex]["suicide"] = 1;
 						}
-						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - Math.floor(blackjackParse.wager * 2) < 100){
+						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - blackjackParse.wager < 100){
 							data.users[blackjackParse.challIndex]["suicide"] = 0;
 							resultsOfGame += `You are starting to feel irrational.\n`;
 							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");

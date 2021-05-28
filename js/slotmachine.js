@@ -440,14 +440,14 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
-			data.users[i]["unstable"] += Math.floor(wager * wagerMulti);
+			data.users[i]["unstable"] += wager;
 			if(isNaN(data.users[i]["unstable"])){
-				data.users[i]["unstable"] = Math.floor(wager * wagerMulti);
+				data.users[i]["unstable"] = wager;
 			}
 			if(isNaN(data.users[i]["suicide"])){
 				data.users[i]["suicide"] = 1;
 			}
-			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
+			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
 				data.users[i]["suicide"] = 0;
 				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
@@ -529,14 +529,14 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
-			data.users[i]["unstable"] += Math.floor(wager * wagerMulti);
+			data.users[i]["unstable"] += wager;
 			if(isNaN(data.users[i]["unstable"])){
-				data.users[i]["unstable"] = Math.floor(wager * wagerMulti);
+				data.users[i]["unstable"] = wager;
 			}
 			if(isNaN(data.users[i]["suicide"])){
 				data.users[i]["suicide"] = 1;
 			}
-			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
+			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
 				data.users[i]["suicide"] = 0;
 				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
@@ -618,14 +618,14 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
-			data.users[i]["unstable"] += Math.floor(wager * wagerMulti);
+			data.users[i]["unstable"] += wager;
 			if(isNaN(data.users[i]["unstable"])){
-				data.users[i]["unstable"] = Math.floor(wager * wagerMulti);
+				data.users[i]["unstable"] = wager;
 			}
 			if(isNaN(data.users[i]["suicide"])){
 				data.users[i]["suicide"] = 1;
 			}
-			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
+			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
 				data.users[i]["suicide"] = 0;
 				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
@@ -642,14 +642,14 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		if(isNaN(data.users[i]["unstable"])){
 			data.users[i]["unstable"] = 0;
 		}
-		data.users[i]["unstable"] += Math.floor(wager * wagerMulti);
+		data.users[i]["unstable"] += wager;
 		if(isNaN(data.users[i]["unstable"])){
-			data.users[i]["unstable"] = Math.floor(wager * wagerMulti);
+			data.users[i]["unstable"] = wager;
 		}
 		if(isNaN(data.users[i]["suicide"])){
 			data.users[i]["suicide"] = 1;
 		}
-		if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
+		if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - wager < 100){
 			data.users[i]["suicide"] = 0;
 			gameMessage += `\nYou are starting to feel irrational.`;
 			console.log(data.users[i].name + " has become irrational");
