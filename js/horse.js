@@ -1151,5 +1151,6 @@ module.exports = {
 	horseList,
 	actualRace,
 	createHorse,
-	nameHorse
+	nameHorse,
+	testRace
 };
