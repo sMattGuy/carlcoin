@@ -149,7 +149,26 @@ function purchaseItem(client,message){
 }
 
 function purchaseList(client,message){
-	message.channel.send(`Purchase List:\n1. house (100CC + 50CC per home owned) pays 10 daily\n2. apartment (250CC + 125CC per apartment owned) pays 25 daily\n3. skyscraper (500CC + 250CC per skyscraper owned) pays 50 daily\n4. office (200CC) doubles work output`);
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	for(let i=0;i<data.users.length;i++){
+		if(data.users[i].id == message.author.id){
+			if(isNaN(data.users[i]["house"])){
+				data.users[i]["house"] = 0;
+			}
+			let housePrice = (data.users[i].house * 50) + 100;
+			if(isNaN(data.users[i]["apartment"])){
+				data.users[i]["apartment"] = 0;
+			}
+			let apartmentPrice = (data.users[i].apartment * 125) + 250;
+			if(isNaN(data.users[i]["skyscraper"])){
+				data.users[i]["skyscraper"] = 0;
+			}
+			let skyscraperPrice = (data.users[i].skyscraper * 250) + 500;
+			message.channel.send(`Purchase List:\n1. house ${housePrice}CC pays 10 daily\n2. apartment ${apartmentPrice}CC pays 25 daily\n3. skyscraper ${skyscraperPrice}CC pays 50 daily\n4. office (200CC) doubles work output`);
+			return;
+		}
+	}
 }
 
 //export functions

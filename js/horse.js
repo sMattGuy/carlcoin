@@ -12,6 +12,59 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 const horsePrice = 750;
 const racerNeededSize = 5;
 
+function nameHorse(client, message){
+	let chop = message.content.split(" ");
+	//if too many arguments
+	if(chop.length < 4){
+		message.channel.send(`Usage: !cc horseName <index> new name for the horse you selected`);
+	}
+	else{
+		let horseIndex = 0;
+		try{
+			horseIndex = parseInt(chop[chop.length-(chop.length - 2)]);
+		}
+		//if username cannot be gotten
+		catch(err){
+			message.channel.send(`Invalid index supplied`);
+			return;
+		}
+		if(horseIndex < 0 || isNaN(horseIndex)){
+			message.channel.send(`Horse selection cannot be negative!`);
+		}
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i].id == id){
+				if(!data.users[i].hasOwnProperty("horses")){
+					data.users[i].horses = [];
+				}
+				if(data.users[i].horses.length == 0){
+					message.channel.send(`You do not own any horses!`);
+					return;
+				}
+				else{
+					if(horseIndex >= data.users[i].horses.length){
+						message.channel.send(`Invalid horse selected! Use !cc horseList to see your horses!`);
+						return;
+					}
+					else{
+						let newName = '';
+						for(let nameBuild = chop.length - (chop.length - 3); nameBuild < chop.length; nameBuild++){
+							newName += `${chop[nameBuild]} `;
+						}
+						let oldName = data.users[i].horses[horseIndex].name;
+						data.users[i].horses[horseIndex].name = newName;
+						message.channel.send(`${oldName} has been renamed to ${newName}!`);
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					}
+				}
+				return;
+			}
+		}
+	}
+}
 function purchaseHorse(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
