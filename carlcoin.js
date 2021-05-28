@@ -279,9 +279,6 @@ client.on('message', message => {
 	else if(message.content === '!cc summonGaintCoin' && message.author.id == 492850107038040095){
 		admin.summonGaintCoin(client,message);
 	}
-	else if(message.content === '!cc triggerTestRace' && message.author.id == 492850107038040095){
-		horse.testRace(client,message);
-	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
