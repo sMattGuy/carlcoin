@@ -312,34 +312,37 @@ function actualRace(client,message){
 		let secondWinnings = Math.floor(total / 2);
 		total -= secondWinnings;
 		let thirdWinnings = total;
-
+		let victory = '';
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
-				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal));
+				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal))+firstPlace.bet;
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
 				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
+				victory += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
-				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal));
+				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal))+secondPlace.bet;
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
 				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
+				victory += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
-				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal));
+				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal))+thirdPlace.bet;
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
 				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
+				victory += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 		}
 		
 		client.guilds.cache.forEach((guild) => {
 			try{
-				guild.channels.cache.find((x) => x.name == 'general').send(`Here are today's horse race results`,{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
+				guild.channels.cache.find((x) => x.name == 'general').send(`Here are today's horse race results\n${victory}`,{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
 			}
 			catch(err){
 				console.log("no general chat in "+guild.name);
