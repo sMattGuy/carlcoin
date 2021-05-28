@@ -54,43 +54,43 @@ function playSlots(client,message){
 					console.log(reel1 + " " + reel2 + " " + reel3);
 					//carl win
 					if(reel1%10 == 9 || reel2%10 == 9 || reel3%10 == 9){
-						gameMessage = getInstantWinResults(reel1, reel2, reel3, wager, 9, data, client, message, 9);
+						gameMessage = getInstantWinResults(reel1, reel2, reel3, wager, 9, data, client, message, 9, i);
 					}
 					//7 win
 					else if(reel1%10 == 8 || reel2%10 == 8 || reel3%10 == 8){
-						gameMessage = getInstantWinResults(reel1, reel2, reel3, wager, 4, data, client, message, 8);
+						gameMessage = getInstantWinResults(reel1, reel2, reel3, wager, 4, data, client, message, 8, i);
 					}
 					//heart
 					else if(reel1%10 == 4){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 4, 5, 6, 7);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 4, 5, 6, 7, i);
 					}
 					//diamond
 					else if(reel1%10 == 5){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 5, 6, 7, 4);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 5, 6, 7, 4, i);
 					}
 					//club
 					else if(reel1%10 == 6){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 6, 7, 4, 5);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 6, 7, 4, 5, i);
 					}
 					//spade
 					else if(reel1%10 == 7){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 7, 4, 5, 6);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 4, data, client, message, 7, 4, 5, 6, i);
 					}
 					//cherry first
 					else if(reel1%10 == 0){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 0, 1, 2, 3);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 0, 1, 2, 3, i);
 					}
 					//grape
 					else if(reel1%10 == 1){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 1, 2, 3, 0);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 1, 2, 3, 0, i);
 					}
 					//watermelon
 					else if(reel1%10 == 2){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 2, 3, 0, 1);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 2, 3, 0, 1, i);
 					}
 					//apple
 					else if(reel1%10 == 3){
-						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 3, 0, 1, 2);
+						gameMessage = getSlotResults(reel1, reel2, reel3, wager, 2, data, client, message, 3, 0, 1, 2, i);
 					}
 					else{
 						gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
@@ -105,7 +105,7 @@ function playSlots(client,message){
 	}
 }
 
-function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, client, message, symbol1){
+function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, client, message, symbol1, i){
 	let gameMessage = '';
 	if(reel1%10 == symbol1){
 		if(reel2%10 == symbol1){
@@ -193,7 +193,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 	return gameMessage;
 }
 
-function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, message, symbol1, symbol2, symbol3, symbol4){
+function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, message, symbol1, symbol2, symbol3, symbol4, i){
 	if(reel2%10 == symbol1 && reel3%10 == symbol1){
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
