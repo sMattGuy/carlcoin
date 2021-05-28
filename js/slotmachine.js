@@ -110,22 +110,64 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 				data.blackjack -= wager * (wagerMulti * 3);
 				data.users[i].balance += wager * (wagerMulti * 3);
 				gameMessage = 'JACKPOT!!!!!!!!!!';
+				//cure insane
+				let insane = false;
+				if(data.users[i]["unstable"] >= 100){
+					insane = true;
+				}
+				data.users[i]["unstable"] -= Math.floor(wager * (wagerMulti * 3));
+				if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+					data.users[i]["unstable"] = 0;
+				}
+				if(insane && data.users[i]["unstable"] + Math.floor(wager * (wagerMulti * 3)) >= 100 && data.users[i]["unstable"] < 100){
+					data.users[i]["suicide"] = 1;
+					gameMessage += `\nYou come to your senses.`;
+					console.log(data.users[i].name + " has calmed down");
+				}
+				//level
+				if(isNaN(data.users[i]["dexExp"])){
+					data.users[i]["dexExp"] = 0;
+				}
+				if(isNaN(data.users[i]["DEX"])){
+					data.users[i]["DEX"] = 0;
+				}
 				data.users[i]["dexExp"] += wager * (wagerMulti * 3);
 				if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 					data.users[i]["dexExp"] = 0;
 					data.users[i]["DEX"] += 1;
-					message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+					gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 				}
 			}
 			else{
 				data.blackjack -= wager * (wagerMulti * 2);
 				data.users[i].balance += wager * (wagerMulti * 2);
 				gameMessage = 'A double! Very lucky win!';
+				//cure insane
+				let insane = false;
+				if(data.users[i]["unstable"] >= 100){
+					insane = true;
+				}
+				data.users[i]["unstable"] -= Math.floor(wager * (wagerMulti * 2));
+				if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+					data.users[i]["unstable"] = 0;
+				}
+				if(insane && data.users[i]["unstable"] + Math.floor(wager * (wagerMulti * 2)) >= 100 && data.users[i]["unstable"] < 100){
+					data.users[i]["suicide"] = 1;
+					gameMessage += `\nYou come to your senses.`;
+					console.log(data.users[i].name + " has calmed down");
+				}
+				//level
+				if(isNaN(data.users[i]["dexExp"])){
+					data.users[i]["dexExp"] = 0;
+				}
+				if(isNaN(data.users[i]["DEX"])){
+					data.users[i]["DEX"] = 0;
+				}
 				data.users[i]["dexExp"] += wager * (wagerMulti * 2);
 				if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 					data.users[i]["dexExp"] = 0;
 					data.users[i]["DEX"] += 1;
-					message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+					gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 				}
 			}
 		}
@@ -133,22 +175,64 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 			data.blackjack -= wager * (wagerMulti * 2);
 			data.users[i].balance += wager * (wagerMulti * 2);
 			gameMessage = 'A double! Very lucky win!';
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * (wagerMulti * 2));
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * (wagerMulti * 2)) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * (wagerMulti * 2);
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = 'A single! You win!';
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 	}
@@ -157,22 +241,64 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 			data.blackjack -= wager * (wagerMulti * 2);
 			data.users[i].balance += wager * (wagerMulti * 2);
 			gameMessage = 'A double! Very lucky win!';
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * (wagerMulti * 2));
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * (wagerMulti * 2)) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * (wagerMulti * 2);
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = 'A single! You win!';
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 	}
@@ -180,11 +306,32 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
 		gameMessage = 'A single! You win!';
+		//cure insane
+		let insane = false;
+		if(data.users[i]["unstable"] >= 100){
+			insane = true;
+		}
+		data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+		if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+			data.users[i]["unstable"] = 0;
+		}
+		if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+			data.users[i]["suicide"] = 1;
+			gameMessage += `\nYou come to your senses.`;
+			console.log(data.users[i].name + " has calmed down");
+		}
+		//level
+		if(isNaN(data.users[i]["dexExp"])){
+			data.users[i]["dexExp"] = 0;
+		}
+		if(isNaN(data.users[i]["DEX"])){
+			data.users[i]["DEX"] = 0;
+		}
 		data.users[i]["dexExp"] += wager * wagerMulti;
 		if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 			data.users[i]["dexExp"] = 0;
 			data.users[i]["DEX"] += 1;
-			message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+			gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 		}
 	}
 	return gameMessage;
@@ -195,34 +342,97 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
 		gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+		//cure insane
+		let insane = false;
+		if(data.users[i]["unstable"] >= 100){
+			insane = true;
+		}
+		data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+		if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+			data.users[i]["unstable"] = 0;
+		}
+		if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+			data.users[i]["suicide"] = 1;
+			gameMessage += `\nYou come to your senses.`;
+			console.log(data.users[i].name + " has calmed down");
+		}
+		//level
+		if(isNaN(data.users[i]["dexExp"])){
+			data.users[i]["dexExp"] = 0;
+		}
+		if(isNaN(data.users[i]["DEX"])){
+			data.users[i]["DEX"] = 0;
+		}
 		data.users[i]["dexExp"] += wager * wagerMulti;
-			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
-				data.users[i]["dexExp"] = 0;
-				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
-			}
+		if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
+			data.users[i]["dexExp"] = 0;
+			data.users[i]["DEX"] += 1;
+			gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
+		}
 	}
 	else if(reel2%10 == symbol2){
 		if(reel3%10 == symbol3){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else if(reel3%10 == symbol4){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else{
@@ -239,11 +449,11 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
 				data.users[i]["suicide"] = 0;
-				gameMessage += `You are starting to feel irrational.\n`;
+				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
 			}
 			if(data.users[i]["unstable"] > 250){
-				gameMessage += `You are completely unstable\n`;
+				gameMessage += `\nYou are completely unstable`;
 				console.log(data.users[i].name + " has become unstable");
 				data.users[i]["unstable"] = 250
 			}
@@ -254,22 +464,64 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`);
 			}
 		}
 		else if(reel3%10 == symbol4){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`);
 			}
 		}
 		else{
@@ -286,11 +538,11 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
 				data.users[i]["suicide"] = 0;
-				gameMessage += `You are starting to feel irrational.\n`;
+				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
 			}
 			if(data.users[i]["unstable"] > 250){
-				gameMessage += `You are completely unstable\n`;
+				gameMessage += `\nYou are completely unstable`;
 				console.log(data.users[i].name + " has become unstable");
 				data.users[i]["unstable"] = 250
 			}
@@ -301,22 +553,64 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else if(reel3%10 == symbol3){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
 			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			//cure insane
+			let insane = false;
+			if(data.users[i]["unstable"] >= 100){
+				insane = true;
+			}
+			data.users[i]["unstable"] -= Math.floor(wager * wagerMulti);
+			if(isNaN(data.users[i]["unstable"]) || data.users[i]["unstable"] < 0){
+				data.users[i]["unstable"] = 0;
+			}
+			if(insane && data.users[i]["unstable"] + Math.floor(wager * wagerMulti) >= 100 && data.users[i]["unstable"] < 100){
+				data.users[i]["suicide"] = 1;
+				gameMessage += `\nYou come to your senses.`;
+				console.log(data.users[i].name + " has calmed down");
+			}
+			//level
+			if(isNaN(data.users[i]["dexExp"])){
+				data.users[i]["dexExp"] = 0;
+			}
+			if(isNaN(data.users[i]["DEX"])){
+				data.users[i]["DEX"] = 0;
+			}
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				message.channel.send(`The thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else{
@@ -333,11 +627,11 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 			if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
 				data.users[i]["suicide"] = 0;
-				gameMessage += `You are starting to feel irrational.\n`;
+				gameMessage += `\nYou are starting to feel irrational.`;
 				console.log(data.users[i].name + " has become irrational");
 			}
 			if(data.users[i]["unstable"] > 250){
-				gameMessage += `You are completely unstable\n`;
+				gameMessage += `\nYou are completely unstable`;
 				console.log(data.users[i].name + " has become unstable");
 				data.users[i]["unstable"] = 250
 			}
@@ -357,11 +651,11 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		}
 		if(data.users[i]["unstable"] >= 100 && data.users[i]["unstable"] - Math.floor(wager * wagerMulti) < 100){
 			data.users[i]["suicide"] = 0;
-			gameMessage += `You are starting to feel irrational.\n`;
+			gameMessage += `\nYou are starting to feel irrational.`;
 			console.log(data.users[i].name + " has become irrational");
 		}
 		if(data.users[i]["unstable"] > 250){
-			gameMessage += `You are completely unstable\n`;
+			gameMessage += `\nYou are completely unstable`;
 			console.log(data.users[i].name + " has become unstable");
 			data.users[i]["unstable"] = 250
 		}
