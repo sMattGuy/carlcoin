@@ -329,7 +329,7 @@ function actualRace(client,message){
 						raceEvents += `${horses[racePos[newPos]].horse.name} is already in first!\n`;
 					}
 				}
-				else if(horses[racePos[newPos]].horse.specialAbility == 'Vicious' && specialChance >= 0.90){
+				else if(horses[racePos[newPos]].horse.special == 'Vicious' && specialChance >= 0.90){
 					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
 					horseBehind = {"id":"noPerson"};
 					if(newPos + 1 < racePos.length){
@@ -383,7 +383,7 @@ function actualRace(client,message){
 		let victory = '';
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
-				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal))+firstPlace.bet;
+				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal))+parseInt(firstPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
 				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
@@ -391,7 +391,7 @@ function actualRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
-				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal))+secondPlace.bet;
+				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal))+parseInt(secondPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
 				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
@@ -399,7 +399,7 @@ function actualRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
-				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal))+thirdPlace.bet;
+				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal))+parseInt(thirdPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
 				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
@@ -906,238 +906,6 @@ function getUserFromMention(client,mention) {
 	}
 }
 
-function testRace(client,message){
-	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	let data = JSON.parse(database);
-	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
-		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
-		let raceFile = JSON.parse(raceRead);
-		let total = raceFile.total;
-		let horses = [];
-		let raceEvents = "";
-		for(let i=0;i<raceFile.racers.length;i++){
-			let id = raceFile.racers[i].id;
-			for(let userFinder = 0;userFinder < data.users.length;userFinder++){
-				if(data.users[userFinder].id == id){
-					let horseFound = false;
-					for(let horseFinder = 0; horseFinder < data.users[userFinder].horses.length; horseFinder++){
-						if(data.users[userFinder].horses[horseFinder].id == raceFile.racers[i].horse){
-							horseFound = true;
-							let horse = data.users[userFinder].horses[horseFinder];
-							let name = raceFile.racers[i].name;
-							let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
-							horses.push(currentHorse);
-						}
-						break;
-					}
-					if(!horseFound){
-						raceEvents += `${raceFile.racers[i].name}'s horse could not be found!\n`;
-					}
-					break;
-				}
-			}
-		}
-		if(horses.length < racerNeededSize){
-			let i = racerNeededSize - horses.length;
-			for(i;i!=0;i--){
-				let AIHorse = createHorse();
-				total += 100;
-				let owner = `AI${i}`;
-				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse};
-				horses.push(airacer);
-			}
-		}
-		let racePos = [];
-		for(let i=0;i<horses.length;i++){
-			//pushes horseID onto race position
-			console.log(i + '. ' + horses[i].horse.name);
-			racePos.push(i);
-		}
-		raceEvents += `Welcome to todays race of ${horses.length} horses\n`;
-		for(let raceSize=100;raceSize!=0;raceSize--){
-			raceEvents += `Current standings:\n`;
-			for(let places = 0;places < racePos.length;places++){
-				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} owned by ${horses[racePos[places]].name}\n`;
-			}
-			raceEvents += `SPRINTS LEFT: ${raceSize}\n`;
-			//each frame will go through every horses decision
-			for(let frame = 0;frame<horses.length;frame++){
-				let pos = 0;
-				let newPos = 0;
-				let horseBehind = {"id":"noPerson"};
-				let horseInFront = {"id":"noPerson"};
-				//get horses position
-				for(pos;pos < racePos.length;pos++){
-					if(racePos[pos] == frame){
-						break;
-					}
-				}
-				//get horse behinds info
-				if(pos != 0){
-					horseInFront = horses[racePos[pos-1]];
-				}
-				//get horse infront
-				if(pos != racePos.length - 1){
-					horseBehind = horses[racePos[pos+1]];
-				}
-				if(horseInFront.id != 'noPerson'){
-					if(horses[racePos[pos]].horse.speed > horseInFront.horse.speed){
-						//current horse
-						let overtakerHorse = racePos[pos];
-						//horse being overtaken
-						racePos[pos] = racePos[pos-1];
-						//changing who's in front
-						racePos[pos-1] = overtakerHorse;
-						newPos = pos-1;
-						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
-					}
-					else if(horses[racePos[pos]].horse.speed == horseInFront.horse.speed){
-						let passChance = Math.random();
-						if(passChance > 0.5){
-							//current horse
-							let overtakerHorse = racePos[pos];
-							//horse being overtaken
-							racePos[pos] = racePos[pos-1];
-							//changing who's in front
-							racePos[pos-1] = overtakerHorse;
-							newPos = pos-1;
-							raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
-						}
-						else{
-							raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
-							newPos = pos;
-						}
-					}
-					else{
-						raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
-						newPos = pos;
-					}
-				}
-				else{
-					raceEvents += `${horses[racePos[pos]].horse.name} is in first!\n`;
-				}
-				//special ability
-				let specialChance = Math.random();
-				if(horses[racePos[newPos]].horse.special == 'Speed Boost' && specialChance >= 0.80){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
-					horses[racePos[newPos]].horse.speed += 10;
-				}
-				else if(horses[racePos[newPos]].horse.special == 'Stamina Boost' && specialChance >= 0.80){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
-					horses[racePos[newPos]].horse.stamina += 10;
-				}
-				else if(horses[racePos[newPos]].horse.special == 'Full Force' && specialChance >= 0.90){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
-					horses[racePos[newPos]].horse.stamina += 10;
-					horses[racePos[newPos]].horse.speed += 10;
-				}
-				else if(horses[racePos[newPos]].horse.special == 'Slipstream' && specialChance >= 0.85){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
-					horseInFront = {"id":"noPerson"};
-					if(newPos != 0){
-						horseInFront = horses[racePos[newPos-1]];
-					}
-					if(horseInFront.id != 'noPerson'){
-						//current horse
-						let tempPos = racePos[newPos];
-						//horse being overtaken
-						racePos[newPos] = racePos[newPos-1];
-						//changing who's in front
-						racePos[newPos-1] = tempPos;
-						newPos = newPos-1;
-						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[newPos+1]].horse.name}!\n`;
-					}
-					else{
-						raceEvents += `${horses[racePos[newPos]].horse.name} is already in first!\n`;
-					}
-				}
-				else if(horses[racePos[newPos]].horse.specialAbility == 'Vicious' && specialChance >= 0.90){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
-					horseBehind = {"id":"noPerson"};
-					if(newPos + 1 < racePos.length){
-						horseBehind = horses[racePos[newPos+1]];
-					}
-					if(horseBehind.id != 'noPerson'){
-						horses[racePos[newPos+1]].horse.stamina -= 10;
-						horses[racePos[newPos+1]].horse.speed -= 5;
-						raceEvents += `${horses[racePos[newPos]].horse.name} has kicked up rocks onto ${horses[racePos[newPos+1]].horse.name}!\n`;
-					}
-					else{
-						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;
-					}
-				}
-				horses[racePos[newPos]].horse.stamina -= 1;
-				if(horses[racePos[newPos]].horse.stamina < 0){
-					raceEvents += `${horses[racePos[newPos]].horse.name} looks tired!\n`;
-					horses[racePos[newPos]].horse.stamina = 0;
-					horses[racePos[newPos]].horse.speed -= 5;
-					if(horses[racePos[newPos]].horse.speed < 0){
-						raceEvents += `${horses[racePos[newPos]].horse.name} is exhasted!\n`;
-						horses[racePos[newPos]].horse.speed = 0;
-					}
-				}
-			}
-		}
-		raceEvents += `The Race is over, Here are the results:\n`;
-		let firstPlace = {};
-		let secondPlace = {};
-		let thirdPlace = {};
-		for(let i=0;i<racePos.length;i++){
-			raceEvents += `${i + 1}. ${horses[racePos[i]].horse.name}\n`;
-			if(i == 0){
-				firstPlace = horses[racePos[i]];
-			}
-			else if(i == 1){
-				secondPlace = horses[racePos[i]];
-			}
-			else if(i == 2){
-				thirdPlace = horses[racePos[i]];
-			}
-		}
-		
-		let originalTotal = total;
-		
-		let firstWinnings = Math.floor(total / 2);
-		total -= firstWinnings;
-		let secondWinnings = Math.floor(total / 2);
-		total -= secondWinnings;
-		let thirdWinnings = total;
-		let victory = '';
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].id == firstPlace.id){
-				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal))+parseInt(firstPlace.bet);
-				data.users[i].balance +=  winnings;
-				console.log('First place ' + winnings);
-				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
-				victory += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
-				data.econ += winnings;
-			}
-			else if(data.users[i].id == secondPlace.id){
-				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal))+parseInt(secondPlace.bet);
-				data.users[i].balance +=  winnings;
-				console.log('Second place ' + winnings);
-				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
-				victory += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
-				data.econ += winnings;
-			}
-			else if(data.users[i].id == thirdPlace.id){
-				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal))+parseInt(thirdPlace.bet);
-				data.users[i].balance +=  winnings;
-				console.log('Third place ' + winnings);
-				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
-				victory += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
-				data.econ += winnings;
-			}
-		}
-		message.channel.send(`Here are today's horse race results\n${victory}`,{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
-		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
-		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
-	}
-	else{
-		console.log('No horse race occured');
-	}
-}
-
 //export functions
 module.exports = {
 	purchaseHorse,
@@ -1151,6 +919,5 @@ module.exports = {
 	horseList,
 	actualRace,
 	createHorse,
-	nameHorse,
-	testRace
+	nameHorse
 };
