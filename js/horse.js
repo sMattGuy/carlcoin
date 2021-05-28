@@ -1105,7 +1105,7 @@ function testRace(client,message){
 		let victory = '';
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
-				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal))+firstPlace.bet;
+				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal))+parseInt(firstPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
 				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
@@ -1113,7 +1113,7 @@ function testRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
-				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal))+secondPlace.bet;
+				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal))+parseInt(secondPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
 				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
@@ -1121,7 +1121,7 @@ function testRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
-				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal))+thirdPlace.bet;
+				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal))+parseInt(thirdPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
 				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
