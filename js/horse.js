@@ -397,7 +397,7 @@ function trainHorse(client,message){
 				else if(trainAll){
 					let massTrain = '';
 					for(let allHorseIndex = 0; allHorseIndex < data.users[i].horses.length; allHorseIndex++){
-						else if(data.users[i].horses[allHorseIndex].trainingCooldown > Date.now()){
+						if(data.users[i].horses[allHorseIndex].trainingCooldown > Date.now()){
 							let timeLeftClaim = data.users[i].horses[allHorseIndex].trainingCooldown - Date.now();
 							timeLeftClaim = Math.floor(timeLeftClaim / 1000);
 							timeLeftClaim = Math.floor(timeLeftClaim / 60);
