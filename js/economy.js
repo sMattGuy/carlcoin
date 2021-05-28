@@ -17,7 +17,7 @@ function checkEcon(client,message){
 			highestEarnerName = data.users[i].name;
 			highestEarnerAmount = data.users[i].balance;
 		}
-		if(data.users[i].balance == 0){
+		if(data.users[i].balance == 0 && data.users[i]["house"] == 0 && data.users[i]["apartment"] == 0 && data.users[i]["skyscraper"] == 0){
 			poorPeople += 1;
 		}
 		if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
