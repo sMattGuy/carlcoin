@@ -23,7 +23,7 @@ function giveUserMoney(client, message){
 		console.log(buyer);
 		if(mentionOK){
 			let price = parseInt(chop[chop.length-1]);
-			if(isNaN(price) || price < 0){
+			if(isNaN(price)){
 				message.channel.send('Invalid amount entered!');
 				return;
 			}
