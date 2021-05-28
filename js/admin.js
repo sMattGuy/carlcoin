@@ -20,7 +20,6 @@ function giveUserMoney(client, message){
 			message.channel.send('Invalid user selected!');
 			mentionOK = false;
 		}
-		console.log(buyer);
 		if(mentionOK){
 			let price = parseInt(chop[chop.length-1]);
 			if(isNaN(price)){
