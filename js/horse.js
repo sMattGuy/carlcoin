@@ -98,9 +98,10 @@ function raceHorse(client,message){
 				else{
 					let horse = data.users[i].horses[horseIndex];
 					let userID = data.users[i].id;
+					let name = data.users[i].name;
 					let total = bet;
 					data.users[i].balance -= bet;
-					let userPacket = {"name":`${data.users[i].name}`,"id":`${userID}`,"horse":horse,"bet":`${bet}`};
+					let userPacket = {"name":`${name}`,"id":`${userID}`,"horse":horse,"bet":`${bet}`};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 						let raceFile = JSON.parse(raceRead);
@@ -317,21 +318,21 @@ function actualRace(client,message){
 				let winnings = Math.floor(firstWinnings * (firstPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
-				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!`;
+				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
 				let winnings = Math.floor(secondWinnings * (secondPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
-				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!`;
+				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
 				let winnings = Math.floor(thirdWinnings * (thirdPlace.bet / originalTotal));
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
-				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!`;
+				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
 			}
 		}
