@@ -33,7 +33,6 @@ const help = require('./js/help.js');
 const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 
-
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
