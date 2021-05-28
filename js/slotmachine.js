@@ -489,7 +489,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else if(reel3%10 == symbol4){
@@ -521,7 +521,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
 				data.users[i]["DEX"] += 1;
-				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`);
+				gameMessage += `\nThe thrill of slots makes you antsy, your DEX has increased!`;
 			}
 		}
 		else{
