@@ -361,12 +361,18 @@ function trainHorse(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Usage: !cc horseTrain <index>`);
+		message.channel.send(`Usage: !cc horseTrain <index / all>`);
 	}
 	else{
 		let horseIndex = 0;
+		let trainAll = false;
 		try{
-			horseIndex = parseInt(chop[chop.length-1]);
+			if(chop[chop.length-1] == 'all'){
+				trainAll = true;
+			}
+			else{
+				horseIndex = parseInt(chop[chop.length-1]);
+			}
 		}
 		//if username cannot be gotten
 		catch(err){
@@ -387,6 +393,43 @@ function trainHorse(client,message){
 				if(data.users[i].horses.length == 0){
 					message.channel.send(`You do not own any horses!`);
 					return;
+				}
+				else if(trainAll){
+					let massTrain = '';
+					for(let allHorseIndex = 0; allHorseIndex < data.users[i].horses.length; allHorseIndex++){
+						else if(data.users[i].horses[allHorseIndex].trainingCooldown > Date.now()){
+							let timeLeftClaim = data.users[i].horses[allHorseIndex].trainingCooldown - Date.now();
+							timeLeftClaim = Math.floor(timeLeftClaim / 1000);
+							timeLeftClaim = Math.floor(timeLeftClaim / 60);
+							massTrain += `You trained ${data.users[i].horses[allHorseIndex].name} recently! Try again in ${timeLeftClaim} mins!\n`;
+						}
+						else{
+							let staminaChance = Math.random();
+							let speedChance = Math.random();
+							let staminaAmount = Math.floor(Math.random()*5)+1;
+							let speedAmount = Math.floor(Math.random()*5)+1;
+							massTrain += `You start training ${data.users[i].horses[allHorseIndex].name}...\n`;
+							if(staminaChance >= 0.25){
+								data.users[i].horses[allHorseIndex].stamina += staminaAmount;
+								if(data.users[i].horses[allHorseIndex].stamina > 150){
+									data.users[i].horses[allHorseIndex].stamina = 150;
+								}
+								massTrain += `${data.users[i].horses[allHorseIndex].name} improved their stamina by ${staminaAmount} points!\n`;
+							}
+							if(speedChance >= 0.75){
+								data.users[i].horses[allHorseIndex].speed += speedAmount;
+								if(data.users[i].horses[allHorseIndex].speed > 150){
+									data.users[i].horses[allHorseIndex].speed = 150;
+								}
+								massTrain += `${data.users[i].horses[allHorseIndex].name} improved their speed by ${speedAmount} points!\n`;
+							}
+							massTrain += `Training complete for ${data.users[i].horses[allHorseIndex].name}!`;
+							data.users[i].horses[allHorseIndex].trainingCooldown = Date.now() + 21600000;
+						}
+					}
+					message.channel.send(massTrain);
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				}
 				else{
 					if(horseIndex >= data.users[i].horses.length){
@@ -732,7 +775,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
