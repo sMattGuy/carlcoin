@@ -294,21 +294,21 @@ function blackjackHit(client,message){
 						chrBonus = .25;
 					}
 					if(1 - seduceChance < chrBonus){
-						let wagerHalf = Math.floor(blackjackParse.wager / 2);
-						blackjackParse.wager = blackjackParse.wager - wagerHalf;
+						let wagerHalf = Math.floor(parseInt(blackjackParse.wager) / 2);
+						blackjackParse.wager = parseInt(blackjackParse.wager) - wagerHalf;
 						data.users[blackjackParse.challIndex].balance += wagerHalf;
 						data.blackjack -= wagerHalf;
 						resultsOfGame += `${blackjackParse.name}, you wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 					}
 					//instability counter
-					data.users[blackjackParse.challIndex]["unstable"] += blackjackParse.wager;
+					data.users[blackjackParse.challIndex]["unstable"] += parseInt(blackjackParse.wager);
 					if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-						data.users[blackjackParse.challIndex]["unstable"] = blackjackParse.wager;
+						data.users[blackjackParse.challIndex]["unstable"] = parseInt(blackjackParse.wager);
 					}
 					if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
 						data.users[blackjackParse.challIndex]["suicide"] = 1;
 					}
-					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - blackjackParse.wager < 100){
+					if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - parseInt(blackjackParse.wager) < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 0;
 						resultsOfGame += `You are starting to feel irrational.\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
@@ -394,8 +394,8 @@ function blackjackStand(client,message){
 			}
 			if(dealerTotal > 21){
 				let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
-				data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
-				data.blackjack -= Math.floor(blackjackParse.wager * 2);
+				data.users[blackjackParse.challIndex].balance += Math.floor(parseInt(blackjackParse.wager) * 2);
+				data.blackjack -= Math.floor(parseInt(blackjackParse.wager) * 2);
 				data.users[blackjackParse.challIndex]["activity"] = Date.now();
 				
 				//instability counter
@@ -403,11 +403,11 @@ function blackjackStand(client,message){
 				if(data.users[blackjackParse.challIndex]["unstable"] >= 100){
 					insane = true;
 				}
-				data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
+				data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(parseInt(blackjackParse.wager) * 2);
 				if(isNaN(data.users[blackjackParse.challIndex]["unstable"]) || data.users[blackjackParse.challIndex]["unstable"] < 0){
 					data.users[blackjackParse.challIndex]["unstable"] = 0;
 				}
-				if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
+				if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(parseInt(blackjackParse.wager) * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 					data.users[blackjackParse.challIndex]["suicide"] = 1;
 					resultsOfGame += `You come to your senses.\n`;
 					console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
@@ -418,7 +418,7 @@ function blackjackStand(client,message){
 				if(isNaN(data.users[blackjackParse.challIndex]["chrExp"])){
 					data.users[blackjackParse.challIndex]["chrExp"] = 0;
 				}
-				data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(blackjackParse.wager * 2);
+				data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(parseInt(blackjackParse.wager) * 2);
 				if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
 					data.users[blackjackParse.challIndex]["CHR"] += 1;
 					data.users[blackjackParse.challIndex]["chrExp"] = 0;
@@ -457,8 +457,8 @@ function blackjackStand(client,message){
 				if(playerValue > dealerTotal){
 					//player wins
 					let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
-					data.users[blackjackParse.challIndex].balance += Math.floor(blackjackParse.wager * 2);
-					data.blackjack -= Math.floor(blackjackParse.wager * 2);
+					data.users[blackjackParse.challIndex].balance += Math.floor(parseInt(blackjackParse.wager) * 2);
+					data.blackjack -= Math.floor(parseInt(blackjackParse.wager) * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
 					
 					//instability counter
@@ -466,11 +466,11 @@ function blackjackStand(client,message){
 					if(data.users[blackjackParse.challIndex]["unstable"] >= 100){
 						insane = true;
 					}
-					data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(blackjackParse.wager * 2);
+					data.users[blackjackParse.challIndex]["unstable"] -= Math.floor(parseInt(blackjackParse.wager) * 2);
 					if(isNaN(data.users[blackjackParse.challIndex]["unstable"]) || data.users[blackjackParse.challIndex]["unstable"] < 0){
 						data.users[blackjackParse.challIndex]["unstable"] = 0;
 					}
-					if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(blackjackParse.wager * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
+					if(insane && data.users[blackjackParse.challIndex]["unstable"] + Math.floor(parseInt(blackjackParse.wager) * 2) >= 100 && data.users[blackjackParse.challIndex]["unstable"] < 100){
 						data.users[blackjackParse.challIndex]["suicide"] = 1;
 						resultsOfGame += `You come to your senses.\n`;
 						console.log(data.users[blackjackParse.challIndex].name + " has calmed down");
@@ -481,7 +481,7 @@ function blackjackStand(client,message){
 					if(isNaN(data.users[blackjackParse.challIndex]["chrExp"])){
 						data.users[blackjackParse.challIndex]["chrExp"] = 0;
 					}
-					data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(blackjackParse.wager * 2);
+					data.users[blackjackParse.challIndex]["chrExp"] += Math.floor(parseInt(blackjackParse.wager) * 2);
 					if(data.users[blackjackParse.challIndex]["CHR"] * 2 + 20 < data.users[blackjackParse.challIndex]["chrExp"]){
 						data.users[blackjackParse.challIndex]["CHR"] += 1;
 						data.users[blackjackParse.challIndex]["chrExp"] = 0;
@@ -520,21 +520,21 @@ function blackjackStand(client,message){
 							chrBonus = .25;
 						}
 						if(1 - seduceChance < chrBonus){
-							let wagerHalf = Math.floor(blackjackParse.wager / 2);
-							blackjackParse.wager = blackjackParse.wager - wagerHalf;
+							let wagerHalf = Math.floor(parseInt(blackjackParse.wager) / 2);
+							blackjackParse.wager = parseInt(blackjackParse.wager) - wagerHalf;
 							data.users[blackjackParse.challIndex].balance += wagerHalf;
 							data.blackjack -= wagerHalf;
 							resultsOfGame += `You wink at the dealer, because of your CHR he blushes and averts his eyes.... You sneak back half your bet!\n`;
 						}
 						//instability counter
-						data.users[blackjackParse.challIndex]["unstable"] += blackjackParse.wager;
+						data.users[blackjackParse.challIndex]["unstable"] += parseInt(blackjackParse.wager);
 						if(isNaN(data.users[blackjackParse.challIndex]["unstable"])){
-							data.users[blackjackParse.challIndex]["unstable"] = blackjackParse.wager;
+							data.users[blackjackParse.challIndex]["unstable"] = parseInt(blackjackParse.wager);
 						}
 						if(isNaN(data.users[blackjackParse.challIndex]["suicide"])){
 							data.users[blackjackParse.challIndex]["suicide"] = 1;
 						}
-						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - blackjackParse.wager < 100){
+						if(data.users[blackjackParse.challIndex]["unstable"] >= 100 && data.users[blackjackParse.challIndex]["unstable"] - parseInt(blackjackParse.wager) < 100){
 							data.users[blackjackParse.challIndex]["suicide"] = 0;
 							resultsOfGame += `You are starting to feel irrational.\n`;
 							console.log(data.users[blackjackParse.challIndex].name + " has become irrational");
@@ -555,7 +555,7 @@ function blackjackStand(client,message){
 					let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`;
 					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,playerValue,blackjackParse.name,dealerTotal,message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
 					data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
-					data.blackjack -= blackjackParse.wager;
+					data.blackjack -= parseInt(blackjackParse.wager);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
