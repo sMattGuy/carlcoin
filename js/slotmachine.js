@@ -146,7 +146,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = 'A carl! You win!';
+			gameMessage = 'A single! You win!';
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
@@ -159,7 +159,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		if(reel3%10 == symbol1){
 			data.blackjack -= wager * (wagerMulti * 2);
 			data.users[i].balance += wager * (wagerMulti * 2);
-			gameMessage = 'A double carl! Very lucky win!';
+			gameMessage = 'A double! Very lucky win!';
 			data.users[i]["dexExp"] += wager * (wagerMulti * 2);
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
@@ -170,7 +170,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = 'A carl! You win!';
+			gameMessage = 'A single! You win!';
 			data.users[i]["dexExp"] += wager * wagerMulti;
 			if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 				data.users[i]["dexExp"] = 0;
@@ -182,7 +182,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 	else if(reel3%10 == symbol1){
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
-		gameMessage = 'A carl! You win!';
+		gameMessage = 'A single! You win!';
 		data.users[i]["dexExp"] += wager * wagerMulti;
 		if(data.users[i]["DEX"] * 2 + 1 < data.users[i]["dexExp"]){
 			data.users[i]["dexExp"] = 0;
