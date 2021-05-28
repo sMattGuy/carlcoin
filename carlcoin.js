@@ -267,6 +267,7 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseRace')){
 		horse.raceHorse(client,message);
 	}
+	//name horse
 	else if(message.content.startsWith('!cc horseName')){
 		horse.nameHorse(client, message);
 	}
@@ -277,6 +278,9 @@ client.on('message', message => {
 	//summon coin
 	else if(message.content === '!cc summonGaintCoin' && message.author.id == 492850107038040095){
 		admin.summonGaintCoin(client,message);
+	}
+	else if(message.content === '!cc triggerTestRace' && message.author.id == 492850107038040095){
+		horse.testRace(client,message);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
