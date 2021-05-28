@@ -267,6 +267,9 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc horseRace')){
 		horse.raceHorse(client,message);
 	}
+	else if(message.content.startsWith('!cc horseName')){
+		horse.nameHorse(client, message);
+	}
 	//give carl
 	else if(message.content.startsWith('!cc giveCarlCoin') && message.author.id == 492850107038040095){
 		admin.giveUserMoney(client, message);

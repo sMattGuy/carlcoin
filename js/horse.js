@@ -903,5 +903,6 @@ module.exports = {
 	horseStats,
 	horseList,
 	actualRace,
-	createHorse
+	createHorse,
+	nameHorse
 };

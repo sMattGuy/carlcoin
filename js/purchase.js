@@ -165,7 +165,7 @@ function purchaseList(client,message){
 				data.users[i]["skyscraper"] = 0;
 			}
 			let skyscraperPrice = (data.users[i].skyscraper * 250) + 500;
-			message.channel.send(`Purchase List:\n1. house ${housePrice}CC pays 10 daily\n2. apartment ${apartmentPrice}CC pays 25 daily\n3. skyscraper ${skyscraperPrice}CC pays 50 daily\n4. office (200CC) doubles work output`);
+			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. office (200CC) doubles work output`);
 			return;
 		}
 	}
