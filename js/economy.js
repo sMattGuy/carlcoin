@@ -6,7 +6,6 @@ function checkEcon(client,message){
 	let data = JSON.parse(database);
 	let highestEarnerName = "";
 	let highestEarnerAmount = 0;
-	let poorPeople = 0;
 	let houseCount = 0;
 	let apartmentCount = 0;
 	let skyCount = 0;
@@ -16,9 +15,6 @@ function checkEcon(client,message){
 		if(data.users[i].balance > highestEarnerAmount){
 			highestEarnerName = data.users[i].name;
 			highestEarnerAmount = data.users[i].balance;
-		}
-		if(data.users[i].balance == 0 && data.users[i]["house"] == 0 && data.users[i]["apartment"] == 0 && data.users[i]["skyscraper"] == 0){
-			poorPeople += 1;
 		}
 		if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
 			houseCount += data.users[i]["house"];
@@ -47,7 +43,6 @@ function checkEcon(client,message){
 			{ name: 'Homes', value: `${houseCount}`, inline: true },
 			{ name: 'Apartments', value: `${apartmentCount}`, inline: true },
 			{ name: 'Skyscrapers', value: `${skyCount}`, inline: true },
-			{ name: 'Poor People', value: `${poorPeople}`},
 		)
 	message.channel.send(econEmbed);
 }
