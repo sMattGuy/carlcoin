@@ -5,7 +5,7 @@ const Canvas = require('canvas');
 function playSlots(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 3){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc slots <amount>');
 	}
 	else{
 		//fetch and store data

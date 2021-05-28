@@ -31,6 +31,8 @@ const RPS = require('./js/rockpaperscissors.js');
 const slots = require('./js/slotmachine.js');
 const help = require('./js/help.js');
 const horse = require('./js/horse.js');
+const admin = require('./js/admin.js');
+
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
@@ -83,11 +85,9 @@ client.on('message', message => {
 	//message failsafe incase countery somehow goes past value
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
-	if(messageCounter > data.raffleRNG){
-		messageCounter = 0;
-	}
 	//detects when md5 raffle should begin
-	if((messageCounter == data.raffleRNG && !raffleStart)){
+	if((messageCounter >= data.raffleRNG && !raffleStart)){
+		messageCounter = 0;
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
@@ -266,6 +266,14 @@ client.on('message', message => {
 	//race
 	else if(message.content.startsWith('!cc horseRace')){
 		horse.raceHorse(client,message);
+	}
+	//give carl
+	else if(message.content.startsWith('!cc giveCarlCoin') && message.author.id == 492850107038040095){
+		admin.giveUserMoney(client, message);
+	}
+	//summon coin
+	else if(message.content === '!cc summonGaintCoin' && message.author.id == 492850107038040095){
+		admin.summonGaintCoin(client,message);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){

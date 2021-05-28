@@ -54,7 +54,7 @@ function raceHorse(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 4){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc horseRace <index> <bet>`);
 		return;
 	}
 	let bet = parseInt(chop[chop.length-1]);
@@ -100,7 +100,7 @@ function raceHorse(client,message){
 					let userID = data.users[i].id;
 					let total = bet;
 					data.users[i].balance -= bet;
-					let userPacket = {"id":`${userID}`,"horse":horse,"bet":`${bet}`};
+					let userPacket = {"name":`${data.users[i].name}`,"id":`${userID}`,"horse":horse,"bet":`${bet}`};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 						let raceFile = JSON.parse(raceRead);
@@ -141,7 +141,8 @@ function actualRace(client,message){
 		for(let i=0;i<raceFile.racers.length;i++){
 			let id = raceFile.racers[i].id;
 			let horse = raceFile.racers[i].horse;
-			let currentHorse = {"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
+			let name = raceFile.racers[i].name;
+			let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
 			horses.push(currentHorse);
 		}
 		if(horses.length < racerNeededSize){
@@ -151,7 +152,7 @@ function actualRace(client,message){
 				total += 100;
 				data.econ += 100;
 				let owner = `AI${i}`;
-				let airacer = {"id":`${owner}`,"horse":AIHorse};
+				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse};
 				horses.push(airacer);
 			}
 		}
@@ -165,7 +166,7 @@ function actualRace(client,message){
 		for(let raceSize=100;raceSize!=0;raceSize--){
 			raceEvents += `Current standings:\n`;
 			for(let places = 0;places < racePos.length;places++){
-				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name}\n`;
+				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} owned by ${horses[racePos[places]].name}\n`;
 			}
 			raceEvents += `SPRINTS LEFT: ${raceSize}\n`;
 			//each frame will go through every horses decision
@@ -356,7 +357,7 @@ function trainHorse(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc horseTrain <index>`);
 	}
 	else{
 		let horseIndex = 0;
@@ -430,7 +431,7 @@ function trainHorse(client,message){
 function breedHorse(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 4){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc horseBreed <index1> <index2>');
 	}
 	else{
 		let horseIndex1 = 0;
@@ -505,7 +506,7 @@ function breedHorse(client,message){
 function horseSell(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 5){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc horseSell <user> <index> <price>');
 	}
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -682,7 +683,7 @@ function horseStats(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc horseStats <index>`);
 	}
 	else{
 		let horseIndex = 0;

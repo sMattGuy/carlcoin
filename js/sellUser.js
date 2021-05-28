@@ -4,7 +4,7 @@ const fs = require('fs');
 function sellUser(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 5){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc userSell <user> <type> <amount>');
 	}
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');

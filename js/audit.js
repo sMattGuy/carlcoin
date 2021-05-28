@@ -5,7 +5,7 @@ function auditUser(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc audit <user>`);
 	}
 	else{
 		//fetch and store data

@@ -6,7 +6,7 @@ function robPlayer(client,message){
 	let corrUser = true;
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc rob <user>`);
 	}
 	else{
 		let recipient = "";

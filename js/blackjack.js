@@ -9,7 +9,7 @@ const blackjackCardsImages = ['AS.png','2S.png','3S.png','4S.png','5S.png','6S.p
 function blackjackStart(client,message){
 	let chop = message.content.split(" ");
 	if(chop.length != 3){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc blackjack <amount>');
 	}
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');

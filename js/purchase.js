@@ -3,8 +3,8 @@ const fs = require('fs');
 
 function purchaseItem(client,message){
 	let chop = message.content.split(" ");
-	if(chop.length > 3){
-		message.channel.send('Too many arguments supplied!');
+	if(chop.length != 3){
+		message.channel.send('Usage: !cc purchase <item>');
 	}
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');

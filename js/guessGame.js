@@ -38,7 +38,7 @@ function guessNumber(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Too many arguments supplied!`);
+		message.channel.send(`Usage: !cc guess <1-100>`);
 	}
 	else{
 		//gets number user guessed and checks if valid

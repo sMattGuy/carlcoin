@@ -5,7 +5,7 @@ function startRPS(client,message){
 	//check command is correctly entered
 	let chop = message.content.split(" ");
 	if(chop.length != 4){
-		message.channel.send('Command arguments incorrect!');
+		message.channel.send('Usage: !cc rps <user> <amount>');
 	}
 	else{
 		//read and parse database

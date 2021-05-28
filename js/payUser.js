@@ -6,7 +6,7 @@ function payUser(client,message){
 	let corrUser = true;
 	//if too many arguments
 	if(chop.length != 4){
-		message.channel.send(`Invalid arguments supplied!`);
+		message.channel.send(`Usage: !cc pay <user>`);
 	}
 	else{
 		let recipient = "";
