@@ -157,7 +157,7 @@ function raceHorse(client,message){
 					let total = bet;
 					data.users[i].balance -= bet;
 					data.econ -= bet;
-					let userPacket = {"name":`${name}`,"id":`${userID}`,"horse":horse,"bet":`${bet}`};
+					let userPacket = {"name":`${name}`,"id":`${userID}`,"horse":horse,"bet":bet};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 						let raceFile = JSON.parse(raceRead);
@@ -334,7 +334,7 @@ function actualRace(client,message){
 					}
 				}
 				else if(horses[racePos[newPos]].horse.special == 'Vicious' && specialChance >= 0.90){
-					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.specialAbility}!\n`;
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horseBehind = {"id":"noPerson"};
 					if(newPos + 1 < racePos.length){
 						horseBehind = horses[racePos[newPos+1]];
@@ -411,7 +411,8 @@ function actualRace(client,message){
 				data.econ += winnings;
 			}
 		}
-		
+		let newData = JSON.stringify(data);
+		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 		client.guilds.cache.forEach((guild) => {
 			try{
 				guild.channels.cache.find((x) => x.name == 'general').send(`Here are today's horse race results\n${victory}`,{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
@@ -420,7 +421,6 @@ function actualRace(client,message){
 				console.log("no general chat in "+guild.name);
 			}
 		});
-		
 		fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRaceEvents.txt',raceEvents);
 		fs.unlinkSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 	}
