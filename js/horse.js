@@ -495,7 +495,7 @@ function trainHorse(client,message){
 								}
 								massTrain += `${data.users[i].horses[allHorseIndex].name} improved their speed by ${speedAmount} points!\n`;
 							}
-							massTrain += `Training complete for ${data.users[i].horses[allHorseIndex].name}!`;
+							massTrain += `Training complete for ${data.users[i].horses[allHorseIndex].name}!\n`;
 							data.users[i].horses[allHorseIndex].trainingCooldown = Date.now() + 21600000;
 						}
 					}
