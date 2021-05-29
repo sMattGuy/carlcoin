@@ -382,7 +382,7 @@ function actualRace(client,message){
 		let secondWinnings = Math.floor(total / 2);
 		total -= secondWinnings;
 		let thirdWinnings = total;
-		let victory = '';
+		let victory = 'Placements:\n';
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
 				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal))+parseInt(firstPlace.bet);
