@@ -54,7 +54,7 @@ function nameHorse(client, message){
 						for(nameBuild = chop.length - (chop.length - 3); nameBuild < chop.length-1; nameBuild++){
 							newName += `${chop[nameBuild]} `;
 						}
-						newName += `${chop[nameBuild+1]}`;
+						newName += `${chop[nameBuild]}`;
 						let oldName = data.users[i].horses[horseIndex].name;
 						data.users[i].horses[horseIndex].name = newName;
 						message.channel.send(`${oldName} has been renamed to ${newName}!`);
