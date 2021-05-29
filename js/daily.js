@@ -107,6 +107,7 @@ function dailyEvents(client,message){
 	data = JSON.parse(database);
 	let today = new Date();
 	let horseDeath = '';
+	let horseHasDied = false;
 	for(let i=0;i<data.users.length;i++){
 		if(!data.users[i].hasOwnProperty("horses")){
 			data.users[i].horses = [];
@@ -114,6 +115,7 @@ function dailyEvents(client,message){
 		else{
 			for(let j=0;j<data.users[i].horses.length;j++){
 				if(data.users[i].horses[j].age > 10){
+					horseHasDied = true;
 					console.log(data.users[i].horses[j].name + ' has died of old age');
 					horseDeath += `${data.users[i].horses[j].name}, owned by ${data.users[i].name}, has died of old age...\n`;
 					data.users[i].horses.splice(j,1);
@@ -125,14 +127,16 @@ function dailyEvents(client,message){
 			}
 		}
 	}
-	client.guilds.cache.forEach((guild) => {
-		try{
-			guild.channels.cache.find((x) => x.name == 'general').send(horseDeath);
-		}
-		catch(err){
-			console.log("no general chat in "+guild.name);
-		}
-	});
+	if(horseHasDied){
+		client.guilds.cache.forEach((guild) => {
+			try{
+				guild.channels.cache.find((x) => x.name == 'general').send(horseDeath);
+			}
+			catch(err){
+				console.log("no general chat in "+guild.name);
+			}
+		});
+	}
 	newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 }
