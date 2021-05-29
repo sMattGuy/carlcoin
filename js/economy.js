@@ -26,7 +26,7 @@ function checkEcon(client,message){
 		if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
 			skyCount += data.users[i]["skyscraper"];
 		}
-		if(data.users[i].horses.length > 0 && !data.users[i].hasOwnProperty("horses")){
+		if(data.users[i].horses.length > 0 && data.users[i].hasOwnProperty("horses")){
 			horses += data.users[i].horses.length;
 		}
 	}
