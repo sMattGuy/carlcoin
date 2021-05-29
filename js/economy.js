@@ -9,6 +9,7 @@ function checkEcon(client,message){
 	let houseCount = 0;
 	let apartmentCount = 0;
 	let skyCount = 0;
+	let horses = 0;
 	let carlball = data.carlball;
 	//searches for highest and lowest earner
 	for(let i=0;i<data.users.length;i++){
@@ -24,6 +25,9 @@ function checkEcon(client,message){
 		}
 		if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
 			skyCount += data.users[i]["skyscraper"];
+		}
+		if(data.users[i].horses.length > 0 && !data.users[i].hasOwnProperty("horses")){
+			horses += data.users[i].horses.length;
 		}
 	}
 	const econEmbed = new Discord.MessageEmbed()
@@ -43,6 +47,7 @@ function checkEcon(client,message){
 			{ name: 'Homes', value: `${houseCount}`, inline: true },
 			{ name: 'Apartments', value: `${apartmentCount}`, inline: true },
 			{ name: 'Skyscrapers', value: `${skyCount}`, inline: true },
+			{ name: 'Horses', value: `${horses}`, inline: true },
 		)
 	message.channel.send(econEmbed);
 }
