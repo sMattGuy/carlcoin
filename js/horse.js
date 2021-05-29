@@ -201,7 +201,7 @@ function actualRace(client,message){
 				if(data.users[userFinder].id == id){
 					let horseFound = false;
 					for(let horseFinder = 0; horseFinder < data.users[userFinder].horses.length; horseFinder++){
-						if(data.users[userFinder].horses[horseFinder].id == raceFile.racers[i].horse){
+						if(data.users[userFinder].horses[horseFinder].id === raceFile.racers[i].horse){
 							horseFound = true;
 							let horse = data.users[userFinder].horses[horseFinder];
 							let name = raceFile.racers[i].name;
