@@ -207,8 +207,8 @@ function actualRace(client,message){
 							let name = raceFile.racers[i].name;
 							let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
 							horses.push(currentHorse);
+							break;
 						}
-						break;
 					}
 					if(!horseFound){
 						raceEvents += `${raceFile.racers[i].name}'s horse could not be found!\n`;
