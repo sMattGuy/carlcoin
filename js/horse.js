@@ -892,7 +892,11 @@ function createHorse(){
 	let specialAbility = specialType[Math.floor(Math.random() * specialType.length)];
 	let name = firstPartName[Math.floor(Math.random()*firstPartName.length)] + ' ' + secondPartName[Math.floor(Math.random()*secondPartName.length)];
 	let age = Math.floor(Math.random()*4)+2;
-	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":`${height}`,"weight":`${weight}`,"gender":`${gender}`,"special":`${specialAbility}`,"age":`${age}`,"birthday":`${today.getDate()}`,"trainingCooldown":0,"timeline":"Parents:Unknown"};
+	let birthday = today.getDate();
+	if(birthday < 28){
+		birthday = 28;
+	}
+	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":height,"weight":weight,"gender":`${gender}`,"special":`${specialAbility}`,"age":age,"birthday":birthday,"trainingCooldown":0,"timeline":"Parents:Unknown"};
 	console.log(newHorse);
 	return newHorse;
 }

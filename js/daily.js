@@ -114,15 +114,11 @@ function dailyEvents(client,message){
 		}
 		else{
 			for(let j=0;j<data.users[i].horses.length;j++){
-				if(data.users[i].horses[j].age > 10){
+				if(data.users[i].horses[j].birthday == today.getDate()){
 					horseHasDied = true;
 					console.log(data.users[i].horses[j].name + ' has died of old age');
 					horseDeath += `${data.users[i].horses[j].name}, owned by ${data.users[i].name}, has died of old age...\n`;
 					data.users[i].horses.splice(j,1);
-				}
-				else if(data.users[i].horses[j].birthday == today.getDate()){
-					data.users[i].horses[j].age++;
-					console.log(data.users[i].horses[j].name + ' is now ' + data.users[i].horses[j].age);
 				}
 			}
 		}
