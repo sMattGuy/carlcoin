@@ -179,6 +179,8 @@ function raceHorse(client,message){
 						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
 					}
 					message.channel.send(`You have been enrolled for the race! The results will be in general at midnight!`);
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				}
 				return;
 			}
