@@ -452,7 +452,7 @@ function trainHorse(client,message){
 			return;
 		}
 		console.log(horseIndex);
-		if(horseIndex < 0 || isNaN(horseIndex)){
+		if(isNaN(horseIndex) || horseIndex < 0){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
