@@ -59,7 +59,7 @@ function leaveServer(client,message){
 		message.channel.send(`Usage: !cc leaveServer <serverID>\n${servers}`);
 	}
 	else{
-		let server = {};
+		let server;
 		let serverID = chop[chop.length - 1];
 		let guildOK = true;
 		try{
