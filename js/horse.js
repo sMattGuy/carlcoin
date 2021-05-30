@@ -235,11 +235,11 @@ function actualRace(client,message){
 			console.log(i + '. ' + horses[i].horse.name);
 			racePos.push(i);
 		}
-		raceEvents += `Welcome to todays race of ${horses.length} horses\n`;
+		raceEvents += `Welcome to todays race of ${horses.length} horses. The pot today is ${total}\n`;
 		for(let raceSize=100;raceSize!=0;raceSize--){
 			raceEvents += `Current standings:\n`;
 			for(let places = 0;places < racePos.length;places++){
-				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} owned by ${horses[racePos[places]].name}\n`;
+				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} owned by ${horses[racePos[places]].name} who bet ${horses[racePos[places]].bet}CC\n`;
 			}
 			raceEvents += `SPRINTS LEFT: ${raceSize}\n`;
 			//each frame will go through every horses decision
@@ -387,7 +387,7 @@ function actualRace(client,message){
 		let victory = 'Placements:\n';
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
-				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal))+parseInt(firstPlace.bet);
+				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal)) + parseInt(firstPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('First place ' + winnings);
 				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
@@ -395,7 +395,7 @@ function actualRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == secondPlace.id){
-				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal))+parseInt(secondPlace.bet);
+				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal)) + parseInt(secondPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Second place ' + winnings);
 				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
@@ -403,7 +403,7 @@ function actualRace(client,message){
 				data.econ += winnings;
 			}
 			else if(data.users[i].id == thirdPlace.id){
-				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal))+parseInt(thirdPlace.bet);
+				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal)) + parseInt(thirdPlace.bet);
 				data.users[i].balance +=  winnings;
 				console.log('Third place ' + winnings);
 				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
