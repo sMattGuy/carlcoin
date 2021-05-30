@@ -4,7 +4,13 @@ const fs = require('fs');
 const colors = ['Appaloosa','Bay','Black','Brown','Buckskin','Chestnut','Cremello','Dun','Grey','Overo','Palomino','Piebald','Roan','Skewbald','Spotted','Tobiano'];
 const genderType = ['Male','Female'];
 const specialType = ['Speed Boost','Stamina Boost','Slipstream','Full Force','Vicious'];
-
+/*
+speed boost: 	speed boost +10
+stamina boost: stamina boost +10
+slipstream: 	increase position by 1
+full force: 	increase stamina +10 & speed +10
+vicious: 		horse behind stamina -10 & speed -5
+*/
 const firstPartName = ['Special','Silence','Tokai','Air','Condor','Oguri','Grass','Gold','Symboli','Taiki','Daiwa','T.M.','Narita','Hishi','Fuji','Mejiro','Seiun','Yukino','Manhattan','Tosen','Haru','Kawakami','Mejiro','Fine','Smart','Narita','Super','Inari','Nishino','Biko','Bamboo','Marvelous','Mihono','Sweep','Ines','Biwa','Sakura','Shinko','Agnes','Zenno','Meisho','Rice','Admire','Curren','Eishin','Nakayama','Mayano','Nice','King','Matikane','Ikuno','Daitaku','Twin','Seeking','Tamamo'];
 const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wonder','Ship','Rudolf','Shuttle','Scarlet','Opera','Brian','Amazon','Kiseki','Maruzensky','McQueen','Sky','Bijin','Ticket','Cross','Pearl','Cafe','Jordan','Urara','Princess','Ryan','Matikanefukukitaru','Motion','Falcon','Taishin','Shakur','City','Creek','One','Flower','Pegasus','Akebono','Memory','Sunday','Bourbon','Tosho','Fujin','Hayahide','Bakushin','Windy','Tachyon','Rob Roy','Doto','Shower','Vega','Chan','Digital','Flash','Festa','Top Gun','Dober','Nature','Halo','Tannhauser','Dictus','Helios','Turbo'];
 
@@ -351,6 +357,7 @@ function actualRace(client,message){
 						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;
 					}
 				}
+				//end of specials
 				horses[racePos[newPos]].horse.stamina -= 1;
 				if(horses[racePos[newPos]].horse.stamina < 0){
 					raceEvents += `${horses[racePos[newPos]].horse.name} looks tired!\n`;
@@ -487,14 +494,14 @@ function trainHorse(client,message){
 							let speedAmount = Math.floor(Math.random()*5)+1;
 							massTrain += `You start training ${data.users[i].horses[allHorseIndex].name}...\n`;
 							if(staminaChance >= 0.25){
-								data.users[i].horses[allHorseIndex].stamina += staminaAmount;
+								data.users[i].horses[allHorseIndex].stamina = parseInt(data.users[i].horses[allHorseIndex].stamina) + staminaAmount;
 								if(data.users[i].horses[allHorseIndex].stamina > 150){
 									data.users[i].horses[allHorseIndex].stamina = 150;
 								}
 								massTrain += `${data.users[i].horses[allHorseIndex].name} improved their stamina by ${staminaAmount} points!\n`;
 							}
 							if(speedChance >= 0.75){
-								data.users[i].horses[allHorseIndex].speed += speedAmount;
+								data.users[i].horses[allHorseIndex].speed = parseInt(data.users[i].horses[allHorseIndex].speed) + speedAmount;
 								if(data.users[i].horses[allHorseIndex].speed > 150){
 									data.users[i].horses[allHorseIndex].speed = 150;
 								}
@@ -527,14 +534,14 @@ function trainHorse(client,message){
 						let speedAmount = Math.floor(Math.random()*5)+1;
 						let results = `You start training ${data.users[i].horses[horseIndex].name}...\n`;
 						if(staminaChance >= 0.25){
-							data.users[i].horses[horseIndex].stamina += staminaAmount;
+							data.users[i].horses[allHorseIndex].stamina = parseInt(data.users[i].horses[allHorseIndex].stamina) + staminaAmount;
 							if(data.users[i].horses[horseIndex].stamina > 150){
 								data.users[i].horses[horseIndex].stamina = 150;
 							}
 							results += `${data.users[i].horses[horseIndex].name} improved their stamina by ${staminaAmount} points!\n`;
 						}
 						if(speedChance >= 0.75){
-							data.users[i].horses[horseIndex].speed += speedAmount;
+							data.users[i].horses[allHorseIndex].speed = parseInt(data.users[i].horses[allHorseIndex].speed) + speedAmount;
 							if(data.users[i].horses[horseIndex].speed > 150){
 								data.users[i].horses[horseIndex].speed = 150;
 							}
