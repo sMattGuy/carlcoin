@@ -3,13 +3,18 @@ const fs = require('fs');
 
 const colors = ['Appaloosa','Bay','Black','Brown','Buckskin','Chestnut','Cremello','Dun','Grey','Overo','Palomino','Piebald','Roan','Skewbald','Spotted','Tobiano'];
 const genderType = ['Male','Female'];
-const specialType = ['Speed Boost','Stamina Boost','Slipstream','Full Force','Vicious'];
+const specialType = ['Speed Boost','Stamina Boost','Slipstream','Full Force','Vicious','Enforcer','Scary'];
 /*
-speed boost: 	speed boost +10
-stamina boost: stamina boost +10
-slipstream: 	increase position by 1
-full force: 	increase stamina +10 & speed +10
-vicious: 		horse behind stamina -10 & speed -5
+bonus:
+	speed boost: 	speed boost +10
+	stamina boost: stamina boost +10
+	full force: 	increase stamina +10 & speed +10
+beneficial:
+	slipstream: 	increase position by 1
+adversarial:
+	enforcer:		horse behind stamina -10
+	scary: 			horse behind speed -5
+	vicious: 		horse behind stamina -10 & speed -5
 */
 const firstPartName = ['Special','Silence','Tokai','Air','Condor','Oguri','Grass','Gold','Symboli','Taiki','Daiwa','T.M.','Narita','Hishi','Fuji','Mejiro','Seiun','Yukino','Manhattan','Tosen','Haru','Kawakami','Mejiro','Fine','Smart','Narita','Super','Inari','Nishino','Biko','Bamboo','Marvelous','Mihono','Sweep','Ines','Biwa','Sakura','Shinko','Agnes','Zenno','Meisho','Rice','Admire','Curren','Eishin','Nakayama','Mayano','Nice','King','Matikane','Ikuno','Daitaku','Twin','Seeking','Tamamo'];
 const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wonder','Ship','Rudolf','Shuttle','Scarlet','Opera','Brian','Amazon','Kiseki','Maruzensky','McQueen','Sky','Bijin','Ticket','Cross','Pearl','Cafe','Jordan','Urara','Princess','Ryan','Matikanefukukitaru','Motion','Falcon','Taishin','Shakur','City','Creek','One','Flower','Pegasus','Akebono','Memory','Sunday','Bourbon','Tosho','Fujin','Hayahide','Bakushin','Windy','Tachyon','Rob Roy','Doto','Shower','Vega','Chan','Digital','Flash','Festa','Top Gun','Dober','Nature','Halo','Tannhauser','Dictus','Helios','Turbo'];
@@ -352,6 +357,34 @@ function actualRace(client,message){
 						horses[racePos[newPos+1]].horse.stamina -= 10;
 						horses[racePos[newPos+1]].horse.speed -= 5;
 						raceEvents += `${horses[racePos[newPos]].horse.name} has kicked up rocks onto ${horses[racePos[newPos+1]].horse.name}!\n`;
+					}
+					else{
+						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;
+					}
+				}
+				else if(horses[racePos[newPos]].horse.special == 'Enforcer' && specialChance >= 0.85){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
+					horseBehind = {"id":"noPerson"};
+					if(newPos + 1 < racePos.length){
+						horseBehind = horses[racePos[newPos+1]];
+					}
+					if(horseBehind.id != 'noPerson'){
+						horses[racePos[newPos+1]].horse.stamina -= 10;
+						raceEvents += `${horses[racePos[newPos]].horse.name} has knocked into ${horses[racePos[newPos+1]].horse.name}!\n`;
+					}
+					else{
+						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;
+					}
+				}
+				else if(horses[racePos[newPos]].horse.special == 'Scary' && specialChance >= 0.85){
+					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
+					horseBehind = {"id":"noPerson"};
+					if(newPos + 1 < racePos.length){
+						horseBehind = horses[racePos[newPos+1]];
+					}
+					if(horseBehind.id != 'noPerson'){
+						horses[racePos[newPos+1]].horse.speed -= 5;
+						raceEvents += `${horses[racePos[newPos]].horse.name} has given a menacing glare to ${horses[racePos[newPos+1]].horse.name}!\n`;
 					}
 					else{
 						raceEvents += `${horses[racePos[newPos]].horse.name} has no one behind them!\n`;

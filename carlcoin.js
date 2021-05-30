@@ -98,176 +98,219 @@ client.on('message', message => {
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
 	//guess command
 	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
+		console.log(message.author.username + ' is guessing');
 		if(guessingGame.guessNumber(client,message)){
 			raffleStart = false;
 		}
 	}
 	//battle start command
 	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
+		console.log(message.author.username + ' is challenging');
 		playerBattle.battlePlayer(client,message);
 	}
 	//accept or deny battle
 	else if(message.content === '!cc denyBattle' || message.content === '!cc acceptBattle'){
+		console.log(message.author.username + ' is accepting/denying a battle');
 		playerBattle.acceptDenyBattle(client,message);
 	}
    //join command
 	else if (message.content === '!cc join' && !message.author.bot) {
+		console.log(message.author.username + ' is joining carl');
 		joinCarl.joinCarlCoin(client,message);
 	}
 	//audit user
 	else if(message.content.startsWith('!cc audit')){
+		console.log(message.author.username + ' is auditing');
 		audit.auditUser(client,message);
 	}
 	//player card
 	else if(message.content === '!cc balance'){
+		console.log(message.author.username + ' is checking balance');
 		balance.checkBalance(client,message);
 	}
 	//pay user
 	else if(message.content.startsWith('!cc pay')){
+		console.log(message.author.username + ' is paying');
 		pay.payUser(client,message);
 	}
 	//chance game
-	else if(message.content === '!cc chance'){ /*!cc chance*/ 
+	else if(message.content === '!cc chance'){ /*!cc chance*/
+		console.log(message.author.username + ' is chancing');	
 		chance.chanceGame(client,message);
 	}
 	//work
 	else if(message.content === '!cc work'){
+		console.log(message.author.username + ' is working');
 		work.workPlayer(client,message);
 	}
 	//purchase home
 	else if(message.content.startsWith('!cc purchase')){ /* !cc purchase home/apartment/skyscraper */
+		console.log(message.author.username + ' is purchasing');
 		purchase.purchaseItem(client,message);
 	}
 	//purchase items
 	else if(message.content === '!cc catalog'){
+		console.log(message.author.username + ' is checking catalog');
 		purchase.purchaseList(client,message);
 	}
 	//sell house
 	else if(message.content.startsWith('!cc sell')){ /* !cc sell house/apartment */
+		console.log(message.author.username + ' is selling');
 		sell.sellBuilding(client,message);
 	}
 	//sell to someone
 	else if(message.content.startsWith('!cc userSell')){ /* !cc sellTo person offer amount*/
+		console.log(message.author.username + ' is selling to a user');
 		sellUser.sellUser(client,message);
 	}
 	//accept offer
 	else if(message.content === '!cc acceptPurchase' || message.content === '!cc denyPurchase'){
+		console.log(message.author.username + ' is accepting/denying purchase');
 		sellUser.acceptDenySale(client,message);
 	}
 	//economy function
 	else if(message.content === '!cc econ'){
+		console.log(message.author.username + ' is checking econ');
 		econ.checkEcon(client,message);
 	}
 	//lottery
 	else if(message.content === '!cc lottery'){
+		console.log(message.author.username + ' is enrolling in lottery');
 		lottery.enrollInLottery(client,message);
 	}
 	//blackjack
 	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */	
+		console.log(message.author.username + ' is playing blackjack');
 		blackjack.blackjackStart(client,message);
 	}
 	//hit
 	else if(message.content === '!cc hit'){
+		console.log(message.author.username + ' is hitting in blackjack');
 		blackjack.blackjackHit(client,message);
 	}
 	//stay
 	else if(message.content === '!cc stand'){
+		console.log(message.author.username + ' is standing in blackjack');
 		blackjack.blackjackStand(client,message);
 	}
 	//uh oh
 	else if(message.content === '!cc suicide'){
+		console.log(message.author.username + ' is suiciding');
 		suicide.attemptSuicide(client,message);
 	}
 	//relax
 	else if(message.content === '!cc relax'){
+		console.log(message.author.username + ' is relaxing');
 		relax.relaxUser(client,message);
 	}
 	//doctor
 	else if(message.content === '!cc doctor'){
+		console.log(message.author.username + ' is going to the doctor');
 		doctor.doctorVisit(client,message);
 	}
 	//check sanity
 	else if(message.content === '!cc sanity'){
+		console.log(message.author.username + ' is checking sanity');
 		sanity.checkSanity(client,message);
 	}
 	//leaderboard
 	else if(message.content === '!cc leaderboard'){
+		console.log(message.author.username + ' is checking leaderboard');
 		leaderboard.checkLeaderboard(client,message);
 	}
 	//update name
 	else if(message.content === '!cc name'){
+		console.log(message.author.username + ' is changing name');
 		changeName.changeName(client,message);
 	}
 	//cc sex
 	else if(message.content.startsWith('!cc sex')){
+		console.log(message.author.username + ' is having sex');
 		sex.haveSex(client,message);
 	}
 	//robbery
 	else if(message.content.startsWith('!cc rob')){
+		console.log(message.author.username + ' is robbing');
 		rob.robPlayer(client,message);
 	}
 	//rock paper scissors
 	else if(message.content.startsWith('!cc rps')){ /* !cc challenge @user amount */
+		console.log(message.author.username + ' is rpsing');
 		RPS.startRPS(client,message);
 	}
 	//accept or deny battle
 	else if(message.content === '!cc denyRps' || message.content === '!cc acceptRps'){
+		console.log(message.author.username + ' is accepting/denying rps');
 		RPS.acceptDenyRPS(client,message);
 	}
 	//slot machine
 	else if(message.content.startsWith('!cc slots')){
+		console.log(message.author.username + ' is playing slots');
 		slots.playSlots(client,message);
 	}
 	//help menu
 	else if(message.content === '!cc help'){
+		console.log(message.author.username + ' is checking help');
 		help.mainHelp(client,message);
 	}
 	//gamble help
 	else if(message.content === '!cc gameHelp'){
+		console.log(message.author.username + ' is checking game help');
 		help.gambleHelp(client,message);
 	}
 	//user help
 	else if(message.content === '!cc userHelp'){
+		console.log(message.author.username + ' is checking user help');
 		help.userHelp(client,message);
 	}
 	//purchase horse
 	else if(message.content === '!cc horsePurchase'){
+		console.log(message.author.username + ' is purchasing horse');
 		horse.purchaseHorse(client,message);
 	}
 	//see all horses
 	else if(message.content === '!cc horseList'){
+		console.log(message.author.username + ' is checking horse list');
 		horse.horseList(client,message);
 	}
 	//see individual horse
 	else if(message.content.startsWith('!cc horseStats')){
+		console.log(message.author.username + ' is checking horse stats');
 		horse.horseStats(client,message);
 	}
 	//sell horse
 	else if(message.content.startsWith('!cc horseSell')){
+		console.log(message.author.username + ' is selling horse');
 		horse.horseSell(client,message);
 	}
 	//agree to offer
 	else if(message.content === '!cc horseDeny' || message.content === '!cc horseAccept'){
+		console.log(message.author.username + ' is accepting / denying horse sell');
 		horse.acceptDenyHorse(client,message);
 	}
 	//horse help
 	else if(message.content === '!cc horseHelp'){
+		console.log(message.author.username + ' is checking horse help');
 		horse.horseHelp(client,message);
 	}
 	//horse train
 	else if(message.content.startsWith('!cc horseTrain')){
+		console.log(message.author.username + ' is training horse');
 		horse.trainHorse(client,message);
 	}
 	//horse breed
 	else if(message.content.startsWith('!cc horseBreed')){
+		console.log(message.author.username + ' is breeding horse');
 		horse.breedHorse(client,message);
 	}
 	//race
 	else if(message.content.startsWith('!cc horseRace')){
+		console.log(message.author.username + ' is racing horse');
 		horse.raceHorse(client,message);
 	}
 	//name horse
 	else if(message.content.startsWith('!cc horseName')){
+		console.log(message.author.username + ' is naming horse');
 		horse.nameHorse(client, message);
 	}
 	//give carl

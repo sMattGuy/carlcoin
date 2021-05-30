@@ -50,6 +50,30 @@ function summonGaintCoin(client,message){
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	message.channel.send(`A Giant Coin is about to appear!`);
 }
+// !cc leaveServer serverID
+function leaveServer(client,message){
+	let chop = message.content.split(" ");
+	if(chop.length != 3){
+		let servers = '';
+		client.guilds.cache.forEach(guild => {server += `${guild.name} | ${guild.id}\n`;});
+		message.channel.send(`Usage: !cc leaveServer <serverID>\n${server}`);
+	}
+	else{
+		let server = {};
+		let serverID = chop[chop.length - 1];
+		let guildOK = true;
+		try{
+			server = client.guilds.cache.get(serverID);
+		}
+		catch(err){
+			message.channel.send('Invalid user selected!');
+			guildOK = false;
+		}
+		if(guildOK){
+			server.leave().then(g => console.log(`Left the guild ${g}`)).catch(console.error);
+		}
+	}
+}
 
 function getUserFromMention(client,mention) {
 	if (!mention) return;
