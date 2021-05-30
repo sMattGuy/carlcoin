@@ -34,7 +34,11 @@ function moveCargo(client,message){
 	
 }
 
+function sprinterHelp(client,message){
+	message.channel.send(`Use !cc driveSprinter to drive your sprinter\n`);
+}
 //export functions
 module.exports = {
-	driveSprinter
+	driveSprinter,
+	sprinterHelp
 };

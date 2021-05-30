@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 function mainHelp(client,message){
-	message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands\nuse !cc horseHelp to see information on horses`);
+	message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands\nuse !cc horseHelp to see information on horses\nuse !cc sprinterHelp to see sprinter commands`);
 }
 
 function gambleHelp(client,message){

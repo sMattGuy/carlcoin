@@ -335,6 +335,10 @@ client.on('message', message => {
 		console.log(message.author.username + ' is driving a sprinter');
 		sprinter.driveSprinter(client,message);
 	}
+	else if(message.content === '!cc sprinterHelp'){
+		console.log(message.author.username + ' is looking at sprinter help');
+		sprinter.sprinterHelp(client,message);
+	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
