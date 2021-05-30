@@ -29,7 +29,13 @@ function checkLeaderboard(client,message){
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
-		messageBox += `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
+		let newMessage = `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
+		if(messageBox.length + newMessage.length < 1500){
+			messageBox += newMessage;
+		}
+		else{
+			break;
+		}
 	}
 	message.channel.send(`Leaderboard of Carl Coin\n${messageBox}`,{"code":true});
 	console.log(message.author.username + ' has checked the leaderboard');
