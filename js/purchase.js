@@ -139,7 +139,7 @@ function purchaseItem(client,message){
 					if(isNaN(data.users[i]["sprinter"])){
 						data.users[i]["sprinter"] = 0;
 					}
-					let cost = 4400 + (data.users[i]["sprinter"] * 2200);
+					let cost = 44000 + (data.users[i]["sprinter"] * 22000);
 					if(data.users[i].balance - cost < 0){
 						message.channel.send(`You do not have enough CC! (Costs ${cost})`);
 					}
@@ -199,7 +199,7 @@ function purchaseList(client,message){
 			if(isNaN(data.users[i]["sprinter"])){
 				data.users[i]["sprinter"] = 0;
 			}
-			let sprinterPrice = (data.users[i].sprinter * 2200) + 4400;
+			let sprinterPrice = (data.users[i].sprinter * 22000) + 44000;
 			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. Mercedes-Benz:tm: 2021 Sprinter Cargo Van (${sprinterPrice}CC type sprinter to purchase)\n5. office (200CC) doubles work output`);
 			return;
 		}
