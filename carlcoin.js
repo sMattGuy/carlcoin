@@ -32,6 +32,7 @@ const slots = require('./js/slotmachine.js');
 const help = require('./js/help.js');
 const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
+const sprinter = require('./js/sprinter.js');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
@@ -328,6 +329,11 @@ client.on('message', message => {
 	//leave server
 	else if(message.content.startsWith('!cc leaveServer') && message.author.id == 492850107038040095){
 		admin.leaveServer(client,message);
+	}
+	//drive sprinter
+	else if(message.content === '!cc driveSprinter'){
+		console.log(message.author.username + ' is driving a sprinter');
+		sprinter.driveSprinter(client,message);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
