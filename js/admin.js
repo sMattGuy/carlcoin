@@ -66,11 +66,15 @@ function leaveServer(client,message){
 			server = client.guilds.cache.get(serverID);
 		}
 		catch(err){
-			message.channel.send('Invalid user selected!');
+			message.channel.send('Invalid server selected!');
 			guildOK = false;
 		}
 		if(guildOK){
+			console.log('leaving server');
 			server.leave().then(g => console.log(`Left the guild ${g}`)).catch(console.error);
+		}
+		else{
+			console.log('failed to leave server');
 		}
 	}
 }
