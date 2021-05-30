@@ -326,7 +326,7 @@ client.on('message', message => {
 		horse.actualRace(client,message);
 	}
 	//leave server
-	else if(message.content === '!cc leaveServer' && message.author.id == 492850107038040095){
+	else if(message.content.startsWith('!cc leaveServer') && message.author.id == 492850107038040095){
 		admin.leaveServer(client,message);
 	}
 	//caps lock
