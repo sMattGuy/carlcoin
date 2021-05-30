@@ -534,14 +534,14 @@ function trainHorse(client,message){
 						let speedAmount = Math.floor(Math.random()*5)+1;
 						let results = `You start training ${data.users[i].horses[horseIndex].name}...\n`;
 						if(staminaChance >= 0.25){
-							data.users[i].horses[allHorseIndex].stamina = parseInt(data.users[i].horses[allHorseIndex].stamina) + staminaAmount;
+							data.users[i].horses[horseIndex].stamina = parseInt(data.users[i].horses[horseIndex].stamina) + staminaAmount;
 							if(data.users[i].horses[horseIndex].stamina > 150){
 								data.users[i].horses[horseIndex].stamina = 150;
 							}
 							results += `${data.users[i].horses[horseIndex].name} improved their stamina by ${staminaAmount} points!\n`;
 						}
 						if(speedChance >= 0.75){
-							data.users[i].horses[allHorseIndex].speed = parseInt(data.users[i].horses[allHorseIndex].speed) + speedAmount;
+							data.users[i].horses[horseIndex].speed = parseInt(data.users[i].horses[horseIndex].speed) + speedAmount;
 							if(data.users[i].horses[horseIndex].speed > 150){
 								data.users[i].horses[horseIndex].speed = 150;
 							}
