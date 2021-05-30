@@ -93,7 +93,8 @@ function checkBalance(client,message){
 					.addFields(
 						{ name: 'Summary Info?', value: `Balance: ${fakeBalance}CC\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
 						{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}\nYou recieve crazy coin from Santa daily`},
-						{ name: 'Horses?', value: `Yeehaw`},
+						{ name: 'Horses?', value: `Yeehaw`, inline: true},
+						{ name: 'Sprinters?', value: `Vrrrmmmmmm`, inline: true},
 						{ name: 'Cooldowns', value: `${messageToSend}`},
 						{ name: 'Stats?', value: '\u200B' },
 						{ name: 'STR', value: `${fakeStr}`, inline: true },
@@ -155,6 +156,11 @@ function checkBalance(client,message){
 				if(!data.users[i].hasOwnProperty("horses")){
 					data.users[i].horses = [];
 				}
+				let sprinter = data.users[i]["sprinter"];
+				if(isNaN(sprinter)){
+					sprinter = 0;
+					data.users[i]["sprinter"] = 0;
+				}
 				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
 				let perc = (balance / data.econ) * 100;
 				perc = perc.toFixed(2);
@@ -166,7 +172,8 @@ function checkBalance(client,message){
 					.addFields(
 						{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
 						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (before tax) daily`},
-						{ name: 'Horses', value: `${data.users[i].horses.length}`},
+						{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
+						{ name: 'Sprinters', value: `${sprinter}`, inline: true},
 						{ name: 'Cooldowns', value: `${messageToSend}`},
 						{ name: 'Stats', value: '\u200B' },
 						{ name: 'STR', value: `${str}`, inline: true },

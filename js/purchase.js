@@ -135,6 +135,37 @@ function purchaseItem(client,message){
 						console.log(data.users[i].name + " bought an office");
 					}
 				}
+				else if(type == "sprinter"){
+					if(isNaN(data.users[i]["sprinter"])){
+						data.users[i]["sprinter"] = 0;
+					}
+					let cost = 4400 + (data.users[i]["sprinter"] * 2200);
+					if(data.users[i].balance - cost < 0){
+						message.channel.send(`You do not have enough CC! (Costs ${cost})`);
+					}
+					else{
+						data.users[i]["sprinter"] += 1;
+						data.users[i].balance -= cost;
+						data.econ -= cost;
+						data.users[i]["activity"] = Date.now();
+						if(isNaN(data.users[i]["INT"])){
+							data.users[i]["INT"] = 0;
+						}
+						if(isNaN(data.users[i]["intExp"])){
+							data.users[i]["intExp"] = 0;
+						}
+						data.users[i]["intExp"] += 4;
+						if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+							data.users[i]["intExp"] = 0;
+							data.users[i]["INT"] += 1;
+							message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have purchased a Mercedes-Benz:tm: 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload! You now own ${data.users[i].sprinter}`);
+						console.log(data.users[i].name + " bought a skyscraper");
+					}
+				}
 				else{
 					message.channel.send('Invalid purchase! !cc catalog to see all items');
 				}
@@ -165,7 +196,11 @@ function purchaseList(client,message){
 				data.users[i]["skyscraper"] = 0;
 			}
 			let skyscraperPrice = (data.users[i].skyscraper * 250) + 500;
-			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. office (200CC) doubles work output`);
+			if(isNaN(data.users[i]["sprinter"])){
+				data.users[i]["sprinter"] = 0;
+			}
+			let sprinterPrice = (data.users[i].sprinter * 2200) + 4400;
+			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. Mercedes-Benz:tm: 2021 Sprinter Cargo Van (${sprinterPrice}CC)\n5. office (200CC) doubles work output`);
 			return;
 		}
 	}
