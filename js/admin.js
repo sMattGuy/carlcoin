@@ -62,8 +62,10 @@ function leaveServer(client,message){
 		let server;
 		let serverID = chop[chop.length - 1];
 		let guildOK = true;
+		console.log(serverID + ' server to be left');
 		try{
 			server = client.guilds.cache.get(serverID);
+			console.log(server);
 		}
 		catch(err){
 			message.channel.send('Invalid server selected!');
