@@ -321,8 +321,13 @@ client.on('message', message => {
 	else if(message.content === '!cc summonGaintCoin' && message.author.id == 492850107038040095){
 		admin.summonGaintCoin(client,message);
 	}
+	//cause race
 	else if(message.content === '!cc causeRace' && message.author.id == 492850107038040095){
 		horse.actualRace(client,message);
+	}
+	//leave server
+	else if(message.content === '!cc leaveServer' && message.author.id == 492850107038040095){
+		admin.leaveServer(client,message);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){

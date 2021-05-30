@@ -90,5 +90,6 @@ function getUserFromMention(client,mention) {
 
 module.exports = {
 	giveUserMoney,
-	summonGaintCoin
+	summonGaintCoin,
+	leaveServer
 };
