@@ -56,7 +56,7 @@ function leaveServer(client,message){
 	if(chop.length != 3){
 		let servers = '';
 		client.guilds.cache.forEach(guild => {servers += `${guild.name} | ${guild.id}\n`;});
-		message.channel.send(`Usage: !cc leaveServer <serverID>\n${server}`);
+		message.channel.send(`Usage: !cc leaveServer <serverID>\n${servers}`);
 	}
 	else{
 		let server = {};
