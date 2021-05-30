@@ -60,7 +60,7 @@ function workPlayer(client,message){
 					data.welfare -= randomAmount;
 					data.users[j]["strEXP"] += randomAmount;
 					message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
-					console.log(data.users[j].name + " mined CC");
+					console.log(data.users[j].name + " used their office CC");
 				}
 				if(isNaN(data.users[j]["STR"])){
 					data.users[j]["STR"] = 0;

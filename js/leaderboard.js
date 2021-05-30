@@ -32,6 +32,7 @@ function checkLeaderboard(client,message){
 		messageBox += `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
 	}
 	message.channel.send(`Leaderboard of Carl Coin\n${messageBox}`,{"code":true});
+	console.log(message.author.username + ' has checked the leaderboard');
 }
 
 //export functions

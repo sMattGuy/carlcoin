@@ -29,6 +29,7 @@ function auditUser(client,message){
 			//checks for name
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
+					console.log(message.author.username + ' has audited ' + data.users[i].name);
 					//buildings and balance
 					let sanity = "Fine";
 					if(isNaN(data.users[i]["unstable"])){

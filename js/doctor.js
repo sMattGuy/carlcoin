@@ -24,6 +24,7 @@ function doctorVisit(client,message){
 					data.users[i]["unstable"] = 0;
 				}
 				message.channel.send(`The doctor gave you some medicine; You feel a bit better.`);
+				console.log(data.users[i].name + ' used the doctor');
 				if(insane && data.users[i]["unstable"] + 50 >= 100 && data.users[i]["unstable"] < 100){
 					message.channel.send(`You have come to your senses`);
 				}

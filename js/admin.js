@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-// !cc giveCarlCoin user amount
-
 function giveUserMoney(client, message){
 	let chop = message.content.split(" ");
 	if(chop.length != 4){
@@ -31,6 +29,7 @@ function giveUserMoney(client, message){
 					if(data.users[i].id == buyer){
 						data.users[i].balance += price;
 						data.econ += price;
+						console.log(data.users[i].name + ' has been bestowed ' + price + 'CC');
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						message.channel.send(`You have been bestowed ${price} CarlCoin!`);
@@ -45,9 +44,8 @@ function giveUserMoney(client, message){
 function summonGaintCoin(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
-	
 	data.raffleRNG = 0
-	
+	console.log('giant coin has been summoned');
 	let newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	message.channel.send(`A Giant Coin is about to appear!`);

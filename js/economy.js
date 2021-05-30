@@ -11,6 +11,7 @@ function checkEcon(client,message){
 	let skyCount = 0;
 	let horses = 0;
 	let carlball = data.carlball;
+	console.log(message.author.username + ' is checking the econ');
 	//searches for highest and lowest earner
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].balance > highestEarnerAmount){

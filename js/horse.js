@@ -58,6 +58,7 @@ function nameHorse(client, message){
 						let oldName = data.users[i].horses[horseIndex].name;
 						data.users[i].horses[horseIndex].name = newName;
 						message.channel.send(`${oldName} has been renamed to ${newName}!`);
+						console.log(data.users[i].name + ' has changed their horses name from ' + oldName + ' to ' + newName);
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					}
@@ -92,9 +93,10 @@ function purchaseHorse(client,message){
 				else{
 					data.users[i].horses.push(newHorse);
 				}
-				const playercardEmbed = makeHorseEmbed(newHorse,data.users[i].name,message)
+				const playercardEmbed = makeHorseEmbed(newHorse,data.users[i].name,message);
 				message.channel.send(playercardEmbed);
 				message.channel.send(`You have purchased ${newHorse.name}!`);
+				console.log(data.users[i].name + ' has bought a horse');
 				data.users[i].balance -= cost;
 				data.econ -=  cost;
 				let newData = JSON.stringify(data);
@@ -178,6 +180,7 @@ function raceHorse(client,message){
 						let raceFile = JSON.stringify(horseRace);
 						fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',raceFile);
 					}
+					console.log(name + ' has enrolled ' + data.users[i].horses[horseIndex].name + ' into the race betting ' + bet +'CC')
 					message.channel.send(`You have been enrolled for the race! The results will be in general at midnight!`);
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -469,6 +472,7 @@ function trainHorse(client,message){
 				}
 				else if(trainAll){
 					let massTrain = '';
+					console.log(data.users[i].name + ' is training all their horses');
 					for(let allHorseIndex = 0; allHorseIndex < data.users[i].horses.length; allHorseIndex++){
 						if(data.users[i].horses[allHorseIndex].trainingCooldown > Date.now()){
 							let timeLeftClaim = data.users[i].horses[allHorseIndex].trainingCooldown - Date.now();
@@ -516,6 +520,7 @@ function trainHorse(client,message){
 						message.channel.send(`You trained ${data.users[i].horses[horseIndex].name} recently! Try again in ${timeLeftClaim} mins!`);
 					}
 					else{
+						console.log(data.users[i].name + ' is training ' + data.users[i].horses[horseIndex].name);
 						let staminaChance = Math.random();
 						let speedChance = Math.random();
 						let staminaAmount = Math.floor(Math.random()*5)+1;
@@ -596,6 +601,7 @@ function breedHorse(client,message){
 						return;
 					}
 					else{
+						console.log(data.users[i].name + ' is breeding ' + data.users[i].horses[horseIndex1].name + ' and ' + data.users[i].horses[horseIndex2].name);
 						let newHorse = createHorse();
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
@@ -697,7 +703,7 @@ function horseSell(client,message){
 										let jsonBattle = JSON.stringify(sellInfo);
 										fs.writeFileSync(`/home/mattguy/carlcoin/cache/${buyer}horseSell`,jsonBattle);
 										message.channel.send(`${data.users[j].name}! Type !cc horseAccept to accept ${data.users[i].name}'s offer or type !cc horseDeny to reject the offer. You have 1 minute to respond.`);
-										console.log(data.users[i].name + " trying to sell to " + data.users[j].name);
+										console.log(data.users[j].name + " trying to sell a horse to " + data.users[j].name);
 										return;
 									}
 									noBuy = false;
@@ -761,7 +767,7 @@ function acceptDenyHorse(client,message){
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}horseSell`);
 					message.channel.send('You have accepted the offer!');
-					console.log(data.users[sellParse.sellerIndex].name + " has sold to " + data.users[sellParse.buyerIndex].name);
+					console.log(data.users[sellParse.sellerIndex].name + " has sold a horse to " + data.users[sellParse.buyerIndex].name);
 				}
 			}
 		}
@@ -781,6 +787,7 @@ function horseList(client,message){
 				message.channel.send(`You do not own any horses!`);
 			}
 			else{
+				console.log(data.users[i].name + ' is checking their horses');
 				let horseList = "";
 				for(let j=0;j<data.users[i].horses.length;j++){
 					horseList += `${j}. ${data.users[i].horses[j].name}\n`;
@@ -839,6 +846,7 @@ function horseStats(client,message){
 						let horse = data.users[i].horses[horseIndex];
 						const playercardEmbed = makeHorseEmbed(horse,data.users[i].name,message);
 						message.channel.send(playercardEmbed);
+						console.log(data.users[i].name + ' has checked their horse stats for ' + horse.name);
 					}
 				}
 				return;

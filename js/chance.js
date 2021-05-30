@@ -44,6 +44,7 @@ function chanceGame(client,message){
 					data.users[j].chanceTime = currentTime.getDate();
 					data.econ += amount;
 					message.channel.send(`You've won! You now have ${data.users[j].balance}CC`);
+					console.log(data.users[j].name + ' has won chance');
 					//instability counter
 					let insane = false;
 					if(data.users[j]["unstable"] >= 100){
@@ -81,6 +82,7 @@ function chanceGame(client,message){
 					data.welfare += welfPot;
 					data.users[j].chanceTime = currentTime.getDate();
 					message.channel.send(`You've lost! You now have ${data.users[j].balance}CC`);
+					console.log(data.users[j].name + ' has lost chance');
 					//instability counter
 					data.users[j]["unstable"] += amount;
 					if(isNaN(data.users[j]["unstable"])){

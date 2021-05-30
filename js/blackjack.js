@@ -44,7 +44,7 @@ function blackjackStart(client,message){
 						}
 						else{
 							let cardValue = [11,2,3,4,5,6,7,8,9,10,10,10,10];
-							console.log(data.users[i].name + ' has started blackjack');	
+							console.log(data.users[i].name + ' has started blackjack and bet ' + wager + 'CC');	
 							let welfareSupport = Math.floor(wager * .25);
 							let blackjackSupport = wager - welfareSupport;
 							data.blackjack += blackjackSupport;
@@ -81,11 +81,13 @@ function blackjackStart(client,message){
 									data.blackjack -= wager;
 									let resultsOfGame = `You and the dealer both got a natural..... you get back your CC\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.`;
 									drawBoard(message.channel, false, resultsOfGame, playerCards.playerCards, dealerCards.dealerCards,false,true,21,message.author.username,21,message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
+									console.log(data.users[i].name + ' drew in blackjack');
 								}
 								else{
 									data.users[i].balance += Math.floor(wager * 2.5);
 									data.blackjack -= Math.floor(wager * 2.5);
 									let resultsOfGame = `You got a natural! You win!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.\n`;
+									console.log(data.users[i].name + ' won in blackjack');
 									//instability counter
 									let insane = false;
 									if(data.users[i]["unstable"] >= 100){
@@ -120,6 +122,7 @@ function blackjackStart(client,message){
 							else if(((dealerCard1%13 == 0)&&(dealerCard2%13 == 9 || dealerCard2%13 == 10 || dealerCard2%13 == 11 || dealerCard2%13 == 12)) || ((dealerCard2%13 == 0)&&(dealerCard1%13 == 9 || dealerCard1%13 == 10 || dealerCard1%13 == 11 || dealerCard1%13 == 12))){
 								//seduce dealer
 								let resultsOfGame = `Dealer got a natural! You lose!\nYou:${blackjackCards[playerCard1]},${blackjackCards[playerCard2]}. Dealer:${blackjackCards[dealerCard1]},${blackjackCards[dealerCard2]}.\n`;
+								console.log(data.users[i].name + ' lost in blackjack');
 								//wis check
 								let wisdomChance = Math.random();
 								if(isNaN(data.users[i]["WIS"])){
@@ -270,6 +273,7 @@ function blackjackHit(client,message){
 			}
 			if(currentTotal > 21){
 				let resultsOfGame = `Bust! You drew a ${blackjackCards[newCard]}, ${blackjackParse.name}, you lose!\nYou:${cardViewer}\n`;
+				console.log(blackjackParse.name + ' lost in blackjack');
 				//seduce dealer
 				let wisdomChance = Math.random();
 				if(isNaN(data.users[blackjackParse.challIndex]["WIS"])){
@@ -394,6 +398,7 @@ function blackjackStand(client,message){
 			}
 			if(dealerTotal > 21){
 				let resultsOfGame = `Bust! Dealer loses, ${blackjackParse.name}, you've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
+				console.log(blackjackParse.name + ' won in blackjack');
 				data.users[blackjackParse.challIndex].balance += Math.floor(parseInt(blackjackParse.wager) * 2);
 				data.blackjack -= Math.floor(parseInt(blackjackParse.wager) * 2);
 				data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -457,6 +462,7 @@ function blackjackStand(client,message){
 				if(playerValue > dealerTotal){
 					//player wins
 					let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've won!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
+					console.log(blackjackParse.name + ' won in blackjack');
 					data.users[blackjackParse.challIndex].balance += Math.floor(parseInt(blackjackParse.wager) * 2);
 					data.blackjack -= Math.floor(parseInt(blackjackParse.wager) * 2);
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
@@ -495,6 +501,7 @@ function blackjackStand(client,message){
 				else if(dealerTotal > playerValue){
 					//player lose
 					let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. You've lost!\nYou:${playerViewer}. Dealer:${cardViewer}\n`;
+					console.log(blackjackParse.name + ' lost in blackjack');
 					data.users[blackjackParse.challIndex]["activity"] = Date.now();
 					let wisdomChance = Math.random();
 					if(isNaN(data.users[blackjackParse.challIndex]["WIS"])){
@@ -553,6 +560,7 @@ function blackjackStand(client,message){
 				else{
 					//draw
 					let resultsOfGame = `${blackjackParse.name}, you have ${playerValue}, Dealer has ${dealerTotal}. It's a draw!\nYou:${playerViewer}. Dealer:${cardViewer}`;
+					console.log(blackjackParse.name + ' drew in blackjack');
 					drawBoard(message.channel, false, resultsOfGame, blackjackParse.playerCards.playerCards, blackjackParse.dealerCards.dealerCards,false,true,playerValue,blackjackParse.name,dealerTotal,message.author.displayAvatarURL({format:'png'})).catch(error => {console.log(error); message.channel.send(resultsOfGame);});
 					data.users[blackjackParse.challIndex].balance += parseInt(blackjackParse.wager);
 					data.blackjack -= parseInt(blackjackParse.wager);

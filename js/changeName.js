@@ -9,6 +9,7 @@ function changeName(client,message){
 	//checks for name
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
+			console.log(data.users[i].name + ' is changing their name to ' + message.author.username);
 			data.users[i].name = message.author.username;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);

@@ -54,9 +54,11 @@ function guessNumber(client,message){
 			let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			let data = JSON.parse(database);
 			//find user loop
+			console.log(message.author.username + ' guessed ' + guess);
 			if(data.mysteryNumber == guess){
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
+						console.log(data.users[i].name + ' has won the guessing game');
 						data.users[i].balance += data.md5Val;
 						data.econ += data.md5Val;
 						data.users[i]["activity"] = Date.now();

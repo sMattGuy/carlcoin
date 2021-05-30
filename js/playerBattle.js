@@ -158,12 +158,14 @@ function acceptDenyBattle(client,message){
 						data.users[battleParse.challIndex].balance += winnerAmount;
 						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n| \\o   |  o   |\n|  |\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 						message.channel.send(`${data.users[battleParse.challIndex].name} has won! They now have ${data.users[battleParse.challIndex].balance}CC!`);
+						console.log(data.users[battleParse.challIndex].name + ' had a battle win with ' + data.users[battleParse.oppIndex].name);
 					}
 					//opponent wins
 					else if(ChallengerRandom < OpponentRandom){
 						data.users[battleParse.oppIndex].balance += winnerAmount;
 						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o/  |\n| /|\\  | /|   |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 						message.channel.send(`${data.users[battleParse.oppIndex].name} has won! They now have ${data.users[battleParse.oppIndex].balance}CC!`);
+						console.log(data.users[battleParse.challIndex].name + ' had a battle loss with ' + data.users[battleParse.oppIndex].name);
 					}
 					//users tie
 					else{
@@ -171,6 +173,7 @@ function acceptDenyBattle(client,message){
 						data.users[battleParse.oppIndex].balance += wager;
 						message.channel.send(`${data.users[battleParse.challIndex].name} vs ${data.users[battleParse.oppIndex].name} for ${winnerAmount}CC\n+------+------+\n|      |      |\n|  o   |  o   |\n| /|\\  | /|\\  |\n| / \\  | / \\  |\n|      |      |\n+--${ChallengerRandom}---+--${OpponentRandom}---+`,{"code":true});
 						message.channel.send(`A draw?! How lame!`);
+						console.log(data.users[battleParse.challIndex].name + ' had a battle draw with ' + data.users[battleParse.oppIndex].name);
 					}
 					data.users[battleParse.challIndex]["bitterness"] = 0;
 					data.users[battleParse.oppIndex]["bitterness"] = 0;

@@ -68,8 +68,8 @@ function relaxUser(client,message){
 							data.users[i]["CON"] = 0;
 						}
 						let conBonus = data.users[i]["CON"] * .01;
-						if(conBonus > .1){
-							conBonus = .1;
+						if(conBonus > .5){
+							conBonus = .5;
 						}
 						if(1 - bonusChance < conBonus){
 							data.users[i]["unstable"] -= 10;

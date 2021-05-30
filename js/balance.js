@@ -178,6 +178,7 @@ function checkBalance(client,message){
 					)
 				message.channel.send(playercardEmbed);
 			}
+			console.log(data.users[i].name + ' checked their balance');
 			notFound = false;
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
