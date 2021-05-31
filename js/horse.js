@@ -645,10 +645,36 @@ function breedHorse(client,message){
 						let newHorse = createHorse();
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
-						newHorse.timeline = `${data.users[i].horses[horseIndex1].timeline}->${data.users[i].horses[horseIndex1].name}\n${data.users[i].horses[horseIndex2].timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
+
+						let horse1TimelineParse = {"timeline":"Parents:Unknown"};
+						let horse2TimelineParse = {"timeline":"Parents:Unknown"};
+						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`)){
+							let horse1Timeline = fs.readFileSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`);
+							horse1TimelineParse = JSON.parse(horse1Timeline);
+						}
+						
+						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`)){
+							let horse2Timeline = fs.readFileSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`);
+							horse2TimelineParse = JSON.parse(horse2Timeline);
+						}
+						
+						let newHorseTimeline = {"timeline":`${horse1TimelineParse.timeline}->${data.users[i].horses[horseIndex1].name}\n${horse2TimelineParse.timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`};
+						
+						newHorse.timeline = `${horse1TimelineParse.timeline}->${data.users[i].horses[horseIndex1].name}\n${horse2TimelineParse.timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
+						
+						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`)){
+							fs.unlinkSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`);
+						}
+						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`)){
+							fs.unlinkSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`);
+						}
+						
+						let horseTimelineWrite = JSON.stringify(newHorseTimeline);
+						fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline`,horseTimelineWrite);
+						
 						horseID1 = data.users[i].horses[horseIndex1].id;
 						horseID2 = data.users[i].horses[horseIndex2].id;
-						
+						//deletion start
 						data.users[i].horses.splice(horseIndex1,1);
 						for(let j=0;j<data.users[i].horses.length;j++){
 							if(horseID2 == data.users[i].horses[j].id){
@@ -897,7 +923,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\n Use !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
@@ -908,6 +934,7 @@ function makeHorseEmbed(newHorse,name,message){
 		timeLeftClaim = Math.floor(timeLeftClaim / 60);
 		trainCD = `${timeLeftClaim} mins until ready`;
 	}
+	
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
 		.setTitle(`${newHorse.name}'s stats`)
@@ -923,7 +950,7 @@ function makeHorseEmbed(newHorse,name,message){
 			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
 			{ name: 'Special', value: `${newHorse.special}`, inline: true },
 			{ name: 'Training CD', value: `${trainCD}`, inline: true },
-			{ name: 'Timeline', value: `${newHorse.timeline}`},
+			{ name: 'Timeline', value: `[Click Here](http://67.244.23.211/carlHorses/${newHorse.id}timeline)`},
 		)
 	return playercardEmbed;
 }
@@ -946,7 +973,10 @@ function createHorse(){
 	if(birthday > 28){
 		birthday = 28;
 	}
+	let horseTimeline = {"timeline":"Parents:Unknown"};
 	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":height,"weight":weight,"gender":`${gender}`,"special":`${specialAbility}`,"age":age,"birthday":birthday,"trainingCooldown":0,"timeline":"Parents:Unknown"};
+	let newHorseTimeline = JSON.stringify(horseTimeline);
+	fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline`,newHorseTimeline);
 	console.log(newHorse);
 	return newHorse;
 }
