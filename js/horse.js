@@ -646,7 +646,7 @@ function breedHorse(client,message){
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
 						
-						let newHorseTimeline = `${data.users[i].horses[horseIndex1].timeline}\n${data.users[i].horses[horseIndex2].timeline}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
+						let newHorseTimeline = `${data.users[i].horses[horseIndex1].timeline}\n${data.users[i].horses[horseIndex2].timeline}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}`;
 						
 						newHorse.timeline = newHorseTimeline;
 						
@@ -956,10 +956,7 @@ function createHorse(){
 	if(birthday > 28){
 		birthday = 28;
 	}
-	let horseTimeline = {"timeline":"Parents:Unknown"};
 	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":height,"weight":weight,"gender":`${gender}`,"special":`${specialAbility}`,"age":age,"birthday":birthday,"trainingCooldown":0,"timeline":`Unknown -> ${name}`};
-	let newHorseTimeline = JSON.stringify(horseTimeline);
-	fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline`,newHorseTimeline);
 	console.log(newHorse);
 	return newHorse;
 }
