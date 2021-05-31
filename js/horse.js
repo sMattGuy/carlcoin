@@ -938,7 +938,7 @@ function makeHorseEmbed(newHorse,name,message){
 	if(fs.existsSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`)){
 		fs.unlinkSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`);
 	}
-	let horseTimelineWrite = JSON.stringify(horseSite);
+	let horseTimelineWrite = horseSite;
 	fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`,horseTimelineWrite);
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
