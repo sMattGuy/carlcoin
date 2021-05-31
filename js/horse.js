@@ -645,11 +645,8 @@ function breedHorse(client,message){
 						let newHorse = createHorse();
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
-
-						let horse1TimelineParse = {"timeline":`Unknown -> ${data.users[i].horses[horseIndex1].name}`};
-						let horse2TimelineParse = {"timeline":`Unknown -> ${data.users[i].horses[horseIndex2].name}`};
 						
-						let newHorseTimeline = `${horse1TimelineParse.timeline}\n${horse2TimelineParse.timeline}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
+						let newHorseTimeline = `${data.users[i].horses[horseIndex1].timeline}\n${data.users[i].horses[horseIndex2].timeline}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
 						
 						newHorse.timeline = newHorseTimeline;
 						
