@@ -950,7 +950,7 @@ function makeHorseEmbed(newHorse,name,message){
 			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
 			{ name: 'Special', value: `${newHorse.special}`, inline: true },
 			{ name: 'Training CD', value: `${trainCD}`, inline: true },
-			{ name: 'Timeline', value: `[Click Here](http://67.244.23.211/carlHorses/${newHorse.id}timeline)`},
+			{ name: 'Timeline', value: `[Click Here](http://67.244.23.211:4377/carlHorses/${newHorse.id}timeline)`},
 		)
 	return playercardEmbed;
 }
