@@ -646,31 +646,12 @@ function breedHorse(client,message){
 						newHorse.speed = Math.floor((newHorse.speed + data.users[i].horses[horseIndex1].speed + data.users[i].horses[horseIndex2].speed) / 3);
 						newHorse.stamina = Math.floor((newHorse.stamina + data.users[i].horses[horseIndex1].stamina + data.users[i].horses[horseIndex2].stamina) / 3);
 
-						let horse1TimelineParse = {"timeline":"Parents:Unknown"};
-						let horse2TimelineParse = {"timeline":"Parents:Unknown"};
-						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`)){
-							let horse1Timeline = fs.readFileSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`);
-							horse1TimelineParse = JSON.parse(horse1Timeline);
-						}
+						let horse1TimelineParse = {"timeline":`Unknown -> ${data.users[i].horses[horseIndex1].name}`};
+						let horse2TimelineParse = {"timeline":`Unknown -> ${data.users[i].horses[horseIndex2].name}`};
 						
-						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`)){
-							let horse2Timeline = fs.readFileSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`);
-							horse2TimelineParse = JSON.parse(horse2Timeline);
-						}
+						let newHorseTimeline = `${horse1TimelineParse.timeline}\n${horse2TimelineParse.timeline}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
 						
-						let newHorseTimeline = {"timeline":`${horse1TimelineParse.timeline}->${data.users[i].horses[horseIndex1].name}\n${horse2TimelineParse.timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`};
-						
-						newHorse.timeline = `${horse1TimelineParse.timeline}->${data.users[i].horses[horseIndex1].name}\n${horse2TimelineParse.timeline}->${data.users[i].horses[horseIndex2].name}\n${data.users[i].horses[horseIndex1].name}&${data.users[i].horses[horseIndex2].name}->${newHorse.name}\n`;
-						
-						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`)){
-							fs.unlinkSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex1].id}timeline`);
-						}
-						if(fs.existsSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`)){
-							fs.unlinkSync(`/var/www/html/carlHorses/${data.users[i].horses[horseIndex2].id}timeline`);
-						}
-						
-						let horseTimelineWrite = JSON.stringify(newHorseTimeline);
-						fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline`,horseTimelineWrite);
+						newHorse.timeline = newHorseTimeline;
 						
 						horseID1 = data.users[i].horses[horseIndex1].id;
 						horseID2 = data.users[i].horses[horseIndex2].id;
@@ -979,7 +960,7 @@ function createHorse(){
 		birthday = 28;
 	}
 	let horseTimeline = {"timeline":"Parents:Unknown"};
-	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":height,"weight":weight,"gender":`${gender}`,"special":`${specialAbility}`,"age":age,"birthday":birthday,"trainingCooldown":0,"timeline":"Parents:Unknown"};
+	let newHorse = {"id":`${Date.now()}`,"name":`${name}`,"stamina":stamina,"speed":speed,"color":`${color}`,"height":height,"weight":weight,"gender":`${gender}`,"special":`${specialAbility}`,"age":age,"birthday":birthday,"trainingCooldown":0,"timeline":`Unknown -> ${name}`};
 	let newHorseTimeline = JSON.stringify(horseTimeline);
 	fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline`,newHorseTimeline);
 	console.log(newHorse);
