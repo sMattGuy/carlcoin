@@ -934,8 +934,7 @@ function makeHorseEmbed(newHorse,name,message){
 		timeLeftClaim = Math.floor(timeLeftClaim / 60);
 		trainCD = `${timeLeftClaim} mins until ready`;
 	}
-	let horseSite = `
-   <!DOCTYPE html> <html> <head> <title> ${newHorse.name} </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style></head><body><p>${newHorse.timeline}</p></body></html>`;
+	let horseSite = `<!DOCTYPE html> <html> <head> <title> ${newHorse.name} </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style></head><body><p>${newHorse.timeline}</p></body></html>`;
 	if(fs.existsSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`)){
 		fs.unlinkSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`);
 	}
