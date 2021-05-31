@@ -219,7 +219,7 @@ function actualRace(client,message){
 					for(let horseFinder = 0; horseFinder < data.users[userFinder].horses.length; horseFinder++){
 						if(data.users[userFinder].horses[horseFinder].id === raceFile.racers[i].horse){
 							horseFound = true;
-							let horse = data.users[userFinder].horses[horseFinder];
+							let horse = JSON.parse(JSON.stringify(data.users[userFinder].horses[horseFinder]));
 							let name = raceFile.racers[i].name;
 							let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
 							horses.push(currentHorse);
