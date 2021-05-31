@@ -934,7 +934,33 @@ function makeHorseEmbed(newHorse,name,message){
 		timeLeftClaim = Math.floor(timeLeftClaim / 60);
 		trainCD = `${timeLeftClaim} mins until ready`;
 	}
-	
+	let horseSite = `
+   <!DOCTYPE html>
+   <html>
+           <head>
+                   <title>${newHorse.name}</title>
+                   <style>
+                           body, form{
+                                   margin: 0 auto;
+                                   max-width:652px;
+                                   overflow-x:hidden;
+                                   background-color:#CCCCFF;
+                           }
+                           fieldset{
+                                   display: flex;
+                           }
+                   </style>
+           </head>
+           <body>
+               <p>${newHorse.timeline}</p>
+           </body>
+   </html>
+   `;
+	if(fs.existsSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`)){
+		fs.unlinkSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`);
+	}
+	let horseTimelineWrite = JSON.stringify(horseSite);
+	fs.writeFileSync(`/var/www/html/carlHorses/${newHorse.id}timeline.html`,horseTimelineWrite);
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
 		.setTitle(`${newHorse.name}'s stats`)
@@ -950,7 +976,7 @@ function makeHorseEmbed(newHorse,name,message){
 			{ name: 'Birthday', value: `${newHorse.birthday}`, inline: true },
 			{ name: 'Special', value: `${newHorse.special}`, inline: true },
 			{ name: 'Training CD', value: `${trainCD}`, inline: true },
-			{ name: 'Timeline', value: `[Click Here](http://67.244.23.211:4377/carlHorses/${newHorse.id}timeline)`},
+			{ name: 'Timeline', value: `[Click Here](http://67.244.23.211:4377/carlHorses/${newHorse.id}timeline.html)`},
 		)
 	return playercardEmbed;
 }
