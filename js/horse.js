@@ -21,7 +21,7 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 
 //horse value definition
 const horsePrice = 750;
-const racerNeededSize = 3;
+const racerNeededSize = 5;
 
 function nameHorse(client, message){
 	let chop = message.content.split(" ");
@@ -240,7 +240,10 @@ function actualRace(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
-		let raceName = `The ${secondPartName[Math.random()*secondPartName.length]} Derby of ${new Date().toString()}`;
+		let uniquePart = secondPartName[Math.floor(Math.random()*secondPartName.length)];
+		let todaysDate = new Date();
+		let raceDate = `${todaysDate.getMonth() + 1}-${todaysDate.getDate()}-${todaysDate.getFullYear()}`
+		let raceName = `The ${uniquePart} Derby of ${raceDate}`;
 		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 		let raceFile = JSON.parse(raceRead);
 		let total = raceFile.total;
