@@ -201,7 +201,40 @@ function raceHorse(client,message){
 		}
 	}
 }
-
+function checkRace(client,message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
+		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
+		let raceFile = JSON.parse(raceRead);
+		let total = raceFile.total;
+		let raceEvents = "";
+		raceEvents += `Tonights race pot is so far ${total}CC\n`;
+		for(let i=0;i<raceFile.racers.length;i++){
+			let id = raceFile.racers[i].id;
+			for(let userFinder = 0;userFinder < data.users.length;userFinder++){
+				if(data.users[userFinder].id == id){
+					let horseFound = false;
+					for(let horseFinder = 0; horseFinder < data.users[userFinder].horses.length; horseFinder++){
+						if(data.users[userFinder].horses[horseFinder].id === raceFile.racers[i].horse){
+							horseFound = true;
+							let horse = JSON.parse(JSON.stringify(data.users[userFinder].horses[horseFinder]));
+							raceEvents += `${horse.name} owned by ${raceFile.racers[i].name} who bet ${raceFile.racers[i].bet}CC\n`
+							break;
+						}
+					}
+					if(!horseFound){
+						raceEvents += `${raceFile.racers[i].name}'s horse could not be found!\n`;
+					}
+					break;
+				}
+			}
+		}
+	}
+	else{
+		message.channel.send(`No one is enrolled for the races tonight`)
+	}
+}
 function actualRace(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
@@ -901,7 +934,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!\nUse !cc checkRace who is in the race`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
@@ -987,5 +1020,6 @@ module.exports = {
 	horseList,
 	actualRace,
 	createHorse,
-	nameHorse
+	nameHorse,
+	checkRace
 };
