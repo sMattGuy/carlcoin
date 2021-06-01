@@ -21,7 +21,7 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 
 //horse value definition
 const horsePrice = 750;
-const racerNeededSize = 5;
+const racerNeededSize = 3;
 
 function nameHorse(client, message){
 	let chop = message.content.split(" ");
