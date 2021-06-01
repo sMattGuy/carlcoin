@@ -240,6 +240,7 @@ function actualRace(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
+		let raceName = `The ${secondPartName[Math.random()*secondPartName.length]} Derby of ${new Date().toString()}`;
 		let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 		let raceFile = JSON.parse(raceRead);
 		let total = raceFile.total;
@@ -283,7 +284,7 @@ function actualRace(client,message){
 			console.log(i + '. ' + horses[i].horse.name);
 			racePos.push(i);
 		}
-		raceEvents += `Welcome to todays race of ${horses.length} horses. The pot today is ${total}\n`;
+		raceEvents += `Welcome to ${raceName}, There are ${horses.length} horses today racing. The pot today is ${total}\n`;
 		for(let raceSize=100;raceSize!=0;raceSize--){
 			raceEvents += `Current standings:\n`;
 			for(let places = 0;places < racePos.length;places++){
@@ -470,6 +471,17 @@ function actualRace(client,message){
 				raceEvents += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
 				victory += `${data.users[i].name} won first place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
+				let issue = true;
+				for(let j=0;j<data.users[i].horses.length;j++){
+					if(data.users[i].horses[j].id == firstPlace.horse.id){
+						issue = false;
+						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, First Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						break;
+					}
+				}
+				if(issue){
+					console.log('failed to give accolade for first to ' + data.users[i].name);
+				}
 			}
 			else if(data.users[i].id == secondPlace.id){
 				let winnings = Math.floor(secondWinnings * (parseInt(secondPlace.bet) / originalTotal)) + parseInt(secondPlace.bet);
@@ -478,6 +490,17 @@ function actualRace(client,message){
 				raceEvents += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
 				victory += `${data.users[i].name} won second place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
+				let issue = true;
+				for(let j=0;j<data.users[i].horses.length;j++){
+					if(data.users[i].horses[j].id == secondPlace.horse.id){
+						issue = false;
+						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, Second Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						break;
+					}
+				}
+				if(issue){
+					console.log('failed to give accolade for second to ' + data.users[i].name);
+				}
 			}
 			else if(data.users[i].id == thirdPlace.id){
 				let winnings = Math.floor(thirdWinnings * (parseInt(thirdPlace.bet) / originalTotal)) + parseInt(thirdPlace.bet);
@@ -486,6 +509,17 @@ function actualRace(client,message){
 				raceEvents += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
 				victory += `${data.users[i].name} won third place! They got ${winnings}CC!\n`;
 				data.econ += winnings;
+				let issue = true;
+				for(let j=0;j<data.users[i].horses.length;j++){
+					if(data.users[i].horses[j].id == thirdPlace.horse.id){
+						issue = false;
+						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, Third Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						break;
+					}
+				}
+				if(issue){
+					console.log('failed to give accolade for third to ' + data.users[i].name);
+				}
 			}
 		}
 		let newData = JSON.stringify(data);
