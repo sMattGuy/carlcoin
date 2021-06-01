@@ -929,7 +929,7 @@ function horseStats(client,message){
 	}
 	else{
 		let horseIndex = 0;
-		let horseAll = false'
+		let horseAll = false;
 		try{
 			if(chop[chop.length-1] === 'all'){
 				horseAll = true;
