@@ -230,6 +230,7 @@ function checkRace(client,message){
 				}
 			}
 		}
+		message.channel.send(raceEvents);
 	}
 	else{
 		message.channel.send(`No one is enrolled for the races tonight`)
