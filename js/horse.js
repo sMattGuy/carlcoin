@@ -925,12 +925,18 @@ function horseStats(client,message){
 	let chop = message.content.split(" ");
 	//if too many arguments
 	if(chop.length != 3){
-		message.channel.send(`Usage: !cc horseStats <index>`);
+		message.channel.send(`Usage: !cc horseStats <index / all>`);
 	}
 	else{
 		let horseIndex = 0;
+		let horseAll = false'
 		try{
-			horseIndex = parseInt(chop[chop.length-1]);
+			if(chop[chop.length-1] === 'all'){
+				horseAll = true;
+			}
+			else{
+				horseIndex = parseInt(chop[chop.length-1]);
+			}
 		}
 		//if username cannot be gotten
 		catch(err){
@@ -959,10 +965,20 @@ function horseStats(client,message){
 						return;
 					}
 					else{
-						let horse = data.users[i].horses[horseIndex];
-						const playercardEmbed = makeHorseEmbed(horse,data.users[i].name,message);
-						message.channel.send(playercardEmbed);
-						console.log(data.users[i].name + ' has checked their horse stats for ' + horse.name);
+						if(horseAll){
+							for(let j=0;j<data.users[i].horses.length;j++){
+								let horse = data.users[i].horses[j];
+								const playercardEmbed = makeHorseEmbed(horse,data.users[i].name,message);
+								message.channel.send(playercardEmbed);
+								console.log(data.users[i].name + ' has checked their horse stats for ' + horse.name);
+							}
+						}
+						else{
+							let horse = data.users[i].horses[horseIndex];
+							const playercardEmbed = makeHorseEmbed(horse,data.users[i].name,message);
+							message.channel.send(playercardEmbed);
+							console.log(data.users[i].name + ' has checked their horse stats for ' + horse.name);
+						}
 					}
 				}
 				return;
@@ -972,7 +988,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!\nUse !cc checkRace who is in the race`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index / all> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!\nUse !cc checkRace who is in the race`);
 }
 
 function makeHorseEmbed(newHorse,name,message){
