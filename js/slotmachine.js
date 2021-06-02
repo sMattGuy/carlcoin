@@ -305,7 +305,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 	else if(reel3%10 == symbol1){
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
-		gameMessage = 'A single! You win! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!';
+		gameMessage = `A single! You win! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 		//cure insane
 		let insane = false;
 		if(data.users[i]["unstable"] >= 100){
