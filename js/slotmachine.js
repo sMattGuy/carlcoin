@@ -109,7 +109,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 			if(reel3%10 == symbol1){
 				data.blackjack -= wager * (wagerMulti * 3);
 				data.users[i].balance += wager * (wagerMulti * 3);
-				gameMessage = 'JACKPOT!!!!!!!!!!';
+				gameMessage = `JACKPOT!!!!!!!!!! You won ${wager * (wagerMulti * 3)}CC! You now have ${data.users[i].balance}CC!`;
 				//cure insane
 				let insane = false;
 				if(data.users[i]["unstable"] >= 100){
@@ -141,7 +141,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 			else{
 				data.blackjack -= wager * (wagerMulti * 2);
 				data.users[i].balance += wager * (wagerMulti * 2);
-				gameMessage = 'A double! Very lucky win!';
+				gameMessage = `A double! Very lucky win! You won ${wager * (wagerMulti * 2)}CC! You now have ${data.users[i].balance}CC!`;
 				//cure insane
 				let insane = false;
 				if(data.users[i]["unstable"] >= 100){
@@ -174,7 +174,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		else if(reel3%10 == symbol1){
 			data.blackjack -= wager * (wagerMulti * 2);
 			data.users[i].balance += wager * (wagerMulti * 2);
-			gameMessage = 'A double! Very lucky win!';
+			gameMessage = `A double! Very lucky win! You won ${wager * (wagerMulti * 2)}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -206,7 +206,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = 'A single! You win!';
+			gameMessage = `A single! You win! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -240,7 +240,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		if(reel3%10 == symbol1){
 			data.blackjack -= wager * (wagerMulti * 2);
 			data.users[i].balance += wager * (wagerMulti * 2);
-			gameMessage = 'A double! Very lucky win!';
+			gameMessage = `A double! Very lucky win! You won ${wager * (wagerMulti * 2)}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -272,7 +272,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 		else{
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = 'A single! You win!';
+			gameMessage = `A single! You win! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -305,7 +305,7 @@ function getInstantWinResults(reel1, reel2, reel3, wager, wagerMulti, data, clie
 	else if(reel3%10 == symbol1){
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
-		gameMessage = 'A single! You win!';
+		gameMessage = 'A single! You win! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!';
 		//cure insane
 		let insane = false;
 		if(data.users[i]["unstable"] >= 100){
@@ -341,7 +341,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 	if(reel2%10 == symbol1 && reel3%10 == symbol1){
 		data.blackjack -= wager * wagerMulti;
 		data.users[i].balance += wager * wagerMulti;
-		gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won!`;
+		gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\n3 of a kind! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 		//cure insane
 		let insane = false;
 		if(data.users[i]["unstable"] >= 100){
@@ -374,7 +374,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		if(reel3%10 == symbol3){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -406,7 +406,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		else if(reel3%10 == symbol4){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -436,7 +436,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 		}
 		else{
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost! You now have ${data.users[i].balance}CC!`;
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
@@ -463,7 +463,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		if(reel3%10 == symbol2){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -495,7 +495,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		else if(reel3%10 == symbol4){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -525,7 +525,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 		}
 		else{
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost! You now have ${data.users[i].balance}CC!`;
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
@@ -552,7 +552,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		if(reel3%10 == symbol2){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti)}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -584,7 +584,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		else if(reel3%10 == symbol3){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
@@ -614,7 +614,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 			}
 		}
 		else{
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost! You now have ${data.users[i].balance}CC!`;
 			if(isNaN(data.users[i]["unstable"])){
 				data.users[i]["unstable"] = 0;
 			}
@@ -638,7 +638,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		}
 	}
 	else{
-		gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost!`;
+		gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nSorry, You've lost! You now have ${data.users[i].balance}CC!`;
 		if(isNaN(data.users[i]["unstable"])){
 			data.users[i]["unstable"] = 0;
 		}
