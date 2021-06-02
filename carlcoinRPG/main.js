@@ -34,24 +34,17 @@ let b = new armorFile.Breastplate();
 console.log(b.description());
 
 console.log('Giving weapon to character');
-c.species.rightHand.heldObject = a;
-c.weight += a.weight;
 //find equipment slot
+let equipmentArea = 'rightHeldObject';
 for(let i=0;i<c.equipped.length;i++){
-	if(c.equipped[i][0] == a.equipLocation){
+	if(c.equipped[i][0] == equipmentArea){
 		c.equipped[i][1] = a;
+		c.weight += a.weight;
 	}
 }
 console.log(c.species.rightHand.description());
 
-c.species.torso.coat = b;
-c.species.torso.armorValue += b.armorValue;
-c.species.torso.dodgeValue += b.dodgeValue;
-c.weight += b.weight;
-c.armorValue += b.armorValue;
-c.dodgeValue += b.dodgeValue;
-c.equipped[1] = [`coat`,`${b.material} ${b.name}`];
-console.log(c.species.torso.description());
+c.inventory.push(b)
 
 console.log('Character after equipping items');
 console.log(c.description());

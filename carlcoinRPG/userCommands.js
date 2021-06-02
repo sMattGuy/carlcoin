@@ -6,9 +6,9 @@ function checkInventory(character){
 	}
 	else{
 		for(let i=0;i<character.inventory.length - 1;i++){
-			inventory += `${character.inventory[i]}, `;
+			inventory += `${character.inventory[i].name}, `;
 		}
-		inventory += `${character.inventory[character.inventory.length - 1]}. `;
+		inventory += `${character.inventory[character.inventory.length - 1].name}. `;
 	}
 	return inventory;
 }
@@ -20,9 +20,9 @@ function checkEquipment(character){
 	}
 	else{
 		for(let i=0;i<character.equipped.length - 1;i++){
-			equipment += `${character.equipped[i]}, `;
+			equipment += `${character.equipped[i][0]}:${character.equipped[i][1].name}, `;
 		}
-		equipment += `${character.equipped[character.equipped.length - 1]}. `;
+		equipment += `${character.equipped[character.equipped.length - 1][0]}:${character.equipped[character.equipped.length - 1][1].name}. `;
 	}
 	return equipment;
 }

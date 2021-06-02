@@ -31,38 +31,38 @@ class Human{
 		//define what parts its made of
 		this.head = new body.Head();
 		this.torso = new body.Torso();
-		this.leftArm = new body.Arm();
-		this.rightArm = new body.Arm();
-		this.rightHand = new body.Hand();
-		this.leftHand = new body.Hand();
-		this.leftLeg = new body.Leg();
-		this.rightLeg = new body.Leg();
-		this.leftFoot = new body.Foot();
-		this.rightFoot = new body.Foot();
+		this.leftArm = new body.LeftArm();
+		this.rightArm = new body.RightArm();
+		this.rightHand = new body.RightHand();
+		this.leftHand = new body.LeftHand();
+		this.leftLeg = new body.LeftLeg();
+		this.rightLeg = new body.RightLeg();
+		this.leftFoot = new body.LeftFoot();
+		this.rightFoot = new body.RightFoot();
 		//plug the parts together
 		//head to torso and reverse
-		this.head.connections[0] = new body.Connection('head','torso');
-		this.torso.connections[0] = new body.Connection('torso','head');
+		this.head.connections[0] = new body.Connection('Head','Torso');
+		this.torso.connections[0] = new body.Connection('Torso','Head');
 		//torso to arm and reverse
-		this.torso.connections[1] = new body.Connection('torso','left arm');
-		this.torso.connections[2] = new body.Connection('torso','right arm');
-		this.leftArm.connections[0] = new body.Connection('left arm','torso');
-		this.rightArm.connections[0] = new body.Connection('right arm','torso');
+		this.torso.connections[1] = new body.Connection('Torso','Left Arm');
+		this.torso.connections[2] = new body.Connection('Torso','Right Arm');
+		this.leftArm.connections[0] = new body.Connection('Left Arm','Torso');
+		this.rightArm.connections[0] = new body.Connection('Right Arm','Torso');
 		//torso to leg and reverse
-		this.torso.connections[3] = new body.Connection('torso','left leg');
-		this.torso.connections[4] = new body.Connection('torso','right leg');
-		this.leftLeg.connections[0] = new body.Connection('left leg','torso');
-		this.rightLeg.connections[0] = new body.Connection('right leg','torso');
+		this.torso.connections[3] = new body.Connection('Torso','Left Leg');
+		this.torso.connections[4] = new body.Connection('Torso','Right Leg');
+		this.leftLeg.connections[0] = new body.Connection('Left Leg','Torso');
+		this.rightLeg.connections[0] = new body.Connection('Right Leg','Torso');
 		//arm to hands and reverse
-		this.leftArm.connections[1] = new body.Connection('left arm','left hand');
-		this.rightArm.connections[1] = new body.Connection('right arm','right hand');
-		this.leftHand.connections[0] = new body.Connection('left hand','left arm');
-		this.rightHand.connections[0] = new body.Connection('right hand','right arm');
+		this.leftArm.connections[1] = new body.Connection('Left Arm','Left Hand');
+		this.rightArm.connections[1] = new body.Connection('Right Arm','Right Hand');
+		this.leftHand.connections[0] = new body.Connection('Left Hand','Left Arm');
+		this.rightHand.connections[0] = new body.Connection('Right Hand','Right Arm');
 		//legs to feet and reverse
-		this.leftLeg.connections[1] = new body.Connection('left leg','left foot');
-		this.rightLeg.connections[1] = new body.Connection('right leg','right foot');
-		this.leftFoot.connections[0] = new body.Connection('left foot','left leg');
-		this.rightFoot.connections[0] = new body.Connection('right foot','right leg');
+		this.leftLeg.connections[1] = new body.Connection('Left Leg','Left Foot');
+		this.rightLeg.connections[1] = new body.Connection('Right Leg','Right Foot');
+		this.leftFoot.connections[0] = new body.Connection('Left Foot','Left Leg');
+		this.rightFoot.connections[0] = new body.Connection('Right Foot','Right Leg');
 		//applying the features to each part
 		//head features
 		this.head.eyes = 2;
@@ -158,9 +158,9 @@ class Human{
 	description(){
 		let description = `This a human. The humans skin is ${this.color}. The humans eyes are ${this.eyeColor}. The humans hair is ${this.hair}. The humans height is ${this.height}. The humans weight is ${this.weight}. The human has a natural vitality of ${this.naturalVitality}, a natural armor of ${this.naturalArmor} and a natural dodge of ${this.naturalDodge}. The human has these equipment slots: `;
 		for(let i=0;i<this.equipmentSlots.length-1;i++){
-			description += `${this.equipmentSlots[i][0]}:${this.equipmentSlots[i][1]}, `;
+			description += `${this.equipmentSlots[i][0]}:${this.equipmentSlots[i][1].name}, `;
 		}
-		description += `${this.equipmentSlots[this.equipmentSlots.length-1][0]}:${this.equipmentSlots[this.equipmentSlots.length-1][1]}. `;
+		description += `${this.equipmentSlots[this.equipmentSlots.length-1][0]}:${this.equipmentSlots[this.equipmentSlots.length-1][1].name}. `;
 		return description;
 	}
 }

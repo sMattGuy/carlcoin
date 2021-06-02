@@ -15,7 +15,7 @@ class Character{
 		this.name = name;
 		this.species = species;
 		this.inventory = [];
-		this.equipped = this.species.equipmentSlots.slice();
+		this.equipped = this.species.equipmentSlots;
 		this.soul = soul;
 		this.weight = this.species.weight;
 		this.hitpoints = this.species.naturalVitality + this.soul.constitution;
@@ -23,15 +23,15 @@ class Character{
 		this.dodgeValue = this.species.naturalDodge + this.soul.dexterity;
 	}
 	description(){
-		let returnString = `${this.name}, The ${this.species.speciesType}. ${this.name} is currently ${this.name} has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. ${this.name}'s inventory is currently:`;
+		let returnString = `${this.name}, The ${this.species.speciesType}. ${this.name} has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. ${this.name}'s inventory is currently:`;
 		if(this.inventory.length == 0){
 			returnString += `Empty. `;
 		}
 		else{
 			for(let i=0;i<this.inventory.length - 1;i++){
-				returnString += `${this.inventory[i]}, `;
+				returnString += `${this.inventory[i].name}, `;
 			}
-			returnString += `${this.inventory[this.inventory.length - 1]}. `;
+			returnString += `${this.inventory[this.inventory.length - 1].name}. `;
 		}
 		returnString += `${this.name} is currently Equipped with: `
 		if(this.equipped.length == 0){
@@ -39,9 +39,9 @@ class Character{
 		}
 		else{
 			for(let i=0;i<this.equipped.length - 1;i++){
-				returnString += `${this.equipped[i][0]}:${this.equipped[i][1]}, `;
+				returnString += `${this.equipped[i][0]}:${this.equipped[i][1].name}, `;
 			}
-			returnString += `${this.equipped[this.equipped.length - 1][0]}:${this.equipped[this.equipped.length - 1][1]}. `;
+			returnString += `${this.equipped[this.equipped.length - 1][0]}:${this.equipped[this.equipped.length - 1][1].name}. `;
 		}
 		returnString += `${this.soul.stats()}`;
 		return returnString;

@@ -22,9 +22,6 @@ class Head{
 	brains;
 	teeth;
 	tongues;
-	//wearing
-	hat;
-	mask;
 	//stats
 	hitpoints;
 	armorValue;
@@ -71,9 +68,6 @@ class Torso{
 	lungs;
 	intestines;
 	kidneys;
-	//wearing
-	shirt;
-	coat;
 	//stats
 	hitpoints;
 	armorValue;
@@ -91,27 +85,23 @@ class Torso{
 		this.lungs = 0;
 		this.intestines = 0;
 		this.kidneys = 0;
-		this.shirt = {name:'Nothing'};
-		this.coat = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
-		this.equipmentSlots = [['shirt','Nothing'],['coat','Nothing']];
+		this.equipmentSlots = [['shirt',{name:'Nothing'}],['coat',{name:'Nothing'}]];
 		this.connections = [];
 	}
 	description(){
-		let returnString = `Its torso has ${this.hearts} hearts, ${this.ribs} ribs, ${this.spines} spines, ${this.stomaches} stomaches, ${this.livers} livers, ${this.lungs} lungs, ${this.intestines} intestines, ${this.kidneys} kidneys. It is currently wearing ${this.shirt.name} for a shirt and ${this.coat.name} as a coat. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its torso has ${this.hearts} hearts, ${this.ribs} ribs, ${this.spines} spines, ${this.stomaches} stomaches, ${this.livers} livers, ${this.lungs} lungs, ${this.intestines} intestines, ${this.kidneys} kidneys. It is currently wearing ${this.equipmentSlots[0][1].name} for a shirt and ${this.equipmentSlots[1][1].name} as a coat. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class Arm{
+class RightArm{
 	name;
 	segments;
-	//wearing
-	vambrace;
 	//values
 	hitpoints;
 	armorValue;
@@ -120,32 +110,54 @@ class Arm{
 	//connections
 	connections;
 	constructor(){
-		this.name = 'Arm';
+		this.name = 'Right Arm';
 		this.segments = 0;
-		this.vambrace = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
-		this.equipmentSlots = [['vambrace','Nothing']];
+		this.equipmentSlots = [['rightVambrace',{name:'Nothing'}]];
 		this.connections = [];
 	}
 	description(){
-		let returnString = `Its arm has ${this.segments} segments. It is currently wearing ${this.vambrace.name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its right arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class Hand{
+class LeftArm{
+	name;
+	segments;
+	//values
+	hitpoints;
+	armorValue;
+	dodgeValue;
+	equipmentSlots;
+	//connections
+	connections;
+	constructor(){
+		this.name = 'Left Arm';
+		this.segments = 0;
+		this.hitpoints = 0;
+		this.armorValue = 0;
+		this.dodgeValue = 0;
+		this.equipmentSlots = [['leftVambrace',{name:'Nothing'}]];
+		this.connections = [];
+	}
+	description(){
+		let returnString = `Its left arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		for(let i=0;i<this.connections.length;i++){
+			returnString += `${this.connections[i].description()}`
+		}
+		return returnString;
+	}
+}
+class RightHand{
 	name;
 	fingers;
 	joints;
 	thumbs;
-	//hands are special since they can hold objects
-	heldObject;
-	//wearing
-	glove;
 	//values
 	hitpoints;
 	dodgeValue;
@@ -154,31 +166,58 @@ class Hand{
 	//connections
 	connections;
 	constructor(){
-		this.name = 'Hand';
+		this.name = 'Right Hand';
 		this.fingers = 0;
 		this.joints = 0;
 		this.thumbs = 0;
-		this.heldObject = {name:'Nothing'};
-		this.glove = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
-		this.equipmentSlots = [['heldObject','Nothing'],['glove','Nothing']];
+		this.equipmentSlots = [['rightHeldObject',{name:'Nothing'}],['rightGlove',{name:'Nothing'}]];
 		this.connections = [];
 	}
 	description(){
-		let returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.heldObject.name}. It is currently wearing ${this.glove.name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its right hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class Leg{
+class LeftHand{
+	name;
+	fingers;
+	joints;
+	thumbs;
+	//values
+	hitpoints;
+	dodgeValue;
+	armorValue;
+	equipmentSlots;
+	//connections
+	connections;
+	constructor(){
+		this.name = 'Left Hand';
+		this.fingers = 0;
+		this.joints = 0;
+		this.thumbs = 0;
+		this.hitpoints = 0;
+		this.armorValue = 0;
+		this.dodgeValue = 0;
+		this.equipmentSlots = [['leftHeldObject',{name:'Nothing'}],['leftGlove',{name:'Nothing'}]];
+		this.connections = [];
+	}
+	description(){
+		let returnString = `Its left hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		for(let i=0;i<this.connections.length;i++){
+			returnString += `${this.connections[i].description()}`
+		}
+		return returnString;
+	}
+}
+class RightLeg{
 	name;
 	segments;
-	//wearing
-	greaves;
 	//values
 	hitpoints;
 	armorValue;
@@ -187,29 +226,53 @@ class Leg{
 	//connections
 	connections;
 	constructor(){
-		this.name = 'Leg';
+		this.name = 'Right Leg';
 		this.segments = 0;
-		this.greaves = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
-		this.equipmentSlots = [['greaves','Nothing']];
+		this.equipmentSlots = [['rightGreaves',{name:'Nothing'}]];
 		this.connections = [];
 	}
 	description(){
-		let returnString = `Its leg has ${this.segments} segments. It is currently wearing ${this.greaves.name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its right leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class Foot{
+class LeftLeg{
+	name;
+	segments;
+	//values
+	hitpoints;
+	armorValue;
+	dodgeValue;
+	equipmentSlots;
+	//connections
+	connections;
+	constructor(){
+		this.name = 'Left Leg';
+		this.segments = 0;
+		this.hitpoints = 0;
+		this.armorValue = 0;
+		this.dodgeValue = 0;
+		this.equipmentSlots = [['leftGreaves',{name:'Nothing'}]];
+		this.connections = [];
+	}
+	description(){
+		let returnString = `Its left leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		for(let i=0;i<this.connections.length;i++){
+			returnString += `${this.connections[i].description()}`
+		}
+		return returnString;
+	}
+}
+class RightFoot{
 	name;
 	toes;
 	joints;
-	//wearing
-	shoe;
 	//values
 	hitpoints;
 	armorValue;
@@ -217,18 +280,45 @@ class Foot{
 	equipmentSlots;
 	connections;
 	constructor(){
-		this.name = 'Foot';
+		this.name = 'Right Foot';
 		this.toes = 0;
 		this.joints = 0;
-		this.shoe = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
 		this.connections = [];
-		this.equipmentSlots = [['shoe','Nothing']];
+		this.equipmentSlots = [['rightShoe',{name:'Nothing'}]];
 	}
 	description(){
-		let returnString = `Its foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.shoe.name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its right foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		for(let i=0;i<this.connections.length;i++){
+			returnString += `${this.connections[i].description()}`
+		}
+		return returnString;
+	}
+}
+class LeftFoot{
+	name;
+	toes;
+	joints;
+	//values
+	hitpoints;
+	armorValue;
+	dodgeValue;
+	equipmentSlots;
+	connections;
+	constructor(){
+		this.name = 'Left Foot';
+		this.toes = 0;
+		this.joints = 0;
+		this.hitpoints = 0;
+		this.armorValue = 0;
+		this.dodgeValue = 0;
+		this.connections = [];
+		this.equipmentSlots = [['leftShoe',{name:'Nothing'}]];
+	}
+	description(){
+		let returnString = `Its left foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
@@ -240,8 +330,12 @@ module.exports = {
 	Connection,
 	Head,
 	Torso,
-	Arm,
-	Hand,
-	Leg,
-	Foot
+	RightArm,
+	LeftArm,
+	RightHand,
+	LeftHand,
+	RightLeg,
+	LeftLeg,
+	RightFoot,
+	LeftFoot
 };
