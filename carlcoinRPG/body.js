@@ -29,6 +29,8 @@ class Head{
 	hitpoints;
 	armorValue;
 	dodgeValue;
+	//helper variables
+	equipmentSlots;
 	//connections it has
 	connections;
 	//features are defined by how many they have or a description
@@ -41,16 +43,15 @@ class Head{
 		this.brains = 0;
 		this.teeth = 0;
 		this.tongues = 0;
-		this.hat = {name:'Nothing'};
-		this.mask = {name:'Nothing'};
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
+		this.equipmentSlots = [['hat',{name:'Nothing'}],['mask',{name:'Nothing'}]];
 		//example connections[0] = connection['head']['torso']
 		this.connections = []; //this defines the connection
 	}
 	description(){
-		let returnString = `Its head has ${this.eyes} eyes, ${this.ears} ears, ${this.noses} noses, ${this.mouths} mouths, ${this.brains} brains, ${this.teeth} teeth, ${this.tongues} tongues. It is currently wearing ${this.hat.name} on its head and ${this.mask.name} as a mask. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its head has ${this.eyes} eyes, ${this.ears} ears, ${this.noses} noses, ${this.mouths} mouths, ${this.brains} brains, ${this.teeth} teeth, ${this.tongues} tongues. It is currently wearing ${this.equipmentSlots[0][1].name} on its head and ${this.equipmentSlots[1][1].name} as a mask. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
@@ -77,6 +78,7 @@ class Torso{
 	hitpoints;
 	armorValue;
 	dodgeValue;
+	equipmentSlots;
 	//connections
 	connections;
 	constructor(){
@@ -94,6 +96,7 @@ class Torso{
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
+		this.equipmentSlots = [['shirt','Nothing'],['coat','Nothing']];
 		this.connections = [];
 	}
 	description(){
@@ -113,6 +116,7 @@ class Arm{
 	hitpoints;
 	armorValue;
 	dodgeValue;
+	equipmentSlots;
 	//connections
 	connections;
 	constructor(){
@@ -122,6 +126,7 @@ class Arm{
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
+		this.equipmentSlots = [['vambrace','Nothing']];
 		this.connections = [];
 	}
 	description(){
@@ -145,6 +150,7 @@ class Hand{
 	hitpoints;
 	dodgeValue;
 	armorValue;
+	equipmentSlots;
 	//connections
 	connections;
 	constructor(){
@@ -157,10 +163,11 @@ class Hand{
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
+		this.equipmentSlots = [['heldObject','Nothing'],['glove','Nothing']];
 		this.connections = [];
 	}
 	description(){
-		let returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints, ${this.thumbs} thumbs. It is currently holding ${this.heldObject.name}. It is currently wearing ${this.glove.name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.heldObject.name}. It is currently wearing ${this.glove.name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
@@ -176,6 +183,7 @@ class Leg{
 	hitpoints;
 	armorValue;
 	dodgeValue;
+	equipmentSlots;
 	//connections
 	connections;
 	constructor(){
@@ -185,6 +193,7 @@ class Leg{
 		this.hitpoints = 0;
 		this.armorValue = 0;
 		this.dodgeValue = 0;
+		this.equipmentSlots = [['greaves','Nothing']];
 		this.connections = [];
 	}
 	description(){
@@ -205,6 +214,7 @@ class Foot{
 	hitpoints;
 	armorValue;
 	dodgeValue;
+	equipmentSlots;
 	connections;
 	constructor(){
 		this.name = 'Foot';
@@ -215,9 +225,10 @@ class Foot{
 		this.armorValue = 0;
 		this.dodgeValue = 0;
 		this.connections = [];
+		this.equipmentSlots = [['shoe','Nothing']];
 	}
 	description(){
-		let returnString = `Its foot has ${this.toes} toes, ${this.joints} joints. It is currently wearing ${this.shoe.name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.shoe.name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}

@@ -15,7 +15,7 @@ class Character{
 		this.name = name;
 		this.species = species;
 		this.inventory = [];
-		this.equipped = [];
+		this.equipped = this.species.equipmentSlots.slice();
 		this.soul = soul;
 		this.weight = this.species.weight;
 		this.hitpoints = this.species.naturalVitality + this.soul.constitution;

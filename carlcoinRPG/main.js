@@ -4,6 +4,7 @@ const speciesFile = require('./species.js');
 const weaponFile = require('./weapon.js');
 const armorFile = require('./armor.js');
 const characterFile = require('./character.js');
+const userCommandsFile = require('./userCommands.js');
 
 console.log('Creating a new soul');
 let soul = new soulFile.Soul();
@@ -35,7 +36,12 @@ console.log(b.description());
 console.log('Giving weapon to character');
 c.species.rightHand.heldObject = a;
 c.weight += a.weight;
-c.equipped[0] = [`rightHand`,`${a.material} ${a.name}`];
+//find equipment slot
+for(let i=0;i<c.equipped.length;i++){
+	if(c.equipped[i][0] == a.equipLocation){
+		c.equipped[i][1] = a;
+	}
+}
 console.log(c.species.rightHand.description());
 
 c.species.torso.coat = b;
@@ -49,3 +55,12 @@ console.log(c.species.torso.description());
 
 console.log('Character after equipping items');
 console.log(c.description());
+
+console.log('Printing out every limb of a character');
+console.log(c.species.fullbodyStatus());
+
+console.log('standalone inventory check');
+console.log(userCommandsFile.checkInventory(c));
+
+console.log('standalone equipment check');
+console.log(userCommandsFile.checkEquipment(c));

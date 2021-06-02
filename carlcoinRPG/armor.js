@@ -14,10 +14,10 @@ class Breastplate{
 		this.color = 'Grey';
 		this.armorValue = 4;
 		this.dodgeValue = -1;
-		this.armorLocation = 'coat';
+		this.equipLocation = 'coat';
 	}
 	description(){
-		return `This is a ${this.material} Breastplate. It weighs ${this.weight} Units. It is the color ${this.color}. It is worn in the ${this.armorLocation} slot. It gives ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		return `This is a ${this.material} Breastplate. It weighs ${this.weight} Units. It is the color ${this.color}. It is worn in the ${this.equipLocation} slot. It gives ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 	}
 }
 

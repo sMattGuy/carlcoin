@@ -23,6 +23,8 @@ class Human{
 	naturalVitality;
 	naturalArmor;
 	naturalDodge;
+	//helper stuff
+	equipmentSlots;
 	constructor(){
 		//define species type
 		this.speciesType = 'Human';
@@ -96,7 +98,7 @@ class Human{
 		this.leftFoot.toes = 5;
 		this.leftFoot.joints = 3;
 		this.rightFoot.toes = 5;
-		this.rightFoot.joints = 1;
+		this.rightFoot.joints = 3;
 		//features that are customizable
 		this.color = 'White';
 		this.eyeColor = 'Brown';
@@ -138,9 +140,28 @@ class Human{
 		this.rightFoot.hitpoints = 5;
 		this.rightFoot.armorValue = 0;
 		this.rightFoot.dodgeValue = 4;
+		this.equipmentSlots = this.head.equipmentSlots.concat(this.torso.equipmentSlots.concat(this.leftArm.equipmentSlots.concat(this.rightArm.equipmentSlots.concat(this.leftHand.equipmentSlots.concat(this.rightHand.equipmentSlots.concat(this.leftLeg.equipmentSlots.concat(this.rightLeg.equipmentSlots.concat(this.leftFoot.equipmentSlots.concat(this.rightFoot.equipmentSlots)))))))));
+	}
+	fullbodyStatus(){
+		let fullReport = this.head.description();
+		fullReport += '\n' + this.torso.description();
+		fullReport += '\n' + this.leftArm.description();
+		fullReport += '\n' + this.rightArm.description();
+		fullReport += '\n' + this.leftHand.description();
+		fullReport += '\n' + this.rightHand.description();
+		fullReport += '\n' + this.leftLeg.description();
+		fullReport += '\n' + this.rightLeg.description();
+		fullReport += '\n' + this.leftFoot.description();
+		fullReport += '\n' + this.rightFoot.description();
+		return fullReport;
 	}
 	description(){
-		return `This a human, their skin is ${this.color}, their eyes are ${this.eyeColor}, their hair is ${this.hair}, their height is ${this.height}, their weight is ${this.weight}. It has a natural vitality of ${this.naturalVitality}, a natural armor of ${this.naturalArmor} and a natural dodge of ${this.naturalDodge}. `;
+		let description = `This a human. The humans skin is ${this.color}. The humans eyes are ${this.eyeColor}. The humans hair is ${this.hair}. The humans height is ${this.height}. The humans weight is ${this.weight}. The human has a natural vitality of ${this.naturalVitality}, a natural armor of ${this.naturalArmor} and a natural dodge of ${this.naturalDodge}. The human has these equipment slots: `;
+		for(let i=0;i<this.equipmentSlots.length-1;i++){
+			description += `${this.equipmentSlots[i][0]}:${this.equipmentSlots[i][1]}, `;
+		}
+		description += `${this.equipmentSlots[this.equipmentSlots.length-1][0]}:${this.equipmentSlots[this.equipmentSlots.length-1][1]}. `;
+		return description;
 	}
 }
 
