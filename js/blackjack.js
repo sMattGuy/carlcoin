@@ -199,11 +199,11 @@ function blackjackStart(client,message){
 								}
 								let playersValue = cardValue[playerCards.playerCards[0]%13]+cardValue[playerCards.playerCards[1]%13];
 								if(playersValue == 22){
-									playersValue = 11;
+									playersValue = 12;
 								}
 								let dealersValue = cardValue[dealerCards.dealerCards[0]%13]+cardValue[dealerCards.dealerCards[1]%13];
 								if(dealersValue == 22){
-									dealersValue = 11;
+									dealersValue = 12;
 								}
 								if(data.users[i]["unstable"] >= 100){
 									let resultsOfGame = `Something doesn't feel right... You can't comprehend the cards\n${data.users[i].name}, Type !cc hit or !cc stand, you have 1 min to respond.\nYou:${blackjackCards[playerCard1]},??. Dealer:${blackjackCards[dealerCard1]},??.`;
