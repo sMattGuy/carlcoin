@@ -552,7 +552,7 @@ function getSlotResults(reel1, reel2, reel3, wager, wagerMulti, data, client, me
 		if(reel3%10 == symbol2){
 			data.blackjack -= wager * wagerMulti;
 			data.users[i].balance += wager * wagerMulti;
-			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti)}CC! You now have ${data.users[i].balance}CC!`;
+			gameMessage = `${symbols[reel1%10]}|${symbols[reel2%10]}|${symbols[reel3%10]}\nA straight! You've won! You won ${wager * wagerMulti}CC! You now have ${data.users[i].balance}CC!`;
 			//cure insane
 			let insane = false;
 			if(data.users[i]["unstable"] >= 100){
