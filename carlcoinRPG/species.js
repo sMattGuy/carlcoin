@@ -27,16 +27,50 @@ class Species{
 		//goes through the severed part and removes its connections,
 		//but it first calls the helper function to remove it from the other part
 		//as well
+		let attachedToTorso = false;
 		for(let i=0;i<part.connections.length;i++){
-			this.disconnectAttachedParts(part.connections[i][1],part);
-			part.connections.splice(i,1);
+			if(part.connections[i].connection[1] == this.torso){
+				//removing part that is attached to torso aka can have appendages
+				this.disconnectAttachedParts(part.connections[i].connection[1],part);
+				part.connections.splice(i,1);
+				attachedToTorso = true;
+				for(let j=0;j<this.bodyParts.length;j++){
+					if(this.bodyParts[j] == part){
+						this.bodyParts.splice(j,1);
+					}
+				}
+			}
+		}
+		if(!attachedToTorso){
+			for(let i=0;i<part.connections.length;i++){
+				//removing part that is attached to torso aka can have appendages
+				this.disconnectAttachedParts(part.connections[i].connection[1],part);
+				part.connections.splice(i,1);
+				attachedToTorso = true;
+				for(let j=0;j<this.bodyParts.length;j++){
+					if(this.bodyParts[j] == part){
+						this.bodyParts.splice(j,1);
+					}
+				}
+			}
+		}
+		for(let i=0;i<part.connections.length;i++){
+			//removing all parts from body attached to the appendage
+			for(let j=0;j<this.bodyParts.length;j++){
+				if(this.bodyParts[j] == part.connections[i].connection[1]){
+					this.bodyParts.splice(j,1);
+				}
+			}
 		}
 	}
 	disconnectAttachedParts(part1,part2){
+		console.log(part1);
+		console.log(part2);
 		//removes the part from the other peice
 		for(let i=0;i<part1.connections.length;i++){
-			if(part1.connections[i][1] == part2){
+			if(part1.connections[i].connection[1] == part2){
 				part1.connections.splice(i,1);
+				return;
 			}
 		}
 	}

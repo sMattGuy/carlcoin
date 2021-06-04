@@ -5,7 +5,7 @@ const characterFile = require('./character.js');
 const fs = require('fs');
 
 let soul = new soulFile.Soul();
-soul.strength = 10;
+soul.strength = 30;
 soul.constitution = 5;
 soul.wisdom = 3;
 soul.dexterity = 8;
@@ -40,19 +40,16 @@ results += c.equipItem(0,'rightHeldObject') + '\n';
 fs.writeFileSync('./results/equip.txt',results);
 
 let enemySoul = new soulFile.Soul();
-enemySoul.strength = 2;
-enemySoul.constitution = 2;
-enemySoul.wisdom = 2;
-enemySoul.dexterity = 2;
-enemySoul.intelligence = 2;
-enemySoul.charisma = 2;
 
 let enemyBody = new speciesFile.Human('Red','Red','Red');
 
 let enemyCharacter = new characterFile.Character('Evil',enemyBody,enemySoul);
 
 
-console.log(c.attack(enemyCharacter,enemyCharacter.species.head));
-console.log(enemyCharacter.description());
-console.log(enemyCharacter.species.listBodyParts())
+console.log(enemyCharacter.species.listBodyParts());
+console.log(enemyCharacter.species.fullbodyStatus());
 
+console.log(c.attack(enemyCharacter,enemyCharacter.species.rightHand));
+
+console.log(enemyCharacter.species.listBodyParts());
+console.log(enemyCharacter.species.fullbodyStatus());
