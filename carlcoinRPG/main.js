@@ -57,3 +57,5 @@ console.log(userCommandsFile.checkInventory(c));
 
 console.log('standalone equipment check');
 console.log(userCommandsFile.checkEquipment(c));
+
+console.log(c);

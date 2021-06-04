@@ -2,6 +2,7 @@ const body = require('./body.js');
 
 class Human{
 	//the body
+	bodyParts;
 	speciesType;
 	head;
 	torso;
@@ -39,6 +40,7 @@ class Human{
 		this.rightLeg = new body.RightLeg();
 		this.leftFoot = new body.LeftFoot();
 		this.rightFoot = new body.RightFoot();
+		this.bodyParts = [this.head,this.torso,this.leftArm,this.rightArm,this.rightHand,this.leftHand,this.leftLeg,this.rightLeg,this.leftFoot,this.rightFoot];
 		//plug the parts together
 		//head to torso and reverse
 		this.head.connections[0] = new body.Connection('Head','Torso');
