@@ -64,8 +64,6 @@ class Species{
 		}
 	}
 	disconnectAttachedParts(part1,part2){
-		console.log(part1);
-		console.log(part2);
 		//removes the part from the other peice
 		for(let i=0;i<part1.connections.length;i++){
 			if(part1.connections[i].connection[1] == part2){
