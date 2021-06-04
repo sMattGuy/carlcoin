@@ -1,9 +1,56 @@
 const body = require('./body.js');
 
-class Human{
-	//the body
+class Species{
 	bodyParts;
 	speciesType;
+	naturalVitality;
+	naturalArmor;
+	naturalDodge;
+	equipmentSlots;
+	height;
+	weight;
+	constructor(name,nv,na,nd,height,weight){
+		this.bodyParts = [];
+		this.speciesType = name;
+		this.naturalVitality = nv;
+		this.naturalArmor = na;
+		this.naturalDodge = nd;
+		this.equipmentSlots = [];
+		this.height = height;
+		this.weight = weight;
+	}
+	connectParts(part1,part2){
+		part1.connections.push(new body.Connection(part1,part2));
+		part2.connections.push(new body.Connection(part2,part1));
+	}
+	disconnectParts(part){
+		//goes through the severed part and removes its connections,
+		//but it first calls the helper function to remove it from the other part
+		//as well
+		for(let i=0;i<part.connections.length;i++){
+			this.disconnectAttachedParts(part.connections[i][1],part);
+			part.connections.splice(i,1);
+		}
+	}
+	disconnectAttachedParts(part1,part2){
+		//removes the part from the other peice
+		for(let i=0;i<part1.connections.length;i++){
+			if(part1.connections[i][1] == part2){
+				part1.connections.splice(i,1);
+			}
+		}
+	}
+	listBodyParts(){
+		let report = '';
+		for(let i=0;i<this.bodyParts.length;i++){
+			report += this.bodyParts[i].name + '\n';
+		}
+		return report;
+	}
+}
+
+class Human extends Species{
+	//the body
 	head;
 	torso;
 	leftArm;
@@ -18,131 +65,44 @@ class Human{
 	color;
 	eyeColor;
 	hair;
-	height;
-	weight;
-	//creature stats
-	naturalVitality;
-	naturalArmor;
-	naturalDodge;
-	//helper stuff
-	equipmentSlots;
-	constructor(){
-		//define species type
-		this.speciesType = 'Human';
+	//function beginnings
+	constructor(color,eyeColor,hair){
+		super('Human',50,2,5,100,100);
 		//define what parts its made of
-		this.head = new body.Head();
-		this.torso = new body.Torso();
-		this.leftArm = new body.LeftArm();
-		this.rightArm = new body.RightArm();
-		this.rightHand = new body.RightHand();
-		this.leftHand = new body.LeftHand();
-		this.leftLeg = new body.LeftLeg();
-		this.rightLeg = new body.RightLeg();
-		this.leftFoot = new body.LeftFoot();
-		this.rightFoot = new body.RightFoot();
+		this.head = new body.Head(2,2,1,1,1,32,1,10,0,4);
+		this.torso = new body.Torso(1,24,1,1,1,2,2,2,25,0,3);
+		this.leftArm = new body.LeftArm(2,5,0,8);
+		this.rightArm = new body.RightArm(2,5,0,8);
+		this.rightHand = new body.RightHand(5,3,1,5,0,5);
+		this.leftHand = new body.LeftHand(5,3,1,5,0,5);
+		this.leftLeg = new body.LeftLeg(2,15,0,8);
+		this.rightLeg = new body.RightLeg(2,15,0,8);
+		this.leftFoot = new body.LeftFoot(5,3,5,0,4);
+		this.rightFoot = new body.RightFoot(5,3,5,0,4);
+		
+		//features that are customizable
+		this.color = color;
+		this.eyeColor = eyeColor;
+		this.hair = hair;
+		
+		//species specific arrays
 		this.bodyParts = [this.head,this.torso,this.leftArm,this.rightArm,this.rightHand,this.leftHand,this.leftLeg,this.rightLeg,this.leftFoot,this.rightFoot];
+		this.equipmentSlots = this.head.equipmentSlots.concat(this.torso.equipmentSlots.concat(this.leftArm.equipmentSlots.concat(this.rightArm.equipmentSlots.concat(this.leftHand.equipmentSlots.concat(this.rightHand.equipmentSlots.concat(this.leftLeg.equipmentSlots.concat(this.rightLeg.equipmentSlots.concat(this.leftFoot.equipmentSlots.concat(this.rightFoot.equipmentSlots)))))))));
 		//plug the parts together
 		//head to torso and reverse
-		this.head.connections[0] = new body.Connection('Head','Torso');
-		this.torso.connections[0] = new body.Connection('Torso','Head');
+		super.connectParts(this.head,this.torso);
 		//torso to arm and reverse
-		this.torso.connections[1] = new body.Connection('Torso','Left Arm');
-		this.torso.connections[2] = new body.Connection('Torso','Right Arm');
-		this.leftArm.connections[0] = new body.Connection('Left Arm','Torso');
-		this.rightArm.connections[0] = new body.Connection('Right Arm','Torso');
+		super.connectParts(this.torso,this.leftArm);
+		super.connectParts(this.torso,this.rightArm);
 		//torso to leg and reverse
-		this.torso.connections[3] = new body.Connection('Torso','Left Leg');
-		this.torso.connections[4] = new body.Connection('Torso','Right Leg');
-		this.leftLeg.connections[0] = new body.Connection('Left Leg','Torso');
-		this.rightLeg.connections[0] = new body.Connection('Right Leg','Torso');
+		super.connectParts(this.torso,this.leftLeg);
+		super.connectParts(this.torso,this.rightLeg);
 		//arm to hands and reverse
-		this.leftArm.connections[1] = new body.Connection('Left Arm','Left Hand');
-		this.rightArm.connections[1] = new body.Connection('Right Arm','Right Hand');
-		this.leftHand.connections[0] = new body.Connection('Left Hand','Left Arm');
-		this.rightHand.connections[0] = new body.Connection('Right Hand','Right Arm');
+		super.connectParts(this.leftArm,this.leftHand);
+		super.connectParts(this.rightArm,this.rightHand);
 		//legs to feet and reverse
-		this.leftLeg.connections[1] = new body.Connection('Left Leg','Left Foot');
-		this.rightLeg.connections[1] = new body.Connection('Right Leg','Right Foot');
-		this.leftFoot.connections[0] = new body.Connection('Left Foot','Left Leg');
-		this.rightFoot.connections[0] = new body.Connection('Right Foot','Right Leg');
-		//applying the features to each part
-		//head features
-		this.head.eyes = 2;
-		this.head.ears = 2;
-		this.head.noses = 1;
-		this.head.mouths = 1;
-		this.head.brains = 1;
-		this.head.teeth = 32;
-		this.head.tongues = 1;
-		//torso features
-		this.torso.hearts = 1;
-		this.torso.ribs = 24
-		this.torso.spines = 1;
-		this.torso.stomaches = 1;
-		this.torso.livers = 1;
-		this.torso.lungs = 2;
-		this.torso.intestines = 2;
-		this.torso.kidneys = 2;
-		//arm features
-		this.leftArm.segments = 2;
-		this.rightArm.segments = 2;
-		//hand features
-		this.leftHand.fingers = 5;
-		this.leftHand.joints = 3;
-		this.leftHand.thumbs = 1;
-		this.rightHand.fingers = 5;
-		this.rightHand.joints = 3;
-		this.rightHand.thumbs = 1;
-		//leg features
-		this.leftLeg.segments = 2;
-		this.rightLeg.segments = 2;
-		//foot features
-		this.leftFoot.toes = 5;
-		this.leftFoot.joints = 3;
-		this.rightFoot.toes = 5;
-		this.rightFoot.joints = 3;
-		//features that are customizable
-		this.color = 'White';
-		this.eyeColor = 'Brown';
-		this.hair = 'Grey';
-		this.height = '100';
-		this.weight = '100';
-		//number stats
-		this.naturalVitality = 50;
-		this.naturalArmor = 2;
-		this.naturalDodge = 5;
-		//individual parts stats
-		this.head.hitpoints = 10;
-		this.head.armorValue = 0;
-		this.head.dodgeValue = 4;
-		this.torso.hitpoints = 25;
-		this.torso.armorValue = 0;
-		this.torso.dodgeValue = 3;
-		this.leftArm.hitpoints = 5;
-		this.leftArm.armorValue = 0;
-		this.leftArm.dodgeValue = 8;
-		this.rightArm.hitpoints = 5;
-		this.rightArm.armorValue = 0;
-		this.rightArm.dodgeValue = 8;
-		this.leftHand.hitpoints = 5;
-		this.leftHand.armorValue = 0;
-		this.leftHand.dodgeValue = 5;
-		this.rightHand.hitpoints = 5;
-		this.rightHand.armorValue = 0;
-		this.rightHand.dodgeValue = 5;
-		this.leftLeg.hitpoints = 15;
-		this.leftLeg.armorValue = 0;
-		this.leftLeg.dodgeValue = 8;
-		this.rightLeg.hitpoints = 15;
-		this.rightLeg.armorValue = 0;
-		this.rightLeg.dodgeValue = 8;
-		this.leftFoot.hitpoints = 5;
-		this.leftFoot.armorValue = 0;
-		this.leftFoot.dodgeValue = 4;
-		this.rightFoot.hitpoints = 5;
-		this.rightFoot.armorValue = 0;
-		this.rightFoot.dodgeValue = 4;
-		this.equipmentSlots = this.head.equipmentSlots.concat(this.torso.equipmentSlots.concat(this.leftArm.equipmentSlots.concat(this.rightArm.equipmentSlots.concat(this.leftHand.equipmentSlots.concat(this.rightHand.equipmentSlots.concat(this.leftLeg.equipmentSlots.concat(this.rightLeg.equipmentSlots.concat(this.leftFoot.equipmentSlots.concat(this.rightFoot.equipmentSlots)))))))));
+		super.connectParts(this.leftLeg,this.leftFoot);
+		super.connectParts(this.rightLeg,this.rightFoot);
 	}
 	fullbodyStatus(){
 		let fullReport = this.head.description();

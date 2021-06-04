@@ -1,12 +1,9 @@
 const soulFile = require('./soul.js');
-const bodyFile = require('./body.js');
 const speciesFile = require('./species.js');
-const weaponFile = require('./weapon.js');
-const armorFile = require('./armor.js');
+const itemFile = require('./item.js');
 const characterFile = require('./character.js');
-const userCommandsFile = require('./userCommands.js');
+const fs = require('fs');
 
-console.log('Creating a new soul');
 let soul = new soulFile.Soul();
 soul.strength = 10;
 soul.constitution = 5;
@@ -14,48 +11,48 @@ soul.wisdom = 3;
 soul.dexterity = 8;
 soul.intelligence = 7;
 soul.charisma = 15;
-console.log(soul.description());
-console.log(soul.stats());
+let results = 'Creating a new soul\n';
+results += soul.description() + '\n';
+results += soul.stats() + '\n';
+fs.writeFileSync('./results/soul.txt',results);
 
-console.log('Creating a new human');
-let h = new speciesFile.Human();
-console.log(h.description());
+results = 'Creating a human\n';
+let h = new speciesFile.Human('White','Brown','Grey');
+results += h.fullbodyStatus() + '\n';
+results += h.listBodyParts() + '\n';
+results += h.description() + '\n';
+fs.writeFileSync('./results/species.txt',results);
 
-console.log('Creating new character');
-let c = new characterFile.Character('tony',h,soul);
-console.log(c.description());
+results = 'Creating new character\n';
+let c = new characterFile.Character('Tony',h,soul);
+results += c.description();
+fs.writeFileSync('./results/character.txt',results);
 
-console.log('Creating a weapon for our character');
-let a = new weaponFile.Axe();
-console.log(a.description());
+results = 'Creating new items\n';
+let axe = new itemFile.Weapon(10,'Axe','Iron','HeldObject',10,'Grey');
+results += axe.description() + '\n';
+fs.writeFileSync('./results/items.txt',results);
 
-console.log('Creating breastplate for our character');
-let b = new armorFile.Breastplate();
-console.log(b.description());
+results = 'Equipping items\n';
+results += c.putInInventory(axe) + '\n';
+results += c.checkInventory() + '\n';
+results += c.equipItem(0,'rightHeldObject') + '\n';
+fs.writeFileSync('./results/equip.txt',results);
 
-console.log('Giving weapon to character');
-//find equipment slot
-let equipmentArea = 'rightHeldObject';
-for(let i=0;i<c.equipped.length;i++){
-	if(c.equipped[i][0] == equipmentArea){
-		c.equipped[i][1] = a;
-		c.weight += a.weight;
-	}
-}
-console.log(c.species.rightHand.description());
+let enemySoul = new soulFile.Soul();
+enemySoul.strength = 2;
+enemySoul.constitution = 2;
+enemySoul.wisdom = 2;
+enemySoul.dexterity = 2;
+enemySoul.intelligence = 2;
+enemySoul.charisma = 2;
 
-c.inventory.push(b)
+let enemyBody = new speciesFile.Human('Red','Red','Red');
 
-console.log('Character after equipping items');
-console.log(c.description());
+let enemyCharacter = new characterFile.Character('Evil',enemyBody,enemySoul);
 
-console.log('Printing out every limb of a character');
-console.log(c.species.fullbodyStatus());
 
-console.log('standalone inventory check');
-console.log(userCommandsFile.checkInventory(c));
+console.log(c.attack(enemyCharacter,enemyCharacter.species.head));
+console.log(enemyCharacter.description());
+console.log(enemyCharacter.species.listBodyParts())
 
-console.log('standalone equipment check');
-console.log(userCommandsFile.checkEquipment(c));
-
-console.log(c);
