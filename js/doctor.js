@@ -9,7 +9,7 @@ function doctorVisit(client,message){
 	//checks for name
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id && !isNaN(data.users[i]["unstable"])){
-			let price = Math.floor(data.users[i].balance / 4);
+			let price = Math.floor(data.users[i].balance / 4) + 2;
 			if(data.users[i].balance - price < 0){
 				message.channel.send(`You don't have enough CC! (Costs ${price})`);
 			}
