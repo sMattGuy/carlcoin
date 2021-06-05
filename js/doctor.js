@@ -18,7 +18,7 @@ function doctorVisit(client,message){
 				if(data.users[i]["unstable"] >= 100){
 					insane = true;
 				}
-				data.users[i]["unstable"] -= 50;
+				data.users[i]["unstable"] -= 151;
 				data.users[i].balance -= price;
 				data.welfare += price;
 				if(data.users[i]["unstable"] < 0){
@@ -26,7 +26,7 @@ function doctorVisit(client,message){
 				}
 				message.channel.send(`The doctor gave you some medicine; You feel a bit better.`);
 				console.log(data.users[i].name + ' used the doctor');
-				if(insane && data.users[i]["unstable"] + 50 >= 100 && data.users[i]["unstable"] < 100){
+				if(insane && data.users[i]["unstable"] + 151 >= 100 && data.users[i]["unstable"] < 100){
 					message.channel.send(`You have come to your senses`);
 				}
 			}
