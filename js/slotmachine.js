@@ -28,7 +28,7 @@ function playSlots(client,message){
 				if(isNaN(wager) || wager < 0){
 					message.channel.send('Invalid amount entered!');
 				}
-				else if((wager * 27) >= data.blackjack){
+				else if((wager * 15) >= data.blackjack){
 					message.channel.send('The slot machine doesnt have enough CC!');
 				}
 				else if(data.users[i].balance - wager < 0){
@@ -73,7 +73,7 @@ function playSlots(client,message){
 					}
 					//carl win
 					if(reel1%10 == 9 || reel2%10 == 9 || reel3%10 == 9){
-						gameMessage += getInstantWinResults(reel1, reel2, reel3, wager, 9, data, client, message, 9, i);
+						gameMessage += getInstantWinResults(reel1, reel2, reel3, wager, 5, data, client, message, 9, i);
 					}
 					//7 win
 					else if(reel1%10 == 8 || reel2%10 == 8 || reel3%10 == 8){
