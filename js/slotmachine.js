@@ -56,7 +56,7 @@ function playSlots(client,message){
 						let autoFail = Math.random();
 						if(autoFail > 0.3){
 							gameMessage = `Nothing makes sense.... did you win or lose? No money came out either way.\n`;
-							drawSlots(channel, gameMessage, reel1, reel2, reel3);
+							drawSlots(message.channel, gameMessage, reel1, reel2, reel3);
 							return;
 						}
 					}
