@@ -87,125 +87,62 @@ class Torso extends BodyPart{
 		return returnString;
 	}
 }
-class RightArm extends BodyPart{
+class Arm extends BodyPart{
 	segments;
-	//values
 	constructor(segment,hitp,av,dv){
-		super('Right Arm',[['rightVambrace',{name:'Nothing'}]],hitp,av,dv);
+		super('Arm',[['vambrace',{name:'Nothing'}]],hitp,av,dv);
 		this.segments = segment;
 	}
 	description(){
-		let returnString = `Its right arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class LeftArm extends BodyPart{
-	segments;
-	constructor(segment,hitp,av,dv){
-		super('Left Arm',[['leftVambrace',{name:'Nothing'}]],hitp,av,dv);
-		this.segments = segment;
-	}
-	description(){
-		let returnString = `Its left arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
-		}
-		return returnString;
-	}
-}
-class RightHand extends BodyPart{
+class Hand extends BodyPart{
 	fingers;
 	joints;
 	thumbs;
 	constructor(finger,joint,thumb,hitp,av,dv){
-		super('Right Hand',[['rightHeldObject',{name:'Nothing'}],['rightGlove',{name:'Nothing'}]],hitp,av,dv);
+		super('Hand',[['heldObject',{name:'Nothing'}],['glove',{name:'Nothing'}]],hitp,av,dv);
 		this.fingers = finger;
 		this.joints = joint;
 		this.thumbs = thumb;
 	}
 	description(){
-		let returnString = `Its right hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class LeftHand extends BodyPart{
-	fingers;
-	joints;
-	thumbs;
-	constructor(finger,joint,thumb,hitp,av,dv){
-		super('Left Hand',[['leftHeldObject',{name:'Nothing'}],['leftGlove',{name:'Nothing'}]],hitp,av,dv);
-		this.fingers = finger;
-		this.joints = joint;
-		this.thumbs = thumb;
-	}
-	description(){
-		let returnString = `Its left hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
-		}
-		return returnString;
-	}
-}
-class RightLeg extends BodyPart{
+class Leg extends BodyPart{
 	segments;
 	constructor(segment,hitp,av,dv){
-		super('Right Leg',[['rightGreaves',{name:'Nothing'}]],hitp,av,dv);
+		super('Leg',[['greaves',{name:'Nothing'}]],hitp,av,dv);
 		this.segments = segment;
 	}
 	description(){
-		let returnString = `Its right leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
 		return returnString;
 	}
 }
-class LeftLeg extends BodyPart{
-	segments;
-	constructor(segment,hitp,av,dv){
-		super('Left Leg',[['leftGreaves',{name:'Nothing'}]],hitp,av,dv);
-		this.segments = segment;
-	}
-	description(){
-		let returnString = `Its left leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
-		}
-		return returnString;
-	}
-}
-class RightFoot extends BodyPart{
+class Foot extends BodyPart{
 	toes;
 	joints;
 	constructor(toe,joint,hitp,av,dv){
-		super('Right Foot',[['rightShoe',{name:'Nothing'}]],hitp,av,dv);
+		super('Foot',[['shoe',{name:'Nothing'}]],hitp,av,dv);
 		this.toes = toe;
 		this.joints = joint;
 	}
 	description(){
-		let returnString = `Its right foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
-		}
-		return returnString;
-	}
-}
-class LeftFoot extends BodyPart{
-	toes;
-	joints;
-	constructor(toe,joint,hitp,av,dv){
-		super('Left Foot',[['leftShoe',{name:'Nothing'}]],hitp,av,dv);
-		this.toes = toe;
-		this.joints = joint;
-	}
-	description(){
-		let returnString = `Its left foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+		let returnString = `Its foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
 		for(let i=0;i<this.connections.length;i++){
 			returnString += `${this.connections[i].description()}`
 		}
@@ -217,12 +154,8 @@ module.exports = {
 	Connection,
 	Head,
 	Torso,
-	RightArm,
-	LeftArm,
-	RightHand,
-	LeftHand,
-	RightLeg,
-	LeftLeg,
-	RightFoot,
-	LeftFoot
+	Arm,
+	Hand,
+	Leg,
+	Foot
 };

@@ -52,6 +52,14 @@ function playSlots(client,message){
 						reel3 = Math.floor(Math.random() * 80);
 					}
 					console.log(reel1 + " " + reel2 + " " + reel3);
+					if(data.users[i]["unstable"] >= 100){
+						let autoFail = Math.random();
+						if(autoFail > 0.3){
+							gameMessage = `Nothing makes sense.... did you win or lose? No money came out either way.\n`;
+							drawSlots(channel, gameMessage, reel1, reel2, reel3);
+							return;
+						}
+					}
 					//carl win
 					if(reel1%10 == 9 || reel2%10 == 9 || reel3%10 == 9){
 						gameMessage = getInstantWinResults(reel1, reel2, reel3, wager, 9, data, client, message, 9, i);
