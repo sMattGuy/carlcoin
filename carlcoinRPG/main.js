@@ -74,7 +74,7 @@ function loop(){
 		let bodypart = Math.floor(Math.random() * c.species.bodyParts.length);
 		let attackFinal = (attackMode >= 0.5) ? null : c.species.bodyParts[bodypart];
 		console.log(ec.attack(c, attackFinal));
-		console.log(`Debug:\n${c.name} ${c.hitpoints}\n${ec.name} ${ec.hitpoints}\n`);
+		console.log(`Debug:\n${c.name} ${c.hitpoints}\n${ec.name} ${ec.hitpoints}\n${ec.species.fullbodyStatus()}`);
 		if(c.hitpoints <= 0 || ec.hitpoints <= 0){
 			rl.close();
 			return;

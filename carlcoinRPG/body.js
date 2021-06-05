@@ -49,9 +49,15 @@ class Head extends BodyPart{
 		this.tongues = tongue;
 	}
 	description(){
-		let returnString = `Its head has ${this.eyes} eyes, ${this.ears} ears, ${this.noses} noses, ${this.mouths} mouths, ${this.brains} brains, ${this.teeth} teeth, ${this.tongues} tongues. It is currently wearing ${this.equipmentSlots[0][1].name} on its head and ${this.equipmentSlots[1][1].name} as a mask. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its head has ${this.eyes} eyes, ${this.ears} ears, ${this.noses} noses, ${this.mouths} mouths, ${this.brains} brains, ${this.teeth} teeth, ${this.tongues} tongues. It is currently wearing ${this.equipmentSlots[0][1].name} on its head and ${this.equipmentSlots[1][1].name} as a mask. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
@@ -80,9 +86,15 @@ class Torso extends BodyPart{
 		this.kidneys = kidney;
 	}
 	description(){
-		let returnString = `Its torso has ${this.hearts} hearts, ${this.ribs} ribs, ${this.spines} spines, ${this.stomaches} stomaches, ${this.livers} livers, ${this.lungs} lungs, ${this.intestines} intestines, ${this.kidneys} kidneys. It is currently wearing ${this.equipmentSlots[0][1].name} for a shirt and ${this.equipmentSlots[1][1].name} as a coat. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its torso has ${this.hearts} hearts, ${this.ribs} ribs, ${this.spines} spines, ${this.stomaches} stomaches, ${this.livers} livers, ${this.lungs} lungs, ${this.intestines} intestines, ${this.kidneys} kidneys. It is currently wearing ${this.equipmentSlots[0][1].name} for a shirt and ${this.equipmentSlots[1][1].name} as a coat. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
@@ -94,9 +106,15 @@ class Arm extends BodyPart{
 		this.segments = segment;
 	}
 	description(){
-		let returnString = `Its arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its arm has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as a vambrace. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
@@ -112,9 +130,15 @@ class Hand extends BodyPart{
 		this.thumbs = thumb;
 	}
 	description(){
-		let returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its hand has ${this.fingers} fingers, ${this.joints} joints per finger, ${this.thumbs} thumbs. It is currently holding ${this.equipmentSlots[0][1].name}. It is currently wearing ${this.equipmentSlots[1][1].name} as a glove. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
@@ -126,9 +150,15 @@ class Leg extends BodyPart{
 		this.segments = segment;
 	}
 	description(){
-		let returnString = `Its leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its leg has ${this.segments} segments. It is currently wearing ${this.equipmentSlots[0][1].name} as greaves. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
@@ -142,9 +172,15 @@ class Foot extends BodyPart{
 		this.joints = joint;
 	}
 	description(){
-		let returnString = `Its foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
-		for(let i=0;i<this.connections.length;i++){
-			returnString += `${this.connections[i].description()}`
+		let returnString = ``;
+		if(this.hitpoints <= 0){
+			returnString = `Its ${this.name} has been seperated from its body. `;
+		}
+		else{
+			returnString = `Its foot has ${this.toes} toes, ${this.joints} joints per toe. It is currently wearing ${this.equipmentSlots[0][1].name} as a shoe. It has ${this.hitpoints} HP, ${this.armorValue} AV and ${this.dodgeValue} DV. `;
+			for(let i=0;i<this.connections.length;i++){
+				returnString += `${this.connections[i].description()}`
+			}
 		}
 		return returnString;
 	}
