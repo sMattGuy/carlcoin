@@ -35,7 +35,7 @@ function relaxUser(client,message){
 				if(data.users[i]["relax"] < Date.now()){
 					data.users[i]["relax"] = Date.now() + 1800000;
 					let relaxed = Math.random();
-					if(relaxed >= 0.5){
+					if(relaxed >= 0.3){
 						let insane = false;
 						if(data.users[i]["unstable"] >= 100){
 							insane = true;
