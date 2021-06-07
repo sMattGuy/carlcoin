@@ -12,20 +12,20 @@ function relaxUser(client,message){
 			if(isNaN(data.users[i]["relax"])){
 				data.users[i]["relax"] = Date.now() + 1800000;
 				let relaxed = Math.random();
-				if(relaxed >= 0.5){
+				if(relaxed >= 0.3){
 					let insane = false;
 					if(data.users[i]["unstable"] >= 100){
 						insane = true;
 					}
-					data.users[i]["unstable"] -= 25;
+					data.users[i]["unstable"] -= 250;
 					if(data.users[i]["unstable"] < 0){
 						data.users[i]["unstable"] = 0;
 					}
 					message.channel.send(`You managed to relax a bit`);
-					if(insane && data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
+					if(insane){
 						message.channel.send(`You have come to your senses`);
+						data.users[i]["suicide"] = 1;
 					}
-
 				}
 				else{
 					message.channel.send(`You couldn't relax at all`);
@@ -40,13 +40,14 @@ function relaxUser(client,message){
 						if(data.users[i]["unstable"] >= 100){
 							insane = true;
 						}
-						data.users[i]["unstable"] -= 25;
+						data.users[i]["unstable"] -= 250;
 						if(data.users[i]["unstable"] < 0){
 							data.users[i]["unstable"] = 0;
 						}
 						message.channel.send(`You managed to relax a bit`);
-						if(insane && data.users[i]["unstable"] + 25 >= 100 && data.users[i]["unstable"] < 100){
+						if(insane){
 							message.channel.send(`You have come to your senses`);
+							data.users[i]["suicide"] = 1;
 						}
 						if(isNaN(data.users[i]["CON"])){
 							data.users[i]["CON"] = 0;
@@ -72,12 +73,17 @@ function relaxUser(client,message){
 							conBonus = .5;
 						}
 						if(1 - bonusChance < conBonus){
-							data.users[i]["unstable"] -= 10;
+							let insane = false;
+							if(data.users[i]["unstable"] >= 100){
+								insane = true;
+							}
+							data.users[i]["unstable"] -= 250;
 							if(data.users[i]["unstable"] < 0){
 								data.users[i]["unstable"] = 0;
 							}
-							else if(data.users[i]["unstable"] + 10 >= 100 && data.users[i]["unstable"] < 100){
+							else if(insane){
 								message.channel.send(`You have come to your senses`);
+								data.users[i]["suicide"] = 1;
 							}
 							message.channel.send(`Your CON helps you calm down despite everything`);
 						}
