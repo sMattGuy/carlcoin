@@ -277,7 +277,7 @@ function actualRace(client,message){
 				let AIHorse = createHorse();
 				total += 100;
 				let owner = `AI${i}`;
-				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse};
+				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse,"bet":100};
 				horses.push(airacer);
 			}
 		}
