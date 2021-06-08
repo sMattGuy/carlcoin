@@ -345,6 +345,10 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking horse race');
 		horse.checkRace(client,message);
 	}
+	else if(message.content === '!cc patchnotes'){
+		console.log(message.author.username + '  is checking patchnotes');
+		message.channel.send(`Patch Notes 6/7/2021\nAdded patchnotes as a command\nDoctor cost 1/4 balance + 2 -> 1/6 balance + 10\nRelax chance from 50% -> 70%\nCON check from 50% -> 70%`);
+	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
 		message.channel.send(`Stop yelling :|`);
