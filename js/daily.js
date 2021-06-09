@@ -12,7 +12,7 @@ function dailyEvents(client,message){
 	let totalTax = 0;
 	for(let i=0;i<data.users.length;i++){
 		let bankValue = 0;
-		for(let j=0;j<bankJSON.users.lengthj++){
+		for(let j=0;j<bankJSON.users.length;j++){
 			if(data.users[i].id == bankJSON.users[j].id){
 				bankValue = bankJSON.users[j].balance;
 			}
