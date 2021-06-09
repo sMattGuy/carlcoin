@@ -21,7 +21,15 @@ function checkLeaderboard(client,message){
 			skyscraperValue = 0;
 		}
 		let combinedAssests = houseValue + apartmentValue + skyscraperValue;
-		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`};
+		let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+		let bank = JSON.parse(bankFile);
+		let bankVal = 0;
+		for(let j=0;j<bank.users.length;j++){
+			if(data.users[i].id == bank.users[j].id){
+				bankVal = bank.users[j].balance;
+			}
+		}
+		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`,bank:`${bankVal}`};
 		userArray.push(userObject);
 	}
 	userArray.sort(function (a,b){
@@ -29,7 +37,7 @@ function checkLeaderboard(client,message){
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
-		let newMessage = `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
+		let newMessage = `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) (bank:${userArray[i].bank}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)+parseInt(userArray[i].bank)}\n`;
 		if(messageBox.length + newMessage.length < 1500){
 			messageBox += newMessage;
 		}
