@@ -1,17 +1,27 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const horse = require('./horse.js');
+const bank = require('./bank.js');
 
 function dailyEvents(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
+	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+	let bankJSON = JSON.parse(bankFile);
 	let totalAdded = 0;
 	let totalTax = 0;
 	for(let i=0;i<data.users.length;i++){
+		let bankValue = 0;
+		for(let j=0;j<bankJSON.users.lengthj++){
+			if(data.users[i].id == bankJSON.users[j].id){
+				bankValue = bankJSON.users[j].balance;
+			}
+		}
 		let homePrice = data.users[i]["house"] * 10;
 		let taxAmount = 0;
 		let blackjackAmount = 0;
-		let personalTax = Math.floor((data.users[i].balance / data.econ) * 100);
+		let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100);
+		console.log(data.users[i].name + ' has a personal tax of ' + personalTax);
 		if(isNaN(homePrice)){
 			homePrice = 0;
 		}
@@ -135,6 +145,7 @@ function dailyEvents(client,message){
 	}
 	newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+	bank.bankDaily(client,message);
 }
 
 //export functions

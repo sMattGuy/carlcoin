@@ -236,12 +236,16 @@ function bankDaily(client,message){
 	}
 	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
 	let bank = JSON.parse(bankFile);
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
 	let newInterest = 0.05;
 	for(let j=0;j<bank.users.length;j++){
 		if(today.getDate() == 1){
 			newInterest = Math.random() * 0.1;
 			//pay out users
-			bank.users[j].balance += Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 31));
+			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 31));
+			bank.users[j].balance += payout;
+			data.econ += payout;
 			bank.users[j].days = 1;
 		}
 		else{

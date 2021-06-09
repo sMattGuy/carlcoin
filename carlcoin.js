@@ -331,6 +331,10 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc leaveServer') && message.author.id == 492850107038040095){
 		admin.leaveServer(client,message);
 	}
+	//cure user
+	else if(message.content.startsWith('!cc cureInsanity') && message.author.id == 492850107038040095){
+		admin.cureInsanity(client,message);
+	}
 	//drive sprinter
 	else if(message.content === '!cc driveSprinter'){
 		console.log(message.author.username + ' is driving a sprinter');

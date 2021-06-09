@@ -41,6 +41,39 @@ function giveUserMoney(client, message){
 	}
 }
 
+function cureInsanity(client,message){
+	let chop = message.content.split(" ");
+	if(chop.length != 3){
+		message.channel.send('Usage: !cc cureInsanity user');
+	}
+	else{
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let mentionOK = true;
+		let buyer = 0;
+		try{
+			buyer = getUserFromMention(client,chop[chop.length-1]).id;
+		}
+		catch(err){
+			message.channel.send('Invalid user selected!');
+			mentionOK = false;
+		}
+		if(mentionOK){
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == buyer){
+					data.users[i]["unstable"] = 0;
+					data.users[i]["suicide"] = 1;
+					console.log(data.users[i].name + ' has been cured of their insanity');
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`Your sanity has been restored!`);
+					return;
+				}
+			}
+		}
+	}
+}
+
 function summonGaintCoin(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
@@ -96,5 +129,6 @@ function getUserFromMention(client,mention) {
 module.exports = {
 	giveUserMoney,
 	summonGaintCoin,
-	leaveServer
+	leaveServer,
+	cureInsanity
 };
