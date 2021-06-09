@@ -33,6 +33,7 @@ const help = require('./js/help.js');
 const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
+const bank = require('./js/bank.js');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
@@ -345,9 +346,34 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking horse race');
 		horse.checkRace(client,message);
 	}
+	//bank stuff
+	else if(message.content.startsWith('!cc createBankAccount')){
+		console.log(message.author.username + ' is creating a bank account');
+		bank.createBankAccount(client,message);
+	}
+	else if(message.content === '!cc bankBalance'){
+		console.log(message.author.username + ' is checking bank account');
+		bank.bankBalance(client,message);
+	}
+	else if(message.content.startsWith('!cc bankDeposit')){
+		console.log(message.author.username + ' is depositing into a bank account');
+		bank.bankDeposit(client,message);
+	}
+	else if(message.content.startsWith('!cc bankWithdraw')){
+		console.log(message.author.username + ' is withdrawing from a bank account');
+		bank.bankWithdraw(client,message);
+	}
+	else if(message.content === '!cc bankInfo'){
+		console.log(message.author.username + ' is checking bank info');
+		bank.bankInfo(client,message);
+	}
+	else if(message.content === '!cc bankHelp'){
+		console.log(message.author.username + ' is checking bank help');
+		bank.bankHelp(client,message);
+	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/7/2021\nAdded patchnotes as a command\nDoctor cost 1/4 balance + 2 -> 1/6 balance + 10\nRelax chance from 50% -> 70%\nCON check from 50% -> 70%`);
+		message.channel.send(`Patch Notes 6/9/2021\nRemoved carls from the slot machine\nAdded bank feature, use !cc bankHelp for more information`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
