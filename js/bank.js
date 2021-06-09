@@ -205,6 +205,7 @@ function bankWithdraw(client,message){
 					}
 					else{
 						bank.users[j].balance -= amount;
+						bank.users[j].days = 0;
 						data.users[i].balance += amount;
 						let newBank = JSON.stringify(bank);
 						fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
