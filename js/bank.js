@@ -87,7 +87,7 @@ function bankBalance(client,message){
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#F7931A')
 						.setTitle(`${data.users[i].name}'s bank account`)
-						.setAuthor(`${data.users[i].name}`, `${userImage}`)
+						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
 						.addFields(
 							{ name: 'Balance', value: `${bank.users[j].balance}`, inline: true },
 							{ name: 'Current Period', value: `${bank.users[j].days} days`, inline: true },
