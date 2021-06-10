@@ -254,12 +254,6 @@ function bankDaily(client,message){
 			bank.users[j].days += 1;
 		}
 	}
-	if(newInterest > 0.10){
-		newInterest = 0.1
-	}
-	if(newInterest < 0.10){
-		newInterest = 0.01
-	}
 	newInterest = newInterest.toFixed(2);
 	bank.interest = newInterest;
 	let newBank = JSON.stringify(bank);
