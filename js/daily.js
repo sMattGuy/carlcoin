@@ -17,6 +17,7 @@ function dailyEvents(client,message){
 				bankValue = bankJSON.users[j].balance;
 			}
 		}
+		bankValue = Math.floor(bankValue / 2);
 		let homePrice = data.users[i]["house"] * 10;
 		let taxAmount = 0;
 		let blackjackAmount = 0;
