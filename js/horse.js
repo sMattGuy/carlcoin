@@ -478,7 +478,7 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == firstPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, First Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, First Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
 					}
 				}
@@ -497,7 +497,7 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == secondPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, Second Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, Second Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
 					}
 				}
@@ -516,7 +516,7 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == thirdPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `\n${data.users[i].horses[j].name}, Third Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, Third Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
 					}
 				}
