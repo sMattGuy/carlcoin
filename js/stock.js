@@ -154,7 +154,7 @@ function buyStock(client,message){
 					fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${data.users[i].stock[stockIndex].amount}`);
+					message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}`);
 					return;
 				}
 			}
@@ -253,7 +253,7 @@ function sellStock(client,message){
 					let newStockFile = JSON.stringify(stock);
 					fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);message.channel.send(`You have sold ${amount} shares of ${stockName}! You now own ${data.users[i].stock[stockIndex].amount}`);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);message.channel.send(`You have sold ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}`);
 					return;
 				}
 			}
