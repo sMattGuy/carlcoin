@@ -49,17 +49,20 @@ function updateStocks(client,message){
 				if(newPrice <= 0){
 					newPrice = 1;
 				}
+				stock.stock[i].price = newPrice;
 			}
 			//go up
 			else if(changeChance >= 0.66){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.floor(stock.stock[i].price * changeDiff);
+				stock.stock[i].price = newPrice;
 			}
 			//no movement
 			else{
 				console.log(stock.stock[i].name + ' is not moving');
 			}
 		}
+		stock.stock[i].boughtRecently = 0;
 	}
 	let newStock = JSON.stringify(stock);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStock);
