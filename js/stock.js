@@ -75,7 +75,7 @@ function showStocks(client,message){
 	for(let i=0;i<stock.stock.length;i++){
 		result += `${stock.stock[i].name}\t${stock.stock[i].price}\t${stock.stock[i].vol}\t${stock.stock[i].existing}\n`;
 	}
-	message.channel.send(result);
+	message.channel.send(result,{"code":true});
 }
 
 function buyStock(client,message){
@@ -283,7 +283,7 @@ function showPort(client,message){
 			for(let j=0;j<data.users[i].stock.length;j++){
 				stockPort += `${data.users[i].stock[j].name}\t${data.users[i].stock[j].amount}\t${data.users[i].stock[j].avgPrice}\t${data.users[i].stock[j].today}\n`;
 			}
-			message.channel.send(stockPort);
+			message.channel.send(stockPort,{"code":true});
 			return;
 		}
 	}

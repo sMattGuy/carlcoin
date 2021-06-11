@@ -387,7 +387,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc stockPort'){
 		console.log(message.author.username + ' is checking stock port');
-		stock.stockPort(client,message);
+		stock.showPort(client,message);
 	}
 	else if(message.content.startsWith('!cc stockBuy')){
 		console.log(message.author.username + ' is buying stock');
