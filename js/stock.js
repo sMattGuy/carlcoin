@@ -146,7 +146,7 @@ function buyStock(client,message){
 					data.econ -= (amount * stock.stock[stockIndex].price);
 					data.users[i].stock[j].amount += amount;
 					data.users[i].stock[j].today += amount;
-					data.users[i].avgPrice = Math.floor((data.users[i].avgPrice + stock.stock[stockIndex].price) / 2);
+					data.users[i].stock[j].avgPrice = Math.floor((data.users[i].stock[j].avgPrice + stock.stock[stockIndex].price) / 2);
 					stock.stock[stockIndex].boughtRecently += amount;
 					stock.stock[stockIndex].existing -= amount;
 					//update files
