@@ -397,6 +397,10 @@ client.on('message', message => {
 		console.log(message.author.username + ' is selling stock');
 		stock.sellStock(client,message);
 	}
+	else if(message.content === '!cc stockGraph'){
+		console.log(message.author.username + ' is checking stock graph');
+		stock.stockGraph(client,message);
+	}
 	else if(message.content === '!cc stockHelp'){
 		console.log(message.author.username + ' is checking stock help');
 		stock.stockHelp(client,message);

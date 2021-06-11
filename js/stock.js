@@ -37,7 +37,8 @@ function updateStocks(client,message){
 		let stockHistorySave = JSON.stringify(stockHistory);
 		fs.writeFileSync('/home/mattguy/carlcoin/stockHistory.json',stockHistorySave);
 	}
-	let stockHistory = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
+	let stockHistoryFile = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
+	let stockHistory = JSON.parse(stockHistoryFile);
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
 	for(let i=0;i<stock.stock.length;i++){
@@ -357,6 +358,37 @@ function stockHelp(client,message){
 	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!`)
 }
 
+function stockGraph(client,message){
+	if(!fs.existsSync(`/home/mattguy/carlcoin/stockHistory.json`)){
+		let stockHistory = {"history":[]};
+		let stockHistorySave = JSON.stringify(stockHistory);
+		fs.writeFileSync('/home/mattguy/carlcoin/stockHistory.json',stockHistorySave);
+	}
+	let stockHistoryFile = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
+	let stockHistory = JSON.parse(stockHistoryFile);
+	const labels = [];
+	for(let i=0;i<stockHistory.history[0].priceHis.length;i++){
+		labels.push(i);
+	}
+	const datasets = []
+	for(let i=0;i<stockHistory.history.length;i++){
+		let newData = {label:``,data:[],fill:false,boarderColor:`rgb(${75+i},${192+i},${100+i})`,tension: 0.1};
+		newData.label = stockHistory.history[i].name;
+		for(let j=0;j<stockHistory.history[i].priceHis.length;j++){
+			newData.data.push(stockHistory.history[i].priceHis[j]);
+		}
+		datasets.push(newData);
+	}
+	const data = {labels: labels,datasets: datasets};
+	const config = {type:'line',data:data};
+	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js">const labels = ${labels};const data = ${data};const config = ${config};var myChart = new Chart(document.getElementById('myChart'),config);</script></head><body><div><canvas id="myChart"</canvas>></div></body></html>`;
+	if(fs.existsSync(`/var/www/html/carlHorses/StockTimeline.html`)){
+		fs.unlinkSync(`/var/www/html/carlHorses/StockTimeline.html`);
+	}
+	let stockWrite = stockSite;
+	fs.writeFileSync(`/var/www/html/carlHorses/StockTimeline.html`,stockWrite);
+	message.channel.send(`http://67.244.23.211:4377/carlHorses/StockTimeline.html`);
+}
 //export functions
 module.exports = {
 	updateStocks,
@@ -364,5 +396,6 @@ module.exports = {
 	buyStock,
 	sellStock,
 	showPort,
-	stockHelp
+	stockHelp,
+	stockGraph
 };
