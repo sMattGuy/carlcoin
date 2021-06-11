@@ -247,6 +247,10 @@ function sellStock(client,message){
 					data.users[i].balance += (amount * stock.stock[stockIndex].price);
 					data.econ += (amount * stock.stock[stockIndex].price);
 					data.users[i].stock[j].amount -= amount;
+					data.users[i].stock[j].today -= amount;
+					if(data.users[i].stock[j].today < 0){
+						data.users[i].stock[j].today = 0;
+					}
 					stock.stock[stockIndex].boughtRecently -= amount;
 					stock.stock[stockIndex].existing += amount;
 					//update files
