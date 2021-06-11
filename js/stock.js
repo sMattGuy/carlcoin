@@ -28,9 +28,9 @@ function createNewStock(client,message){
 		message.channel.send('Usage: !cc createNewStock <name> <price> <vol> <total> <limit>');
 		return;
 	}
-	let name = parseInt(chop[chop.length-5]);
+	let name = chop[chop.length-5];
 	let price = parseInt(chop[chop.length-4]);
-	let vol = parseInt(chop[chop.length-3]);
+	let vol = chop[chop.length-3];
 	let total = parseInt(chop[chop.length-2]);
 	let limit = parseInt(chop[chop.length-1]);
 
