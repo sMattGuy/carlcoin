@@ -360,9 +360,8 @@ function stockHelp(client,message){
 
 function stockGraph(client,message){
 	if(!fs.existsSync(`/home/mattguy/carlcoin/stockHistory.json`)){
-		let stockHistory = {"history":[]};
-		let stockHistorySave = JSON.stringify(stockHistory);
-		fs.writeFileSync('/home/mattguy/carlcoin/stockHistory.json',stockHistorySave);
+		message.channel.send(`No history has been recorded`);
+		return;
 	}
 	let stockHistoryFile = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
 	let stockHistory = JSON.parse(stockHistoryFile);
