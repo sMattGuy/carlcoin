@@ -380,7 +380,11 @@ function stockGraph(client,message){
 	}
 	const data = {labels: labels,datasets: datasets};
 	const config = {type:'line',data:data};
-	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js">const labels = `+labels+`;const data = `+data+`;const config = `+config+`;var myChart = new Chart(document.getElementById('myChart'),config);</script></head><body><div><canvas id="myChart"</canvas>></div></body></html>`;
+	labels = JSON.stringify(labels);
+	datasets = JSON.stringify(datasets);
+	data = JSON.stringify(data);
+	config = JSON.stringify(config);
+	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js">const labels = ${labels};const data = ${data};const config = ${config};var myChart = new Chart(document.getElementById('myChart'),config);</script></head><body><div><canvas id="myChart"</canvas>></div></body></html>`;
 	if(fs.existsSync(`/var/www/html/carlHorses/StockTimeline.html`)){
 		fs.unlinkSync(`/var/www/html/carlHorses/StockTimeline.html`);
 	}
