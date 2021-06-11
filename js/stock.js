@@ -73,6 +73,7 @@ function createNewStock(client,message){
 	console.log(newStock);
 	let stockFileSave = JSON.stringify(stock);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',stockFileSave);
+	message.channel.send(`A new stock has been created!`);
 }
 
 function createStocks(client,message){
