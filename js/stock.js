@@ -79,25 +79,19 @@ function showStocks(client,message){
 	let stock = JSON.parse(stockFile);
 	let stockName = ``;
 	let stockPrice = ``;
-	let stockVol = ``;
 	let stockLeft = ``;
-	let stockLimit = ``;
 	for(let i=0;i<stock.stock.length;i++){
 		stockName += `${stock.stock[i].name}\n`;
-		stockPrice += `${stock.stock[i].price}\n`;
-		stockVol += `${stock.stock[i].vol}\n`;
-		stockLeft += `${stock.stock[i].existing}\n`;
-		stockLimit += `${stock.stock[i].buyLimit}\n`;
+		stockPrice += `${stock.stock[i].price} ${stock.stock[i].vol}\n`;
+		stockLeft += `${stock.stock[i].existing} ${stock.stock[i].buyLimit}\n`;
 	}
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
 		.setTitle(`Carl Coin Stock Information`)
 		.addFields(
 			{ name: 'Name', value: `${stockName}`, inline: true },
-			{ name: 'Price', value: `${stockPrice}CC`, inline: true },
-			{ name: 'Volt.', value: `${stockVol}`, inline: true },
-			{ name: 'Amt. Left', value: `${stockLeft}`, inline: true },
-			{ name: 'Limit', value: `${stockLimit}`, inline: true },
+			{ name: 'Price&Volt.', value: `${stockPrice}`, inline: true },
+			{ name: 'Amt. Left&Limit', value: `${stockLeft}`, inline: true },
 		);
 	message.channel.send(playercardEmbed);
 }
