@@ -316,7 +316,7 @@ function showPort(client,message){
 				.addFields(
 					{ name: 'Name', value: `${stockName}`, inline: true },
 					{ name: 'Amt.&Avg.', value: `${stockAmtAvg}`, inline: true },
-					{ name: 'Buy Limit', value: `${stockToday}`, inline: true },
+					{ name: 'Today', value: `${stockToday}`, inline: true },
 				);
 			message.channel.send(playercardEmbed);
 			return;
