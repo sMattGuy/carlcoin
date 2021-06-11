@@ -82,8 +82,8 @@ function showStocks(client,message){
 	let stockLeft = ``;
 	for(let i=0;i<stock.stock.length;i++){
 		stockName += `${stock.stock[i].name}\n`;
-		stockPrice += `${stock.stock[i].price} ${stock.stock[i].vol}\n`;
-		stockLeft += `${stock.stock[i].existing} ${stock.stock[i].buyLimit}\n`;
+		stockPrice += `${stock.stock[i].price} | ${stock.stock[i].vol}\n`;
+		stockLeft += `${stock.stock[i].existing} | ${stock.stock[i].buyLimit}\n`;
 	}
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
@@ -302,12 +302,23 @@ function showPort(client,message){
 				message.channel.send('You dont own any stocks!');
 				return;
 			}
-			//if stock exists
-			let stockPort = `Name\tAmt\tAvg\tToday\n`;
+			let stockName = ``;
+			let stockAmtAvg = ``;
+			let stockToday = ``;
 			for(let j=0;j<data.users[i].stock.length;j++){
-				stockPort += `${data.users[i].stock[j].name}\t${data.users[i].stock[j].amount}\t${data.users[i].stock[j].avgPrice}\t${data.users[i].stock[j].today}\n`;
+				stockName += `${data.users[i].stock[j].name}\n`;
+				stockAmtAvg += `${data.users[i].stock[j].amount} | ${data.users[i].stock[j].avgPrice}\n`;
+				stockToday += `${data.users[i].stock[j].today}\n`;
 			}
-			message.channel.send(stockPort,{"code":true});
+			const playercardEmbed = new Discord.MessageEmbed()
+				.setColor('#F7931A')
+				.setTitle(`Carl Coin Stock Information`)
+				.addFields(
+					{ name: 'Name', value: `${stockName}`, inline: true },
+					{ name: 'Amt.&Avg.', value: `${stockAmtAvg}`, inline: true },
+					{ name: 'Buy Limit', value: `${stockToday}`, inline: true },
+				);
+			message.channel.send(playercardEmbed);
 			return;
 		}
 	}
