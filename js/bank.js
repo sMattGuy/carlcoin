@@ -242,7 +242,7 @@ function bankDaily(client,message){
 	let newInterest = 0.05;
 	for(let j=0;j<bank.users.length;j++){
 		if(today.getDate() == 1){
-			newInterest = Math.random() * 0.1;
+			newInterest = Math.random() * 0.1 + 0.01;
 			//pay out users
 			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 31));
 			bank.users[j].balance += payout;

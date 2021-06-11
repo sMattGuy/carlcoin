@@ -34,6 +34,7 @@ const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
 const bank = require('./js/bank.js');
+const stock = require('./js/stock.js');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
@@ -47,7 +48,7 @@ let raffleStart = false;
 let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
-
+let prevHour = startupDay.getHours();
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -81,6 +82,10 @@ client.on('message', message => {
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
 		recentId = message.author.id;
+	}
+	if(prevHour != universalDate.getHours()){
+		prevHour = universalDate.getHours();
+		stock.updateStocks(client,message);
 	}
 	//raffle functionality
 	//message failsafe incase countery somehow goes past value
@@ -374,6 +379,23 @@ client.on('message', message => {
 	else if(message.content === '!cc bankHelp'){
 		console.log(message.author.username + ' is checking bank help');
 		bank.bankHelp(client,message);
+	}
+	//stock check
+	else if(message.content === '!cc showStocks'){
+		console.log(message.author.username + ' is checking stocks');
+		stock.showStocks(client,message);
+	}
+	else if(message.content === '!cc stockPort'){
+		console.log(message.author.username + ' is checking stock port');
+		stock.stockPort(client,message);
+	}
+	else if(message.content.startsWith('!cc stockBuy')){
+		console.log(message.author.username + ' is buying stock');
+		stock.buyStock(client,message);
+	}
+	else if(message.content.startsWith('!cc stockSell')){
+		console.log(message.author.username + ' is selling stock');
+		stock.sellStock(client,message);
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');

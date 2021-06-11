@@ -11,6 +11,11 @@ function dailyEvents(client,message){
 	let totalAdded = 0;
 	let totalTax = 0;
 	for(let i=0;i<data.users.length;i++){
+		if(data.users[i].hasOwnProperty("stock")){
+			for(let st=0;st<data.users[i].stock.length;st++){
+				data.users[i].stock[st].today = 0;
+			}
+		}
 		let bankValue = 0;
 		for(let j=0;j<bankJSON.users.length;j++){
 			if(data.users[i].id == bankJSON.users[j].id){
