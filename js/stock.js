@@ -38,8 +38,11 @@ function updateStocks(client,message){
 		let changeDiff = Math.random() * (stock.stock[i].maxMove - stock.stock[i].minMove) + stock.stock[i].minMove;
 		let changeChance = Math.random();
 		let stockMove = stock.stock[i].moveChance;
-		if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
-			stockMove = 1;
+		if(stock.stock[i].boughtRecently < 0){
+			changeChance = 0;
+		}
+		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
+			changeChance = 1;
 		}
 		if(Math.random() <= stockMove){
 			//go down
@@ -74,11 +77,29 @@ function showStocks(client,message){
 	}
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
-	let result = `Name\tPrice\tVolt.\tLeft\tLimit\n`;
+	let stockName = ``;
+	let stockPrice = ``;
+	let stockVol = ``;
+	let stockLeft = ``;
+	let stockLimit = ``;
 	for(let i=0;i<stock.stock.length;i++){
-		result += `${stock.stock[i].name}\t${stock.stock[i].price}\t${stock.stock[i].vol}\t${stock.stock[i].existing}\t${stock.stock[i].buyLimit}\n`;
+		stockName += `${stock.stock[i].name}\n`;
+		stockPrice += `${stock.stock[i].price}\n`;
+		stockVol += `${stock.stock[i].vol}\n`;
+		stockLeft += `${stock.stock[i].existing}\n`;
+		stockLimit += `${stock.stock[i].buyLimit}\n`;
 	}
-	message.channel.send(result,{"code":true});
+	const playercardEmbed = new Discord.MessageEmbed()
+		.setColor('#F7931A')
+		.setTitle(`Carl Coin Stock Information`)
+		.addFields(
+			{ name: 'Name', value: `${stockName}`, inline: true },
+			{ name: 'Price', value: `${stockPrice}CC`, inline: true },
+			{ name: 'Volt.', value: `${stockVol}`, inline: true },
+			{ name: 'Amt. Left', value: `${stockLeft}`, inline: true },
+			{ name: 'Limit', value: `${stockLimit}`, inline: true },
+		);
+	message.channel.send(playercardEmbed);
 }
 
 function buyStock(client,message){
