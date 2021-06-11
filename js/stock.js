@@ -45,7 +45,7 @@ function updateStocks(client,message){
 			//go down
 			if(changeChance <= 0.33){
 				console.log(stock.stock[i].name + ' is moving down');
-				let newPrice = stock.stock[i].price - Math.floor(stock.stock[i].price * changeDiff);
+				let newPrice = stock.stock[i].price - Math.ceil(stock.stock[i].price * changeDiff);
 				if(newPrice <= 0){
 					newPrice = 1;
 				}
@@ -54,7 +54,7 @@ function updateStocks(client,message){
 			//go up
 			else if(changeChance >= 0.66){
 				console.log(stock.stock[i].name + ' is moving up');
-				let newPrice = stock.stock[i].price + Math.floor(stock.stock[i].price * changeDiff);
+				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
 				stock.stock[i].price = newPrice;
 			}
 			//no movement
@@ -177,7 +177,7 @@ function buyStock(client,message){
 			fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-			message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${data.users[i].stock[stockIndex].amount}`);
+			message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${amount}`);
 			return;
 		}
 	}
