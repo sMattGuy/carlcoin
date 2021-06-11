@@ -74,7 +74,7 @@ function showStocks(client,message){
 	}
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
-	let result = `Stock name\tPrice\tVolt.\tAmt. Left\tDaily Limit\n`;
+	let result = `Name\tPrice\tVolt.\tLeft\tLimit\n`;
 	for(let i=0;i<stock.stock.length;i++){
 		result += `${stock.stock[i].name}\t${stock.stock[i].price}\t${stock.stock[i].vol}\t${stock.stock[i].existing}\t${stock.stock[i].buyLimit}\n`;
 	}
@@ -288,7 +288,7 @@ function showPort(client,message){
 				return;
 			}
 			//if stock exists
-			let stockPort = `Stock Name\tAmount Owned\tAvg Price\tBought Today\n`;
+			let stockPort = `Name\tAmt\tAvg\tToday\n`;
 			for(let j=0;j<data.users[i].stock.length;j++){
 				stockPort += `${data.users[i].stock[j].name}\t${data.users[i].stock[j].amount}\t${data.users[i].stock[j].avgPrice}\t${data.users[i].stock[j].today}\n`;
 			}
