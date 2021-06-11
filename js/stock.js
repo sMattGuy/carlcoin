@@ -19,6 +19,62 @@ users
 		buy limit
 		average price of owned stocks
 */
+function createNewStock(client,message){
+	// !cc stockCreate name price vol total limit
+	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
+	let stock = JSON.parse(stockFile);
+	let chop = message.content.split(" ");
+	if(chop.length != 7){
+		message.channel.send('Usage: !cc createNewStock <name> <price> <vol> <total> <limit>');
+		return;
+	}
+	let name = parseInt(chop[chop.length-5]);
+	let price = parseInt(chop[chop.length-4]);
+	let vol = parseInt(chop[chop.length-3]);
+	let total = parseInt(chop[chop.length-2]);
+	let limit = parseInt(chop[chop.length-1]);
+
+	if(isNaN(limit) || isNaN(total) || isNaN(price) || limit < 0 || total < 0 || price < 0){
+		message.channel.send('Invalid values entered!');
+		return;
+	}
+	let maxMove = 0;
+	let minMove = 0;
+	let moveChance = 0;
+	if(vol == 'low'){
+		maxMove = 0.08;
+		minMove = 0.02;
+		moveChance = 0.04;
+	}
+	else if(vol == 'med'){
+		maxMove = 0.13;
+		minMove = 0.05;
+		moveChance = 0.65;
+	}
+	else if(vol == 'high'){
+		maxMove = 0.18;
+		minMove = 0.08;
+		moveChance = 0.9;
+	}
+	else{
+		message.channel.send(`Invalid vol selected!`);
+		return;
+	}
+	
+	for(let i=0;i<stock.stock.length;i++){
+		if(stock.stock[i].name == name){
+			message.channel.send(`Stock with that name already exists!`);
+			return;
+		}
+	}
+	
+	let newStock = {"name":"GAYMF","price":80,"vol":"high","maxMove":0.18,"minMove":0.08,"moveChance":0.9,"existing":100,"total":100,"buyLimit":10,"boughtRecently":0}
+	//stock.stock.push(newStock);
+	console.log(newStock);
+	let stockFileSave = JSON.stringify(stock);
+	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',stockFileSave);
+}
+
 function createStocks(client,message){
 	if(!fs.existsSync(`/home/mattguy/carlcoin/stock.json`)){
 		console.log('Creating a new stock file');
@@ -55,7 +111,11 @@ function updateStocks(client,message){
 			}
 		}
 		if(!foundHistory){
-			let newEntry = {"name":stock.stock[i].name,"priceHis":[stock.stock[i].price]};
+			let newEntry = {"name":stock.stock[i].name,"priceHis":[]};
+			for(let j=0;j<stockHistory.history[0].priceHis.length-1;j++){
+				newEntry.priceHis.push(0);
+			}
+			newEntry.priceHis.push(stock.stock[i].price);
 			stockHistory.history.push(newEntry);
 		}
 		//change stock value
@@ -401,5 +461,6 @@ module.exports = {
 	sellStock,
 	showPort,
 	stockHelp,
-	stockGraph
+	stockGraph,
+	createNewStock
 };
