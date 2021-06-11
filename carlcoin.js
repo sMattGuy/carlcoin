@@ -403,7 +403,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/9/2021\nRemoved carls from the slot machine\nAdded bank feature, use !cc bankHelp for more information`);
+		message.channel.send(`Patch Notes 6/10/2021\nAdded stocks, see !cc stockHelp for more info`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
