@@ -405,7 +405,7 @@ client.on('message', message => {
 		console.log(message.author.username + ' is forcing stock update');
 		stock.updateStocks(client,message);
 	}
-	else if(message.content === '!cc createNewStock' && message.author.id == 492850107038040095){
+	else if(message.content.startsWith('!cc createNewStock') && message.author.id == 492850107038040095){
 		console.log(message.author.username + ' is creating a stock');
 		stock.createNewStock(client,message);
 	}

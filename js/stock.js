@@ -68,7 +68,7 @@ function createNewStock(client,message){
 		}
 	}
 	
-	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"buyLimit":limit,"boughtRecently":0}
+	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"buyLimit":limit,"boughtRecently":0};
 	//stock.stock.push(newStock);
 	console.log(newStock);
 	let stockFileSave = JSON.stringify(stock);
