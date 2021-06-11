@@ -371,7 +371,7 @@ function stockGraph(client,message){
 	}
 	let datasets = []
 	for(let i=0;i<stockHistory.history.length;i++){
-		let newData = {label:``,data:[],fill:false,boarderColor:`rgb(${75+i},${192+i},${100+i})`,tension: 0.1};
+		let newData = {label:``,boarderColor:`rgb(${75+i},${192+i},${100+i})`,backgroundColor:`rgb(${75+i},${192+i},${100+i})`,data:[]};
 		newData.label = stockHistory.history[i].name;
 		for(let j=0;j<stockHistory.history[i].priceHis.length;j++){
 			newData.data.push(stockHistory.history[i].priceHis[j]);
