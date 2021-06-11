@@ -71,9 +71,9 @@ function showStocks(client,message){
 	}
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
-	let result = `Stock name\tPrice\tVolt.\tAmt. Left`;
+	let result = `Stock name\tPrice\tVolt.\tAmt. Left\tDaily Limit\n`;
 	for(let i=0;i<stock.stock.length;i++){
-		result += `${stock.stock[i].name}\t${stock.stock[i].price}\t${stock.stock[i].vol}\t${stock.stock[i].existing}\n`;
+		result += `${stock.stock[i].name}\t${stock.stock[i].price}\t${stock.stock[i].vol}\t${stock.stock[i].existing}\t${stock.stock[i].buyLimit}\n`;
 	}
 	message.channel.send(result,{"code":true});
 }
@@ -151,6 +151,7 @@ function buyStock(client,message){
 					fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}`);
 					return;
 				}
 			}
@@ -279,7 +280,7 @@ function showPort(client,message){
 				return;
 			}
 			//if stock exists
-			let stockPort = `Stock Name\tAmount Owned\tAvg Price\nBought Today`;
+			let stockPort = `Stock Name\tAmount Owned\tAvg Price\nBought Today\n`;
 			for(let j=0;j<data.users[i].stock.length;j++){
 				stockPort += `${data.users[i].stock[j].name}\t${data.users[i].stock[j].amount}\t${data.users[i].stock[j].avgPrice}\t${data.users[i].stock[j].today}\n`;
 			}
@@ -293,11 +294,16 @@ function showPort(client,message){
 	}
 }
 
+function stockHelp(client,message){
+	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!`)
+}
+
 //export functions
 module.exports = {
 	updateStocks,
 	showStocks,
 	buyStock,
 	sellStock,
-	showPort
+	showPort,
+	stockHelp
 };

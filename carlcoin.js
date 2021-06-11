@@ -397,6 +397,10 @@ client.on('message', message => {
 		console.log(message.author.username + ' is selling stock');
 		stock.sellStock(client,message);
 	}
+	else if(message.content === '!cc stockHelp'){
+		console.log(message.author.username + ' is checking stock help');
+		stock.stockHelp(client,message);
+	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
 		message.channel.send(`Patch Notes 6/9/2021\nRemoved carls from the slot machine\nAdded bank feature, use !cc bankHelp for more information`);
