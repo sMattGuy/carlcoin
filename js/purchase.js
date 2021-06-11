@@ -9,11 +9,29 @@ function purchaseItem(client,message){
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
+		let houseCount = 0;
+		let apartmentCount = 0;
+		let skyCount = 0;
+		for(let i=0;i<data.users.length;i++){
+			if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
+				houseCount += data.users[i]["house"];
+			}
+			if(data.users[i]["apartment"] > 0 && !isNaN(data.users[i]["apartment"])){
+				apartmentCount += data.users[i]["apartment"];
+			}
+			if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
+				skyCount += data.users[i]["skyscraper"];
+			}
+		}
 		let noUser = true;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == message.author.id){
 				let type = chop[chop.length-1];
 				if(type == "house"){
+					if(houseCount >= 200){
+						message.channel.send(`There are no houses left, try buying from someone else!`);
+						return;
+					}
 					if(isNaN(data.users[i]["house"])){
 						data.users[i]["house"] = 0;
 					}
@@ -47,6 +65,10 @@ function purchaseItem(client,message){
 					}
 				}
 				else if(type == "apartment"){
+					if(apartmentCount >= 150){
+						message.channel.send(`There are no apartments left, try buying from someone else!`);
+						return;
+					}
 					if(isNaN(data.users[i]["apartment"])){
 						data.users[i]["apartment"] = 0;
 					}
@@ -82,6 +104,10 @@ function purchaseItem(client,message){
 				else if(type == "skyscraper"){
 					if(isNaN(data.users[i]["skyscraper"])){
 						data.users[i]["skyscraper"] = 0;
+					}
+					if(skyCount >= 120){
+						message.channel.send(`There are no skyscrapers left, try buying from someone else!`);
+						return;
 					}
 					let cost = 500 + (data.users[i]["skyscraper"] * 250);
 					if(data.users[i].balance - cost < 0){
