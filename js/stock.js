@@ -380,10 +380,12 @@ function stockGraph(client,message){
 	}
 	let data = {labels: labels,datasets: datasets};
 	let config = {type:'line',data:data};
-
+	
+	
+	
 	data = JSON.stringify(data);
 	config = JSON.stringify(config);
-	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style></head><body><canvas id="myChart"></canvas><script>var Chart = require('chart.js');var data=${data}; var ctx = document.getElementById("myChart").getContext("2d"); var myNewChart = new Chart(ctx).Line(data);</script></body></html>`;
+	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body><canvas id="myChart"></canvas><script>var data=${data}; var ctx = document.getElementById("myChart").getContext("2d"); var myNewChart = new Chart(ctx).Line(data);</script></body></html>`;
 	if(fs.existsSync(`/var/www/html/carlHorses/StockTimeline.html`)){
 		fs.unlinkSync(`/var/www/html/carlHorses/StockTimeline.html`);
 	}
