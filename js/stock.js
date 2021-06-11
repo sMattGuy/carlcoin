@@ -355,7 +355,7 @@ function showPort(client,message){
 }
 
 function stockHelp(client,message){
-	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!`)
+	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!\nUse !cc stockGraph to see the stock price history!`);
 }
 
 function stockGraph(client,message){
@@ -371,7 +371,7 @@ function stockGraph(client,message){
 	}
 	let datasets = []
 	for(let i=0;i<stockHistory.history.length;i++){
-		let newData = {label:``,boarderColor:`rgb(${75+i},${192+i},${100+i})`,backgroundColor:`rgb(${(75*i)%255},${(192*i)%255},${(100*i)%255})`,data:[]};
+		let newData = {label:``,backgroundColor:`rgb(${(75*i)%255},${(192*i)%255},${(100*i)%255})`,borderColor:`rgb(${75+i},${192+i},${100+i})`,data:[]};
 		newData.label = stockHistory.history[i].name;
 		for(let j=0;j<stockHistory.history[i].priceHis.length;j++){
 			newData.data.push(stockHistory.history[i].priceHis[j]);
@@ -379,7 +379,7 @@ function stockGraph(client,message){
 		datasets.push(newData);
 	}
 	let data = {labels: labels,datasets: datasets};
-	let config = {type:'line',data:data};
+	let config = {type:'line',data};
 	
 	
 	
