@@ -32,12 +32,32 @@ function updateStocks(client,message){
 	if(!fs.existsSync(`/home/mattguy/carlcoin/stock.json`)){
 		createStocks(client,message);
 	}
+	if(!fs.existsSync(`/home/mattguy/carlcoin/stockHistory.json`)){
+		let stockHistory = {"history":[]};
+		let stockHistorySave = JSON.stringify(stockHistory);
+		fs.writeFileSync('/home/mattguy/carlcoin/stockHistory.json',stockHistorySave);
+	}
+	let stockHistory = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
 	for(let i=0;i<stock.stock.length;i++){
 		let changeDiff = Math.random() * (stock.stock[i].maxMove - stock.stock[i].minMove) + stock.stock[i].minMove;
 		let changeChance = Math.random();
 		let stockMove = stock.stock[i].moveChance;
+		let foundHistory = false;
+		//add to stock history
+		for(let j=0;j<stockHistory.history.length;j++){
+			if(stockHistory.history[j].name == stock.stock[i].name){
+				foundHistory = true;
+				stockHistory.history[j].priceHis.push(stock.stock[i].price);
+				break;
+			}
+		}
+		if(!foundHistory){
+			let newEntry = {"name":stock.stock[i].name,"priceHis":[stock.stock[i].price]};
+			stockHistory.history.push(newEntry);
+		}
+		//change stock value
 		if(stock.stock[i].boughtRecently < 0){
 			changeChance = 0;
 		}
@@ -72,6 +92,8 @@ function updateStocks(client,message){
 	}
 	let newStock = JSON.stringify(stock);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStock);
+	let stockHistorySave = JSON.stringify(stockHistory);
+	fs.writeFileSync('/home/mattguy/carlcoin/stockHistory.json',stockHistorySave);
 }
 
 function showStocks(client,message){
