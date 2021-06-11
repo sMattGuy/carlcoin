@@ -174,6 +174,7 @@ function buyStock(client,message){
 			fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+			message.channel.send(`You have purchased ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}`);
 			return;
 		}
 	}
@@ -249,7 +250,7 @@ function sellStock(client,message){
 					let newStockFile = JSON.stringify(stock);
 					fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);message.channel.send(`You have sold ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}`);
 					return;
 				}
 			}
@@ -280,7 +281,7 @@ function showPort(client,message){
 				return;
 			}
 			//if stock exists
-			let stockPort = `Stock Name\tAmount Owned\tAvg Price\nBought Today\n`;
+			let stockPort = `Stock Name\tAmount Owned\tAvg Price\tBought Today\n`;
 			for(let j=0;j<data.users[i].stock.length;j++){
 				stockPort += `${data.users[i].stock[j].name}\t${data.users[i].stock[j].amount}\t${data.users[i].stock[j].avgPrice}\t${data.users[i].stock[j].today}\n`;
 			}
