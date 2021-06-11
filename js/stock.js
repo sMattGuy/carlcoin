@@ -65,6 +65,9 @@ function updateStocks(client,message){
 				console.log(stock.stock[i].name + ' is not moving');
 			}
 		}
+		else{
+			console.log(stock.stock[i].name + ' is not moving');
+		}
 		stock.stock[i].boughtRecently = 0;
 	}
 	let newStock = JSON.stringify(stock);
@@ -312,7 +315,7 @@ function showPort(client,message){
 			}
 			const playercardEmbed = new Discord.MessageEmbed()
 				.setColor('#F7931A')
-		.setTitle(`${data.users[i].name}'s Portfolio`)
+				.setTitle(`${data.users[i].name}'s Portfolio`)
 				.addFields(
 					{ name: 'Name', value: `${stockName}`, inline: true },
 					{ name: 'Amt.&Avg.', value: `${stockAmtAvg}`, inline: true },
