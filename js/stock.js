@@ -365,11 +365,11 @@ function stockGraph(client,message){
 	}
 	let stockHistoryFile = fs.readFileSync('/home/mattguy/carlcoin/stockHistory.json');
 	let stockHistory = JSON.parse(stockHistoryFile);
-	const labels = [];
+	let labels = [];
 	for(let i=0;i<stockHistory.history[0].priceHis.length;i++){
 		labels.push(i);
 	}
-	const datasets = []
+	let datasets = []
 	for(let i=0;i<stockHistory.history.length;i++){
 		let newData = {label:``,data:[],fill:false,boarderColor:`rgb(${75+i},${192+i},${100+i})`,tension: 0.1};
 		newData.label = stockHistory.history[i].name;
@@ -378,8 +378,8 @@ function stockGraph(client,message){
 		}
 		datasets.push(newData);
 	}
-	const data = {labels: labels,datasets: datasets};
-	const config = {type:'line',data:data};
+	let data = {labels: labels,datasets: datasets};
+	let config = {type:'line',data:data};
 	labels = JSON.stringify(labels);
 	datasets = JSON.stringify(datasets);
 	data = JSON.stringify(data);
