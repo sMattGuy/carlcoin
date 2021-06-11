@@ -312,7 +312,7 @@ function showPort(client,message){
 			}
 			const playercardEmbed = new Discord.MessageEmbed()
 				.setColor('#F7931A')
-				.setTitle(`Carl Coin Stock Information`)
+		.setTitle(`${data.users[i].name}'s Portfolio`)
 				.addFields(
 					{ name: 'Name', value: `${stockName}`, inline: true },
 					{ name: 'Amt.&Avg.', value: `${stockAmtAvg}`, inline: true },
