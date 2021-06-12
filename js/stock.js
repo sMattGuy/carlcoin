@@ -478,7 +478,7 @@ function stockOwnership(client,message){
 				}
 			}
 		}
-		let percent = (stock.stock[i].existing / stock.stock[i].total) * 100;
+		let percent = 1 - (stock.stock[i].existing / stock.stock[i].total) * 100;
 		percent = percent.toFixed(2);
 		ownership += `${stock.stock[i].name}: ${percent}% is owned. ${CEO} is the CEO of this company based on ownership.\n`;
 	}
