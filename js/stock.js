@@ -236,10 +236,12 @@ function buyStock(client,message){
 				//find stock name
 				if(data.users[i].stock[j].name == stockName){
 					//update existing stock user owns
+					/*
 					if(data.users[i].stock[j].today + amount > stock.stock[stockIndex].buyLimit){
 						message.channel.send('You cannot buy that many stocks, it exceeds the daily limit!');
 						return;
 					}
+					*/
 					if(data.users[i].balance - (amount * stock.stock[stockIndex].price) < 0){
 						message.channel.send('You do not have enough CC!');
 						return;
@@ -261,10 +263,12 @@ function buyStock(client,message){
 				}
 			}
 			//stock not found in users portfolio
+			/*
 			if(amount > stock.stock[stockIndex].buyLimit){
 				message.channel.send('You cannot buy that many stocks, it exceeds the daily limit!');
 				return;
 			}
+			*/
 			if(data.users[i].balance - (amount * stock.stock[stockIndex].price) < 0){
 				message.channel.send('You do not have enough CC!');
 				return;
