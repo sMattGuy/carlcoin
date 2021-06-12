@@ -171,7 +171,7 @@ function showStocks(client,message){
 	for(let i=0;i<stock.stock.length;i++){
 		stockName += `${stock.stock[i].name}\n`;
 		stockPrice += `${stock.stock[i].price} | ${stock.stock[i].vol}\n`;
-		stockLeft += `${stock.stock[i].existing} | ${stock.stock[i].buyLimit}\n`;
+		stockLeft += `${stock.stock[i].existing}\n`;
 	}
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
@@ -179,7 +179,7 @@ function showStocks(client,message){
 		.addFields(
 			{ name: 'Name', value: `${stockName}`, inline: true },
 			{ name: 'Price&Volt.', value: `${stockPrice}`, inline: true },
-			{ name: 'Amt. Left&Limit', value: `${stockLeft}`, inline: true },
+			{ name: 'Amt. Left', value: `${stockLeft}`, inline: true },
 		);
 	message.channel.send(playercardEmbed);
 }
@@ -391,20 +391,20 @@ function showPort(client,message){
 				return;
 			}
 			let stockName = ``;
-			let stockAmtAvg = ``;
-			let stockToday = ``;
+			let stockAmt = ``;
+			let stockAvg = ``;
 			for(let j=0;j<data.users[i].stock.length;j++){
 				stockName += `${data.users[i].stock[j].name}\n`;
-				stockAmtAvg += `${data.users[i].stock[j].amount} | ${data.users[i].stock[j].avgPrice}\n`;
-				stockToday += `${data.users[i].stock[j].today}\n`;
+				stockAmt += `${data.users[i].stock[j].amount}\n`;
+				stockAvg += `${data.users[i].stock[j].avgPrice}\n`;
 			}
 			const playercardEmbed = new Discord.MessageEmbed()
 				.setColor('#F7931A')
 				.setTitle(`${data.users[i].name}'s Portfolio`)
 				.addFields(
 					{ name: 'Name', value: `${stockName}`, inline: true },
-					{ name: 'Amt.&Avg.', value: `${stockAmtAvg}`, inline: true },
-					{ name: 'Today', value: `${stockToday}`, inline: true },
+					{ name: 'Amt.', value: `${stockAmt}`, inline: true },
+					{ name: 'Avg', value: `${stockAvg}`, inline: true },
 				);
 			message.channel.send(playercardEmbed);
 			return;
@@ -468,7 +468,6 @@ function stockOwnership(client,message){
 			if(data.users[j].hasOwnProperty("stock")){
 				for(let k=0;k<data.users[j].stock.length;k++){
 					if(data.users[j].stock[k].name == stock.stock[i].name){
-						console.log(data.users[j].stock[k].name + " " + data.users[j].stock[k].amount);
 						totalOwned += data.users[j].stock[k].amount;
 						if(data.users[j].stock[k].amount > amountOwned){
 							amountOwned = data.users[j].stock[k].amount;
