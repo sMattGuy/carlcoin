@@ -467,11 +467,13 @@ function stockOwnership(client,message){
 		let CEO = `No one`;
 		let amountOwned = 0;
 		for(let j=0;j<data.users.length;j++){
-			for(let k=0;k<data.users[j].stock.length;k++){
-				if(data.users[j].stock[k].name == stock.stock[i].name){
-					if(data.users[j].stock[k].amount > amountOwned){
-						amountOwned = data.users[j].stock[k].amount;
-						CEO = data.users[j].name;
+			if(data.users[j].hasOwnProperty("stock")){
+				for(let k=0;k<data.users[j].stock.length;k++){
+					if(data.users[j].stock[k].name == stock.stock[i].name){
+						if(data.users[j].stock[k].amount > amountOwned){
+							amountOwned = data.users[j].stock[k].amount;
+							CEO = data.users[j].name;
+						}
 					}
 				}
 			}
