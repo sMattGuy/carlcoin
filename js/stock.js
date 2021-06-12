@@ -24,15 +24,14 @@ function createNewStock(client,message){
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
 	let chop = message.content.split(" ");
-	if(chop.length != 7){
-		message.channel.send('Usage: !cc createNewStock <name> <price> <vol> <total> <limit>');
+	if(chop.length != 6){
+		message.channel.send('Usage: !cc createNewStock <name> <price> <vol> <total>');
 		return;
 	}
-	let name = chop[chop.length-5];
-	let price = parseInt(chop[chop.length-4]);
-	let vol = chop[chop.length-3];
-	let total = parseInt(chop[chop.length-2]);
-	let limit = parseInt(chop[chop.length-1]);
+	let name = chop[chop.length-4];
+	let price = parseInt(chop[chop.length-3]);
+	let vol = chop[chop.length-2];
+	let total = parseInt(chop[chop.length-1]);
 
 	if(isNaN(limit) || isNaN(total) || isNaN(price) || limit < 0 || total < 0 || price < 0){
 		message.channel.send('Invalid values entered!');
@@ -68,7 +67,7 @@ function createNewStock(client,message){
 		}
 	}
 	
-	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"buyLimit":limit,"boughtRecently":0};
+	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"boughtRecently":0};
 	stock.stock.push(newStock);
 	console.log(newStock);
 	let stockFileSave = JSON.stringify(stock);
@@ -79,7 +78,7 @@ function createNewStock(client,message){
 function createStocks(client,message){
 	if(!fs.existsSync(`/home/mattguy/carlcoin/stock.json`)){
 		console.log('Creating a new stock file');
-		let stock = {"stock":[{"name":"POG","price":50,"vol":"med","maxMove":0.13,"minMove":0.05,"moveChance":0.65,"existing":200,"total":200,"buyLimit":10,"boughtRecently":0},{"name":"AMC","price":25,"vol":"med","maxMove":0.13,"minMove":0.05,"moveChance":0.65,"existing":300,"total":300,"buyLimit":15,"boughtRecently":0},{"name":"COCK","price":100,"vol":"high","maxMove":0.18,"minMove":0.08,"moveChance":0.9,"existing":50,"total":50,"buyLimit":5,"boughtRecently":0},{"name":"SIMP","price":10,"vol":"low","maxMove":0.08,"minMove":0.02,"moveChance":0.4,"existing":500,"total":500,"buyLimit":25,"boughtRecently":0},{"name":"CORN","price":75,"vol":"low","maxMove":0.08,"minMove":0.02,"moveChance":0.4,"existing":225,"total":225,"buyLimit":20,"boughtRecently":0}]};
+		let stock = {"stock":[{"name":"POG","price":50,"vol":"med","maxMove":0.13,"minMove":0.05,"moveChance":0.65,"existing":200,"total":200,"buyLimit":10,"boughtRecently":0},{"name":"AMC","price":25,"vol":"med","maxMove":0.13,"minMove":0.05,"moveChance":0.65,"existing":300,"total":300,"buyLimit":15,"boughtRecently":0},{"name":"COCK","price":100,"vol":"high","maxMove":0.18,"minMove":0.08,"moveChance":0.9,"existing":50,"total":50,"buyLimit":5,"boughtRecently":0},{"name":"SIMP","price":10,"vol":"low","maxMove":0.08,"minMove":0.02,"moveChance":0.4,"existing":500,"total":500,"buyLimit":25,"boughtRecently":0},{"name":"CORN","price":75,"vol":"low","maxMove":0.08,"minMove":0.02,"moveChance":0.4,"existing":225,"total":225,"boughtRecently":0}]};
 		let stockFileSave = JSON.stringify(stock);
 		fs.writeFileSync('/home/mattguy/carlcoin/stock.json',stockFileSave);
 	}
@@ -238,14 +237,12 @@ function buyStock(client,message){
 				//find stock name
 				if(data.users[i].stock[j].name == stockName){
 					//update existing stock user owns
-					/*
-					if(data.users[i].stock[j].today + amount > stock.stock[stockIndex].buyLimit){
-						message.channel.send('You cannot buy that many stocks, it exceeds the daily limit!');
-						return;
-					}
-					*/
 					if(data.users[i].balance - (amount * stock.stock[stockIndex].price) < 0){
 						message.channel.send('You do not have enough CC!');
+						return;
+					}
+					if(stock.stock[stockIndex].existing - amount < 0){
+						message.channel.send(`No more of that stock exists!`);
 						return;
 					}
 					data.users[i].balance -= (amount * stock.stock[stockIndex].price);
@@ -265,14 +262,12 @@ function buyStock(client,message){
 				}
 			}
 			//stock not found in users portfolio
-			/*
-			if(amount > stock.stock[stockIndex].buyLimit){
-				message.channel.send('You cannot buy that many stocks, it exceeds the daily limit!');
-				return;
-			}
-			*/
 			if(data.users[i].balance - (amount * stock.stock[stockIndex].price) < 0){
 				message.channel.send('You do not have enough CC!');
+				return;
+			}
+			if(stock.stock[stockIndex].existing - amount < 0){
+				message.channel.send(`No more of that stock exists!`);
 				return;
 			}
 			let newStock = {"name":stock.stock[stockIndex].name,"amount":amount,"today":amount,"avgPrice":stock.stock[stockIndex].price};
