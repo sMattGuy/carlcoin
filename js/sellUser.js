@@ -139,7 +139,7 @@ function acceptDenySale(client,message){
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					fs.unlinkSync(`/home/mattguy/carlcoin/cache/${personsId}houseSell`);
 					message.channel.send('You have accepted the offer!');
-					console.log(data.users[sellParse.sellerIndex].name + " has sold to " + data.users[sellParse.buyerIndex]);
+					console.log(data.users[sellParse.sellerIndex].name + " has sold to " + data.users[sellParse.buyerIndex].name);
 				}
 			}
 		}
