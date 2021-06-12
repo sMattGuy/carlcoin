@@ -468,6 +468,7 @@ function stockOwnership(client,message){
 			if(data.users[j].hasOwnProperty("stock")){
 				for(let k=0;k<data.users[j].stock.length;k++){
 					if(data.users[j].stock[k].name == stock.stock[i].name){
+						console.log(data.users[j].stock[k].name + " " + data.users[j].stock[k].amount);
 						totalOwned += data.users[j].stock[k].amount;
 						if(data.users[j].stock[k].amount > amountOwned){
 							amountOwned = data.users[j].stock[k].amount;
