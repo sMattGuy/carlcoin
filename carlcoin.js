@@ -401,6 +401,10 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking stock graph');
 		stock.stockGraph(client,message);
 	}
+	else if(message.content === '!cc stockOwnership'){
+		console.log(message.author.username + ' is checking stock ownership');
+		stock.stockOwnership(client,message);
+	}
 	else if(message.content === '!cc forceStockUpdate' && message.author.id == 492850107038040095){
 		console.log(message.author.username + ' is forcing stock update');
 		stock.updateStocks(client,message);

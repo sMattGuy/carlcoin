@@ -420,7 +420,7 @@ function showPort(client,message){
 }
 
 function stockHelp(client,message){
-	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!\nUse !cc stockGraph to see the stock price history!`);
+	message.channel.send(`Use !cc showStocks to see the available stocks!\nUse !cc stockPort to see your portfolio!\nUse !cc stockBuy <name> <amount> to buy stocks!\nUse !cc stockSell <name> <amount> to sell your shares!\nUse !cc stockGraph to see the stock price history!\nUse !cc stockOwnership to see who owns what in the market!`);
 }
 
 function stockGraph(client,message){
@@ -445,9 +445,6 @@ function stockGraph(client,message){
 	}
 	let data = {labels: labels,datasets: datasets};
 	let config = {type:'line',data};
-	
-	
-	
 	data = JSON.stringify(data);
 	config = JSON.stringify(config);
 	let stockSite = `<!DOCTYPE html> <html> <head> <title> Stock History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body><canvas id="myChart"></canvas><script>const data=${data};const config = ${config};var myChart = new Chart(document.getElementById("myChart"),config);</script></body></html>`;
@@ -458,6 +455,33 @@ function stockGraph(client,message){
 	fs.writeFileSync(`/var/www/html/carlHorses/StockTimeline.html`,stockWrite);
 	message.channel.send(`http://67.244.23.211:4377/carlHorses/StockTimeline.html`);
 }
+
+function stockOwnership(client,message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
+	let stock = JSON.parse(stockFile);
+	
+	let ownership = `Stock Ownership\n`;
+	for(let i=0;i<stock.stock.length;i++){
+		let CEO = `No one`;
+		let amountOwned = 0;
+		for(let j=0;j<data.users.length;j++){
+			for(let k=0;k<data.users[j].stock.length;k++){
+				if(data.users[j].stock[k].name == stock.stock[i].name){
+					if(data.users[j].stock[k].amount > amountOwned){
+						amountOwned = data.users[j].stock[k].amount;
+						CEO = data.users[j].name;
+					}
+				}
+			}
+		}
+		let percent = (stock.stock[i].existing / stock.stock[i].total) * 100;
+		percent = percent.toFixed(2);
+		ownership += `${stock.stock[i].name}: ${percent}% is owned. ${CEO} is the CEO of this company based on ownership.\n`;
+	}
+	message.channel.send(ownership,{"code":true});
+}
 //export functions
 module.exports = {
 	updateStocks,
@@ -467,5 +491,6 @@ module.exports = {
 	showPort,
 	stockHelp,
 	stockGraph,
-	createNewStock
+	createNewStock,
+	stockOwnership
 };
