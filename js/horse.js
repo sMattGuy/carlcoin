@@ -830,8 +830,6 @@ function horseSell(client,message){
 								return;
 							}
 						}
-						noUser = false;
-						break;
 					}
 					if(noUser){
 						message.channel.send('You are not registered for CC!');
