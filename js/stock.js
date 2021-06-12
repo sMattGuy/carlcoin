@@ -121,9 +121,11 @@ function updateStocks(client,message){
 		}
 		//change stock value
 		if(stock.stock[i].boughtRecently < 0){
+			console.log(stock.stock[i].name + ' is going neg guarenteed');
 			changeChance = 0;
 		}
 		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
+			console.log(stock.stock[i].name + ' is going positive guarenteed');
 			changeChance = 1;
 		}
 		if(Math.random() <= stockMove){
@@ -466,10 +468,12 @@ function stockOwnership(client,message){
 	for(let i=0;i<stock.stock.length;i++){
 		let CEO = `No one`;
 		let amountOwned = 0;
+		let totalOwned = 0;
 		for(let j=0;j<data.users.length;j++){
 			if(data.users[j].hasOwnProperty("stock")){
 				for(let k=0;k<data.users[j].stock.length;k++){
 					if(data.users[j].stock[k].name == stock.stock[i].name){
+						totalOwned += data.users[j].stock[k].amount;
 						if(data.users[j].stock[k].amount > amountOwned){
 							amountOwned = data.users[j].stock[k].amount;
 							CEO = data.users[j].name;
@@ -478,7 +482,7 @@ function stockOwnership(client,message){
 				}
 			}
 		}
-		let percent = (1-(stock.stock[i].existing / stock.stock[i].total)) * 100;
+		let percent = (totalOwned / stock.stock[i].total) * 100;
 		percent = percent.toFixed(2);
 		ownership += `${stock.stock[i].name}: ${percent}% is owned. ${CEO} is the CEO\n`;
 	}
