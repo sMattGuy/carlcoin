@@ -68,6 +68,7 @@ function nameHorse(client, message){
 						newName += `${chop[nameBuild]}`;
 						let oldName = data.users[i].horses[horseIndex].name;
 						data.users[i].horses[horseIndex].name = newName;
+						data.users[i].horses[horseIndex].timeline += `${oldName} has been renamed to ${newName}\n`;
 						message.channel.send(`${oldName} has been renamed to ${newName}!`);
 						console.log(data.users[i].name + ' has changed their horses name from ' + oldName + ' to ' + newName);
 						let newData = JSON.stringify(data);
@@ -867,6 +868,7 @@ function acceptDenyHorse(client,message){
 					data.users[sellParse.sellerIndex].balance += price;
 					data.users[sellParse.buyerIndex].balance -= price;
 					let horse = data.users[sellParse.sellerIndex].horses[parseInt(sellParse.type)];
+					horse.timeline += `${data.users[sellParse.sellerIndex].name} has sold ${horse.name} to data.users[sellParse.buyerIndex].name\n`;
 					data.users[sellParse.sellerIndex].horses.splice(parseInt(sellParse.type),1);
 					if(data.users[sellParse.buyerIndex].hasOwnProperty("horses")){
 						data.users[sellParse.buyerIndex].horses.push(horse);
