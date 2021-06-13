@@ -126,22 +126,6 @@ function updateStocks(client,message){
 				stock.stock[i].existing += newShares;
 			}
 		}
-		//add to stock history
-		for(let j=0;j<stockHistory.history.length;j++){
-			if(stockHistory.history[j].name == stock.stock[i].name){
-				foundHistory = true;
-				stockHistory.history[j].priceHis.push(stock.stock[i].price);
-				break;
-			}
-		}
-		if(!foundHistory){
-			let newEntry = {"name":stock.stock[i].name,"priceHis":[]};
-			for(let j=0;j<stockHistory.history[0].priceHis.length-1;j++){
-				newEntry.priceHis.push(0);
-			}
-			newEntry.priceHis.push(stock.stock[i].price);
-			stockHistory.history.push(newEntry);
-		}
 		//change stock value
 		if(stock.stock[i].boughtRecently < 0){
 			console.log(stock.stock[i].name + ' is going neg');
@@ -176,6 +160,22 @@ function updateStocks(client,message){
 			console.log(stock.stock[i].name + ' is not moving');
 		}
 		stock.stock[i].boughtRecently = 0;
+		//add to stock history
+		for(let j=0;j<stockHistory.history.length;j++){
+			if(stockHistory.history[j].name == stock.stock[i].name){
+				foundHistory = true;
+				stockHistory.history[j].priceHis.push(stock.stock[i].price);
+				break;
+			}
+		}
+		if(!foundHistory){
+			let newEntry = {"name":stock.stock[i].name,"priceHis":[]};
+			for(let j=0;j<stockHistory.history[0].priceHis.length-1;j++){
+				newEntry.priceHis.push(0);
+			}
+			newEntry.priceHis.push(stock.stock[i].price);
+			stockHistory.history.push(newEntry);
+		}
 	}
 	let newStock = JSON.stringify(stock);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStock);
