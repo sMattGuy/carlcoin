@@ -98,20 +98,32 @@ function updateStocks(client,message){
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
 	let marketWideRed = false;
-	let marketWideGreen = false;
 	if(Math.random() <= .15){
 		console.log('A market wide red is occuring!');
 		marketWideRed = true;
-	}
-	else if(Math.random() <= .10){
-		console.log('A market wide green is occuring!');
-		marketWideGreen = true;
 	}
 	for(let i=0;i<stock.stock.length;i++){
 		let changeDiff = Math.random() * (stock.stock[i].maxMove - stock.stock[i].minMove) + stock.stock[i].minMove;
 		let changeChance = Math.random();
 		let stockMove = stock.stock[i].moveChance;
 		let foundHistory = false;
+		let time = new Date();
+		//check if over 90 percent is owned
+		if(stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .9)){
+			stock.stock[i].addMore = true;
+		}
+		//check if it is the right time
+		if(time.getHours() == 0){
+			if(isNaN(stock.stock[i].addMore)){
+				stock.stock[i].addMore = false;
+			}
+			if(stock.stock[i].addMore){
+				stock.stock[i].addMore = false;
+				let newShares = Math.floor(stock.stock[i].total * .5);
+				stock.stock[i].total += newShares;
+				stock.stock[i].existing += newShares;
+			}
+		}
 		//add to stock history
 		for(let j=0;j<stockHistory.history.length;j++){
 			if(stockHistory.history[j].name == stock.stock[i].name){
@@ -137,9 +149,9 @@ function updateStocks(client,message){
 			console.log(stock.stock[i].name + ' is going positive');
 			changeChance = 1;
 		}
-		if(Math.random() <= stockMove || marketWideRed || marketWideGreen){
+		if(Math.random() <= stockMove || marketWideRed){
 			//go down
-			if((changeChance <= 0.33 || marketWideRed) && !marketWideGreen){
+			if(changeChance <= 0.33 || marketWideRed){
 				console.log(stock.stock[i].name + ' is moving down');
 				let newPrice = stock.stock[i].price - Math.ceil(stock.stock[i].price * changeDiff);
 				if(newPrice <= 0){
@@ -148,7 +160,7 @@ function updateStocks(client,message){
 				stock.stock[i].price = newPrice;
 			}
 			//go up
-			else if((changeChance >= 0.66 || marketWideGreen) && !marketWideRed){
+			else if(changeChance >= 0.66){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
 				stock.stock[i].price = newPrice;
