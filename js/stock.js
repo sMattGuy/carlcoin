@@ -33,7 +33,7 @@ function createNewStock(client,message){
 	let vol = chop[chop.length-2];
 	let total = parseInt(chop[chop.length-1]);
 
-	if(isNaN(limit) || isNaN(total) || isNaN(price) || limit < 0 || total < 0 || price < 0){
+	if(isNaN(total) || isNaN(price) || total < 0 || price < 0){
 		message.channel.send('Invalid values entered!');
 		return;
 	}
@@ -67,7 +67,7 @@ function createNewStock(client,message){
 		}
 	}
 	
-	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"boughtRecently":0};
+	let newStock = {"name":name,"price":price,"vol":vol,"maxMove":maxMove,"minMove":minMove,"moveChance":moveChance,"existing":total,"total":total,"boughtRecently":0,"buyLimit":100};
 	stock.stock.push(newStock);
 	console.log(newStock);
 	let stockFileSave = JSON.stringify(stock);
