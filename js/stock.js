@@ -110,6 +110,7 @@ function updateStocks(client,message){
 		let time = new Date();
 		//check if over 90 percent is owned
 		if(stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .9)){
+			console.log(stock.stock[i].name + ' will gain more shares at the end of the day');
 			stock.stock[i].addMore = true;
 		}
 		//check if it is the right time
@@ -118,6 +119,7 @@ function updateStocks(client,message){
 				stock.stock[i].addMore = false;
 			}
 			if(stock.stock[i].addMore){
+				console.log(stock.stock[i].name + ' is gaining more shares');
 				stock.stock[i].addMore = false;
 				let newShares = Math.floor(stock.stock[i].total * .5);
 				stock.stock[i].total += newShares;
