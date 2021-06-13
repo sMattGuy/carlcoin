@@ -97,6 +97,16 @@ function updateStocks(client,message){
 	let stockHistory = JSON.parse(stockHistoryFile);
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stock = JSON.parse(stockFile);
+	let marketWideRed = false;
+	let marketWideGreen = false;
+	if(Math.random() <= .15){
+		console.log('A market wide red is occuring!');
+		marketWideRed = true;
+	}
+	else if(Math.random() <= .10){
+		console.log('A market wide green is occuring!');
+		marketWideGreen = true;
+	}
 	for(let i=0;i<stock.stock.length;i++){
 		let changeDiff = Math.random() * (stock.stock[i].maxMove - stock.stock[i].minMove) + stock.stock[i].minMove;
 		let changeChance = Math.random();
@@ -120,16 +130,16 @@ function updateStocks(client,message){
 		}
 		//change stock value
 		if(stock.stock[i].boughtRecently < 0){
-			console.log(stock.stock[i].name + ' is going neg guarenteed');
+			console.log(stock.stock[i].name + ' is going neg');
 			changeChance = 0;
 		}
 		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
-			console.log(stock.stock[i].name + ' is going positive guarenteed');
+			console.log(stock.stock[i].name + ' is going positive');
 			changeChance = 1;
 		}
-		if(Math.random() <= stockMove){
+		if(Math.random() <= stockMove || marketWideRed || marketWideGreen){
 			//go down
-			if(changeChance <= 0.33){
+			if((changeChance <= 0.33 || marketWideRed) && !marketWideGreen){
 				console.log(stock.stock[i].name + ' is moving down');
 				let newPrice = stock.stock[i].price - Math.ceil(stock.stock[i].price * changeDiff);
 				if(newPrice <= 0){
@@ -138,7 +148,7 @@ function updateStocks(client,message){
 				stock.stock[i].price = newPrice;
 			}
 			//go up
-			else if(changeChance >= 0.66){
+			else if((changeChance >= 0.66 || marketWideGreen) && !marketWideRed){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
 				stock.stock[i].price = newPrice;
@@ -171,7 +181,7 @@ function showStocks(client,message){
 	for(let i=0;i<stock.stock.length;i++){
 		stockName += `${stock.stock[i].name}\n`;
 		stockPrice += `${stock.stock[i].price} | ${stock.stock[i].vol}\n`;
-		stockLeft += `${stock.stock[i].existing}\n`;
+		stockLeft += `${stock.stock[i].existing}/${stock.stock[i].total}\n`;
 	}
 	const playercardEmbed = new Discord.MessageEmbed()
 		.setColor('#F7931A')
@@ -179,7 +189,7 @@ function showStocks(client,message){
 		.addFields(
 			{ name: 'Name', value: `${stockName}`, inline: true },
 			{ name: 'Price&Volt.', value: `${stockPrice}`, inline: true },
-			{ name: 'Amt. Left', value: `${stockLeft}`, inline: true },
+			{ name: 'Amt. Left/Total', value: `${stockLeft}`, inline: true },
 		);
 	message.channel.send(playercardEmbed);
 }
