@@ -11,14 +11,6 @@ function dailyEvents(client,message){
 	let totalAdded = 0;
 	let totalTax = 0;
 	for(let i=0;i<data.users.length;i++){
-		let stockValue = 0;
-		if(data.users[i].hasOwnProperty("stock")){
-			for(let st=0;st<data.users[i].stock.length;st++){
-				data.users[i].stock[st].today = 0;
-				stockValue += data.users[i].stock[st].amount * data.users[i].stock[st].avgPrice;
-			}
-		}
-		stockValue = Math.floor(stockValue / 2);
 		let bankValue = 0;
 		for(let j=0;j<bankJSON.users.length;j++){
 			if(data.users[i].id == bankJSON.users[j].id){
@@ -29,22 +21,22 @@ function dailyEvents(client,message){
 		let homePrice = data.users[i]["house"] * 10;
 		let taxAmount = 0;
 		let blackjackAmount = 0;
-		let personalTax = Math.floor(((data.users[i].balance + bankValue + stockValue) / data.econ) * 100);
+		let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100);
 		console.log(data.users[i].name + ' has a personal tax of ' + personalTax);
 		if(isNaN(homePrice)){
 			homePrice = 0;
 		}
-		taxAmount = ((homePrice/10) * ((2 * personalTax)+ 2));
+		taxAmount = ((homePrice/10) * (personalTax + 2));
 		let apartPrice = data.users[i]["apartment"] * 25;
 		if(isNaN(apartPrice)){
 			apartPrice = 0;
 		}
-		taxAmount += ((apartPrice/25) * ((3 * personalTax)+ 3));
+		taxAmount += ((apartPrice/25) * (personalTax + 3));
 		let skyPrice = data.users[i]["skyscraper"] * 50;
 		if(isNaN(skyPrice)){
 			skyPrice = 0;
 		}
-		taxAmount += ((skyPrice/50) * ((4 * personalTax) + 4));
+		taxAmount += ((skyPrice/50) * (personalTax + 4));
 		let amount = homePrice + apartPrice + skyPrice;
 		amount -= taxAmount;
 		if(amount < 0){
