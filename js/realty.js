@@ -112,7 +112,7 @@ function realtyBuy(client,message){
 	}
 	//check amount is valid
 	let index = parseInt(chop[chop.length-1]);
-	if(isNaN(index) || amount < 0){
+	if(isNaN(index) || index < 0){
 		message.channel.send('Invalid index entered!');
 		return;
 	}
