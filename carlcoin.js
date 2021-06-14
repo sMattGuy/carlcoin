@@ -444,7 +444,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/10/2021\nAdded stocks, see !cc stockHelp for more info`);
+		message.channel.send(`Patch Notes 6/14/2021\nAdded a limit to how many buildings can exist, but also added a new realty market. use !cc realtyHelp to see the details`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
