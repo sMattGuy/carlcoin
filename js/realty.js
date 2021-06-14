@@ -206,30 +206,12 @@ function realtyListings(client, message){
 	}
 	let realtyFile = fs.readFileSync('/home/mattguy/carlcoin/realty.json');
 	let realty = JSON.parse(realtyFile);
-	let sellers = `none`;
-	let type = `none`;
-	let price = `none`;
+	let message = `index. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
-		if(i==0){
-			sellers = `${i}. ${realty.list[i].name}\n`;
-			type = `${realty.list[i].type}\n`;
-			price = `${realty.list[i].price}\n`;
-		}
-		else{
-			sellers += `${i}. ${realty.list[i].name}\n`;
-			type += `${realty.list[i].type}\n`;
-			price += `${realty.list[i].price}\n`;
+			message += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
 		}
 	}
-	const playercardEmbed = new Discord.MessageEmbed()
-		.setColor('#F7931A')
-		.setTitle(`Carl Coin Realty`)
-		.addFields(
-			{ name: 'Ind&Name', value: `${sellers}`, inline: true },
-			{ name: 'Type', value: `${type}`, inline: true },
-			{ name: 'Price', value: `${price}`, inline: true },
-		);
-	message.channel.send(playercardEmbed);
+	message.channel.send(message,{"code":true});
 }
 
 function realtyCancel(client,message){
