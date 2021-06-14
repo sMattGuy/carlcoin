@@ -206,12 +206,12 @@ function realtyListings(client, message){
 	}
 	let realtyFile = fs.readFileSync('/home/mattguy/carlcoin/realty.json');
 	let realty = JSON.parse(realtyFile);
-	let message = `index. name, type, price\n`
+	let messageList = `index. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
-			message += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
+			messageList += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
 		}
 	}
-	message.channel.send(message,{"code":true});
+	message.channel.send(messageList,{"code":true});
 }
 
 function realtyCancel(client,message){
