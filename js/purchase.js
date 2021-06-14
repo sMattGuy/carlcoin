@@ -94,7 +94,7 @@ function purchaseItem(client,message){
 					else{
 						data.users[i]["apartment"] += 1;
 						data.users[i].balance -= cost;
-						data.econ -= 110;
+						data.econ -= 175;
 						data.welfare += 75;
 						data.blackjack += cost - 250;
 						data.users[i]["activity"] = Date.now();
