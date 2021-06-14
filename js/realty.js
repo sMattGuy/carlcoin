@@ -209,7 +209,6 @@ function realtyListings(client, message){
 	let messageList = `index. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
 			messageList += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
-		}
 	}
 	message.channel.send(messageList,{"code":true});
 }
