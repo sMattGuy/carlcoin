@@ -25,7 +25,7 @@ function realtyList(client,message){
 	}
 	//check amount is valid
 	let price = parseInt(chop[chop.length-1]);
-	if(isNaN(amount) || amount < 0){
+	if(isNaN(price) || price < 0){
 		message.channel.send('Invalid price entered!');
 		return;
 	}
