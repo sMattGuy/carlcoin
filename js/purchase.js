@@ -43,8 +43,8 @@ function purchaseItem(client,message){
 			if(data.users[i].id == message.author.id){
 				let type = chop[chop.length-1];
 				if(type == "house"){
-					if(houseCount >= 200){
-						message.channel.send(`There are no houses left, try buying from someone else!`);
+					if(houseCount >= 150){
+						message.channel.send(`There are no houses left (150 limit), try checking !cc realtyHelp`);
 						return;
 					}
 					if(isNaN(data.users[i]["house"])){
@@ -80,8 +80,8 @@ function purchaseItem(client,message){
 					}
 				}
 				else if(type == "apartment"){
-					if(apartmentCount >= 150){
-						message.channel.send(`There are no apartments left, try buying from someone else!`);
+					if(apartmentCount >= 125){
+						message.channel.send(`There are no apartments left (125 limit), try checking !cc realtyHelp`);
 						return;
 					}
 					if(isNaN(data.users[i]["apartment"])){
@@ -94,7 +94,7 @@ function purchaseItem(client,message){
 					else{
 						data.users[i]["apartment"] += 1;
 						data.users[i].balance -= cost;
-						data.econ -= 175;
+						data.econ -= 110;
 						data.welfare += 75;
 						data.blackjack += cost - 250;
 						data.users[i]["activity"] = Date.now();
@@ -120,8 +120,8 @@ function purchaseItem(client,message){
 					if(isNaN(data.users[i]["skyscraper"])){
 						data.users[i]["skyscraper"] = 0;
 					}
-					if(skyCount >= 120){
-						message.channel.send(`There are no skyscrapers left, try buying from someone else!`);
+					if(skyCount >= 110){
+						message.channel.send(`There are no skyscrapers left (110 limit), try checking !cc realtyHelp`);
 						return;
 					}
 					let cost = 500 + (data.users[i]["skyscraper"] * 250);
