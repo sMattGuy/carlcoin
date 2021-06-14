@@ -66,6 +66,10 @@ function nameHorse(client, message){
 							newName += `${chop[nameBuild]} `;
 						}
 						newName += `${chop[nameBuild]}`;
+						if(!data.users[i].horses[horseIndex].hasOwnProperty("name")){
+							message.channel.send(`Couldn't find horse!`);
+							return;
+						}
 						let oldName = data.users[i].horses[horseIndex].name;
 						data.users[i].horses[horseIndex].name = newName;
 						data.users[i].horses[horseIndex].timeline += `${oldName} has been renamed to ${newName}\n`;
