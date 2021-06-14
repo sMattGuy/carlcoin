@@ -444,7 +444,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/14/2021\nAdded a limit to how many buildings can exist, but also added a new realty market. use !cc realtyHelp to see the details. Working while insane results in your office picking up the slack, meaning you no longer get slapped with two 1CC profits. Stock and Realty graphs now have labels. Added net gain for net loss for when you sell so you no longer need to do complex math like multiplying and subtracting.`);
+		message.channel.send(`Patch Notes 6/14/2021\nAdded a limit to how many buildings can exist, but also added a new realty market. use !cc realtyHelp to see the details. Working while insane results in your office picking up the slack, meaning you no longer get slapped with two 1CC profits. Stock and Realty graphs now have labels. Added net gain or net loss for when you sell so you no longer need to do complex math like multiplying and subtracting.`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
