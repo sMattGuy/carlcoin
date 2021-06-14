@@ -35,7 +35,7 @@ const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
 const bank = require('./js/bank.js');
 const stock = require('./js/stock.js');
-
+const realty = require('./js/realty.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
@@ -416,6 +416,31 @@ client.on('message', message => {
 	else if(message.content === '!cc stockHelp'){
 		console.log(message.author.username + ' is checking stock help');
 		stock.stockHelp(client,message);
+	}
+	//realty
+	else if(message.content === '!cc realtyHelp'){
+		console.log(message.author.username + ' is checking realty help');
+		realty.realtyHelp(client,message);
+	}
+	else if(message.content === '!cc realtyListings'){
+		console.log(message.author.username + ' is checking realty listings');
+		realty.realtyListings(client,message);
+	}
+	else if(message.content === '!cc realtyGraph'){
+		console.log(message.author.username + ' is checking realty graph');
+		realty.realtyGraph(client,message);
+	}
+	else if(message.content.startsWith('!cc realtyList')){
+		console.log(message.author.username + ' is listing a realty');
+		realty.realtyList(client,message);
+	}
+	else if(message.content.startsWith('!cc realtyBuy')){
+		console.log(message.author.username + ' is buying a realty');
+		realty.realtyBuy(client,message);
+	}
+	else if(message.content.startsWith('!cc realtyCancel')){
+		console.log(message.author.username + ' is canceling a realty');
+		realty.realtyCancel(client,message);
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');

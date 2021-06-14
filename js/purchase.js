@@ -23,6 +23,21 @@ function purchaseItem(client,message){
 				skyCount += data.users[i]["skyscraper"];
 			}
 		}
+		if(fs.existsSync(`/home/mattguy/carlcoin/realty.json`)){
+			let realtyFile = fs.readFileSync('/home/mattguy/carlcoin/realty.json');
+			let realty = JSON.parse(realtyFile);
+			for(let j=0;j<realty.list.length;j++){
+				if(realty.list[j].type == 'house'){
+					houseCount++;
+				}
+				else if(realty.list[j].type == 'apartment'){
+					apartmentCount++;
+				}
+				else if(realty.list[j].type == 'skyscraper'){
+					skyCount++;
+				}
+			}
+		}
 		let noUser = true;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == message.author.id){

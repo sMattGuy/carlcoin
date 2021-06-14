@@ -33,7 +33,7 @@ function checkLeaderboard(client,message){
 		userArray.push(userObject);
 	}
 	userArray.sort(function (a,b){
-		return (parseInt(b.balance) + parseInt(b.assets)) - (parseInt(a.balance) + parseInt(a.assets));
+		return (parseInt(b.balance) + parseInt(b.assets)) + parseInt(b.bank)) - (parseInt(a.balance) + parseInt(a.assets) + parseInt(a.bank)));
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
