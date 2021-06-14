@@ -46,7 +46,6 @@ function dailyEvents(client,message){
 			}
 		}
 		bankValue = Math.floor(bankValue / 2);
-		let homePayments = ()
 		let homePrice = data.users[i]["house"] * Math.ceil(10 * (homeOwnership / data.users.length));
 		let taxAmount = 0;
 		let blackjackAmount = 0;
