@@ -206,6 +206,10 @@ function realtyListings(client, message){
 	}
 	let realtyFile = fs.readFileSync('/home/mattguy/carlcoin/realty.json');
 	let realty = JSON.parse(realtyFile);
+	if(realty.list.length == 0){
+		message.channel.send(`There are no listings!`);
+		return;
+	}
 	let messageList = `index. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
 			messageList += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
