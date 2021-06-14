@@ -334,7 +334,7 @@ function realtyGraph(client,message){
 	
 	
 	let data = {labels: labels,datasets: datasets};
-	let config = {type:'line',data};
+	let config = {type:'line',data,options:{scales:{x:{display:true,title:{display:true,text:'Sold'}},y:{display:true,title:{display:true,text:'Price'}}}}};
 	data = JSON.stringify(data);
 	config = JSON.stringify(config);
 	let stockSite = `<!DOCTYPE html> <html> <head> <title> Realty History </title> <style> body, form{ margin: 0 auto; max-width:652px; overflow-x:hidden; background-color:#CCCCFF;}fieldset{ display: flex;}</style><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body><canvas id="myChart"></canvas><script>const data=${data};const config = ${config};var myChart = new Chart(document.getElementById("myChart"),config);</script></body></html>`;
