@@ -13,7 +13,7 @@ function workPlayer(client,message){
 		//if user name found
 		if(data.users[j].id == id){
 			let currentTime = Date.now();
-			let randomAmount = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+			let randomAmount = Math.floor(Math.random() * (Math.floor(data.welfare / data.users.length) - data.users.length + 1)) + data.users.length;
 			//if user has already played
 			if(data.users[j].claim > currentTime){
 				let returnToWork = data.users[j].claim - currentTime;
