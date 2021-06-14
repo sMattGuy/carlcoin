@@ -49,7 +49,7 @@ function workPlayer(client,message){
 				data.users[j]["strEXP"] += randomAmount;
 				message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
 				if(1 - bonusChance < strBonus && data.users[j]["unstable"] < 100){
-					let bonusAmount = randomAmount;
+					let bonusAmount = Math.floor(randomAmount/2);
 					data.econ += bonusAmount;
 					data.users[j].balance += bonusAmount;
 					message.channel.send(`Your STR lets you work extra hard today, You earned an extra ${bonusAmount}CC!`);
