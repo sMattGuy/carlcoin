@@ -63,7 +63,7 @@ function nameHorse(client, message){
 						let newName = '';
 						let nameBuild = 0;
 						for(nameBuild = chop.length - (chop.length - 3); nameBuild < chop.length-1; nameBuild++){
-							newName += `${chop[nameBuild]} `;
+							newName += `${chop[nameBuild].replace(/[^a-zA-Z ]/g,"")} `;
 						}
 						newName += `${chop[nameBuild]}`;
 						let oldName = data.users[i].horses[horseIndex].name;
