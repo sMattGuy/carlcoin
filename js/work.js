@@ -13,7 +13,7 @@ function workPlayer(client,message){
 		//if user name found
 		if(data.users[j].id == id){
 			let currentTime = Date.now();
-			let randomAmount = Math.floor(Math.random() * (Math.floor(data.welfare / data.users.length) - data.users.length + 1)) + data.users.length;
+			let randomAmount = Math.floor(Math.random() * Math.floor(data.welfare / data.users.length)) + data.users.length;
 			//if user has already played
 			if(data.users[j].claim > currentTime){
 				let returnToWork = data.users[j].claim - currentTime;
@@ -63,10 +63,10 @@ function workPlayer(client,message){
 						message.channel.send(`Your office helps pick up some slack from today... You manage to get ${randomAmount}CC. You now have ${data.users[j].balance}CC`);
 					}
 					else{
-						data.users[j].balance += randomAmount;
-						data.welfare -= randomAmount;
-						data.users[j]["strEXP"] += randomAmount;
-						message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
+						data.users[j].balance += Math.floor(randomAmount / 2);
+						data.welfare -= Math.floor(randomAmount / 2);
+						data.users[j]["strEXP"] += Math.floor(randomAmount / 2);
+						message.channel.send(`You filed some paperwork in your office after mining, getting you some more CC! You now have ${data.users[j].balance}CC`);
 						console.log(data.users[j].name + " used their office CC");
 					}
 				}
