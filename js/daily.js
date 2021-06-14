@@ -12,13 +12,42 @@ function dailyEvents(client,message){
 	let totalTax = 0;
 	for(let i=0;i<data.users.length;i++){
 		let bankValue = 0;
+		let homeOwnership = 0;
+		let apartmentOwnership = 0;
+		let skyOwnership = 0;
+		let homeCount = 0;
+		let apartmentCount = 0;
+		let skycount = 0;
+		for(let j=0;j<data.users.length;j++){
+			if(data.users[j]["house"] > 0 && !isNaN(data.users[j]["house"])){
+				homeCount += data.users[j]["house"];
+			}
+			if(data.users[j]["apartment"] > 0 && !isNaN(data.users[j]["apartment"])){
+				apartmentCount += data.users[j]["apartment"];
+			}
+			if(data.users[j]["skyscraper"] > 0 && !isNaN(data.users[j]["skyscraper"])){
+				skyCount += data.users[j]["skyscraper"];
+			}
+		}
+		for(let j=0;j<data.users.length;j++){
+			if(data.users[j]["house"] >= Math.floor(homeCount / data.users.length) && !isNaN(data.users[j]["house"])){
+				homeOwnership++;
+			}
+			if(data.users[j]["apartment"] >= Math.floor(apartmentCount / data.users.length) && !isNaN(data.users[j]["apartment"])){
+				apartmentOwnership++;
+			}
+			if(data.users[j]["skyscraper"] >= Math.floor(skyCount / data.users.length) && !isNaN(data.users[j]["skyscraper"])){
+				skyOwnership++;
+			}
+		}
 		for(let j=0;j<bankJSON.users.length;j++){
 			if(data.users[i].id == bankJSON.users[j].id){
 				bankValue = bankJSON.users[j].balance;
 			}
 		}
 		bankValue = Math.floor(bankValue / 2);
-		let homePrice = data.users[i]["house"] * 10;
+		let homePayments = ()
+		let homePrice = data.users[i]["house"] * Math.ceil(10 * (homeOwnership / data.users.length));
 		let taxAmount = 0;
 		let blackjackAmount = 0;
 		let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100);
@@ -26,17 +55,17 @@ function dailyEvents(client,message){
 		if(isNaN(homePrice)){
 			homePrice = 0;
 		}
-		taxAmount = ((homePrice/10) * (personalTax + 2));
-		let apartPrice = data.users[i]["apartment"] * 25;
+		taxAmount = Math.floor(Math.ceil(10 * (homeOwnership / data.users.length)) * (personalTax + 2));
+		let apartPrice = data.users[i]["apartment"] * Math.ceil(25 * (apartmentOwnership / data.users.length));
 		if(isNaN(apartPrice)){
 			apartPrice = 0;
 		}
-		taxAmount += ((apartPrice/25) * (personalTax + 3));
-		let skyPrice = data.users[i]["skyscraper"] * 50;
+		taxAmount += Math.floor(Math.ceil(25 * (apartmentOwnership / data.users.length)) * (personalTax + 3));
+		let skyPrice = data.users[i]["skyscraper"] * Math.ceil(50 * (skyOwnership / data.users.length));
 		if(isNaN(skyPrice)){
 			skyPrice = 0;
 		}
-		taxAmount += ((skyPrice/50) * (personalTax + 4));
+		taxAmount += Math.floor(Math.ceil(50 * (skyOwnership / data.users.length)) * (personalTax + 4));
 		let amount = homePrice + apartPrice + skyPrice;
 		amount -= taxAmount;
 		if(amount < 0){
