@@ -314,21 +314,21 @@ function realtyGraph(client,message){
 	let newData = {label:``,backgroundColor:`rgb(99,68,252)`,borderColor:`rgb(99,68,252)`,data:[]};
 	newData.label = `house`;
 	for(let j=0;j<realtyHistory.house.length;j++){
-		newData.data.push(realtyHistory.house[i]);
+		newData.data.push(realtyHistory.house[j]);
 	}
 	datasets.push(newData);
 	
 	newData = {label:``,backgroundColor:`rgb(41,176,39)`,borderColor:`rgb(41,176,39)`,data:[]};
 	newData.label = `apartment`;
 	for(let j=0;j<realtyHistory.apartment.length;j++){
-		newData.data.push(realtyHistory.apartment[i]);
+		newData.data.push(realtyHistory.apartment[j]);
 	}
 	datasets.push(newData);
 	
 	newData = {label:``,backgroundColor:`rgb(252,162,93)`,borderColor:`rgb(252,162,93)`,data:[]};
 	newData.label = `skyscraper`;
 	for(let j=0;j<realtyHistory.skyscraper.length;j++){
-		newData.data.push(realtyHistory.skyscraper[i]);
+		newData.data.push(realtyHistory.skyscraper[j]);
 	}
 	datasets.push(newData);
 	
