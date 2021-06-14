@@ -48,7 +48,7 @@ function workPlayer(client,message){
 				data.welfare -= randomAmount;
 				data.users[j]["strEXP"] += randomAmount;
 				message.channel.send(`You worked hard in the carl mines.... and found ${randomAmount}CC! You now have ${data.users[j].balance}CC`);
-				if(1 - bonusChance < strBonus){
+				if(1 - bonusChance < strBonus && data.users[j]["unstable"] < 100){
 					let bonusAmount = randomAmount;
 					data.econ += bonusAmount;
 					data.users[j].balance += bonusAmount;
@@ -56,11 +56,19 @@ function workPlayer(client,message){
 				}
 				console.log(data.users[j].name + " mined CC");
 				if(data.users[j]["office"] === 1){
-					data.users[j].balance += randomAmount;
-					data.welfare -= randomAmount;
-					data.users[j]["strEXP"] += randomAmount;
-					message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
-					console.log(data.users[j].name + " used their office CC");
+					if(data.users[j]["unstable"] >= 100){
+						randomAmount = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+						data.users[j].balance += randomAmount;
+						data.welfare -= randomAmount;
+						message.channel.send(`Your office helps pick up some slack from today... You manage to get ${randomAmount}CC. You now have ${data.users[j].balance}CC`);
+					}
+					else{
+						data.users[j].balance += randomAmount;
+						data.welfare -= randomAmount;
+						data.users[j]["strEXP"] += randomAmount;
+						message.channel.send(`You filed some paperwork in your office after mining, doubling what you earned! You now have ${data.users[j].balance}CC`);
+						console.log(data.users[j].name + " used their office CC");
+					}
 				}
 				if(isNaN(data.users[j]["STR"])){
 					data.users[j]["STR"] = 0;
