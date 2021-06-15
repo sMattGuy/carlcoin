@@ -222,7 +222,8 @@ function testResponses(client,message){
 				frame();
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
-			console.log(e);;
+			console.log(e);
+		});
 		}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
