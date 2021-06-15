@@ -20,9 +20,11 @@ function workPlayer(client,message){
 				returnToWork = Math.floor(returnToWork / 1000); //seconds
 				returnToWork = Math.floor(returnToWork / 60); //mins
 				message.channel.send(`You've worked recently, Come back in ${returnToWork} mins!`);
+				return;
 			}
-			else if(data.welfare < randomAmount*2){
+			else if(data.welfare < randomAmount*(randomAmount/2)){
 				message.channel.send(`The mine has dried up! Come back soon!`);
+				return;
 			}
 			else{
 				if(isNaN(data.users[j]["unstable"])){
@@ -53,6 +55,11 @@ function workPlayer(client,message){
 					data.econ += bonusAmount;
 					data.users[j].balance += bonusAmount;
 					message.channel.send(`Your STR lets you work extra hard today, You earned an extra ${bonusAmount}CC!`);
+				}
+				if(Math.random() < 0.01){
+					data.econ += 100;
+					data.users[j].balance += 100;
+					message.channel.send(`You notice a glimmer while mining.... Wow! A Diamond! You sold it for an additional 100CC!`);
 				}
 				console.log(data.users[j].name + " mined CC");
 				if(data.users[j]["office"] === 1){
