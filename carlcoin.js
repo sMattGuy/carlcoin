@@ -453,7 +453,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/15/2021\nAdded battles, see !cc battleHelp for more information`);
+		message.channel.send(`Patch Notes 6/15/2021\nAdded battles, see !cc battleHelp for more information. Battles are in alpha, you gain nothing and lose nothing for now. Any ideas are appricated`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
