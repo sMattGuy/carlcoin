@@ -45,8 +45,8 @@ function testResponses(client,message){
 				con = 0;
 			}
 			intel = data.users[i]["INT"];
-			if(isNaN(inte)){
-				inte = 0;
+			if(isNaN(intel)){
+				intel = 0;
 			}
 			wis = data.users[i]["WIS"];
 			if(isNaN(wis)){
