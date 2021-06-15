@@ -81,7 +81,7 @@ function testResponses(client,message){
 	frame();
 	
 	async function frame(){
-		message.channel.send(`${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then(()=>{
+		message.channel.send(`${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -217,9 +217,10 @@ function testResponses(client,message){
 				}
 				message.channel.send(gameMessage).delete({timeout:60000}).catch(error => {console.log(error)});;
 				tempArmor = 0;
+				msg.delete();
 				frame();
 			});
-		}).delete().catch(e => {
+		}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
 		});
