@@ -13,8 +13,7 @@ const floatingHead = {art:
 `+==============================+\n|       UGLY FLOATING HEAD\n|		 THE SMILING DEVIL\n|         (\\-"^^^"-/)\n|         //^\\   /^\\\\\n|        ;/ ~_\\ /_~ \\;\n|        |  / \\Y/ \\  |\n|       (,  \\0/ \\0/  ,)\n|        |   /   \\   |\n|        | (_\\._./_) |\n|         \\ \\v-.-v/ /\n|          \\ '===' /\n|           \\_____/\n+==============================+\n`,hp:125,str:20,con:30,wis:26,dex:30,intel:20,chr:25};
 
 //hard
-const jokester = {art:
-`+==============================+\n|          KNIGHT OF HELL\n|           ARMORED DEMON\n|              .    .\n|           _..;|;__;|;\n|         ,'   ';  \\'; -.\n\n|    .--._)|    ;==,|,=='\n|      \\ @; \\_  < G," G).\n|        \\/-;,(  )  .>. )\n|           < ,-;'-.__.;'\n|             \\_  -,__,'\n\n|                   ;;;;\n+==============================+\n`,hp:200,str:50,con:75,wis:50,dex:55,intel:80,chr:75};
+const jokester = {art:`+==============================+\n|          KNIGHT OF HELL\n|           ARMORED DEMON\n|              .    .\n|           _..;|;__;|;\n|         ,'   ';  \\'; -.\n|    .--._)|    ;==,|,=='\n|      \\ @; \\_  < G," G).\n|        \\/-;,(  )  .>. )\n|           < ,-;'-.__.;'\n|             \\_  -,__,'\n|                   ;;;;\n+==============================+\n`,hp:200,str:50,con:75,wis:50,dex:55,intel:80,chr:75};
 
 //expert
 const king = {art:
@@ -141,7 +140,7 @@ function testResponses(client,message){
 			eChr = enemy.chr;
 			enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 			//actual box that will perform the loop
-			let initMessage = `Info will be here!\n`;
+			let initMessage = `Info will be here!\nYour LVL: ${playerLevel} | Enemy LVL: ${enemyLevel}\n`;
 			frame(initMessage);
 		}).catch(e => {
 			message.channel.send(`No difficulty choice made in time`);
@@ -221,7 +220,7 @@ function testResponses(client,message){
 					}
 				}
 				else if(action === '!cc item'){
-					let hpHeal = Math.floor(Math.random()*5)+1;
+					let hpHeal = Math.floor(Math.random()*intel)+1;
 					playerHp += hpHeal;
 					gameMessage += `You use a bandage and heal ${hpHeal}HP!\n`;
 				}
@@ -242,7 +241,7 @@ function testResponses(client,message){
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					gameMessage += `You have defeated the enemy! You win! As a reward you got ${amountEarned}CC!\n`;
+					gameMessage += `You have defeated the enemy! You win! As a reward you got ${amountEarned}CC! Your level is ${playerLevel}, the enemies level was ${enemyLevel}\n`;
 					message.channel.send(gameMessage);
 					return;
 				}
@@ -301,7 +300,7 @@ function testResponses(client,message){
 					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-					gameMessage += `You have died! So sad! You lost ${amountEarned}CC!\n`;
+					gameMessage += `You have died! So sad! You lost ${amountEarned}CC! Your level is ${playerLevel}, the enemies level was ${enemyLevel}\n`;
 					message.channel.send(gameMessage);
 					return;
 				}
