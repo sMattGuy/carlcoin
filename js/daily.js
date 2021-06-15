@@ -17,7 +17,7 @@ function dailyEvents(client,message){
 		let skyOwnership = 0;
 		let homeCount = 0;
 		let apartmentCount = 0;
-		let skycount = 0;
+		let skyCount = 0;
 		for(let j=0;j<data.users.length;j++){
 			if(data.users[j]["house"] > 0 && !isNaN(data.users[j]["house"])){
 				homeCount += data.users[j]["house"];

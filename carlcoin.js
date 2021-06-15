@@ -98,7 +98,7 @@ client.on('message', message => {
 		guessingGame.startGuessGame(client,message);
 	}
 	//daily events
-	if(today != prevDate){
+	if(today != prevDate || (message.content === '!cc triggerDaily' && message.author.id == 492850107038040095)){
 		prevDate = universalDate.getDay();
 		dailyEvents.dailyEvents(client,message);
 	}
