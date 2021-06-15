@@ -575,7 +575,7 @@ function blackjackStand(client,message){
 }
 
 //create board for blackjack
-	async function drawBoard(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerVal, playerName, dealerVal,userIcon){
+async function drawBoard(channel, hiddenDealer, gameMessage, playerCards, dealerCards, unstable, ender, playerVal, playerName, dealerVal,userIcon){
 	const canvas = Canvas.createCanvas(496,288);
 	const ctx = canvas.getContext('2d');
 	const background = await Canvas.loadImage('/home/mattguy/carlcoin/cardImages/pokertable.jpg');
