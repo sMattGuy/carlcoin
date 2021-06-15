@@ -86,7 +86,7 @@ function testResponses(client,message){
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
 				//parsing of choice begins here
-				choice.delete();
+				choice.first().delete();
 				let action = choice.first().content;
 				let gameMessage = ``;
 				if(action === '!cc attack'){
@@ -220,7 +220,9 @@ function testResponses(client,message){
 				tempArmor = 0;
 				msg.delete();
 				frame();
-			});
+			}).catch(e => {
+			message.channel.send(`Didnt get valid response in time`);
+			console.log(e);;
 		}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
