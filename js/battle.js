@@ -215,7 +215,7 @@ function testResponses(client,message){
 					message.channel.send(gameMessage);
 					return;
 				}
-				message.channel.send(gameMessage).delete({timeout:60000}).catch(error => {console.log(error)});;
+				message.channel.send(gameMessage).then(msg => {msg.delete({timeout:60000}).catch(error => {console.log(error)});});
 				tempArmor = 0;
 				msg.delete();
 				frame();
