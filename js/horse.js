@@ -41,8 +41,8 @@ function nameHorse(client, message){
 		}
 		if(horseIndex < 0 || isNaN(horseIndex)){
 			message.channel.send(`Horse selection cannot be negative!`);
+			return;
 		}
-		console.log(horseIndex);
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let id = message.author.id;
