@@ -33,6 +33,9 @@ const nightmareEnemies = [tux];
 //action bar constant
 const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc run    | !cc magic`;
 
+//player attack flavortext
+const physicalAttack = [`You bash the enemy with an axe for `,`You slice the enemy with a sword for `,`You shoot the enemy with your 9mm for `, `You plow into the enemy with your Mercedes-Benz 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload for `,`You fire a barrage of arrows at the enemy for `,`You strike the enemy with 1000 punches for `,`You bash the enemies head with your own for `,`You kick the enemy in the head for `,`You grapple the enemy and toss them to the ground for `,`You input Raging Demon on the enemy for `,`You whip the enemy for `, `You punch the enemy in the head for `,`You use blackbelt level jujitsu on the enemy for `,`You flick the enemy for `, `You hit the enemy several times in the chest for `,`You target each pressure point on the enemy for `,`You beat the enemy to a pulp for `, `You throw a pie at the enemy for `,`You bite the enemy for `,`You really lean into the enemy for `,`You give the enemy a real beating for `,`You, Tony, Franky, Guiseppi and Carlos take the enemy out back for `,`You miss the enemy but they fall backwards and hit the ground for `,`You wallop the enemy for `,`You kick the enemies ass *LITERALLY for `,`You approach the enemy, instead of running away you go closer and attack for `,`You give a beat-down to the enemy for `,`You punch so fast it doesn't even register to the enemy they've just been hit for `,`You punch not once, not twice, but three times for `];
+const magicAttack = [];
 
 function testResponses(client,message){
 	const filter = m => {
@@ -166,15 +169,15 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							gameMessage += `The attack was deflected!\n`;
+							gameMessage += `The attack was deflected by the enemies defenses!\n`;
 						}
 						else{
 							eHp -= totalDamage;
-							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
+							gameMessage += `${physicalAttack[Math.floor(Math.random() * physicalAttack.length)]}${totalDamage}HP!\n`;
 						}
 					}
 					else{
-						gameMessage += `The attack was dodged!\n`;
+						gameMessage += `The attack was dodged by the enemies insane speed!\n`;
 					}
 				}
 				else if(action === '!cc magic'){
@@ -186,7 +189,7 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							gameMessage += `The attack was deflected!\n`;
+							gameMessage += `The attack was deflected by the enemies mental fortitude!\n`;
 						}
 						else{
 							eHp -= totalDamage;
@@ -194,7 +197,7 @@ function testResponses(client,message){
 						}
 					}
 					else{
-						gameMessage += `The attack was dodged!\n`;
+						gameMessage += `The attack failed to connect with the enemy!\n`;
 					}
 				}
 				else if(action === '!cc block'){
@@ -257,7 +260,7 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							gameMessage += `The attack was deflected!\n`;
+							gameMessage += `The attack was deflected by your armor!\n`;
 						}
 						else{
 							playerHp -= totalDamage;
@@ -265,7 +268,7 @@ function testResponses(client,message){
 						}
 					}
 					else{
-						gameMessage += `The attack was dodged!\n`;
+						gameMessage += `The attack was dodged by your insane speed!\n`;
 					}
 				}
 				else{
@@ -278,7 +281,7 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							gameMessage += `The attack was deflected!\n`;
+							gameMessage += `The attack was deflected by your mental fortitude!\n`;
 						}
 						else{
 							playerHp -= totalDamage;
@@ -286,7 +289,7 @@ function testResponses(client,message){
 						}
 					}
 					else{
-						gameMessage += `The attack was dodged!\n`;
+						gameMessage += `The attack failed to target you!\n`;
 					}
 				}
 				if(playerHp <= 0){
