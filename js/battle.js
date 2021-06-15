@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 
-const lesserDevil = {art:`+==============================+\n|       ENEMY OF THE STATE\n|		 THE LESSER DEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A / \-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:100,str:10,con:15,wis:5,dex:4,intel:10,chr:15};
+const lesserDevil = {art:`
++==============================+\n|       ENEMY OF THE STATE\n|		 THELESSERDEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A  / \-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:100,str:10,con:15,wis:5,dex:4,intel:10,chr:15};
 
 const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc run    | !cc magic`;
 
@@ -82,10 +83,11 @@ function testResponses(client,message){
 	async function frame(){
 		message.channel.send(`${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then(()=>{
 			message.channel.awaitMessages(filter,{
-				max:1,time:20000,errors:['time']
+				max:1,time:60000,errors:['time']
 			}).then(choice => {
 				//parsing of choice begins here
 				let action = choice.first().content;
+				let gameMessage = ``;
 				if(action === '!cc attack'){
 					let damage = Math.floor(Math.random() * str) + attackBonus;
 					let block = Math.floor(Math.random() * eDex);
@@ -95,15 +97,15 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							message.channel.send(`The attack was deflected!`)
+							gameMessage += `The attack was deflected!\n`;
 						}
 						else{
 							eHp -= totalDamage;
-							message.channel.send(`The attack lands for ${totalDamage}HP!`);
+							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
 						}
 					}
 					else{
-						message.channel.send(`The attack was dodged!`)
+						gameMessage += `The attack was dodged!\n`;
 					}
 				}
 				else if(action === '!cc magic'){
@@ -115,20 +117,20 @@ function testResponses(client,message){
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							message.channel.send(`The attack was deflected!`)
+							gameMessage += `The attack was deflected!\n`;
 						}
 						else{
 							eHp -= totalDamage;
-							message.channel.send(`The attack lands for ${totalDamage}HP!`);
+							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
 						}
 					}
 					else{
-						message.channel.send(`The attack was dodged!`)
+						gameMessage += `The attack was dodged!\n`;
 					}
 				}
 				else if(action === '!cc block'){
 					tempArmor += Math.floor(Math.random() * (con + wis)) + defenseBonus;
-					message.channel.send(`You gain ${tempArmor} defense for this turn!`);
+					gameMessage += `You gain ${tempArmor} defense for this turn!\n`;
 				}
 				else if(action === '!cc look'){
 					if(Math.random() <= .1){
@@ -136,80 +138,88 @@ function testResponses(client,message){
 						if(Math.random() <=.5){
 							//attack bonus
 							attackBonus += bonus;
-							message.channel.send(`You spot a weakness in your enemy, you get a permanent +${bonus} to attack!`);
+							gameMessage += `You spot a weakness in your enemy, you get a permanent +${bonus} to attack!\n`;
 						}
 						else{
 							//defense bonus
 							defenseBonus += bonus;
-							message.channel.send(`You spot a pattern in your enemy's moves, you get a permanent +${bonus} to defense!`);
+							gameMessage += `You spot a pattern in your enemy's moves, you get a permanent +${bonus} to defense!\n`;
 						}
+					}
+					else{
+						gameMessage += `You couldn't find anything exploitable!\n`;
 					}
 				}
 				else if(action === '!cc item'){
 					let hpHeal = Math.floor(Math.random()*5)+1;
 					playerHp += hpHeal;
-					message.channel.send(`You use a bandage and heal ${hpHeal}HP!`);
+					gameMessage += `You use a bandage and heal ${hpHeal}HP!\n`;
 				}
 				else if(action === '!cc run'){
-					message.channel.send(`You run away! COWARD!!!!!`);
+					gameMessage += `You run away! COWARD!!!!!\n`;
+					message.channel.send(gameMessage);
 					return;
 				}
 				//check hp of enemy
 				if(eHp <= 0){
-					message.channel.send(`You have defeated the enemy! You win!`);
+					gameMessage += `You have defeated the enemy! You win!\n`;
+					message.channel.send(gameMessage);
 					return;
 				}
 				//enemy attack
-				message.channel.send(`The enemy attacks!`);
+				gameMessage += `The enemy attacks!\n`;
 				if(Math.random() <= .5){
 					//physical attack
 					let damage = Math.floor(Math.random() * eStr);
-					let block = Math.floor(Math.random() * dex) + defenseBonus;
+					let block = Math.floor(Math.random() * dex) + defenseBonus + tempArmor;
 					if(damage > block){
 						//player hits
 						let armor = Math.floor(Math.random() * con);
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							message.channel.send(`The attack was deflected!`)
+							gameMessage += `The attack was deflected!\n`;
 						}
 						else{
 							playerHp -= totalDamage;
-							message.channel.send(`The attack lands for ${totalDamage}HP!`);
+							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
 						}
 					}
 					else{
-						message.channel.send(`The attack was dodged!`)
+						gameMessage += `The attack was dodged!\n`;
 					}
 				}
 				else{
 					//magic
 					let damage = Math.floor(Math.random() * eChr);
-					let block = Math.floor(Math.random() * wis) + defenseBonus;
+					let block = Math.floor(Math.random() * wis) + defenseBonus + tempArmor;
 					if(damage > block){
 						//player hits
 						let armor = Math.floor(Math.random() * chr);
 						let totalDamage = damage - armor;
 						if(totalDamage <= 0){
 							//attack deflected
-							message.channel.send(`The attack was deflected!`)
+							gameMessage += `The attack was deflected!\n`;
 						}
 						else{
 							playerHp -= totalDamage;
-							message.channel.send(`The attack lands for ${totalDamage}HP!`);
+							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
 						}
 					}
 					else{
-						message.channel.send(`The attack was dodged!`)
+						gameMessage += `The attack was dodged!\n`;
 					}
 				}
 				if(playerHp <= 0){
-					message.channel.send(`You have died! So sad!`);
+					gameMessage += `You have died! So sad!\n`;
+					message.channel.send(gameMessage);
 					return;
 				}
+				message.channel.send(gameMessage).delete({timeout:60000}).catch(error => {console.log(error)});;
+				tempArmor = 0;
 				frame();
 			});
-		}).catch(e => {
+		}).delete().catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
 		});
