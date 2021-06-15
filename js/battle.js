@@ -205,7 +205,7 @@ function testResponses(client,message){
 					gameMessage += `You gain ${tempArmor} defense for this turn!\n`;
 				}
 				else if(action === '!cc look'){
-					if(Math.random() <= .1){
+					if(Math.random() <= (.1 + (intel / 100))){
 						let bonus = Math.floor(Math.random() * intel);
 						if(Math.random() <=.5){
 							//attack bonus
@@ -321,6 +321,11 @@ function testResponses(client,message){
 	}
 }
 
+function battleHelp(client,message){
+	message.channel.send(`Use !cc battle to start a battle\nAfter this you will have to type a difficulty once prompted, type baby, easy, normal, hard, expert or nightmare\nOnce in a battle you have 6 actions\n!cc attack will do a physical attack relying on your STR\n!cc magic will do a psychic relying on your CHR\n!cc block will give you a boost of defense for a turn\n!cc look will use your INT to find a weakness in the enemy\n!cc item will use your INT to heal your wounds\n!cc run will get you out of the fight`);
+}
+
 module.exports = {
-	testResponses
+	testResponses,
+	battleHelp
 };
