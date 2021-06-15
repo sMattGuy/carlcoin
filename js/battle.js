@@ -3,7 +3,7 @@ const fs = require('fs');
 
 
 const lesserDevil = {art:`
-+==============================+\n|       ENEMY OF THE STATE\n|		 THELESSERDEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A  / \-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:100,str:10,con:15,wis:5,dex:4,intel:10,chr:15};
++==============================+\n|       ENEMY OF THE STATE\n|		 THE LESSER DEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A  / \\-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:100,str:10,con:15,wis:5,dex:4,intel:10,chr:15};
 
 const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc run    | !cc magic`;
 
@@ -78,10 +78,11 @@ function testResponses(client,message){
 	let eChr = enemy.chr;
 	
 	//actual box that will perform the loop
-	frame();
+	let initMessage = `Info will be here!\n`;
+	frame(initMessage);
 	
-	async function frame(){
-		message.channel.send(`${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
+	async function frame(infoMessage){
+		message.channel.send(`${infoMessage}${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -216,10 +217,9 @@ function testResponses(client,message){
 					message.channel.send(gameMessage);
 					return;
 				}
-				message.channel.send(gameMessage).then(msg => {msg.delete({timeout:60000}).catch(error => {console.log(error)});});
 				tempArmor = 0;
 				msg.delete();
-				frame();
+				frame(gameMessage);
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
