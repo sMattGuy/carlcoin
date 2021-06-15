@@ -42,6 +42,7 @@ function nameHorse(client, message){
 		if(horseIndex < 0 || isNaN(horseIndex)){
 			message.channel.send(`Horse selection cannot be negative!`);
 		}
+		console.log(horseIndex);
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
 		let id = message.author.id;
@@ -66,10 +67,6 @@ function nameHorse(client, message){
 							newName += `${chop[nameBuild]} `;
 						}
 						newName += `${chop[nameBuild]}`;
-						if(!data.users[i].horses[horseIndex].hasOwnProperty("name")){
-							message.channel.send(`Couldn't find horse!`);
-							return;
-						}
 						let oldName = data.users[i].horses[horseIndex].name;
 						data.users[i].horses[horseIndex].name = newName;
 						data.users[i].horses[horseIndex].timeline += `${oldName} has been renamed to ${newName}\n`;
