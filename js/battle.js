@@ -86,6 +86,7 @@ function testResponses(client,message){
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
 				//parsing of choice begins here
+				choice.delete();
 				let action = choice.first().content;
 				let gameMessage = ``;
 				if(action === '!cc attack'){
