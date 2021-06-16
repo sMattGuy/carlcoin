@@ -325,7 +325,7 @@ function testResponses(client,message){
 				if(playerHp <= 0){
 					database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					data = JSON.parse(database);
-					let amountEarned = Math.floor((enemyLevel / playerLevel) * moneyMultipler);
+					let amountEarned = Math.floor((playerLevel / enemyLevel) * moneyMultipler);
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance -= amountEarned;
