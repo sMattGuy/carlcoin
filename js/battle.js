@@ -41,7 +41,7 @@ const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on 
 
 function testResponses(client,message){
 	const filter = m => {
-		return ((m.content === '!cc attack' || m.content === '!cc look' || m.content === '!cc block' || m.content === '!cc run' || m.content === '!cc item' || m.content === '!cc magic')&&(message.author.id == m.author.id));
+		return ((m.content === '!cc battle' ||m.content === '!cc attack' || m.content === '!cc look' || m.content === '!cc block' || m.content === '!cc run' || m.content === '!cc item' || m.content === '!cc magic')&&(message.author.id == m.author.id));
 	};
 	//get database information
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -102,7 +102,7 @@ function testResponses(client,message){
 	
 	//get the difficulty level a player wants
 	const diffFilter = m => {
-		return ((m.content === 'baby' || m.content === 'easy' || m.content === 'normal' || m.content === 'hard' || m.content === 'expert' || m.content === 'nightmare')&&(message.author.id == m.author.id));
+		return ((m.content === '!cc battle' || m.content === 'baby' || m.content === 'easy' || m.content === 'normal' || m.content === 'hard' || m.content === 'expert' || m.content === 'nightmare')&&(message.author.id == m.author.id));
 	}
 	let enemy = {};
 	let eArt = `(O_O)`;
@@ -117,6 +117,10 @@ function testResponses(client,message){
 	message.channel.send(`what difficulty level do you want (You are level ${playerLevel}): baby, easy, normal, hard, expert, nightmare`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:30000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
+			if(option == '!cc battle'){
+				message.channel.send(`You abandon this battle!`);
+				return;
+			}
 			if(option == 'baby'){
 				enemy = babyEnemies[Math.floor(Math.random() * babyEnemies.length)];
 				moneyMultipler = 1;
@@ -194,6 +198,10 @@ function testResponses(client,message){
 				choice.first().delete();
 				let action = choice.first().content;
 				let gameMessage = ``;
+				if(action === '!cc battle'){
+					message.channel.send(`You abandon the battle!`);
+					return;
+				}
 				if(action === '!cc attack'){
 					let damage = Math.floor(Math.random() * str) + attackBonus;
 					let block = Math.floor(Math.random() * eDex);
