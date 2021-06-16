@@ -29,7 +29,7 @@ const tux = {art:`+==============================+\n|      GOD OF "BUT ITS FREE"
 const babyEnemies = [glassJoe,easySkeleton];
 const easyEnemies = [lesserDevil];
 const normalEnemies = [floatingHead,ghost];
-const hardEnemies = [jokester,dragon];
+const hardEnemies = [jokester,dragon,box];
 const expertEnemies = [king];
 const nightmareEnemies = [tux];
 //action bar constant
