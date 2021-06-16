@@ -223,6 +223,8 @@ function realtyBuy(client,message){
 }
 
 function realtyListings(client, message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
 	if(!fs.existsSync(`/home/mattguy/carlcoin/realty.json`)){
 		message.channel.send(`There are no listings!`);
 		return;
@@ -233,7 +235,7 @@ function realtyListings(client, message){
 		message.channel.send(`There are no listings!`);
 		return;
 	}
-	let messageList = `index. name, type, price\n`
+	let messageList = `Current Tax modifier: ${data.houseMarket}\nindex. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
 			messageList += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
 	}
@@ -376,5 +378,6 @@ module.exports = {
 	realtyListings,
 	realtyCancel,
 	realtyHelp,
-	realtyGraph
+	realtyGraph,
+	realtyHour
 };

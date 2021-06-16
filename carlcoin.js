@@ -87,6 +87,7 @@ client.on('message', message => {
 	if(prevHour != universalDate.getHours()){
 		prevHour = universalDate.getHours();
 		stock.updateStocks(client,message);
+		realty.realtyHour(client,message);
 	}
 	//raffle functionality
 	//message failsafe incase countery somehow goes past value
@@ -453,7 +454,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/16/2021\nBattles can now give money but you can also lose money`);
+		message.channel.send(`Patch Notes 6/16/2021\nBattles can now give money but you can also lose money\nThe housing market (!cc realtyHelp) now effects daily payouts. If the markets dead, so will the daily payouts, if its active, everyone gets more. The tax modifier shows this in !cc realtyListings, and your personal loss is in your balance`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
