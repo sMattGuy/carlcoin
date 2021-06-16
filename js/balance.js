@@ -10,9 +10,48 @@ function checkBalance(client,message){
 	let id = message.author.id;
 	//flag
 	let notFound = true;
+	//clerical info
+	let realtyModifier = data.houseMarket;
+
+	let homeOwnership = 0;
+	let apartmentOwnership = 0;
+	let skyOwnership = 0;
+	let homeCount = 0;
+	let apartmentCount = 0;
+	let skyCount = 0;
+	for(let j=0;j<data.users.length;j++){
+		if(data.users[j]["house"] > 0 && !isNaN(data.users[j]["house"])){
+			homeCount += data.users[j]["house"];
+		}
+		if(data.users[j]["apartment"] > 0 && !isNaN(data.users[j]["apartment"])){
+			apartmentCount += data.users[j]["apartment"];
+		}
+		if(data.users[j]["skyscraper"] > 0 && !isNaN(data.users[j]["skyscraper"])){
+			skyCount += data.users[j]["skyscraper"];
+		}
+	}
+	for(let j=0;j<data.users.length;j++){
+		if(data.users[j]["house"] >= Math.floor(homeCount / data.users.length) && !isNaN(data.users[j]["house"])){
+			homeOwnership++;
+		}
+		if(data.users[j]["apartment"] >= Math.floor(apartmentCount / data.users.length) && !isNaN(data.users[j]["apartment"])){
+			apartmentOwnership++;
+		}
+		if(data.users[j]["skyscraper"] >= Math.floor(skyCount / data.users.length) && !isNaN(data.users[j]["skyscraper"])){
+			skyOwnership++;
+		}
+	}
 	//checks for name
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
+			let bankValue = 0;
+			for(let j=0;j<bankJSON.users.length;j++){
+				if(data.users[i].id == bankJSON.users[j].id){
+					bankValue = bankJSON.users[j].balance;
+				}
+			}
+			bankValue = Math.floor(bankValue / 2);
+			let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
 			//sanity
 			let sanity = "Fine";
 			if(isNaN(data.users[i]["unstable"])){
@@ -161,7 +200,15 @@ function checkBalance(client,message){
 					sprinter = 0;
 					data.users[i]["sprinter"] = 0;
 				}
+				let taxAmount = 0;
+				taxAmount = Math.floor((homes * (homeOwnership / data.users.length))*realtyModifier) * personalTax;
+				taxAmount += Math.floor((apartments * (apartmentOwnership / data.users.length))*realtyModifier) * personalTax;
+				taxAmount += Math.floor((skyscrapers * (skyOwnership / data.users.length))*realtyModifier) * personalTax;
 				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
+				dailyPayout -= taxAmount;
+				if(dailyPayout < 0){
+					dailyPayout = 0;
+				}
 				let perc = (balance / data.econ) * 100;
 				perc = perc.toFixed(2);
 				const playercardEmbed = new Discord.MessageEmbed()
@@ -171,7 +218,7 @@ function checkBalance(client,message){
 					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (before tax) daily`},
+						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}) daily`},
 						{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
 						{ name: 'Sprinters', value: `${sprinter}`, inline: true},
 						{ name: 'Cooldowns', value: `${messageToSend}`},

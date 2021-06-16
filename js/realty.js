@@ -16,6 +16,21 @@ realty history
 	apartment:[0]
 	skyscraper:[0]
 */
+function realtyHour(client,message){
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	
+	let rise = Math.random() * 0.05;
+	rise = rise.toFixed(2);
+	data.houseMarket += rise;
+	if(data.houseMarket > 2.0){
+		data.houseMarket = 2;
+	}
+	console.log(rise + ' has been added to the house market which is now ' + data.houseMarket);
+	
+	let newData = JSON.stringify(data);
+	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+}
 function realtyList(client,message){
 	// !cc realtyList <type> <price>
 	let chop = message.content.split(" ");
@@ -181,6 +196,14 @@ function realtyBuy(client,message){
 					data.users[j].balance += realty.list[index].price;
 					client.users.cache.get(realty.list[index].id).send(`Your listing of a ${realty.list[index].type} for ${realty.list[index].price}CC has been sold to ${data.users[i].name}!`).catch(() => {console.log('Failed to alert seller of their listing being sold')});
 					realty.list.splice(index,1);
+					//adjust housing market
+					let rise = Math.random() * 0.1;
+					rise = rise.toFixed(2);
+					data.houseMarket -= rise;
+					if(data.houseMarket < 0){
+						data.houseMarket = 0.01;
+					}
+					console.log(rise + ' has been subtracted from the house market which is now ' + data.houseMarket);
 					//begin writing files
 					let realtyFileSave = JSON.stringify(realty);
 					fs.writeFileSync('/home/mattguy/carlcoin/realty.json',realtyFileSave);
