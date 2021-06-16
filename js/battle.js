@@ -114,7 +114,6 @@ function testResponses(client,message){
 	let enemyLevel = 0;
 	message.channel.send(`what difficulty level do you want (You are level ${playerLevel}): baby, easy, normal, hard, expert, nightmare`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:30000,errors:['time']}).then(choice => {
-			choice.first().delete();
 			let option = choice.first().content;
 			if(option == 'baby'){
 				enemy = babyEnemies[Math.floor(Math.random() * babyEnemies.length)];
