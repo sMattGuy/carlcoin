@@ -375,6 +375,9 @@ function sellStock(client,message){
 					data.econ += (amount * stock.stock[stockIndex].price);
 					data.users[i].stock[j].amount -= amount;
 					data.users[i].stock[j].today -= amount;
+					if(data.users[i].stock[j].amount == 0){
+						data.users[i].stock.splice(j,1);
+					}
 					let netGain = (amount * stock.stock[stockIndex].price) - (data.users[i].stock[j].avgPrice * amount);
 					if(data.users[i].stock[j].today < 0){
 						data.users[i].stock[j].today = 0;

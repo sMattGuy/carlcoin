@@ -118,27 +118,51 @@ function testResponses(client,message){
 			let option = choice.first().content;
 			if(option == 'baby'){
 				enemy = babyEnemies[Math.floor(Math.random() * babyEnemies.length)];
-				moneyMultipler = 0.1;
+				moneyMultipler = 1;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			else if(option == 'easy'){
 				enemy = easyEnemies[Math.floor(Math.random() * easyEnemies.length)];
-				moneyMultipler = 0.5;
+				moneyMultipler = 5;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			else if(option == 'normal'){
 				enemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)];
-				moneyMultipler = 1.0;
+				moneyMultipler = 10;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			else if(option == 'hard'){
 				enemy = hardEnemies[Math.floor(Math.random() * hardEnemies.length)];
-				moneyMultipler = 1.5;
+				moneyMultipler = 20;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			else if(option == 'expert'){
 				enemy = expertEnemies[Math.floor(Math.random() * expertEnemies.length)];
-				moneyMultipler = 2.0;
+				moneyMultipler = 40;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			else if(option == 'nightmare'){
 				enemy = nightmareEnemies[Math.floor(Math.random() * nightmareEnemies.length)];
-				moneyMultipler = 2.5;
+				moneyMultipler = 80;
+				if(balance - moneyMultipler <= 0){
+					message.channel.send(`You don't have enough money to spare if you lose!`);
+					return;
+				}
 			}
 			eArt = enemy.art;
 			eHp = enemy.hp;
