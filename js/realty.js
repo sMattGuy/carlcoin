@@ -21,7 +21,6 @@ function realtyHour(client,message){
 	let data = JSON.parse(database);
 	
 	let rise = Math.random() * 0.05;
-	rise = rise.toFixed(2);
 	data.houseMarket += rise;
 	if(data.houseMarket > 2.0){
 		data.houseMarket = 2;
@@ -198,7 +197,6 @@ function realtyBuy(client,message){
 					realty.list.splice(index,1);
 					//adjust housing market
 					let rise = Math.random() * 0.1;
-					rise = rise.toFixed(2);
 					data.houseMarket -= rise;
 					if(data.houseMarket < 0){
 						data.houseMarket = 0.01;
@@ -235,7 +233,7 @@ function realtyListings(client, message){
 		message.channel.send(`There are no listings!`);
 		return;
 	}
-	let messageList = `Current Tax modifier: ${data.houseMarket}\nindex. name, type, price\n`
+	let messageList = `Current Tax modifier: ${data.houseMarket.toFixed(2)}\nindex. name, type, price\n`
 	for(let i=0;i<realty.list.length;i++){
 			messageList += `${i}. ${realty.list[i].name}, ${realty.list[i].type}, ${realty.list[i].price}\n`;
 	}
