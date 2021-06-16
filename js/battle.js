@@ -9,10 +9,12 @@ const lesserDevil = {art:`+==============================+\n|       ENEMY OF THE
 
 //normal
 const floatingHead = {art:`+==============================+\n|       UGLY FLOATING HEAD\n|		 THE SMILING DEVIL\n|         (\\-"^^^"-/)\n|         //^\\   /^\\\\\n|        ;/ ~_\\ /_~ \\;\n|        |  / \\Y/ \\  |\n|       (,  \\0/ \\0/  ,)\n|        |   /   \\   |\n|        | (_\\._./_) |\n|         \\ \\v-.-v/ /\n|          \\ '===' /\n|           \\_____/\n+==============================+\n`,hp:125,str:20,con:30,wis:26,dex:30,intel:20,chr:25,phys:[`The Smiling Devil bites you for `,`The Smiling Devil rams you for `,`The Smiling Devil crashes into you for `,`The Smiling Devil stabs you for `,`The Smiling Devil licks you for `],magic:[`The Smiling Devil mocks you for `,`The Smiling Devil fires a beam at you for `,`The Smiling Devil terrifies you for `]};
+const floatingHead = {art:`+==============================+\n|       UNNATURAL PRESENCE\n|		   UNHOLY GHOST\n|				___\n|			  _/ 66\\n|			 ( \  ^/__\n|			  \    \__)\n|			  /     \\n|			 /      _\\n|			 """""""\n+==============================+\n`,hp:100,str:30,con:30,wis:50,dex:40,intel:10,chr:35,phys:[`The Ghost throws something at you for `,`The Ghost rams you for `,`The Ghost crashes into you for `,`The Ghost cuts you for `,`The Ghost grabs you for `],magic:[`The Ghost chills you for `,`The Ghost scares you for `,`The Ghost petrifies you for `]};
 
 //hard
 const jokester = {art:`+==============================+\n|          KNIGHT OF HELL\n|           ARMORED DEMON\n|              .    .\n|           _..;|;__;|;\n|         ,'   ';  \\'; -.\n|    .--._)|    ;==,|,=='\n|      \\ @; \\_  < G," G).\n|        \\/-;,(  )  .>. )\n|           < ,-;'-.__.;'\n|             \\_  -,__,'\n|                   ;;;;\n+==============================+\n`,hp:200,str:50,con:75,wis:50,dex:55,intel:80,chr:75,phys:[`The Armored Demon stabs you for `,`The Armored Demon rams you for `,`The Armored Demon slices you for `,`The Armored Demon bashes you for `,`The Armored Demon beats you for `],magic:[`The Armored Demon shoots brimstone at you for `,`The Armored Demon summons pillars of fire on you for `,`The Armored Demon shoots massive fireballs at you for `]};
 
+const dragon = {art:`+==============================+\n|          JUST A DRAGON\n|        DRAGON T'ESNAUTS\n|              /     \\\n|             ((     ))\n|         ===  \\\\_v_//  ===\n|           ====)_^_(====\n|           ===/ O O \\===\n|           = | /_ _\\ | =\n|          =   \\/_ _\\/   =\n|               \\_ _/\n|               (o_o)\n|                VwV\n+==============================+\n`,hp:300,str:100,con:100,wis:75,dex:40,intel:40,chr:100,phys:[`The Dragon claws at you for `,`The Dragon steps on you for `,`The Dragon slices you for `,`The Dragon tail whips you for `,`The Dragon crushes you for `],magic:[`The Dragon breaths fire on you for `,`The Dragon shoots a fireball at you for `,`The Dragon lights you on fire for `]};
 //expert
 const king = {art:`+==============================+\n|          KING OF HELL\n|		     THE LYCH\n|    ,    ,    /\\   /\\\n|   /( /\\ )\\  _\\ \\_/ /_\n|   |\\_||_/| < \\_   _/ >\n|   \\______/  \\|0   0|/\n|     _\\/_   _(_  ^  _)_\n|    ( () ) / \\|V"""V|/ \\\n|      {}   \\  \\_____/  /\n|      ()   /\\   )=(   /\\\n|      {}  /  \\_/\\=/\\_/  \\\n+==============================+\n`,hp:500,str:100,con:100,wis:75,dex:70,intel:120,chr:130,phys:[`The Lych slices you for `,`The Lych rams you for `,`The Lych crashes into you for `,`The Lych stabs you for `,`The Lych pierces you for `],magic:[`The Lych commands you to fall for `,`The Lych fires a green fire at you for `,`The Lych terrifies you for `]};
 
@@ -23,7 +25,7 @@ const tux = {art:`+==============================+\n|      GOD OF "BUT ITS FREE"
 const babyEnemies = [glassJoe,easySkeleton];
 const easyEnemies = [lesserDevil];
 const normalEnemies = [floatingHead];
-const hardEnemies = [jokester];
+const hardEnemies = [jokester,dragon];
 const expertEnemies = [king];
 const nightmareEnemies = [tux];
 //action bar constant
