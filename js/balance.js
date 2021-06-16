@@ -203,9 +203,9 @@ function checkBalance(client,message){
 					data.users[i]["sprinter"] = 0;
 				}
 				let taxAmount = 0;
-				taxAmount = Math.floor((homes * (homeOwnership / data.users.length))*realtyModifier) * personalTax;
-				taxAmount += Math.floor((apartments * (apartmentOwnership / data.users.length))*realtyModifier) * personalTax;
-				taxAmount += Math.floor((skyscrapers * (skyOwnership / data.users.length))*realtyModifier) * personalTax;
+				taxAmount = (Math.floor((homes * (homeOwnership / data.users.length))*realtyModifier) * personalTax) * 2;
+				taxAmount += (Math.floor((apartments * (apartmentOwnership / data.users.length))*realtyModifier) * personalTax) * 4;
+				taxAmount += (Math.floor((skyscrapers * (skyOwnership / data.users.length))*realtyModifier) * personalTax) * 8;
 				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
 				dailyPayout -= taxAmount;
 				if(dailyPayout < 0){
