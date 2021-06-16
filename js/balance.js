@@ -220,7 +220,7 @@ function checkBalance(client,message){
 					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}) daily`},
+						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}CC) daily`},
 						{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
 						{ name: 'Sprinters', value: `${sprinter}`, inline: true},
 						{ name: 'Cooldowns', value: `${messageToSend}`},
