@@ -170,18 +170,54 @@ function acceptDenyRPS(client,message){
 										message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
 										data.users[rpsParse.challIndex].balance += wager;
 										data.users[rpsParse.oppIndex].balance -= wager;
+										if(isNaN(data.users[rpsParse.challIndex]["INT"])){
+											data.users[rpsParse.challIndex]["INT"] = 0;
+										}
+										if(isNaN(data.users[rpsParse.challIndex]["intExp"])){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+										}
+										data.users[rpsParse.challIndex]["intExp"] += 1;
+										if(data.users[rpsParse.challIndex]["INT"] * 2 + 1 < data.users[rpsParse.challIndex]["intExp"]){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+											data.users[rpsParse.challIndex]["INT"] += 1;
+											message.channel.send(`You mind games helped you with critical thinking, causing your INT to increase!`);
+										}
 									}
 									else if(challThrow == 'scissors' && oppThrow == 'paper'){
 										message.channel.send(`${data.users[rpsParse.challIndex].name} threw scissors, ${data.users[rpsParse.oppIndex].name} threw paper`);
 										message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
 										data.users[rpsParse.challIndex].balance += wager;
 										data.users[rpsParse.oppIndex].balance -= wager;
+										if(isNaN(data.users[rpsParse.challIndex]["INT"])){
+											data.users[rpsParse.challIndex]["INT"] = 0;
+										}
+										if(isNaN(data.users[rpsParse.challIndex]["intExp"])){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+										}
+										data.users[rpsParse.challIndex]["intExp"] += 1;
+										if(data.users[rpsParse.challIndex]["INT"] * 2 + 1 < data.users[rpsParse.challIndex]["intExp"]){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+											data.users[rpsParse.challIndex]["INT"] += 1;
+											message.channel.send(`You mind games helped you with critical thinking, causing your INT to increase!`);
+										}
 									}
 									else if(challThrow == 'paper' && oppThrow == 'rock'){
 										message.channel.send(`${data.users[rpsParse.challIndex].name} threw paper, ${data.users[rpsParse.oppIndex].name} threw rock`);
 										message.channel.send(`${data.users[rpsParse.challIndex].name} won!`);
 										data.users[rpsParse.challIndex].balance += wager;
 										data.users[rpsParse.oppIndex].balance -= wager;
+										if(isNaN(data.users[rpsParse.challIndex]["INT"])){
+											data.users[rpsParse.challIndex]["INT"] = 0;
+										}
+										if(isNaN(data.users[rpsParse.challIndex]["intExp"])){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+										}
+										data.users[rpsParse.challIndex]["intExp"] += 1;
+										if(data.users[rpsParse.challIndex]["INT"] * 2 + 1 < data.users[rpsParse.challIndex]["intExp"]){
+											data.users[rpsParse.challIndex]["intExp"] = 0;
+											data.users[rpsParse.challIndex]["INT"] += 1;
+											message.channel.send(`You mind games helped you with critical thinking, causing your INT to increase!`);
+										}
 									}
 									else if(challThrow == oppThrow){
 										message.channel.send(`${data.users[rpsParse.challIndex].name} threw ${challThrow}, ${data.users[rpsParse.oppIndex].name} threw ${oppThrow}`);
@@ -192,6 +228,18 @@ function acceptDenyRPS(client,message){
 										message.channel.send(`${data.users[rpsParse.oppIndex].name} won!`);
 										data.users[rpsParse.challIndex].balance -= wager;
 										data.users[rpsParse.oppIndex].balance += wager;
+										if(isNaN(data.users[rpsParse.oppIndex]["INT"])){
+											data.users[rpsParse.oppIndex]["INT"] = 0;
+										}
+										if(isNaN(data.users[rpsParse.oppIndex]["intExp"])){
+											data.users[rpsParse.oppIndex]["intExp"] = 0;
+										}
+										data.users[rpsParse.oppIndex]["intExp"] += 1;
+										if(data.users[rpsParse.oppIndex]["INT"] * 2 + 1 < data.users[rpsParse.oppIndex]["intExp"]){
+											data.users[rpsParse.oppIndex]["intExp"] = 0;
+											data.users[rpsParse.oppIndex]["INT"] += 1;
+											message.channel.send(`You mind games helped you with critical thinking, causing your INT to increase!`);
+										}
 									}
 									data.users[rpsParse.challIndex]["activity"] = Date.now();
 									data.users[rpsParse.oppIndex]["activity"] = Date.now();
