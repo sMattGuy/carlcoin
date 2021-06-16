@@ -35,7 +35,7 @@ const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc 
 
 //player attack flavortext
 const physicalAttack = [`You bash the enemy with an axe for `,`You slice the enemy with a sword for `,`You shoot the enemy with your 9mm for `, `You plow into the enemy with your Mercedes-Benz 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload for `,`You fire a barrage of arrows at the enemy for `,`You strike the enemy with 1000 punches for `,`You bash the enemies head with your own for `,`You kick the enemy in the head for `,`You grapple the enemy and toss them to the ground for `,`You input Raging Demon on the enemy for `,`You whip the enemy for `, `You punch the enemy in the head for `,`You use blackbelt level jujitsu on the enemy for `,`You flick the enemy for `, `You hit the enemy several times in the chest for `,`You target each pressure point on the enemy for `,`You beat the enemy to a pulp for `, `You throw a pie at the enemy for `,`You bite the enemy for `,`You really lean into the enemy for `,`You give the enemy a real beating for `,`You, Tony, Franky, Guiseppi and Carlos take the enemy out back for `,`You miss the enemy but they fall backwards and hit the ground for `,`You wallop the enemy for `,`You kick the enemies ass *LITERALLY for `,`You approach the enemy, instead of running away you go closer and attack for `,`You give a beat-down to the enemy for `,`You punch so fast it doesn't even register to the enemy they've just been hit for `,`You punch not once, not twice, but three times for `];
-const magicAttack = [];
+const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `];
 
 function testResponses(client,message){
 	const filter = m => {
@@ -52,6 +52,7 @@ function testResponses(client,message){
 	let dex = 0;
 	let intel = 0;
 	let chr = 0;
+	let moneyMultipler = 0;
 	let tempArmor = 0;
 	let attackBonus = 0;
 	let defenseBonus = 0;
@@ -117,21 +118,27 @@ function testResponses(client,message){
 			let option = choice.first().content;
 			if(option == 'baby'){
 				enemy = babyEnemies[Math.floor(Math.random() * babyEnemies.length)];
+				moneyMultipler = 0.1;
 			}
 			else if(option == 'easy'){
 				enemy = easyEnemies[Math.floor(Math.random() * easyEnemies.length)];
+				moneyMultipler = 0.5;
 			}
 			else if(option == 'normal'){
 				enemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)];
+				moneyMultipler = 1.0;
 			}
 			else if(option == 'hard'){
 				enemy = hardEnemies[Math.floor(Math.random() * hardEnemies.length)];
+				moneyMultipler = 1.5;
 			}
 			else if(option == 'expert'){
 				enemy = expertEnemies[Math.floor(Math.random() * expertEnemies.length)];
+				moneyMultipler = 2.0;
 			}
 			else if(option == 'nightmare'){
 				enemy = nightmareEnemies[Math.floor(Math.random() * nightmareEnemies.length)];
+				moneyMultipler = 2.5;
 			}
 			eArt = enemy.art;
 			eHp = enemy.hp;
@@ -193,7 +200,7 @@ function testResponses(client,message){
 						}
 						else{
 							eHp -= totalDamage;
-							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
+							gameMessage += `${magicAttack[Math.floor(Math.random() * magicAttack.length)]}${totalDamage}HP!\n`;
 						}
 					}
 					else{
@@ -236,7 +243,7 @@ function testResponses(client,message){
 				if(eHp <= 0){
 					database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					data = JSON.parse(database);
-					let amountEarned = 0;
+					let amountEarned = Math.floor((enemyLevel / playerLevel) * moneyMultipler);
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance += amountEarned;
@@ -295,7 +302,7 @@ function testResponses(client,message){
 				if(playerHp <= 0){
 					database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 					data = JSON.parse(database);
-					let amountEarned = 0;
+					let amountEarned = Math.floor((enemyLevel / playerLevel) * moneyMultipler);
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance -= amountEarned;
