@@ -118,7 +118,7 @@ function testResponses(client,message){
 			if(option == 'baby'){
 				enemy = babyEnemies[Math.floor(Math.random() * babyEnemies.length)];
 				moneyMultipler = 1;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
@@ -126,7 +126,7 @@ function testResponses(client,message){
 			else if(option == 'easy'){
 				enemy = easyEnemies[Math.floor(Math.random() * easyEnemies.length)];
 				moneyMultipler = 5;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
@@ -134,7 +134,7 @@ function testResponses(client,message){
 			else if(option == 'normal'){
 				enemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)];
 				moneyMultipler = 10;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
@@ -142,7 +142,7 @@ function testResponses(client,message){
 			else if(option == 'hard'){
 				enemy = hardEnemies[Math.floor(Math.random() * hardEnemies.length)];
 				moneyMultipler = 20;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
@@ -150,7 +150,7 @@ function testResponses(client,message){
 			else if(option == 'expert'){
 				enemy = expertEnemies[Math.floor(Math.random() * expertEnemies.length)];
 				moneyMultipler = 40;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
@@ -158,7 +158,7 @@ function testResponses(client,message){
 			else if(option == 'nightmare'){
 				enemy = nightmareEnemies[Math.floor(Math.random() * nightmareEnemies.length)];
 				moneyMultipler = 80;
-				if(balance - moneyMultipler <= 0){
+				if(playerBalance - moneyMultipler <= 0){
 					message.channel.send(`You don't have enough money to spare if you lose!`);
 					return;
 				}
