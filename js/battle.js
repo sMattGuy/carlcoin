@@ -2,29 +2,25 @@ const Discord = require('discord.js');
 const fs = require('fs');
 //enemies
 //baby
-const glassJoe = {art:`
-+==============================+\n|       PATHETIC ENEMY\n|		  GLASS JOE\n|         |\\     ____\n|         | \\.-./ .-'\n|          \\ _  _(\n|          | .)(./\n|          |   \\(\n|          |     \\\n|          |  \\vvv\n|          |  |__\n|         /       -.\n+==============================+\n`,hp:10,str:1,con:5,wis:4,dex:2,intel:3,chr:0};
-
+const glassJoe = {art:`+==============================+\n|       PATHETIC ENEMY\n|		  GLASS JOE\n|         |\\     ____\n|         | \\.-./ .-'\n|          \\ _  _(\n|          | .)(./\n|          |   \\(\n|          |     \\\n|          |  \\vvv\n|          |  |__\n|         /       -.\n+==============================+\n`,hp:10,str:1,con:5,wis:4,dex:2,intel:3,chr:0,phys:[`Glass Joe taps you lightly for `,`Glass Joe pathetically swings at you for `,`Glass Joe pokes at you for `,`Glass Joe lightly slaps you for `,`Glass Joe does a weak kick for `],magic:[`Glass Joe summons a weak spark for `,`Glass Joe summons a tiny flame for a second for `,`Glass Joe summons a weak ball for `]};
+const easySkeleton = {art:`+==============================+\n|       SIMPLE SKELETON\n||			  .-.\n|			 (o.o)\n|			  |=|\n\n|		   //.=|=.\\\\\n|		  // .=|=. \\\\\n|		  \\\\ .=|=. //\n|		   \\\\(_=_)//\n|			(:| |:)\n|			 || ||\n|			 () ()\n|			 || ||\n|			 || ||\n|			==' '==\n+==============================+\n`,hp:15,str:5,con:2,wis:1,dex:4,intel:1,chr:3,phys:[`The Skeleton hits you with a bone for `,`The Skeleton shoots you with a bone arrow for `,`The Skeleton throws a bone at you for `,`The Skeleton hits you with a shield for `,`The Skeleton slashes witha sword for `],magic:[`The Skeleton summons a bone for `,`The Skeleton summons another skeleton to briefly attack for `,`The Skeleton casts bludgeon with a bone for `]};
 //easy
-const lesserDevil = {art:`+==============================+\n|       ENEMY OF THE STATE\n|		 THE LESSER DEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A  / \\-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:50,str:10,con:15,wis:5,dex:4,intel:10,chr:15};
+const lesserDevil = {art:`+==============================+\n|       ENEMY OF THE STATE\n|		 THE LESSER DEVIL\n|             (_)L|J\n|      )      (") |     (\n|      ,(. A  / \\-|   (,)\n|     )' (' \\/\\ / |  ) (.\n|    (' ),).  _W_ | (,)' )\n|   ^^^^^^^^^^^^^^^^^^^^^^^\n+==============================+\n`,hp:50,str:10,con:15,wis:5,dex:4,intel:10,chr:15,phys:[`The Lesser Devil pokes you for `,`The Lesser Devil smacks you for `,`The Lesser Devil slices you for `,`The Lesser Devil rams you with his horns for `,`The Lesser Devil stabs you for `],magic:[`The Lesser Devil lights you on fire for `,`The Lesser Devil summons imps to stab you for `,`The Lesser Devil shoots blood at you for `]};
 
 //normal
-const floatingHead = {art:
-`+==============================+\n|       UGLY FLOATING HEAD\n|		 THE SMILING DEVIL\n|         (\\-"^^^"-/)\n|         //^\\   /^\\\\\n|        ;/ ~_\\ /_~ \\;\n|        |  / \\Y/ \\  |\n|       (,  \\0/ \\0/  ,)\n|        |   /   \\   |\n|        | (_\\._./_) |\n|         \\ \\v-.-v/ /\n|          \\ '===' /\n|           \\_____/\n+==============================+\n`,hp:125,str:20,con:30,wis:26,dex:30,intel:20,chr:25};
+const floatingHead = {art:`+==============================+\n|       UGLY FLOATING HEAD\n|		 THE SMILING DEVIL\n|         (\\-"^^^"-/)\n|         //^\\   /^\\\\\n|        ;/ ~_\\ /_~ \\;\n|        |  / \\Y/ \\  |\n|       (,  \\0/ \\0/  ,)\n|        |   /   \\   |\n|        | (_\\._./_) |\n|         \\ \\v-.-v/ /\n|          \\ '===' /\n|           \\_____/\n+==============================+\n`,hp:125,str:20,con:30,wis:26,dex:30,intel:20,chr:25,phys:[`The Smiling Devil bites you for `,`The Smiling Devil rams you for `,`The Smiling Devil crashes into you for `,`The Smiling Devil stabs you for `,`The Smiling Devil licks you for `],magic:[`The Smiling Devil mocks you for `,`The Smiling Devil fires a beam at you for `,`The Smiling Devil terrifies you for `]};
 
 //hard
-const jokester = {art:`+==============================+\n|          KNIGHT OF HELL\n|           ARMORED DEMON\n|              .    .\n|           _..;|;__;|;\n|         ,'   ';  \\'; -.\n|    .--._)|    ;==,|,=='\n|      \\ @; \\_  < G," G).\n|        \\/-;,(  )  .>. )\n|           < ,-;'-.__.;'\n|             \\_  -,__,'\n|                   ;;;;\n+==============================+\n`,hp:200,str:50,con:75,wis:50,dex:55,intel:80,chr:75};
+const jokester = {art:`+==============================+\n|          KNIGHT OF HELL\n|           ARMORED DEMON\n|              .    .\n|           _..;|;__;|;\n|         ,'   ';  \\'; -.\n|    .--._)|    ;==,|,=='\n|      \\ @; \\_  < G," G).\n|        \\/-;,(  )  .>. )\n|           < ,-;'-.__.;'\n|             \\_  -,__,'\n|                   ;;;;\n+==============================+\n`,hp:200,str:50,con:75,wis:50,dex:55,intel:80,chr:75,phys:[`The Armored Demon stabs you for `,`The Armored Demon rams you for `,`The Armored Demon slices you for `,`The Armored Demon bashes you for `,`The Armored Demon beats you for `],magic:[`The Armored Demon shoots brimstone at you for `,`The Armored Demon summons pillars of fire on you for `,`The Armored Demon shoots massive fireballs at you for `]};
 
 //expert
-const king = {art:
-`+==============================+\n|          KING OF HELL\n|		     THE LYCH\n|    ,    ,    /\\   /\\\n|   /( /\\ )\\  _\\ \\_/ /_\n|   |\\_||_/| < \\_   _/ >\n|   \\______/  \\|0   0|/\n|     _\\/_   _(_  ^  _)_\n|    ( () ) / \\|V"""V|/ \\\n|      {}   \\  \\_____/  /\n|      ()   /\\   )=(   /\\\n|      {}  /  \\_/\\=/\\_/  \\\n+==============================+\n`,hp:500,str:100,con:100,wis:75,dex:70,intel:120,chr:130};
+const king = {art:`+==============================+\n|          KING OF HELL\n|		     THE LYCH\n|    ,    ,    /\\   /\\\n|   /( /\\ )\\  _\\ \\_/ /_\n|   |\\_||_/| < \\_   _/ >\n|   \\______/  \\|0   0|/\n|     _\\/_   _(_  ^  _)_\n|    ( () ) / \\|V"""V|/ \\\n|      {}   \\  \\_____/  /\n|      ()   /\\   )=(   /\\\n|      {}  /  \\_/\\=/\\_/  \\\n+==============================+\n`,hp:500,str:100,con:100,wis:75,dex:70,intel:120,chr:130,phys:[`The Lych slices you for `,`The Lych rams you for `,`The Lych crashes into you for `,`The Lych stabs you for `,`The Lych pierces you for `],magic:[`The Lych commands you to fall for `,`The Lych fires a green fire at you for `,`The Lych terrifies you for `]};
 
 //nightmare
-const tux = {art:
-`+==============================+\n|      GOD OF "BUT ITS FREE"\n|	      TUX THE PENGUIN\n|              _nnnn_\n|             dGGGGMMb\n|            @p~qp~~qMb\n|            M|@||@) M|\n|            @,----.JM|\n|           JS^\\__/  qKL\n|          dZP        qKRb\n|         dZP          qKKb\n|        fZP            SMMb\n|        HZM            MMMM\n|        FqM            MMMM\n|      __| ".        |\\dS"qML\n|      |     .       |  ' \\Zq\n|     _)      \\.___.,|     .'\n|     \\____   )MMMMMP|   .'\n|           -'        --'\n+==============================+\n`,hp:1000,str:500,con:250,wis:500,dex:150,intel:800,chr:580};
+const tux = {art:`+==============================+\n|      GOD OF "BUT ITS FREE"\n|	      TUX THE PENGUIN\n|              _nnnn_\n|             dGGGGMMb\n|            @p~qp~~qMb\n|            M|@||@) M|\n|            @,----.JM|\n|           JS^\\__/  qKL\n|          dZP        qKRb\n|         dZP          qKKb\n|        fZP            SMMb\n|        HZM            MMMM\n|        FqM            MMMM\n|      __| ".        |\\dS"qML\n|      |     .       |  ' \\Zq\n|     _)      \\.___.,|     .'\n|     \\____   )MMMMMP|   .'\n|           -'        --'\n+==============================+\n`,hp:1000,str:500,con:250,wis:500,dex:150,intel:800,chr:580,phys:[`Tux installs Linux for `,`Tux updates his system for 3 hours for `,`Tux downloads Linux Mint on your grandfathers computer for `,`Tux shoots you with a gun for `,`Tux tells you all about Linux for `],magic:[`Tux informs you that everything on Linux is FREE for `,`Tux tells you GIMP is a perfect alternative to Photoshop for `,`Tux shoots you with a mind beam for `]};
 
 //arrays
-const babyEnemies = [glassJoe];
+const babyEnemies = [glassJoe,easySkeleton];
 const easyEnemies = [lesserDevil];
 const normalEnemies = [floatingHead];
 const hardEnemies = [jokester];
@@ -35,7 +31,7 @@ const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc 
 
 //player attack flavortext
 const physicalAttack = [`You bash the enemy with an axe for `,`You slice the enemy with a sword for `,`You shoot the enemy with your 9mm for `, `You plow into the enemy with your Mercedes-Benz 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload for `,`You fire a barrage of arrows at the enemy for `,`You strike the enemy with 1000 punches for `,`You bash the enemies head with your own for `,`You kick the enemy in the head for `,`You grapple the enemy and toss them to the ground for `,`You input Raging Demon on the enemy for `,`You whip the enemy for `, `You punch the enemy in the head for `,`You use blackbelt level jujitsu on the enemy for `,`You flick the enemy for `, `You hit the enemy several times in the chest for `,`You target each pressure point on the enemy for `,`You beat the enemy to a pulp for `, `You throw a pie at the enemy for `,`You bite the enemy for `,`You really lean into the enemy for `,`You give the enemy a real beating for `,`You, Tony, Franky, Guiseppi and Carlos take the enemy out back for `,`You miss the enemy but they fall backwards and hit the ground for `,`You wallop the enemy for `,`You kick the enemies ass *LITERALLY for `,`You approach the enemy, instead of running away you go closer and attack for `,`You give a beat-down to the enemy for `,`You punch so fast it doesn't even register to the enemy they've just been hit for `,`You punch not once, not twice, but three times for `];
-const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `];
+const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `,`You cast a freeze ray from your mind at the enemy for `,`You simply think of damaging the enemy and it manifests into reality for `,`You cast a fireball directly at the enemy for `,`You zap the enemy with electricity for `,`You use the forbidden magic of sever brain hemorrhaging on the enemy for `,`You use the psychic power of empathy to understand the enemy, hurting their feelings for `,`You throw rocks at the enemy with telekinesis for `,`You cast heat metal on the enemies armor for `,`You use demonic summoning to conjure a puppy who bites the enemy for `,`You fire a toy laser at the enemy's eyes for `,`You use your danmaku to barrage the enemy for `,`You use PSI Carl to damage the enemy for `];
 
 function testResponses(client,message){
 	const filter = m => {
@@ -171,6 +167,8 @@ function testResponses(client,message){
 			eDex = enemy.dex;
 			eIntel =  enemy.intel;
 			eChr = enemy.chr;
+			ePhys = enemy.phys;
+			eMagic = enemy.magic;
 			enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 			//actual box that will perform the loop
 			let initMessage = `Info will be here!\nYour LVL: ${playerLevel} | Enemy LVL: ${enemyLevel}\n`;
@@ -296,7 +294,7 @@ function testResponses(client,message){
 						}
 						else{
 							playerHp -= totalDamage;
-							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
+							gameMessage += `${ePhys[Math.floor(Math.random()*ePhys.length)]}${totalDamage}HP!\n`;
 						}
 					}
 					else{
@@ -317,7 +315,7 @@ function testResponses(client,message){
 						}
 						else{
 							playerHp -= totalDamage;
-							gameMessage += `The attack lands for ${totalDamage}HP!\n`;
+							gameMessage += `${eMagic[Math.floor(Math.random()*eMagic.length)]}${totalDamage}HP!\n`;
 						}
 					}
 					else{
