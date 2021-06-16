@@ -375,20 +375,21 @@ function sellStock(client,message){
 					data.econ += (amount * stock.stock[stockIndex].price);
 					data.users[i].stock[j].amount -= amount;
 					data.users[i].stock[j].today -= amount;
-					if(data.users[i].stock[j].amount == 0){
-						data.users[i].stock.splice(j,1);
-					}
 					let netGain = (amount * stock.stock[stockIndex].price) - (data.users[i].stock[j].avgPrice * amount);
 					if(data.users[i].stock[j].today < 0){
 						data.users[i].stock[j].today = 0;
 					}
 					stock.stock[stockIndex].boughtRecently -= amount;
 					stock.stock[stockIndex].existing += amount;
+					let amountLeft = data.users[i].stock[j].amount;
+					if(data.users[i].stock[j].amount == 0){
+						data.users[i].stock.splice(j,1);
+					}
 					//update files
 					let newStockFile = JSON.stringify(stock);
 					fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
 					let newData = JSON.stringify(data);
-					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);message.channel.send(`You have sold ${amount} shares of ${stockName}! You now own ${data.users[i].stock[j].amount}. The net from this transaction was approx. ${netGain}CC!`);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);message.channel.send(`You have sold ${amount} shares of ${stockName}! You now own ${amountLeft}. The net from this transaction was approx. ${netGain}CC!`);
 					return;
 				}
 			}
