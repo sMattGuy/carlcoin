@@ -270,6 +270,8 @@ function testResponses(client,message){
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance += amountEarned;
+							data.econ += amountEarned;
+							break;
 						}
 					}
 					let newData = JSON.stringify(data);
@@ -329,6 +331,8 @@ function testResponses(client,message){
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance -= amountEarned;
+							data.econ -= amountEarned;
+							break;
 						}
 					}
 					let newData = JSON.stringify(data);
