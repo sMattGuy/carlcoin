@@ -37,7 +37,7 @@ const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc 
 
 //player attack flavortext
 const physicalAttack = [`You bash the enemy with an axe for `,`You slice the enemy with a sword for `,`You shoot the enemy with your 9mm for `, `You plow into the enemy with your Mercedes-Benz 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload for `,`You fire a barrage of arrows at the enemy for `,`You strike the enemy with 1000 punches for `,`You bash the enemies head with your own for `,`You kick the enemy in the head for `,`You grapple the enemy and toss them to the ground for `,`You input Raging Demon on the enemy for `,`You whip the enemy for `, `You punch the enemy in the head for `,`You use blackbelt level jujitsu on the enemy for `,`You flick the enemy for `, `You hit the enemy several times in the chest for `,`You target each pressure point on the enemy for `,`You beat the enemy to a pulp for `, `You throw a pie at the enemy for `,`You bite the enemy for `,`You really lean into the enemy for `,`You give the enemy a real beating for `,`You, Tony, Franky, Guiseppi and Carlos take the enemy out back for `,`You miss the enemy but they fall backwards and hit the ground for `,`You wallop the enemy for `,`You kick the enemies ass *LITERALLY for `,`You approach the enemy, instead of running away you go closer and attack for `,`You give a beat-down to the enemy for `,`You punch so fast it doesn't even register to the enemy they've just been hit for `,`You punch not once, not twice, but three times for `];
-const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `,`You cast a freeze ray from your mind at the enemy for `,`You simply think of damaging the enemy and it manifests into reality for `,`You cast a fireball directly at the enemy for `,`You zap the enemy with electricity for `,`You use the forbidden magic of sever brain hemorrhaging on the enemy for `,`You use the psychic power of empathy to understand the enemy, hurting their feelings for `,`You throw rocks at the enemy with telekinesis for `,`You cast heat metal on the enemies armor for `,`You use demonic summoning to conjure a puppy who bites the enemy for `,`You fire a toy laser at the enemy's eyes for `,`You use your danmaku to barrage the enemy for `,`You use PSI Carl to damage the enemy for `];
+const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `,`You cast a freeze ray from your mind at the enemy for `,`You simply think of damaging the enemy and it manifests into reality for `,`You cast a fireball directly at the enemy for `,`You zap the enemy with electricity for `,`You use the forbidden magic of severe brain hemorrhaging on the enemy for `,`You use the psychic power of empathy to understand the enemy, hurting their feelings for `,`You throw rocks at the enemy with telekinesis for `,`You cast heat metal on the enemies armor for `,`You use demonic summoning to conjure a puppy who bites the enemy for `,`You fire a toy laser at the enemy's eyes for `,`You use your danmaku to barrage the enemy for `,`You use PSI Carl to damage the enemy for `];
 
 function testResponses(client,message){
 	const filter = m => {
@@ -104,19 +104,11 @@ function testResponses(client,message){
 	const diffFilter = m => {
 		return ((m.content === '!cc battle' || m.content === 'baby' || m.content === 'easy' || m.content === 'normal' || m.content === 'hard' || m.content === 'expert' || m.content === 'nightmare')&&(message.author.id == m.author.id));
 	}
-	let enemy = {};
-	let eArt = `(O_O)`;
-	let eHp = 0;
-	let eStr = 0;
-	let eCon = 0;
-	let eWis = 0;
-	let eDex = 0;
-	let eIntel =  0;
-	let eChr = 0;
-	let enemyLevel = 0;
+
 	message.channel.send(`what difficulty level do you want (You are level ${playerLevel}): baby, easy, normal, hard, expert, nightmare`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:30000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
+			let enemy = {};
 			if(option == '!cc battle'){
 				message.channel.send(`You abandon this battle!`);
 				return;
@@ -169,31 +161,31 @@ function testResponses(client,message){
 					return;
 				}
 			}
-			eArt = enemy.art;
-			eHp = enemy.hp;
-			eStr = enemy.str;
-			eCon = enemy.con;
-			eWis = enemy.wis;
-			eDex = enemy.dex;
-			eIntel =  enemy.intel;
-			eChr = enemy.chr;
-			ePhys = enemy.phys;
-			eMagic = enemy.magic;
-			enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 			//actual box that will perform the loop
 			let initMessage = `Info will be here!\nYour LVL: ${playerLevel} | Enemy LVL: ${enemyLevel}\n`;
-			frame(initMessage);
+			frame(initMessage,enemy);
 		}).catch(e => {
 			message.channel.send(`No difficulty choice made in time`);
 			console.log(e);
 		})
 	});
 	
-	async function frame(infoMessage){
+	async function frame(infoMessage,enemy){
 		message.channel.send(`${infoMessage}${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
+				let eArt = enemy.art;
+				let eHp = enemy.hp;
+				let eStr = enemy.str;
+				let eCon = enemy.con;
+				let eWis = enemy.wis;
+				let eDex = enemy.dex;
+				let eIntel =  enemy.intel;
+				let eChr = enemy.chr;
+				let ePhys = enemy.phys;
+				let eMagic = enemy.magic;
+				let enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 				//parsing of choice begins here
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
@@ -355,7 +347,7 @@ function testResponses(client,message){
 				}
 				tempArmor = 0;
 				msg.delete();
-				frame(gameMessage);
+				frame(gameMessage,enemy);
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
