@@ -162,7 +162,7 @@ function testResponses(client,message){
 				}
 			}
 			//actual box that will perform the loop
-			let initMessage = `Info will be here!\nYour LVL: ${playerLevel} | Enemy LVL: ${enemyLevel}\n`;
+			let initMessage = `Info will be here!\n`;
 			frame(initMessage,enemy);
 		}).catch(e => {
 			message.channel.send(`No difficulty choice made in time`);
