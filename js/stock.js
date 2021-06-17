@@ -420,6 +420,10 @@ function showPort(client,message){
 				message.channel.send('You dont own any stocks!');
 				return;
 			}
+			if(data.users[i].stock.length == 0){
+				message.channel.send('You dont own any stocks!');
+				return;
+			}
 			let stockName = ``;
 			let stockAmt = ``;
 			let stockAvg = ``;
