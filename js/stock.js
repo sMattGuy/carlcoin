@@ -126,18 +126,19 @@ function updateStocks(client,message){
 				stock.stock[i].existing += newShares;
 			}
 		}
+		let willGoUp = false;
 		//change stock value
 		if(stock.stock[i].boughtRecently < 0){
 			console.log(stock.stock[i].name + ' is going neg');
-			changeChance = 0;
+			willGoUp = false;
 		}
 		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
 			console.log(stock.stock[i].name + ' is going positive');
-			changeChance = 1;
+			willGoUp = true;
 		}
 		if(Math.random() <= stockMove || marketWideRed){
 			//go down
-			if(changeChance <= 0.33 || marketWideRed){
+			if((changeChance <= 0.33 && !willGoUp) || marketWideRed){
 				console.log(stock.stock[i].name + ' is moving down');
 				let newPrice = stock.stock[i].price - Math.ceil(stock.stock[i].price * changeDiff);
 				if(newPrice <= 0){
@@ -146,7 +147,7 @@ function updateStocks(client,message){
 				stock.stock[i].price = newPrice;
 			}
 			//go up
-			else if(changeChance >= 0.66){
+			else if(changeChance >= 0.66 && willGoUp){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
 				stock.stock[i].price = newPrice;
