@@ -163,16 +163,16 @@ function testResponses(client,message){
 			}
 			//actual box that will perform the loop
 			let initMessage = `Info will be here!\n`;
-			frame(initMessage,enemy);
+			let eHp = enemy.hp;
+			frame(initMessage,enemy,eHp);
 		}).catch(e => {
 			message.channel.send(`No difficulty choice made in time`);
 			console.log(e);
 		})
 	});
 	
-	async function frame(infoMessage,enemy){
+	async function frame(infoMessage,enemy,eHp){
 		let eArt = enemy.art;
-		let eHp = enemy.hp;
 		let eStr = enemy.str;
 		let eCon = enemy.con;
 		let eWis = enemy.wis;
@@ -347,7 +347,7 @@ function testResponses(client,message){
 				}
 				tempArmor = 0;
 				msg.delete();
-				frame(gameMessage,enemy);
+				frame(gameMessage,enemy,eHp);
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
