@@ -171,21 +171,21 @@ function testResponses(client,message){
 	});
 	
 	async function frame(infoMessage,enemy){
+		let eArt = enemy.art;
+		let eHp = enemy.hp;
+		let eStr = enemy.str;
+		let eCon = enemy.con;
+		let eWis = enemy.wis;
+		let eDex = enemy.dex;
+		let eIntel =  enemy.intel;
+		let eChr = enemy.chr;
+		let ePhys = enemy.phys;
+		let eMagic = enemy.magic;
+		let enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 		message.channel.send(`${infoMessage}${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
-				let eArt = enemy.art;
-				let eHp = enemy.hp;
-				let eStr = enemy.str;
-				let eCon = enemy.con;
-				let eWis = enemy.wis;
-				let eDex = enemy.dex;
-				let eIntel =  enemy.intel;
-				let eChr = enemy.chr;
-				let ePhys = enemy.phys;
-				let eMagic = enemy.magic;
-				let enemyLevel = eStr + eCon + eWis + eDex + eIntel + eChr;
 				//parsing of choice begins here
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
