@@ -23,7 +23,7 @@ function realtyHour(client,message){
 	let rise = Math.random() * 0.05;
 	data.houseMarket += rise;
 	if(data.houseMarket > 2.0){
-		data.houseMarket = 2;
+		data.houseMarket = 2.0;
 	}
 	console.log(rise + ' has been added to the house market which is now ' + data.houseMarket);
 	
