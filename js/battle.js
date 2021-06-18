@@ -34,7 +34,8 @@ const expertEnemies = [king];
 const nightmareEnemies = [tux];
 //action bar constant
 const actionBar = `ACTIONS:\n!cc attack | !cc block\n!cc look   | !cc item\n!cc run    | !cc magic`;
-
+//player battle art
+const playerArt = `+==============================+\n|   MACHINE LEARNING BUT REAL\n|	      THE PLAYER\n|			///-\\\\\\\n|			|^   ^|\n|			|O   O|\n|			|  ~  |\n|			 \\ O /\n|			  | |\n+==============================+\n`;
 //player attack flavortext
 const physicalAttack = [`You bash the enemy with an axe for `,`You slice the enemy with a sword for `,`You shoot the enemy with your 9mm for `, `You plow into the enemy with your Mercedes-Benz 2021 Sprinter Cargo Van with 170" Wheelbase High Roof, 4 Cylinder Diesel engine with 2500 Horse Power, capable of holding over 4000 Lbs payload for `,`You fire a barrage of arrows at the enemy for `,`You strike the enemy with 1000 punches for `,`You bash the enemies head with your own for `,`You kick the enemy in the head for `,`You grapple the enemy and toss them to the ground for `,`You input Raging Demon on the enemy for `,`You whip the enemy for `, `You punch the enemy in the head for `,`You use blackbelt level jujitsu on the enemy for `,`You flick the enemy for `, `You hit the enemy several times in the chest for `,`You target each pressure point on the enemy for `,`You beat the enemy to a pulp for `, `You throw a pie at the enemy for `,`You bite the enemy for `,`You really lean into the enemy for `,`You give the enemy a real beating for `,`You, Tony, Franky, Guiseppi and Carlos take the enemy out back for `,`You miss the enemy but they fall backwards and hit the ground for `,`You wallop the enemy for `,`You kick the enemies ass *LITERALLY for `,`You approach the enemy, instead of running away you go closer and attack for `,`You give a beat-down to the enemy for `,`You punch so fast it doesn't even register to the enemy they've just been hit for `,`You punch not once, not twice, but three times for `];
 const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on fire with your mind for `,`You cast raise temperature on the opponent for `,`You cast fill water on the enemies lungs for `,`You use your 'wand' to 'cast' gunshot wound for `,`You focus a beam of light into the enemy for `,`You teleport a cinderblock into the enemy for `,`You create a fog and hit the enemy with a bat for `,`You fire an explosion with your hands at the enemy for `,`You cast a freeze ray from your mind at the enemy for `,`You simply think of damaging the enemy and it manifests into reality for `,`You cast a fireball directly at the enemy for `,`You zap the enemy with electricity for `,`You use the forbidden magic of severe brain hemorrhaging on the enemy for `,`You use the psychic power of empathy to understand the enemy, hurting their feelings for `,`You throw rocks at the enemy with telekinesis for `,`You cast heat metal on the enemies armor for `,`You use demonic summoning to conjure a puppy who bites the enemy for `,`You fire a toy laser at the enemy's eyes for `,`You use your danmaku to barrage the enemy for `,`You use PSI Carl to damage the enemy for `];
@@ -359,8 +360,362 @@ function testResponses(client,message){
 	}
 }
 
+function battlePlayer(client,message){
+	let chop = message.content.split(" ");
+	if(chop.length != 4){
+		message.channel.send('Usage: !cc battlePlayer <user> <amount>');
+		return
+	}
+	let workingID = message.author.id;
+	const filter = m => {
+		return ((m.content === '!cc battle' ||m.content === '!cc attack' || m.content === '!cc look' || m.content === '!cc block' || m.content === '!cc run' || m.content === '!cc item' || m.content === '!cc magic')&&(workingID == m.author.id));
+	};
+	let opponent = "";
+	try{
+		opponent = getUserFromMention(client,chop[chop.length-3]).id;
+	}
+	catch(err){
+		message.channel.send('Invalid user selected!');
+		return;
+	}
+	//get database information
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	let id = message.author.id;
+	//variables to store about player
+	let name = '';
+	let str = 0;
+	let con = 0;
+	let wis = 0;
+	let dex = 0;
+	let intel = 0;
+	let chr = 0;
+	let tempArmor = 0;
+	let attackBonus = 0;
+	let defenseBonus = 0;
+	let playerHp = 100;
+	let found = false;
+	for(let i=0;i<data.users.length;i++){
+		if(data.users[i].id == id){
+			found = true;
+			name = data.users[i].name;
+			playerBalance = data.users[i].balance;
+			str = data.users[i]["STR"];
+			if(isNaN(str)){
+				str = 0;
+			}
+			dex = data.users[i]["DEX"];
+			if(isNaN(dex)){
+				dex = 0;
+			}
+			con = data.users[i]["CON"];
+			if(isNaN(con)){
+				con = 0;
+			}
+			intel = data.users[i]["INT"];
+			if(isNaN(intel)){
+				intel = 0;
+			}
+			wis = data.users[i]["WIS"];
+			if(isNaN(wis)){
+				wis = 0;
+			}
+			chr = data.users[i]["CHR"];
+			if(isNaN(chr)){
+				chr = 0;
+			}
+			break;
+		}
+	}
+	if(!found){
+		message.channel.send(`You are not registered for Carl Coin!`);
+		return;
+	}
+	//adjust health & get level
+	playerHp += con;
+	let playerLevel = str + con + wis + dex + intel + chr;
+	//get opponents info
+	//variables to store about player
+	let oppname = '';
+	let oppstr = 0;
+	let oppcon = 0;
+	let oppwis = 0;
+	let oppdex = 0;
+	let oppintel = 0;
+	let oppchr = 0;
+	let opptempArmor = 0;
+	let oppattackBonus = 0;
+	let oppdefenseBonus = 0;
+	let oppHp = 100;
+	found = false;
+	for(let i=0;i<data.users.length;i++){
+		if(data.users[i].id == opponent){
+			found = true;
+			oppname = data.users[i].name;
+			oppstr = data.users[i]["STR"];
+			if(isNaN(oppstr)){
+				oppstr = 0;
+			}
+			oppdex = data.users[i]["DEX"];
+			if(isNaN(oppdex)){
+				oppdex = 0;
+			}
+			oppcon = data.users[i]["CON"];
+			if(isNaN(oppcon)){
+				oppcon = 0;
+			}
+			oppintel = data.users[i]["INT"];
+			if(isNaN(oppintel)){
+				oppintel = 0;
+			}
+			oppwis = data.users[i]["WIS"];
+			if(isNaN(oppwis)){
+				oppwis = 0;
+			}
+			oppchr = data.users[i]["CHR"];
+			if(isNaN(oppchr)){
+				oppchr = 0;
+			}
+			break;
+		}
+	}
+	if(!found){
+		message.channel.send(`Your opponent is not registered for Carl Coin!`);
+		return;
+	}
+	oppHp += oppcon;
+	let oppLevel = oppstr + oppcon + oppwis + oppdex + oppintel + oppchr;
+	//get the enemies approval
+	const diffFilter = m => {
+		return ((m.content === '!cc battle' || m.content === '!cc battleAccept' || m.content === '!cc battleDeny')&&(opponent == m.author.id));
+	}
+
+	message.channel.send(`${oppname}! Type !cc battleAccept or !cc battleDeny`).then(msg => {
+		message.channel.awaitMessages(diffFilter,{max:1,time:30000,errors:['time']}).then(choice => {
+			let option = choice.first().content;
+			let enemy = {};
+			if(option == '!cc battle'){
+				message.channel.send(`You abandon this battle!`);
+				return;
+			}
+			if(option == '!cc battleAccept'){
+				if(oppdex > dex){
+					frame(opponent);
+				}
+				else{
+					frame(workingID);
+				}
+				return;
+			}
+			else if(option == '!cc battleDeny'){
+				message.channel.send(`You denied the battle!`);
+				return;
+			}
+			//actual box that will perform the loop
+			else{
+				message.channel.send(`Something went wrong, the battle is cancelled`);
+				return;
+			}
+		}).catch(e => {
+			message.channel.send(`No difficulty choice made in time`);
+			console.log(e);
+		})
+	});
+	
+	async function frame(id){
+		message.channel.send(`${infoMessage}${eArt}HP:${playerHp} | ENEMY HP:${eHp}\n${actionBar}`,{code:true}).then( msg =>{
+			message.channel.awaitMessages(filter,{
+				max:1,time:60000,errors:['time']
+			}).then(choice => {
+				//parsing of choice begins here
+				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
+				let action = choice.first().content;
+				let gameMessage = ``;
+				if(action === '!cc battle'){
+					message.channel.send(`You abandon the battle!`);
+					return;
+				}
+				if(action === '!cc attack'){
+					let damage = Math.floor(Math.random() * str) + attackBonus;
+					let block = Math.floor(Math.random() * eDex);
+					if(damage > block){
+						//player hits
+						let armor = Math.floor(Math.random() * eCon);
+						let totalDamage = damage - armor;
+						if(totalDamage <= 0){
+							//attack deflected
+							gameMessage += `The attack was deflected by the enemies defenses!\n`;
+						}
+						else{
+							eHp -= totalDamage;
+							gameMessage += `${physicalAttack[Math.floor(Math.random() * physicalAttack.length)]}${totalDamage}HP!\n`;
+						}
+					}
+					else{
+						gameMessage += `The attack was dodged by the enemies insane speed!\n`;
+					}
+				}
+				else if(action === '!cc magic'){
+					let damage = Math.floor(Math.random() * chr) + attackBonus;
+					let block = Math.floor(Math.random() * eWis);
+					if(damage > block){
+						//player hits
+						let armor = Math.floor(Math.random() * eChr);
+						let totalDamage = damage - armor;
+						if(totalDamage <= 0){
+							//attack deflected
+							gameMessage += `The attack was deflected by the enemies mental fortitude!\n`;
+						}
+						else{
+							eHp -= totalDamage;
+							gameMessage += `${magicAttack[Math.floor(Math.random() * magicAttack.length)]}${totalDamage}HP!\n`;
+						}
+					}
+					else{
+						gameMessage += `The attack failed to connect with the enemy!\n`;
+					}
+				}
+				else if(action === '!cc block'){
+					tempArmor += Math.floor(Math.random() * (con + wis)) + defenseBonus;
+					gameMessage += `You gain ${tempArmor} defense for this turn!\n`;
+				}
+				else if(action === '!cc look'){
+					if(Math.random() <= (.1 + (intel / 100))){
+						let bonus = Math.floor(Math.random() * intel);
+						if(Math.random() <=.5){
+							//attack bonus
+							attackBonus += bonus;
+							gameMessage += `You spot a weakness in your enemy, you get a permanent +${bonus} to attack!\n`;
+						}
+						else{
+							//defense bonus
+							defenseBonus += bonus;
+							gameMessage += `You spot a pattern in your enemy's moves, you get a permanent +${bonus} to defense!\n`;
+						}
+					}
+					else{
+						gameMessage += `You couldn't find anything exploitable!\n`;
+					}
+				}
+				else if(action === '!cc item'){
+					let hpHeal = Math.floor(Math.random()*intel)+1;
+					playerHp += hpHeal;
+					gameMessage += `You use a bandage and heal ${hpHeal}HP!\n`;
+				}
+				else if(action === '!cc run'){
+					gameMessage += `You run away! COWARD!!!!!\n`;
+					message.channel.send(gameMessage);
+					return;
+				}
+				//check hp of enemy
+				if(eHp <= 0){
+					database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					data = JSON.parse(database);
+					let amountEarned = Math.floor((enemyLevel / playerLevel) * moneyMultipler);
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].id == id){
+							data.users[i].balance += amountEarned;
+							data.econ += amountEarned;
+							break;
+						}
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					gameMessage += `You have defeated the enemy! You win! As a reward you got ${amountEarned}CC! Your level is ${playerLevel}, the enemies level was ${enemyLevel}\n`;
+					message.channel.send(gameMessage);
+					return;
+				}
+				//enemy attack
+				gameMessage += `The enemy attacks!\n`;
+				if(Math.random() <= .5){
+					//physical attack
+					let damage = Math.floor(Math.random() * eStr);
+					let block = Math.floor(Math.random() * dex) + defenseBonus + tempArmor;
+					if(damage > block){
+						//player hits
+						let armor = Math.floor(Math.random() * con);
+						let totalDamage = damage - armor;
+						if(totalDamage <= 0){
+							//attack deflected
+							gameMessage += `The attack was deflected by your armor!\n`;
+						}
+						else{
+							playerHp -= totalDamage;
+							gameMessage += `${ePhys[Math.floor(Math.random()*ePhys.length)]}${totalDamage}HP!\n`;
+						}
+					}
+					else{
+						gameMessage += `The attack was dodged by your insane speed!\n`;
+					}
+				}
+				else{
+					//magic
+					let damage = Math.floor(Math.random() * eChr);
+					let block = Math.floor(Math.random() * wis) + defenseBonus + tempArmor;
+					if(damage > block){
+						//player hits
+						let armor = Math.floor(Math.random() * chr);
+						let totalDamage = damage - armor;
+						if(totalDamage <= 0){
+							//attack deflected
+							gameMessage += `The attack was deflected by your mental fortitude!\n`;
+						}
+						else{
+							playerHp -= totalDamage;
+							gameMessage += `${eMagic[Math.floor(Math.random()*eMagic.length)]}${totalDamage}HP!\n`;
+						}
+					}
+					else{
+						gameMessage += `The attack failed to target you!\n`;
+					}
+				}
+				if(playerHp <= 0){
+					database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+					data = JSON.parse(database);
+					let amountEarned = Math.floor((playerLevel / enemyLevel) * moneyMultipler);
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].id == id){
+							data.users[i].balance -= amountEarned;
+							data.econ -= amountEarned;
+							break;
+						}
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+					gameMessage += `You have died! So sad! You lost ${amountEarned}CC! Your level is ${playerLevel}, the enemies level was ${enemyLevel}\n`;
+					message.channel.send(gameMessage);
+					return;
+				}
+				tempArmor = 0;
+				msg.delete();
+				frame(gameMessage,enemy,eHp);
+			}).catch(e => {
+			message.channel.send(`Didnt get valid response in time`);
+			console.log(e);
+		});
+		}).catch(e => {
+			message.channel.send(`Didnt get valid response in time`);
+			console.log(e);
+		});
+	}
+}
+
 function battleHelp(client,message){
 	message.channel.send(`Use !cc battle to start a battle\nAfter this you will have to type a difficulty once prompted, type baby, easy, normal, hard, expert or nightmare\nOnce in a battle you have 6 actions\n!cc attack will do a physical attack relying on your STR\n!cc magic will do a psychic relying on your CHR\n!cc block will give you a boost of defense for a turn\n!cc look will use your INT to find a weakness in the enemy\n!cc item will use your INT to heal your wounds\n!cc run will get you out of the fight`);
+}
+
+//helper function to get user
+function getUserFromMention(client,mention) {
+	if (!mention) return;
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+
+		return client.users.cache.get(mention);
+	}
 }
 
 module.exports = {

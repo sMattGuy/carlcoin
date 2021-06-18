@@ -135,6 +135,7 @@ function updateStocks(client,message){
 		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
 			console.log(stock.stock[i].name + ' is going positive');
 			willGoUp = true;
+			changeChance += 0.33;
 		}
 		if(Math.random() <= stockMove || marketWideRed){
 			//go down
