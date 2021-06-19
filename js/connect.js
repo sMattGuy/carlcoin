@@ -6,12 +6,12 @@ function checkVictory(boardArray,index){
 }
 
 function connect4(client,message){
-	var workingID = message.author.id;
-	var enemyID = "";
-	var playerName = message.author.username;
-	var enemyName = "";
+	let workingID = message.author.id;
+	let enemyID = "";
+	let playerName = message.author.username;
+	let enemyName = "";
 	let chop = message.content.split(" ");
-	var boardArray = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
+	let boardArray = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
 	if(chop.length != 4){
 		message.channel.send('Usage: !cc connect4 <user> <amount>');
 		return;
@@ -24,7 +24,7 @@ function connect4(client,message){
 		return;
 	}
 	//parse wager and check if valid
-	var wager = parseInt(chop[chop.length-1]);
+	let wager = parseInt(chop[chop.length-1]);
 	//check if trying to battle self temp disabled for testing
 	/*
 	if(message.author.id == enemyID){
@@ -41,9 +41,9 @@ function connect4(client,message){
 		return (m.content.startsWith('!cc place')&&(workingID == m.author.id));
 	};
 	//get database information
-	var database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	var data = JSON.parse(database);
-	var id = message.author.id;
+	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	let data = JSON.parse(database);
+	let id = message.author.id;
 	//variables to store about player
 	let playerId = message.author.id;
 	let found = false;
@@ -89,7 +89,7 @@ function connect4(client,message){
 			let option = choice.first().content;
 			if(option == '!cc connectAccept'){
 				let info = `It is ${message.author.username}'s turn!\n`;
-				frame(info);
+				frame(info,boardArray,workingID,id,enemyID,data);
 			}
 			else if(option == '!cc connectDeny'){
 				message.channel.send(`You have declined the game!`);
@@ -128,10 +128,10 @@ function connect4(client,message){
 				let action = choice.first().content;
 				let number = action[action.length-1];
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
-					frame(`Invalid index selected! try again`);
+					frame(`Invalid index selected! try again`,boardArray,workingID,id,enemyID,data);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-					frame(`That column is full! select a different one!`);
+					frame(`That column is full! select a different one!`,boardArray,workingID,id,enemyID,data);
 				}
 				//actually place piece
 				else{
@@ -161,11 +161,11 @@ function connect4(client,message){
 								//not won yet
 								if(workingID == id){
 									workingID = enemyID;
-									frame(`It's ${enemyName}'s turn!`);
+									frame(`It's ${enemyName}'s turn!`,boardArray,workingID,id,enemyID,data);
 								}
 								else{
 									workingID = id;
-									frame(`It's ${playerName}'s turn!`);
+									frame(`It's ${playerName}'s turn!`,boardArray,workingID,id,enemyID,data);
 								}
 							}
 						}
