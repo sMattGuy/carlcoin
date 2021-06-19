@@ -28,7 +28,7 @@ function checkVictory(boardArray,col,row,id){
 			return true;
 		}
 	}
-	//check diagnol 
+	//check down right diagnol 
 	for(let rowStart = 0;rowStart<boardArray.length - 4;rowStart++){
 		count = 0;
 		let rowC = rowStart;
@@ -45,12 +45,46 @@ function checkVictory(boardArray,col,row,id){
 			}
 		}
 	}
-	//check diagnol 
+	//check down right diagnol 
 	for(let colStart = 0;colStart<boardArray[0].length - 4;colStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			if(boardArray[rowC][colC] == id){
+				count++;
+				if(count >= 4){
+					return true;
+				}
+			}
+			else{
+				count = 0;
+			}
+		}
+	}
+	//check down left diagnol 
+	for(let rowStart = boardArray.length - 4;rowStart>0;rowStart--){
+		count = 0;
+		let rowC = rowStart;
+		let colC = 0;
+		for(rowC = rowStart, colC = 0; rowC > 0 && colC < boardArray.length;rowC--, colC++){
+			if(boardArray[rowC][colC] == id){
+				count++;
+				if(count >= 4){
+					return true;
+				}
+			}
+			else{
+				count = 0;
+			}
+		}
+	}
+	//check down left diagnol 
+	for(let colStart = boardArray[0].length - 4;colStart>0;colStart--){
+		count = 0;
+		let rowC = 0;
+		let colC = 0;
+		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
 			if(boardArray[rowC][colC] == id){
 				count++;
 				if(count >= 4){
@@ -214,13 +248,35 @@ function connect4(client,message){
 							}
 							//check if win
 							if(checkVictory(boardArray,number,i,num)){
-								message.channel.send(`Connect 4! The game has ended`);
 								for(let i=0;i<data.users.length;i++){
 									if(data.users[i].id == workingID){
 										data.users[i].balance += (wager*2);
 										break;
 									}
 								}
+								if(workingID == id){
+									info = `${playerName} has won! They have won ${wager*2}CC!\n`;
+								}
+								else{
+									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
+								}
+								let boardImage = ` 0 1 2 3 4 5 6\n`;
+								for(let i=0;i<boardArray[0].length;i++){
+									boardImage += `|`;
+									for(let j=0;j<boardArray.length;j++){
+										if(boardArray[j][i] == 1){
+											boardImage += 'R|';
+										}
+										else if(boardArray[j][i] == -1){
+											boardImage += 'B|';
+										}
+										else{
+											boardImage += '_|';
+										}
+									}
+									boardImage += `\n`;
+								}
+								message.channel.send(`${info}${boardImage}`,{code:true});
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								return;
