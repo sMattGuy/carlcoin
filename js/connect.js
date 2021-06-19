@@ -100,7 +100,7 @@ function checkVictory(boardArray,col,row,id){
 	return false;
 }
 
-function connect4(client,message){
+async function connect4(client,message){
 	let workingID = message.author.id;
 	let enemyID = "";
 	let playerName = message.author.username;
@@ -194,9 +194,9 @@ function connect4(client,message){
 		})
 	});
 	
-	function frame(info){
+	async function frame(info){
 		//draw the board
-		let attachment = AsyncContext.Run(drawConnect(boardArray));
+		let attachment = await drawConnect(boardArray);
 		message.channel.send(`${info}Use !cc place <index>`,attachment).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
@@ -259,7 +259,7 @@ function connect4(client,message){
 								else{
 									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
 								}
-								attachment = AsyncContext.Run(drawConnect(boardArray));
+								attachment = await drawConnect(boardArray);
 								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 								message.channel.send(`${info}`,attachment);
 								let newData = JSON.stringify(data);
