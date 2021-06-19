@@ -4,7 +4,6 @@ const fs = require('fs');
 function checkVictory(boardArray,col,row,id){
 	//check vertical
 	let count = 0;
-	console.log('checking vertical');
 	for(let i=0;i<boardArray[0].length;i++){
 		if(boardArray[col][i] == id){
 			count++;
@@ -18,7 +17,6 @@ function checkVictory(boardArray,col,row,id){
 	}
 	//check horizontal
 	count = 0;
-	console.log('checking horizontal');
 	for(let i=0;i<boardArray.length;i++){
 		if(boardArray[i][row] == id){
 			count++
@@ -31,13 +29,11 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	console.log('checking down right diag rowStart');
 	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = rowStart, colC = 0; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
-			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -50,13 +46,11 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	console.log('checking down right diag colStart');
 	for(let colStart = 0;colStart<boardArray.length - 3;colStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
-			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -69,13 +63,11 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	console.log('checking down left diag rowStart');
 	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
-			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -88,13 +80,11 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	console.log('checking down left diag colStart');
 	for(let colStart = boardArray.length-3;colStart > 3;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
-			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -301,6 +291,7 @@ function connect4(client,message){
 									}
 									boardImage += `\n`;
 								}
+								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 								message.channel.send(`${info}${boardImage}`,{code:true});
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
@@ -310,12 +301,12 @@ function connect4(client,message){
 								//not won yet
 								if(workingID == id){
 									workingID = enemyID;
-									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 									frame(`It's (O) ${enemyName}'s turn!\n`);
 								}
 								else{
 									workingID = id;
-									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 									frame(`It's (X) ${playerName}'s turn!\n`);
 								}
 							}
