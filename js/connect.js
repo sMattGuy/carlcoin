@@ -6,12 +6,12 @@ function checkVictory(boardArray,index){
 }
 
 function connect4(client,message){
-	let workingID = message.author.id;
-	let enemyID = "";
-	let playerName = message.author.username;
-	let enemyName = "";
+	var workingID = message.author.id;
+	var enemyID = "";
+	var playerName = message.author.username;
+	var enemyName = "";
 	let chop = message.content.split(" ");
-	let boardArray = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
+	var boardArray = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
 	if(chop.length != 4){
 		message.channel.send('Usage: !cc connect4 <user> <amount>');
 		return;
@@ -24,7 +24,7 @@ function connect4(client,message){
 		return;
 	}
 	//parse wager and check if valid
-	let wager = parseInt(chop[chop.length-1]);
+	var wager = parseInt(chop[chop.length-1]);
 	//check if trying to battle self temp disabled for testing
 	/*
 	if(message.author.id == enemyID){
@@ -41,9 +41,9 @@ function connect4(client,message){
 		return (m.content.startsWith('!cc place')&&(workingID == m.author.id));
 	};
 	//get database information
-	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	let data = JSON.parse(database);
-	let id = message.author.id;
+	var database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+	var data = JSON.parse(database);
+	var id = message.author.id;
 	//variables to store about player
 	let playerId = message.author.id;
 	let found = false;
