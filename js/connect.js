@@ -172,7 +172,7 @@ function connect4(client,message){
 					}
 				}
 			}).catch(e => {
-			message.channel.send(`Didnt get valid response in time`);
+			message.channel.send(`Didnt get valid response in time 1`);
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
 					data.users[i].balance += wager;
@@ -184,7 +184,7 @@ function connect4(client,message){
 			console.log(e);
 		});
 		}).catch(e => {
-			message.channel.send(`Didnt get valid response in time`);
+			message.channel.send(`Didnt get valid response in time 2`);
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
 					data.users[i].balance += wager;
