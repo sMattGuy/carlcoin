@@ -196,124 +196,116 @@ function connect4(client,message){
 	
 	function frame(info){
 		//draw the board
-		let attachment = drawConnect(boardArray).then(()=>{;
-			message.channel.send(`${info}\nUse !cc place <index>`,attachment).then( msg =>{
-				message.channel.awaitMessages(filter,{
-					max:1,time:60000,errors:['time']
-				}).then(choice => {
-					//parsing of choice begins here
-					choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
-					let action = choice.first().content;
-					let chopAction = action.split(" ");
-					let number = parseInt(chopAction[chopAction.length-1]);
-					if(number >= boardArray.length || number < 0 || isNaN(number)){
-						msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-						let currentName = "";
-						if(workingID == id){
-							currentName = playerName;
-						}
-						else{
-							currentName = enemyName;
-						}
-						frame(`Invalid index selected ${currentName}! try again\n`);
+		let attachment = AsyncContext.Run(drawConnect(boardArray));
+		message.channel.send(`${info}Use !cc place <index>`,attachment).then( msg =>{
+			message.channel.awaitMessages(filter,{
+				max:1,time:60000,errors:['time']
+			}).then(choice => {
+				//parsing of choice begins here
+				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
+				let action = choice.first().content;
+				let chopAction = action.split(" ");
+				let number = parseInt(chopAction[chopAction.length-1]);
+				if(number >= boardArray.length || number < 0 || isNaN(number)){
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+					let currentName = "";
+					if(workingID == id){
+						currentName = playerName;
 					}
-					else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-						msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-						let currentName = "";
-						if(workingID == id){
-							currentName = playerName;
-						}
-						else{
-							currentName = enemyName;
-						}
-						frame(`That column is full ${currentName}! select a different one!\n`);
-					}
-					//actually place piece
 					else{
-						for(let i=0;i<boardArray[number].length;i++){
-						if(i+1 == boardArray[number].length || boardArray[number][i+1] == 1 || boardArray[number][i+1] == -1){
-								//reached end place piece
-								let num;
-								if(workingID == id){
-									boardArray[number][i] = 1;
-									num = 1;
-								}
-								else{
-									boardArray[number][i] = -1;
-									num = -1;
-								}
-								//check if win
-								//number is the column, i is the downward direction
-								/*
-								 0 1 2 3 4 5 6			these are number
-								|_|_|_|_|_|_|_| 0
-								|_|_|_|_|_|_|_| 1 	i
-								|_|_|_|_|_|_|_| 2 	|	these are i
-								|_|_|_|_|_|_|_| 3	 	V
-								|_|_|_|_|_|_|_| 4
-								|_|_|_|_|_|_|_| 5
-								*/
-								if(checkVictory(boardArray,number,i,num)){
-									for(let i=0;i<data.users.length;i++){
-										if(data.users[i].id == workingID){
-											data.users[i].balance += (wager*2);
-											break;
-										}
-									}
-									if(workingID == id){
-										info = `${playerName} has won! They have won ${wager*2}CC!\n`;
-									}
-									else{
-										info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
-									}
-									let attachment = drawConnect(boardArray);
-									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									message.channel.send(`${info}`,attachment);
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									return;
-								}
-								else{
-									//not won yet
-									if(workingID == id){
-										workingID = enemyID;
-										msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-										frame(`It's (blue) ${enemyName}'s turn!\n`);
-									}
-									else{
-										workingID = id;
-										msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-										frame(`It's (red) ${playerName}'s turn!\n`);
-									}
-								}
-								break;
+						currentName = enemyName;
+					}
+					frame(`Invalid index selected! try again\n`);
+				}
+				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
+					frame(`That column is full! select a different one!\n`);
+				}
+				//actually place piece
+				else{
+					for(let i=0;i<boardArray[number].length;i++){
+					if(i+1 == boardArray[number].length || boardArray[number][i+1] == 1 || boardArray[number][i+1] == -1){
+							//reached end place piece
+							let num;
+							if(workingID == id){
+								boardArray[number][i] = 1;
+								num = 1;
 							}
+							else{
+								boardArray[number][i] = -1;
+								num = -1;
+							}
+							//check if win
+							//number is the column, i is the downward direction
+							/*
+							 0 1 2 3 4 5 6			these are number
+							|_|_|_|_|_|_|_| 0
+							|_|_|_|_|_|_|_| 1 	i
+							|_|_|_|_|_|_|_| 2 	|	these are i
+							|_|_|_|_|_|_|_| 3	 	V
+							|_|_|_|_|_|_|_| 4
+							|_|_|_|_|_|_|_| 5
+							*/
+							if(checkVictory(boardArray,number,i,num)){
+								for(let i=0;i<data.users.length;i++){
+									if(data.users[i].id == workingID){
+										data.users[i].balance += (wager*2);
+										break;
+									}
+								}
+								if(workingID == id){
+									info = `${playerName} has won! They have won ${wager*2}CC!\n`;
+								}
+								else{
+									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
+								}
+								attachment = AsyncContext.Run(drawConnect(boardArray));
+								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+								message.channel.send(`${info}`,attachment);
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+								return;
+							}
+							else{
+								//not won yet
+								if(workingID == id){
+									workingID = enemyID;
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+									frame(`It's (blue) ${enemyName}'s turn!\n`);
+								}
+								else{
+									workingID = id;
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+									frame(`It's (red) ${playerName}'s turn!\n`);
+								}
+							}
+							break;
 						}
 					}
-				}).catch(e => {
-				message.channel.send(`Didnt get valid response in time 1`);
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id == id){
-						data.users[i].balance += wager;
-					}
-					if(data.users[i].id == enemyID){
-						data.users[i].balance += wager;
-					}
 				}
-				console.log(e);
-			});
 			}).catch(e => {
-				message.channel.send(`Didnt get valid response in time 2`);
-				for(let i=0;i<data.users.length;i++){
-					if(data.users[i].id == id){
-						data.users[i].balance += wager;
-					}
-					if(data.users[i].id == enemyID){
-						data.users[i].balance += wager;
-					}
+			message.channel.send(`Didnt get valid response in time 1`);
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == id){
+					data.users[i].balance += wager;
 				}
-				console.log(e);
-			});
+				if(data.users[i].id == enemyID){
+					data.users[i].balance += wager;
+				}
+			}
+			console.log(e);
+		});
+		}).catch(e => {
+			message.channel.send(`Didnt get valid response in time 2`);
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == id){
+					data.users[i].balance += wager;
+				}
+				if(data.users[i].id == enemyID){
+					data.users[i].balance += wager;
+				}
+			}
+			console.log(e);
 		});
 	}
 }
