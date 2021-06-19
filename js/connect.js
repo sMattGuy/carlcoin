@@ -116,6 +116,7 @@ function connect4(client,message){
 				else{
 					boardImage += '_|';
 				}
+				console.log(boardImage);
 			}
 			boardImage += `\n`;
 		}
