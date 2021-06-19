@@ -110,7 +110,7 @@ function connect4(client,message){
 				if(boardArray[i][j] == 1){
 					boardImage += 'R|';
 				}
-				else if(boardArray[j][i] == -1){
+				else if(boardArray[i][j] == -1){
 					boardImage += 'B|';
 				}
 				else{
