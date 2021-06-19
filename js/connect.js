@@ -349,7 +349,7 @@ async function drawConnect(channel,info,boardArray){
 		}
 	}	
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
-	channel.send(info,attachment);
+	return channel.send(info,attachment);
 }
 //export section
 module.exports = {
