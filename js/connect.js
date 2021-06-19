@@ -100,7 +100,7 @@ function checkVictory(boardArray,col,row,id){
 	return false;
 }
 
-async function connect4(client,message){
+function connect4(client,message){
 	let workingID = message.author.id;
 	let enemyID = "";
 	let playerName = message.author.username;
@@ -196,8 +196,7 @@ async function connect4(client,message){
 	
 	async function frame(info){
 		//draw the board
-		let attachment = await drawConnect(boardArray);
-		message.channel.send(`${info}Use !cc place <index>`,attachment).then( msg =>{
+		drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -259,12 +258,13 @@ async function connect4(client,message){
 								else{
 									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
 								}
-								attachment = await drawConnect(boardArray);
-								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-								message.channel.send(`${info}`,attachment);
-								let newData = JSON.stringify(data);
-								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-								return;
+								drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then(()=>{
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+									message.channel.send(`${info}`,attachment);
+									let newData = JSON.stringify(data);
+									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+									return;
+								});
 							}
 							else{
 								//not won yet
@@ -325,7 +325,7 @@ function getUserFromMention(client,mention) {
 	}
 }
 
-async function drawConnect(boardArray){
+async function drawConnect(channel,info,boardArray){
 	const canvas = Canvas.createCanvas(288,252);
 	const ctx = canvas.getContext('2d');
 	const background = await Canvas.loadImage('/home/mattguy/carlcoin/connect/connectBoard.png');
@@ -347,10 +347,9 @@ async function drawConnect(boardArray){
 				continue;
 			}
 		}
-	}
-		
+	}	
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
-	return attachment;
+	channel.send(info,attachment);
 }
 //export section
 module.exports = {
