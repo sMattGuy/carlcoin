@@ -18,7 +18,7 @@ function checkVictory(boardArray,col,row,id){
 	//check horizontal
 	count = 0;
 	for(let i=0;i<boardArray.length;i++){
-		if(boardArray[i][col] == id){
+		if(boardArray[i][row] == id){
 			count++
 		}
 		else{
@@ -29,12 +29,12 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	for(let rowStart = 0;rowStart<boardArray.length - 4;rowStart++){
+	for(let rowStart = 0;rowStart<boardArray[0].length - 4;rowStart++){
 		count = 0;
-		let rowC = rowStart;
+		let rowC = 0;
 		let colC = 0;
 		for(rowC = rowStart, colC = 0; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
-			if(boardArray[rowC][colC] == id){
+			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
 					return true;
@@ -46,12 +46,12 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	for(let colStart = 0;colStart<boardArray[0].length - 4;colStart++){
+	for(let colStart = 0;colStart<boardArray.length - 4;colStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
-			if(boardArray[rowC][colC] == id){
+			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
 					return true;
@@ -63,12 +63,12 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let rowStart = boardArray.length - 4;rowStart>0;rowStart--){
+	for(let rowStart = 0;rowStart<boardArray[0].length - 4;rowStart++){
 		count = 0;
-		let rowC = rowStart;
+		let rowC = 0;
 		let colC = 0;
-		for(rowC = rowStart, colC = 0; rowC > 0 && colC < boardArray.length;rowC--, colC++){
-			if(boardArray[rowC][colC] == id){
+		for(rowC = rowStart, colC = boardArray.length; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
+			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
 					return true;
@@ -80,12 +80,12 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let colStart = boardArray[0].length - 4;colStart>0;colStart--){
+	for(let colStart = boardArray.length;colStart > 3;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
-			if(boardArray[rowC][colC] == id){
+			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
 					return true;
@@ -178,7 +178,7 @@ function connect4(client,message){
 		message.channel.send(`Your opponent is not registered for Carl Coin!`);
 		return;
 	}
-	message.channel.send(`${message.author.username}! Type !cc connectAccept to accept the battle, or !cc connectDeny to reject the battle, You have 1 min to respond!`).then(msg => {
+	message.channel.send(`${enemyName}! Type !cc connectAccept to accept the battle, or !cc connectDeny to reject the battle, You have 1 min to respond!`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:60000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
 			if(option == '!cc connectAccept'){
@@ -202,10 +202,10 @@ function connect4(client,message){
 			boardImage += `|`;
 			for(let j=0;j<boardArray.length;j++){
 				if(boardArray[j][i] == 1){
-					boardImage += 'R|';
+					boardImage += 'X|';
 				}
 				else if(boardArray[j][i] == -1){
-					boardImage += 'B|';
+					boardImage += 'O|';
 				}
 				else{
 					boardImage += '_|';
@@ -220,12 +220,17 @@ function connect4(client,message){
 				//parsing of choice begins here
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
-				console.log(action);
 				let chopAction = action.split(" ");
 				let number = parseInt(chopAction[chopAction.length-1]);
-				console.log(number);
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
-					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+					let currentName = "";
+					if(workingID == id){
+						currentName = playerName;
+					}
+					else{
+						currentName = enemyName;
+					}
 					frame(`Invalid index selected! try again\n`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
@@ -247,6 +252,16 @@ function connect4(client,message){
 								num = -1;
 							}
 							//check if win
+							//number is the column, i is the downward direction
+							/*
+							 0 1 2 3 4 5 6			these are number
+							|_|_|_|_|_|_|_| 0
+							|_|_|_|_|_|_|_| 1 	i
+							|_|_|_|_|_|_|_| 2 	|	these are i
+							|_|_|_|_|_|_|_| 3	 	V
+							|_|_|_|_|_|_|_| 4
+							|_|_|_|_|_|_|_| 5
+							*/
 							if(checkVictory(boardArray,number,i,num)){
 								for(let i=0;i<data.users.length;i++){
 									if(data.users[i].id == workingID){
@@ -286,12 +301,12 @@ function connect4(client,message){
 								if(workingID == id){
 									workingID = enemyID;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
-									frame(`It's ${enemyName}'s turn!\n`);
+									frame(`It's (O) ${enemyName}'s turn!\n`);
 								}
 								else{
 									workingID = id;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
-									frame(`It's ${playerName}'s turn!\n`);
+									frame(`It's (X) ${playerName}'s turn!\n`);
 								}
 							}
 							break;
