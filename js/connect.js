@@ -100,6 +100,15 @@ function checkVictory(boardArray,col,row,id){
 	return false;
 }
 
+function checkTie(boardArray){
+	for(let i=0;i<boardArray.length;i++){
+		if(boardArray[i][0] == 0){
+			return false;
+		}
+	}
+	return true;
+}
+
 function connect4(client,message){
 	let workingID = message.author.id;
 	let enemyID = "";
@@ -196,6 +205,19 @@ function connect4(client,message){
 	
 	async function frame(info){
 		//draw the board
+		if(checkTie(boardArray)){
+			drawConnect(message.channel,`It's a tie!`,boardArray).then(()=>{
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == id){
+						data.users[i].balance += wager;
+					}
+					if(data.users[i].id == enemyID){
+						data.users[i].balance += wager;
+					}
+				}
+				return;
+			});
+		}
 		drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
@@ -336,11 +358,11 @@ async function drawConnect(channel,info,boardArray){
 		for(let j=0;j<boardArray.length;j++){
 			if(boardArray[j][i] == 1){
 				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/redChip.png`);
-				ctx.drawImage(chip,(j*36)+18,(i*36)+23,36,36);
+				ctx.drawImage(chip,(j*36)+18,(i*36)+12+i,36,36);
 			}
 			else if(boardArray[j][i] == -1){
 				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/blueChip.png`);
-				ctx.drawImage(chip,(j*36)+18,(i*36)+23,36,36);
+				ctx.drawImage(chip,(j*36)+18,(i*36)+12+i,36,36);
 			}
 			else{
 				continue;
