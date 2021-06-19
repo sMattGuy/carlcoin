@@ -89,7 +89,7 @@ function connect4(client,message){
 			let option = choice.first().content;
 			if(option == '!cc connectAccept'){
 				let info = `It is ${message.author.username}'s turn!\n`;
-				frame(info,boardArray,workingID,id,enemyID,data);
+				frame(info);
 			}
 			else if(option == '!cc connectDeny'){
 				message.channel.send(`You have declined the game!`);
@@ -101,13 +101,13 @@ function connect4(client,message){
 		})
 	});
 	
-	function frame(info,boardArray,workingID,id,enemyID,data){
+	function frame(info){
 		//draw the board
 		let boardImage = ` 0 1 2 3 4 5 6\n`;
 		for(let i=0;i<boardArray.length;i++){
 			boardImage += `|`;
 			for(let j=0;j<boardArray[i].length;j++){
-				if(boardArray[j][i] == 1){
+				if(boardArray[i][j] == 1){
 					boardImage += 'R|';
 				}
 				else if(boardArray[j][i] == -1){
@@ -128,10 +128,10 @@ function connect4(client,message){
 				let action = choice.first().content;
 				let number = action[action.length-1];
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
-					frame(`Invalid index selected! try again`,boardArray,workingID,id,enemyID,data);
+					frame(`Invalid index selected! try again`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-					frame(`That column is full! select a different one!`,boardArray,workingID,id,enemyID,data);
+					frame(`That column is full! select a different one!`);
 				}
 				//actually place piece
 				else{
@@ -161,11 +161,11 @@ function connect4(client,message){
 								//not won yet
 								if(workingID == id){
 									workingID = enemyID;
-									frame(`It's ${enemyName}'s turn!`,boardArray,workingID,id,enemyID,data);
+									frame(`It's ${enemyName}'s turn!`);
 								}
 								else{
 									workingID = id;
-									frame(`It's ${playerName}'s turn!`,boardArray,workingID,id,enemyID,data);
+									frame(`It's ${playerName}'s turn!`);
 								}
 							}
 						}
