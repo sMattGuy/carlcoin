@@ -215,8 +215,8 @@ function connect4(client,message){
 						data.users[i].balance += wager;
 					}
 				}
-				return;
 			});
+			return;
 		}
 		drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then( msg =>{
 			message.channel.awaitMessages(filter,{
@@ -284,8 +284,8 @@ function connect4(client,message){
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-									return;
 								});
+								return;
 							}
 							else{
 								//not won yet
