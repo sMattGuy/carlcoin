@@ -194,7 +194,7 @@ function connect4(client,message){
 		})
 	});
 	
-	function frame(info){
+	async function frame(info){
 		//draw the board
 		let attachment = await drawConnect(boardArray);
 		message.channel.send(`${info}\nUse !cc place <index>`,attachment).then( msg =>{
