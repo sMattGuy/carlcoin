@@ -126,11 +126,13 @@ function connect4(client,message){
 				//parsing of choice begins here
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
-				let number = action[action.length-1];
+				let number = parseInt(action[action.length-1]);
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
+					msg.delete();
 					frame(`Invalid index selected! try again`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
+					msg.delete();
 					frame(`That column is full! select a different one!`);
 				}
 				//actually place piece
@@ -161,10 +163,12 @@ function connect4(client,message){
 								//not won yet
 								if(workingID == id){
 									workingID = enemyID;
+									msg.delete();
 									frame(`It's ${enemyName}'s turn!`);
 								}
 								else{
 									workingID = id;
+									msg.delete();
 									frame(`It's ${playerName}'s turn!`);
 								}
 							}
