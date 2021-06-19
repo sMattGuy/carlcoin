@@ -175,6 +175,7 @@ function connect4(client,message){
 									frame(`It's ${playerName}'s turn!\n`);
 								}
 							}
+							break;
 						}
 					}
 				}
@@ -202,8 +203,6 @@ function connect4(client,message){
 			}
 			console.log(e);
 		});
-		let newData = JSON.stringify(data);
-		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	}
 }
 
