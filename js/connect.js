@@ -11,7 +11,7 @@ function connect4(client,message){
 	let playerName = message.author.username;
 	let enemyName = "";
 	let chop = message.content.split(" ");
-	let boardArray = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
+	let boardArray = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]];
 	if(chop.length != 4){
 		message.channel.send('Usage: !cc connect4 <user> <amount>');
 		return;
