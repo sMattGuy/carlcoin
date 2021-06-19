@@ -280,10 +280,10 @@ function connect4(client,message){
 									boardImage += `|`;
 									for(let j=0;j<boardArray.length;j++){
 										if(boardArray[j][i] == 1){
-											boardImage += 'R|';
+											boardImage += 'X|';
 										}
 										else if(boardArray[j][i] == -1){
-											boardImage += 'B|';
+											boardImage += 'O|';
 										}
 										else{
 											boardImage += '_|';
