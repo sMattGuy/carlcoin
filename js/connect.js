@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const Canvas = require('canvas');
 
 function checkVictory(boardArray,col,row,id){
 	//check vertical
@@ -195,23 +196,8 @@ function connect4(client,message){
 	
 	function frame(info){
 		//draw the board
-		let boardImage = ` 0 1 2 3 4 5 6\n`;
-		for(let i=0;i<boardArray[0].length;i++){
-			boardImage += `|`;
-			for(let j=0;j<boardArray.length;j++){
-				if(boardArray[j][i] == 1){
-					boardImage += 'X|';
-				}
-				else if(boardArray[j][i] == -1){
-					boardImage += 'O|';
-				}
-				else{
-					boardImage += '_|';
-				}
-			}
-			boardImage += `\n`;
-		}
-		message.channel.send(`${info}${boardImage}\nUse !cc place <index>`,{code:true}).then( msg =>{
+		let attachment = drawConnect(boardArray);
+		message.channel.send(`${info}\nUse !cc place <index>`,attachment).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -229,11 +215,18 @@ function connect4(client,message){
 					else{
 						currentName = enemyName;
 					}
-					frame(`Invalid index selected! try again\n`);
+					frame(`Invalid index selected ${currentName}! try again\n`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
-					frame(`That column is full! select a different one!\n`);
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+					let currentName = "";
+					if(workingID == id){
+						currentName = playerName;
+					}
+					else{
+						currentName = enemyName;
+					}
+					frame(`That column is full ${currentName}! select a different one!\n`);
 				}
 				//actually place piece
 				else{
@@ -273,24 +266,9 @@ function connect4(client,message){
 								else{
 									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
 								}
-								let boardImage = ` 0 1 2 3 4 5 6\n`;
-								for(let i=0;i<boardArray[0].length;i++){
-									boardImage += `|`;
-									for(let j=0;j<boardArray.length;j++){
-										if(boardArray[j][i] == 1){
-											boardImage += 'X|';
-										}
-										else if(boardArray[j][i] == -1){
-											boardImage += 'O|';
-										}
-										else{
-											boardImage += '_|';
-										}
-									}
-									boardImage += `\n`;
-								}
+								let attachment = drawConnect(boardArray);
 								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-								message.channel.send(`${info}${boardImage}`,{code:true});
+								message.channel.send(`${info}`,attachment);
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								return;
@@ -300,12 +278,12 @@ function connect4(client,message){
 								if(workingID == id){
 									workingID = enemyID;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									frame(`It's (O) ${enemyName}'s turn!\n`);
+									frame(`It's (blue) ${enemyName}'s turn!\n`);
 								}
 								else{
 									workingID = id;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									frame(`It's (X) ${playerName}'s turn!\n`);
+									frame(`It's (red) ${playerName}'s turn!\n`);
 								}
 							}
 							break;
@@ -354,6 +332,33 @@ function getUserFromMention(client,mention) {
 	}
 }
 
+async function drawConnect(boardArray){
+	const canvas = Canvas.createCanvas(288,252);
+	const ctx = canvas.getContext('2d');
+	const background = await Canvas.loadImage('/home/mattguy/carlcoin/connect/connectBoard.png');
+	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+	ctx.strokeStyle = '#0000';
+	ctx.strokeRect(0,0,canvas.width,canvas.height);
+		
+	for(let i=0;i<boardArray[0].length;i++){
+		for(let j=0;j<boardArray.length;j++){
+			if(boardArray[j][i] == 1){
+				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/redChip.png`);
+				ctx.drawImage(chip,j*36,i*36,36,36);
+			}
+			else if(boardArray[j][i] == -1){
+				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/blueChip.png`);
+				ctx.drawImage(chip,j*36,i*36,36,36);
+			}
+			else{
+				continue;
+			}
+		}
+	}
+		
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
+	return attachment;
+}
 //export section
 module.exports = {
 	connect4,
