@@ -266,7 +266,7 @@ function connect4(client,message){
 									else{
 										info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
 									}
-									let attachment = await drawConnect(boardArray);
+									let attachment = drawConnect(boardArray);
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 									message.channel.send(`${info}`,attachment);
 									let newData = JSON.stringify(data);
