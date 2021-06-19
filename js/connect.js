@@ -120,12 +120,10 @@ function connect4(client,message){
 	//parse wager and check if valid
 	let wager = parseInt(chop[chop.length-1]);
 	//check if trying to battle self temp disabled for testing
-	/*
 	if(message.author.id == enemyID){
 		message.channel.send('You cannot play with yourself..... weirdo');
 		return;
 	}
-	*/
 	//check that wager is valid temp 0 for testing
 	if(isNaN(wager) || wager < 0){
 		message.channel.send('Invalid amount entered!');
@@ -341,6 +339,10 @@ function connect4(client,message){
 	}
 }
 
+function connectHelp(client,message){
+	message.channel.send(`Use !cc connect4 <user> <wager> to challenge someone to connect 4\nUse !cc connectAccept or !cc connectDeny to respond to the challenge\nUse !cc place <index> to place your piece`);
+}
+
 function getUserFromMention(client,mention) {
 	if (!mention) return;
 	if (mention.startsWith('<@') && mention.endsWith('>')) {
@@ -354,5 +356,6 @@ function getUserFromMention(client,mention) {
 
 //export section
 module.exports = {
-	connect4
+	connect4,
+	connectHelp
 };

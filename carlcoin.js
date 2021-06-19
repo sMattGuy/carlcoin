@@ -454,12 +454,16 @@ client.on('message', message => {
 		battle.battleHelp(client,message);
 	}
 	else if(message.content.startsWith('!cc connect4')){
-		console.log(message.author.username + ' is checking battle help');
+		console.log(message.author.username + ' is playing connect4');
 		connect.connect4(client,message);
+	}
+	else if(message.content === '!cc connectHelp'){
+		console.log(message.author.username + ' is checking connect help');
+		connect.connectHelp(client,message);
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/16/2021\nBattles can now give money but you can also lose money\nThe housing market (!cc realtyHelp) now effects daily payouts. If the markets dead, so will the daily payouts, if its active, everyone gets more. The tax modifier shows this in !cc realtyListings, and your personal loss is in your balance`);
+		message.channel.send(`Patch Notes 6/19/2021\nAdded connect4, use !cc connectHelp for more info. Since this is new there is a possiblilty of bugs, so it is possible to challenge for 0CC as to not risk losing anything.`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
