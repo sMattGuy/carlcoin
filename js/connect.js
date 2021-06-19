@@ -4,6 +4,7 @@ const fs = require('fs');
 function checkVictory(boardArray,col,row,id){
 	//check vertical
 	let count = 0;
+	console.log('checking vertical');
 	for(let i=0;i<boardArray[0].length;i++){
 		if(boardArray[col][i] == id){
 			count++;
@@ -17,6 +18,7 @@ function checkVictory(boardArray,col,row,id){
 	}
 	//check horizontal
 	count = 0;
+	console.log('checking horizontal');
 	for(let i=0;i<boardArray.length;i++){
 		if(boardArray[i][row] == id){
 			count++
@@ -29,11 +31,13 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	for(let rowStart = 0;rowStart<boardArray[0].length - 4;rowStart++){
+	console.log('checking down right diag rowStart');
+	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = rowStart, colC = 0; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -46,11 +50,13 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down right diagnol 
-	for(let colStart = 0;colStart<boardArray.length - 4;colStart++){
+	console.log('checking down right diag colStart');
+	for(let colStart = 0;colStart<boardArray.length - 3;colStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -63,11 +69,13 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let rowStart = 0;rowStart<boardArray[0].length - 4;rowStart++){
+	console.log('checking down left diag rowStart');
+	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
-		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
+		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
+			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -80,11 +88,13 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let colStart = boardArray.length-1;colStart > 3;colStart--){
+	console.log('checking down left diag colStart');
+	for(let colStart = boardArray.length-3;colStart > 3;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
-		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
+		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
+			console.log('checking ' + colC + ", " + rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
