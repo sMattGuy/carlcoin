@@ -131,11 +131,11 @@ function connect4(client,message){
 				let number = parseInt(chopAction[chopAction.length-1]);
 				console.log(number);
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
-					msg.delete();
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
 					frame(`Invalid index selected! try again\n`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-					msg.delete();
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
 					frame(`That column is full! select a different one!\n`);
 				}
 				//actually place piece
@@ -166,12 +166,12 @@ function connect4(client,message){
 								//not won yet
 								if(workingID == id){
 									workingID = enemyID;
-									msg.delete();
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
 									frame(`It's ${enemyName}'s turn!\n`);
 								}
 								else{
 									workingID = id;
-									msg.delete();
+									msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
 									frame(`It's ${playerName}'s turn!\n`);
 								}
 							}
