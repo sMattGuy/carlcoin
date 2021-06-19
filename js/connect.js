@@ -215,6 +215,8 @@ function connect4(client,message){
 						data.users[i].balance += wager;
 					}
 				}
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			});
 			return;
 		}
