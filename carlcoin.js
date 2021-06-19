@@ -37,6 +37,7 @@ const bank = require('./js/bank.js');
 const stock = require('./js/stock.js');
 const realty = require('./js/realty.js');
 const battle = require('./js/battle.js');
+const connect = require('./js/connect.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
@@ -451,6 +452,10 @@ client.on('message', message => {
 	else if(message.content === '!cc battleHelp'){
 		console.log(message.author.username + ' is checking battle help');
 		battle.battleHelp(client,message);
+	}
+	else if(message.content.startsWith('!cc connect4')){
+		console.log(message.author.username + ' is checking battle help');
+		connect.connect4(client,message);
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
