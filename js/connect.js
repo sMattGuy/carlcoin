@@ -104,19 +104,18 @@ function connect4(client,message){
 	function frame(info){
 		//draw the board
 		let boardImage = ` 0 1 2 3 4 5 6\n`;
-		for(let i=0;i<boardArray.length;i++){
+		for(let i=0;i<boardArray[0].length;i++){
 			boardImage += `|`;
-			for(let j=0;j<boardArray[i].length;j++){
-				if(boardArray[i][j] == 1){
+			for(let j=0;j<boardArray.length;j++){
+				if(boardArray[j][i] == 1){
 					boardImage += 'R|';
 				}
-				else if(boardArray[i][j] == -1){
+				else if(boardArray[j][i] == -1){
 					boardImage += 'B|';
 				}
 				else{
 					boardImage += '_|';
 				}
-				console.log(boardImage);
 			}
 			boardImage += `\n`;
 		}
