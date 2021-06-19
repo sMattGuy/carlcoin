@@ -67,7 +67,7 @@ function checkVictory(boardArray,col,row,id){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
-		for(rowC = rowStart, colC = boardArray.length; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
+		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC > 0;rowC++, colC--){
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -80,7 +80,7 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let colStart = boardArray.length;colStart > 3;colStart--){
+	for(let colStart = boardArray.length-1;colStart > 3;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
