@@ -126,6 +126,7 @@ function connect4(client,message){
 				//parsing of choice begins here
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
+				console.log(action);
 				let number = parseInt(action[action.length-1]);
 				console.log(number);
 				if(number >= boardArray.length || number < 0 || isNaN(number)){
