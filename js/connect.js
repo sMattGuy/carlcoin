@@ -260,7 +260,6 @@ function connect4(client,message){
 								}
 								drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then(()=>{
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									message.channel.send(`${info}`,attachment);
 									let newData = JSON.stringify(data);
 									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 									return;
@@ -337,11 +336,11 @@ async function drawConnect(channel,info,boardArray){
 		for(let j=0;j<boardArray.length;j++){
 			if(boardArray[j][i] == 1){
 				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/redChip.png`);
-				ctx.drawImage(chip,(j*36)+18,(i*36)+24,36,36);
+				ctx.drawImage(chip,(j*36)+18,(i*36)+23,36,36);
 			}
 			else if(boardArray[j][i] == -1){
 				let chip = await Canvas.loadImage(`/home/mattguy/carlcoin/connect/blueChip.png`);
-				ctx.drawImage(chip,(j*36)+18,(i*36)+24,36,36);
+				ctx.drawImage(chip,(j*36)+18,(i*36)+23,36,36);
 			}
 			else{
 				continue;
