@@ -1,7 +1,67 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
-function checkVictory(boardArray,index){
+function checkVictory(boardArray,col,row,id){
+	//check vertical
+	let count = 0;
+	for(let i=0;i<boardArray[0].length;i++){
+		if(boardArray[col][i] == id){
+			count++;
+		}
+		else{
+			count = 0;
+		}
+		if(count >= 4){
+			return true;
+		}
+	}
+	//check horizontal
+	count = 0;
+	for(let i=0;i<boardArray.length;i++){
+		if(boardArray[i][col] == id){
+			count++
+		}
+		else{
+			count = 0;
+		}
+		if(count >= 4){
+			return true;
+		}
+	}
+	//check diagnol 
+	for(let rowStart = 0;rowStart<boardArray.length - 4;rowStart++){
+		count = 0;
+		let rowC = rowStart;
+		let colC = 0;
+		for(rowC = rowStart, colC = 0; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			if(boardArray[rowC][colC] == id){
+				count++;
+				if(count >= 4){
+					return true;
+				}
+			}
+			else{
+				count = 0;
+			}
+		}
+	}
+	//check diagnol 
+	for(let colStart = 0;colStart<boardArray[0].length - 4;colStart++){
+		count = 0;
+		let rowC = 0;
+		let colC = 0;
+		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			if(boardArray[rowC][colC] == id){
+				count++;
+				if(count >= 4){
+					return true;
+				}
+			}
+			else{
+				count = 0;
+			}
+		}
+	}
 	return false;
 }
 
@@ -143,14 +203,17 @@ function connect4(client,message){
 					for(let i=0;i<boardArray[number].length;i++){
 					if(i+1 == boardArray[number].length || boardArray[number][i+1] == 1 || boardArray[number][i+1] == -1){
 							//reached end place piece
+							let num;
 							if(workingID == id){
 								boardArray[number][i] = 1;
+								num = 1;
 							}
 							else{
 								boardArray[number][i] = -1;
+								num = -1;
 							}
 							//check if win
-							if(checkVictory(boardArray,i)){
+							if(checkVictory(boardArray,number,i,num)){
 								message.channel.send(`Connect 4! The game has ended`);
 								for(let i=0;i<data.users.length;i++){
 									if(data.users[i].id == workingID){
