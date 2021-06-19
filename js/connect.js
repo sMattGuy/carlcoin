@@ -101,7 +101,7 @@ function connect4(client,message){
 		})
 	});
 	
-	function frame(info){
+	function frame(info,boardArray,workingID,id,enemyID,data){
 		//draw the board
 		let boardImage = ` 0 1 2 3 4 5 6\n`;
 		for(let i=0;i<boardArray.length;i++){
