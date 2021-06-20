@@ -276,6 +276,8 @@ function connect4(client,message){
 										break;
 									}
 								}
+								let newData = JSON.stringify(data);
+								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								if(workingID == id){
 									info = `${playerName} has won! They have won ${wager*2}CC!\n`;
 								}
@@ -284,8 +286,6 @@ function connect4(client,message){
 								}
 								drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then(()=>{
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									let newData = JSON.stringify(data);
-									fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								});
 								return;
 							}
@@ -294,12 +294,12 @@ function connect4(client,message){
 								if(workingID == id){
 									workingID = enemyID;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									frame(`It's (blue) ${enemyName}'s turn!\n`);
+									frame(`It's (blue) ${enemyName}'s turn! ${playerName} placed their chip in ${number}!\n`);
 								}
 								else{
 									workingID = id;
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
-									frame(`It's (red) ${playerName}'s turn!\n`);
+									frame(`It's (red) ${playerName}'s turn! ${enemyName} placed their chip in ${number}!\n`);
 								}
 							}
 							break;
@@ -316,6 +316,8 @@ function connect4(client,message){
 					data.users[i].balance += wager;
 				}
 			}
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			console.log(e);
 		});
 		}).catch(e => {
@@ -328,6 +330,8 @@ function connect4(client,message){
 					data.users[i].balance += wager;
 				}
 			}
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			console.log(e);
 		});
 	}
