@@ -63,6 +63,7 @@ client.on('ready', () => {
   //list server
   client.guilds.cache.forEach(guild => {
     console.log(`${guild.name} | ${guild.id}`);
+	 guild.members.fetch();
   });
   console.log('I am ready!');
 });
