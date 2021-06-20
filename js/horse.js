@@ -317,7 +317,7 @@ function actualRace(client,message){
 					horseBehind = horses[racePos[pos+1]];
 				}
 				if(horseInFront.id != 'noPerson'){
-					if(horses[racePos[pos]].horse.speed > horseInFront.horse.speed){
+					if(Math.floor(Math.random()*horses[racePos[pos]].horse.speed) > Math.floor(Math.random()*horseInFront.horse.speed)){
 						//current horse
 						let overtakerHorse = racePos[pos];
 						//horse being overtaken
@@ -326,23 +326,6 @@ function actualRace(client,message){
 						racePos[pos-1] = overtakerHorse;
 						newPos = pos-1;
 						raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
-					}
-					else if(horses[racePos[pos]].horse.speed == horseInFront.horse.speed){
-						let passChance = Math.random();
-						if(passChance > 0.5){
-							//current horse
-							let overtakerHorse = racePos[pos];
-							//horse being overtaken
-							racePos[pos] = racePos[pos-1];
-							//changing who's in front
-							racePos[pos-1] = overtakerHorse;
-							newPos = pos-1;
-							raceEvents += `${horses[racePos[newPos]].horse.name} has overtaken ${horses[racePos[pos]].horse.name}!\n`;
-						}
-						else{
-							raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
-							newPos = pos;
-						}
 					}
 					else{
 						raceEvents += `${horses[racePos[pos]].horse.name} couldn't overtake ${horses[racePos[pos-1]].horse.name}!\n`;
