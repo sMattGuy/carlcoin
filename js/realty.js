@@ -193,8 +193,6 @@ function realtyBuy(client,message){
 				if(data.users[j].id == realty.list[index].id){
 					//pay seller
 					const userToAlert = client.users.cache.get(realty.list[index].id);
-					console.log(realty.list[index].id);
-					console.log(userToAlert);
 					data.users[j].balance += realty.list[index].price;
 					userToAlert.send(`Your listing of a ${realty.list[index].type} for ${realty.list[index].price}CC has been sold to ${data.users[i].name}!`).catch(() => {console.log('Failed to alert seller of their listing being sold')});
 					realty.list.splice(index,1);
