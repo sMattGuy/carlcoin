@@ -64,7 +64,7 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
+	for(let rowStart = boardArray[0].length-1;rowStart >= 3;rowStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
@@ -81,7 +81,7 @@ function checkVictory(boardArray,col,row,id){
 		}
 	}
 	//check down left diagnol 
-	for(let colStart = boardArray.length-3;colStart > 3;colStart--){
+	for(let colStart = boardArray.length-1;colStart >= 3;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
