@@ -286,7 +286,7 @@ function connect4(client,message){
 								else{
 									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
 								}
-								drawConnect(message.channel,`${info}Use !cc place <index>`,boardArray).then(()=>{
+								drawConnect(message.channel,`${info}`,boardArray).then(()=>{
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 								});
 								return;
@@ -309,13 +309,17 @@ function connect4(client,message){
 					}
 				}
 			}).catch(e => {
-			message.channel.send(`Didnt get valid response in time 1`);
+			message.channel.send(`Didnt get valid response in time`);
+			let payPlayer = '';
+			if(workingID == id){
+				payPlayer = enemyID;
+			}
+			else{
+				payPlayer = id;
+			}
 			for(let i=0;i<data.users.length;i++){
-				if(data.users[i].id == id){
-					data.users[i].balance += wager;
-				}
-				if(data.users[i].id == enemyID){
-					data.users[i].balance += wager;
+				if(data.users[i].id == payPlayer){
+					data.users[i].balance += wager*2;
 				}
 			}
 			let newData = JSON.stringify(data);
