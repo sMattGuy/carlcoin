@@ -193,9 +193,9 @@ function realtyBuy(client,message){
 				if(data.users[j].id == realty.list[index].id){
 					//pay seller
 					console.log(realty.list[index].id);
-					console.log(client.users.cache.get(realty.list[index].id));
+					console.log(client.users.fetch(realty.list[index].id));
 					data.users[j].balance += realty.list[index].price;
-					client.users.cache.get(realty.list[index].id).send(`Your listing of a ${realty.list[index].type} for ${realty.list[index].price}CC has been sold to ${data.users[i].name}!`).catch(() => {console.log('Failed to alert seller of their listing being sold')});
+					client.users.fetch(realty.list[index].id).send(`Your listing of a ${realty.list[index].type} for ${realty.list[index].price}CC has been sold to ${data.users[i].name}!`).catch(() => {console.log('Failed to alert seller of their listing being sold')});
 					realty.list.splice(index,1);
 					//adjust housing market
 					let rise = Math.random() * 0.1;
