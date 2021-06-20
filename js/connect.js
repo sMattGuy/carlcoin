@@ -190,6 +190,8 @@ function connect4(client,message){
 		message.channel.awaitMessages(diffFilter,{max:1,time:60000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
 			if(option == '!cc connectAccept'){
+				let newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				let info = `It is ${message.author.username}'s turn!\n`;
 				frame(info);
 			}
