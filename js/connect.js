@@ -198,7 +198,7 @@ function connect4(client,message){
 				return;
 			}
 		}).catch(e => {
-			message.channel.send(`No difficulty choice made in time`);
+			message.channel.send(`Opponent didn't respond in time`);
 			console.log(e);
 		})
 	});
