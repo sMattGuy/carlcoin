@@ -35,6 +35,7 @@ function checkVictory(boardArray,col,row,id){
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = rowStart, colC = 0; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			//console.log('down right row'+colC+' '+rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -45,6 +46,7 @@ function checkVictory(boardArray,col,row,id){
 				count = 0;
 			}
 		}
+		//console.log('~~~~~~~~~~~~~~~~~~~~~~~~');
 	}
 	//check down right diagnol 
 	for(let colStart = 0;colStart<boardArray.length - 3;colStart++){
@@ -52,6 +54,7 @@ function checkVictory(boardArray,col,row,id){
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC < boardArray.length;rowC++, colC++){
+			//console.log('down right col'+colC+' '+rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -62,30 +65,15 @@ function checkVictory(boardArray,col,row,id){
 				count = 0;
 			}
 		}
+		//console.log('~~~~~~~~~~~~~~~~~~~~~~~~');
 	}
 	//check down left diagnol 
-	for(let rowStart = boardArray[0].length-1;rowStart >= 3;rowStart--){
-		count = 0;
-		let rowC = 0;
-		let colC = 0;
-		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
-			if(boardArray[colC][rowC] == id){
-				count++;
-				if(count >= 4){
-					return true;
-				}
-			}
-			else{
-				count = 0;
-			}
-		}
-	}
-	//check down left diagnol 
-	for(let colStart = boardArray.length-1;colStart >= 3;colStart--){
+	for(let colStart = boardArray.length-1;colStart>2;colStart--){
 		count = 0;
 		let rowC = 0;
 		let colC = 0;
 		for(rowC = 0, colC = colStart; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
+			//console.log('down left col'+colC+' '+rowC);
 			if(boardArray[colC][rowC] == id){
 				count++;
 				if(count >= 4){
@@ -96,6 +84,26 @@ function checkVictory(boardArray,col,row,id){
 				count = 0;
 			}
 		}
+		//console.log('~~~~~~~~~~~~~~~~~~~~~~~~');
+	}
+	//check down left diagnol 
+	for(let rowStart = 0;rowStart<boardArray[0].length - 3;rowStart++){
+		count = 0;
+		let rowC = 0;
+		let colC = 0;
+		for(rowC = rowStart, colC = boardArray.length-1; rowC < boardArray[0].length && colC >= 0;rowC++, colC--){
+			//console.log('down left row'+colC+' '+rowC);
+			if(boardArray[colC][rowC] == id){
+				count++;
+				if(count >= 4){
+					return true;
+				}
+			}
+			else{
+				count = 0;
+			}
+		}
+		//console.log('~~~~~~~~~~~~~~~~~~~~~~~~');
 	}
 	return false;
 }
