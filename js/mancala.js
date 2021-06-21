@@ -208,10 +208,10 @@ function mancala(client,message){
 						//complete steal
 						if(boardArray[oppositeSide][number] != 0){
 							if(workingID == id){
-								playerPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][number];
+								playerPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][5-number];
 							}
 							else{
-								enemyPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][number];
+								enemyPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][5-number];
 							}
 							boardArray[sideIndex][number] = 0;
 							boardArray[oppositeSide][5 - number] = 0;
