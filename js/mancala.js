@@ -117,7 +117,7 @@ function mancala(client,message){
 	async function frame(info){
 		//draw the board
 		//will need to change
-		drawMancala(message.channel,`${info}Use !cc pocket <index>`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then( msg =>{
+		drawMancala(message.channel,`${info}Use !cc pocket <index>`,boardArray,playerImage,enemyImage,playerPocket,enemyPocket,playerName,enemyName).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -270,7 +270,7 @@ function mancala(client,message){
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							//draw final screen
 							info = `It's a tie.... Good job?`;
-							drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then(()=>{
+							drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerPocket,enemyPocket,playerName,enemyName).then(()=>{
 								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 							});
 							return;
@@ -287,7 +287,7 @@ function mancala(client,message){
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						//draw final screen
-						drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then(()=>{
+						drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerPocket,enemyPocket,playerName,enemyName).then(()=>{
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 						});
 						return;
