@@ -381,7 +381,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 				ctx.font = '12px sans-serif';
 				context.fillStyle = '#000000';
 				ctx.fillText(boardArray[i][j],35 + (i*245),90 + (j * 30));
-				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3);
+				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3));
 			}
 		}
 	}
