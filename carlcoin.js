@@ -463,7 +463,7 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking connect help');
 		connect.connectHelp(client,message);
 	}
-	else if(message.content.startsWith('!cc mancala')){
+	else if(message.content.startsWith('!cc mancala') && message.content != '!cc mancalaAccept' && message.content != '!cc mancalaDeny'){
 		mancala.mancala(client,message);
 	}
 	else if(message.content === '!cc testMancalaBoard'){

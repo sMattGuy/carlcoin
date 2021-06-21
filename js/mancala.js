@@ -386,8 +386,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.strokeStyle = '#0000';
 	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	//place icons
-	ctx.drawImage(playerPic, 245, 5, 50, 50);
-	ctx.drawImage(enemyPic, 5, 345, 50, 50);
+	ctx.drawImage(playerPic, 5, 5, 50, 50);
+	ctx.drawImage(enemyPic, 245, 345, 50, 50);
 	//place in pockets
 	for(let i=0;i<boardArray.length;i++){
 		for(let j=0;j<boardArray[0].length;j++){
@@ -412,10 +412,10 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	//draw scores
 	ctx.font = '12px sans-serif';
 	ctx.fillStyle = '#000000';
-	ctx.fillText(playerScore,60,20);
-	ctx.fillText(enemyScore,230,390);
-	ctx.fillText(playerName,180,20);
-	ctx.fillText(enemyName,60,390);
+	ctx.fillText(playerScore,230,20);
+	ctx.fillText(enemyScore,60,390);
+	ctx.fillText(playerName,60,20);
+	ctx.fillText(enemyName,170,390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);
