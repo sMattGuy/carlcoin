@@ -226,7 +226,7 @@ function mancala(client,message){
 						}
 						else{
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
-							frame(`It's (Left) ${enemyName}'s turn! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							frame(`It's (Left) ${enemyName}'s turn again! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
 							return;
 						}
 					}
@@ -238,10 +238,12 @@ function mancala(client,message){
 							break;
 						}
 					}
-					for(let i=0;i<boardArray[0].length;i++){
-						if(boardArray[1][i] != 0){
-							gameOver = false;
-							break;
+					if(!gameOver){
+						for(let i=0;i<boardArray[1].length;i++){
+							if(boardArray[1][i] != 0){
+								gameOver = false;
+								break;
+							}
 						}
 					}
 					//end game
