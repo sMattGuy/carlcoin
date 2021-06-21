@@ -380,18 +380,18 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 				let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
 				ctx.font = '12px sans-serif';
 				ctx.fillStyle = '#000000';
-				ctx.fillText(boardArray[i][j],35 + (i*245),90 + (j * 30));
+				ctx.fillText(boardArray[i][j],35 + (i*230),95 + (j * 30));
 				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3));
 			}
 		}
 	}
 	for(let k=0;k<playerScore;k++){
 		let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
-		ctx.drawImage(rock,150 + Math.floor(Math.random * 60),50 + Math.floor(Math.random * 10));
+		ctx.drawImage(rock,150 + Math.floor(Math.random * 60),100 + Math.floor(Math.random * 10));
 	}
 	for(let k=0;k<enemyScore;k++){
 		let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
-		ctx.drawImage(rock,150 + Math.floor(Math.random * 60),340 + Math.floor(Math.random * 10));
+		ctx.drawImage(rock,150 + Math.floor(Math.random * 60),350 + Math.floor(Math.random * 10));
 	}
 	//draw scores
 	ctx.font = '12px sans-serif';
