@@ -382,7 +382,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 			}
 			ctx.font = '12px sans-serif';
 			ctx.fillStyle = '#000000';
-			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 45));
+			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 43));
 		}
 	}
 	for(let k=0;k<playerScore;k++){
@@ -396,8 +396,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	//draw scores
 	ctx.font = '12px sans-serif';
 	ctx.fillStyle = '#000000';
-	ctx.fillText(playerScore,130,20);
-	ctx.fillText(enemyScore,130,390);
+	ctx.fillText(playerScore,140,20);
+	ctx.fillText(enemyScore,140,390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);
