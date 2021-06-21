@@ -176,6 +176,7 @@ function mancala(client,message){
 							else{
 								sideIndex = 1;
 							}
+							number = -1;
 							enemySide = true;
 						}
 						else if(number == 6 && enemySide){
