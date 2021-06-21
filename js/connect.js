@@ -159,10 +159,15 @@ function connect4(client,message){
 	let found = false;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
+			if(data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
+				message.channel.send(`You can only play one game at a time!`);
+				return;
+			}
 			if(data.users[i].balance - wager < 0){
 				message.channel.send(`You don't have enough CC!`);
 				return;
 			}
+			data.users[i].busy = 1;
 			data.users[i].balance -= wager;
 			found = true;
 			break;
@@ -184,6 +189,11 @@ function connect4(client,message){
 				message.channel.send(`Your enemy doesn't have enough CC!`);
 				return;
 			}
+			if(data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
+				message.channel.send(`Your opponent only play one game at a time!`);
+				return;
+			}
+			data.users[i].busy = 1;
 			enemyName = data.users[i].name;
 			data.users[i].balance -= wager;
 			found = true; 
@@ -220,9 +230,11 @@ function connect4(client,message){
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
 						data.users[i].balance += wager;
+						data.users[i].busy = 0;
 					}
 					if(data.users[i].id == enemyID){
 						data.users[i].balance += wager;
+						data.users[i].busy = 0;
 					}
 				}
 				let newData = JSON.stringify(data);
@@ -248,11 +260,18 @@ function connect4(client,message){
 					else{
 						currentName = enemyName;
 					}
-					frame(`Invalid index selected! try again\n`);
+					frame(`Invalid index selected ${currentName}! try again!\n`);
 				}
 				else if(boardArray[number][0] == 1 || boardArray[number][0] == -1){
-					msg.delete().catch(() => {console.log('couldnt delete message in battle')});;
-					frame(`That column is full! select a different one!\n`);
+					msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+					let currentName = "";
+					if(workingID == id){
+						currentName = playerName;
+					}
+					else{
+						currentName = enemyName;
+					}
+					frame(`That column is full ${currentName}! select a different one!\n`);
 				}
 				//actually place piece
 				else{
@@ -275,15 +294,26 @@ function connect4(client,message){
 							|_|_|_|_|_|_|_| 0
 							|_|_|_|_|_|_|_| 1 	i
 							|_|_|_|_|_|_|_| 2 	|	these are i
-							|_|_|_|_|_|_|_| 3	 	V
+							|_|_|_|_|_|_|_| 3	V
 							|_|_|_|_|_|_|_| 4
 							|_|_|_|_|_|_|_| 5
 							*/
 							if(checkVictory(boardArray,number,i,num)){
+								let winner = workingID;
+								let loser = "";
+								if(workingID == id){
+									loser = enemyID;
+								}
+								else{
+									loser = id;
+								}
 								for(let i=0;i<data.users.length;i++){
-									if(data.users[i].id == workingID){
+									if(data.users[i].id == winner){
 										data.users[i].balance += (wager*2);
-										break;
+										data.users[i].busy = 0;
+									}
+									if(data.users[i].id == loser){
+										data.users[i].busy = 0;
 									}
 								}
 								let newData = JSON.stringify(data);
@@ -319,15 +349,22 @@ function connect4(client,message){
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
 			let payPlayer = '';
+			let slacker = '';
 			if(workingID == id){
 				payPlayer = enemyID;
+				slacker = id;
 			}
 			else{
 				payPlayer = id;
+				slacker = enemyID;
 			}
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == payPlayer){
 					data.users[i].balance += wager*2;
+					data.users[i].busy = 0;
+				}
+				if(data.users[i].id == slacker){
+					data.users[i].busy = 0;
 				}
 			}
 			let newData = JSON.stringify(data);
@@ -339,9 +376,11 @@ function connect4(client,message){
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
 					data.users[i].balance += wager;
+					data.users[i].busy = 0;
 				}
 				if(data.users[i].id == enemyID){
 					data.users[i].balance += wager;
+					data.users[i].busy = 0;
 				}
 			}
 			let newData = JSON.stringify(data);

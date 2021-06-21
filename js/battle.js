@@ -42,7 +42,7 @@ const magicAttack = [`You sunder the enemy's mind for `,`You light the enemy on 
 
 function testResponses(client,message){
 	const filter = m => {
-		return ((m.content === '!cc battle' ||m.content === '!cc attack' || m.content === '!cc look' || m.content === '!cc block' || m.content === '!cc run' || m.content === '!cc item' || m.content === '!cc magic')&&(message.author.id == m.author.id));
+		return ((m.content === '!cc attack' || m.content === '!cc look' || m.content === '!cc block' || m.content === '!cc run' || m.content === '!cc item' || m.content === '!cc magic')&&(message.author.id == m.author.id));
 	};
 	//get database information
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
@@ -64,7 +64,12 @@ function testResponses(client,message){
 	let found = false;
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
+			if(data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
+				message.channel.send(`You can only play one game at a time!`);
+				return;
+			}
 			found = true;
+			data.users[i].busy = 1;
 			playerBalance = data.users[i].balance;
 			str = data.users[i]["STR"];
 			if(isNaN(str)){
@@ -162,6 +167,8 @@ function testResponses(client,message){
 					return;
 				}
 			}
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			//actual box that will perform the loop
 			let initMessage = `Info will be here!\n`;
 			let eHp = enemy.hp;
@@ -191,10 +198,6 @@ function testResponses(client,message){
 				choice.first().delete().catch(() => {console.log('couldnt delete message in battle')});
 				let action = choice.first().content;
 				let gameMessage = ``;
-				if(action === '!cc battle'){
-					message.channel.send(`You abandon the battle!`);
-					return;
-				}
 				if(action === '!cc attack'){
 					let damage = Math.floor(Math.random() * str) + attackBonus;
 					let block = Math.floor(Math.random() * eDex);
@@ -264,6 +267,14 @@ function testResponses(client,message){
 				}
 				else if(action === '!cc run'){
 					gameMessage += `You run away! COWARD!!!!!\n`;
+					for(let i=0;i<data.users.length;i++){
+						if(data.users[i].id == id){
+							data.users[i].busy = 0;
+							break;
+						}
+					}
+					let newData = JSON.stringify(data);
+					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 					message.channel.send(gameMessage);
 					return;
 				}
@@ -275,6 +286,7 @@ function testResponses(client,message){
 					for(let i=0;i<data.users.length;i++){
 						if(data.users[i].id == id){
 							data.users[i].balance += amountEarned;
+							data.users[i].busy = 0;
 							data.econ += amountEarned;
 							break;
 						}
@@ -337,6 +349,7 @@ function testResponses(client,message){
 						if(data.users[i].id == id){
 							data.users[i].balance -= amountEarned;
 							data.econ -= amountEarned;
+							data.users[i].busy = 0;
 							break;
 						}
 					}
@@ -350,10 +363,26 @@ function testResponses(client,message){
 				msg.delete();
 				frame(gameMessage,enemy,eHp);
 			}).catch(e => {
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == id){
+					data.users[i].busy = 0;
+					break;
+				}
+			}
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
 		});
 		}).catch(e => {
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == id){
+					data.users[i].busy = 0;
+					break;
+				}
+			}
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send(`Didnt get valid response in time`);
 			console.log(e);
 		});
@@ -362,20 +391,6 @@ function testResponses(client,message){
 
 function battleHelp(client,message){
 	message.channel.send(`Use !cc battle to start a battle\nAfter this you will have to type a difficulty once prompted, type baby, easy, normal, hard, expert or nightmare\nOnce in a battle you have 6 actions\n!cc attack will do a physical attack relying on your STR\n!cc magic will do a psychic relying on your CHR\n!cc block will give you a boost of defense for a turn\n!cc look will use your INT to find a weakness in the enemy\n!cc item will use your INT to heal your wounds\n!cc run will get you out of the fight`);
-}
-
-//helper function to get user
-function getUserFromMention(client,mention) {
-	if (!mention) return;
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1);
-
-		if (mention.startsWith('!')) {
-			mention = mention.slice(1);
-		}
-
-		return client.users.cache.get(mention);
-	}
 }
 
 module.exports = {
