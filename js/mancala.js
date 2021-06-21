@@ -443,8 +443,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.fillStyle = '#000000';
 	ctx.fillText(playerScore,230,20);
 	ctx.fillText(enemyScore,60,390);
-	ctx.fillText(playerName,60,20);
-	ctx.fillText(enemyName,170,390);
+	ctx.fillText(playerName,150 - (playerName.length * 10),20);
+	ctx.fillText(enemyName,150 - (enemyName.length * 10),390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);

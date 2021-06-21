@@ -83,7 +83,7 @@ client.on('message', message => {
 	let timeRightNow = universalDate.getMinutes();
 	let today = universalDate.getDay();	
 	if(message.content.startsWith('!cc')){
-		console.log(universalDate.getHours() + ':' + universalDate.getMinutes() + ' ' + universalDate.getMonth() + '/' + universalDate.getDate() + '/' + universalDate.getFullYear());
+		console.log(universalDate.getHours() + ':' + universalDate.getMinutes() + ' ' + (universalDate.getMonth()+1) + '/' + universalDate.getDate() + '/' + universalDate.getFullYear());
 	}
 	//increment message counter with spam protection
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
