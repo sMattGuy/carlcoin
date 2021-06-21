@@ -162,7 +162,7 @@ function mancala(client,message){
 					let pieceCount = boardArray[sideIndex][number];
 					boardArray[sideIndex][number] = 0;
 					//advance to next pocket
-					boolean enemySide = false;
+					let enemySide = false;
 					let goAgain = false;
 					for(let i=pieceCount;i>0;i--){
 						number = (number+1)%7;
