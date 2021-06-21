@@ -55,12 +55,6 @@ function checkBalance(client,message){
 				}
 			}
 			let stockValue = 0;
-			if(data.users[i].hasOwnProperty("stock")){
-				for(let j=0;j<data.users[i].stock.length;j++){
-					stockValue += (data.users[i].stock[j].amount * data.users[i].stock[j].avgPrice);
-				}
-			}
-			let stockValue = 0;
 			for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
 				if(data.users[i].hasOwnProperty("stock")){
 					for(let j=0;j<data.users[i].stock.length;j++){
