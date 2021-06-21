@@ -373,8 +373,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.strokeStyle = '#0000';
 	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	//place icons
-	ctx.drawImage(playerPic, 10, 0, 75, 75);
-	ctx.drawImage(enemyPic, 10, 10, 215, 315);
+	ctx.drawImage(playerPic, 10, 10, 75, 75);
+	ctx.drawImage(enemyPic, 215, 315, 75, 75);
 	//place in pockets
 	for(let i=0;i<boardArray.length;i++){
 		for(let j=0;j<boardArray[0].length;j++){
