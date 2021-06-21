@@ -239,6 +239,7 @@ function mancala(client,message){
 						}
 					}
 					if(!gameOver){
+						gameOver = true;
 						for(let i=0;i<boardArray[1].length;i++){
 							if(boardArray[1][i] != 0){
 								gameOver = false;
