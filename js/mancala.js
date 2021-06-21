@@ -29,10 +29,12 @@ function mancala(client,message){
 	//parse wager and check if valid
 	let wager = parseInt(chop[chop.length-1]);
 	//check if trying to battle self temp disabled for testing
+	/*
 	if(message.author.id == enemyID){
 		message.channel.send('You cannot play with yourself..... weirdo');
 		return;
 	}
+	*/
 	//check that wager is valid temp 0 for testing
 	if(isNaN(wager) || wager < 0){
 		message.channel.send('Invalid amount entered!');
