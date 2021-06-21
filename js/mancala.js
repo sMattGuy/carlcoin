@@ -378,10 +378,10 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 		for(let j=0;j<boardArray[0].length;j++){
 			for(let k=0;k<boardArray[i][j];k++){
 				let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
+				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3));
 				ctx.font = '12px sans-serif';
 				ctx.fillStyle = '#000000';
-				ctx.fillText(boardArray[i][j],35 + (i*230),95 + (j * 30));
-				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3));
+				ctx.fillText(boardArray[i][j],45 + (i*230),100 + (j * 60));
 			}
 		}
 	}
@@ -396,8 +396,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	//draw scores
 	ctx.font = '12px sans-serif';
 	ctx.fillStyle = '#000000';
-	ctx.fillText(playerScore,120,20);
-	ctx.fillText(enemyScore,120,390);
+	ctx.fillText(playerScore,130,20);
+	ctx.fillText(enemyScore,130,390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);
