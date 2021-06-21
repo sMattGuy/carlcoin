@@ -62,7 +62,6 @@ function payUser(client,message){
 										noRecp = false;
 										data.users[i].balance -= amount;
 										data.users[j].balance += amount;
-										data.users[i]["bitterness"] += amount;
 										if(data.users[i]["bitterness"] >= 100){
 											message.channel.send(`Giving away all your money has made you bitter!`);
 										}

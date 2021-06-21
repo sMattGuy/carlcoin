@@ -49,8 +49,13 @@ function dailyEvents(client,message){
 				bankValue = bankJSON.users[j].balance;
 			}
 		}
-		bankValue = Math.floor(bankValue / 2);
-		let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
+		let stockValue = 0;
+		if(data.users[i].hasOwnProperty("stock")){
+			for(let j=0;j<data.users[i].stock.length;j++){
+				stockValue += (data.users[i].stock[j].amount * data.users[i].stock[j].avgPrice);
+			}
+		}
+		let personalTax = Math.floor(((data.users[i].balance + bankValue + stockValue) / data.econ) * 100) + 1;
 		console.log(data.users[i].name + ' has a personal tax of ' + personalTax);
 		let taxAmount = 0;
 		let blackjackAmount = 0;
