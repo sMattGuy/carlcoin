@@ -288,9 +288,22 @@ function mancala(client,message){
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						//draw final screen
 						drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then(()=>{
-							msg.delete().catch(() => {console.log('couldnt delete message in battle')});
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 						});
 						return;
+					}
+					else{
+						//not won yet
+						if(workingID == id){
+							workingID = enemyID;
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Left) ${enemyName}'s turn!\n`);
+						}
+						else{
+							workingID = id;
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Right) ${playerName}'s turn!\n`);
+						}
 					}
 				}
 			}).catch(e => {
