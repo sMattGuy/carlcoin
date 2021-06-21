@@ -197,7 +197,7 @@ function mancala(client,message){
 						}
 					}
 					//steal
-					if(boardArray[sideIndex][number] == 1){
+					if(boardArray[sideIndex][number] == 1 && !enemySide){
 						let oppositeSide = 0;
 						if(sideIndex == 1){
 							oppositeSide = 0;
