@@ -379,10 +379,10 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 			for(let k=0;k<boardArray[i][j];k++){
 				let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
 				ctx.drawImage(rock,90 + (i*120) + Math.floor(Math.random * 3),100 + (j * 45) + Math.floor(Math.random * 3));
-				ctx.font = '12px sans-serif';
-				ctx.fillStyle = '#000000';
-				ctx.fillText(boardArray[i][j],45 + (i*230),100 + (j * 60));
 			}
+			ctx.font = '12px sans-serif';
+			ctx.fillStyle = '#000000';
+			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 50));
 		}
 	}
 	for(let k=0;k<playerScore;k++){
