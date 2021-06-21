@@ -166,8 +166,8 @@ function mancala(client,message){
 					let enemySide = false;
 					let goAgain = false;
 					for(let i=pieceCount;i!=0;i--){
-						number = (number+1)%7;
-						if(number%7 == 6 && !enemySide){
+						number++;
+						if(number == 6 && !enemySide){
 							playerPocket++;
 							goAgain = true;
 							if(sideIndex == 1){
@@ -178,7 +178,7 @@ function mancala(client,message){
 							}
 							enemySide = true;
 						}
-						else if(number%7 == 6 && enemySide){
+						else if(number == 6 && enemySide){
 							number = 0;
 							if(sideIndex == 1){
 								sideIndex = 0;
@@ -220,10 +220,12 @@ function mancala(client,message){
 						if(workingID == id){
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 							frame(`It's (Right) ${playerName}'s turn again! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
 						}
 						else{
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 							frame(`It's (Left) ${enemyName}'s turn! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
 						}
 					}
 					//check game end
