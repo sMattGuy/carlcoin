@@ -366,9 +366,9 @@ function getUserFromMention(client,mention) {
 }
 
 function testDraw(client,message){
-	let boardArray = [[5,3,8,2,6,2],[9,1,11,3,6,9]];
-	let playerScore = 15;
-	let enemyScore = 13;
+	let boardArray = [[1,2,3,4,5,6],[8,9,10,11,12,13]];
+	let playerScore = 7;
+	let enemyScore = 14;
 	let playerIcon = message.author.displayAvatarURL({format:'png'});
 	let EnemyIcon = message.author.displayAvatarURL({format:'png'});
 	drawMancala(message.channel,`test board`,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore,message.author.username,message.author.username);
@@ -389,17 +389,25 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.drawImage(playerPic, 5, 5, 50, 50);
 	ctx.drawImage(enemyPic, 245, 345, 50, 50);
 	//place in pockets
-	for(let i=0;i<boardArray.length;i++){
-		for(let j=0;j<boardArray[0].length;j++){
-			for(let k=0;k<boardArray[i][j];k++){
-				let currentRock = `${pieceNames[k%pieceNames.length]}Rock.png`;
-				let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${currentRock}`);
-				ctx.drawImage(rock,80 + ((i*120) + Math.floor(Math.random() * 10)),87 + ((j * 42) + Math.floor(Math.random() * 10)),10,10);
-			}
-			ctx.font = '12px sans-serif';
-			ctx.fillStyle = '#000000';
-			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 43));
+	for(let j=0;j<boardArray[0].length;j++){
+		for(let k=0;k<boardArray[0][j];k++){
+			let currentRock = `${pieceNames[k%pieceNames.length]}Rock.png`;
+			let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${currentRock}`);
+			ctx.drawImage(rock,80 + Math.floor(Math.random() * 10),87 + ((j * 42) + Math.floor(Math.random() * 10)),10,10);
 		}
+		ctx.font = '12px sans-serif';
+		ctx.fillStyle = '#000000';
+		ctx.fillText(boardArray[0][j],45,100 + (j * 43));
+	}
+	for(let j=0;j<boardArray[1].length;j++){
+		for(let k=0;k<boardArray[1][j];k++){
+			let currentRock = `${pieceNames[k%pieceNames.length]}Rock.png`;
+			let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${currentRock}`);
+			ctx.drawImage(rock,80 + (120 + Math.floor(Math.random() * 10)),87 + ((j * 42) + Math.floor(Math.random() * 10)),10,10);
+		}
+		ctx.font = '12px sans-serif';
+		ctx.fillStyle = '#000000';
+		ctx.fillText(boardArray[1][j],45 + 200,100 + (j * 43));
 	}
 	for(let k=0;k<playerScore;k++){
 		let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
