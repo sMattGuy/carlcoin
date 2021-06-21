@@ -217,7 +217,14 @@ function mancala(client,message){
 					}
 					if(goAgain){
 						//player gets to go again
-						
+						if(workingID == id){
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Right) ${playerName}'s turn again! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+						}
+						else{
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Left) ${enemyName}'s turn! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+						}
 					}
 					//check game end
 					let gameOver = true;
