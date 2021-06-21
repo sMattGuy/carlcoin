@@ -82,6 +82,9 @@ client.on('message', message => {
 	let universalDate = new Date();
 	let timeRightNow = universalDate.getMinutes();
 	let today = universalDate.getDay();	
+	if(message.content.startsWith('!cc')){
+		console.log(universalDate.getHours() + ':' + universalDate.getMinutes() + ' ' + universalDate.getMonth() + '/' + universalDate.getDate() + '/' + universalDate.getFullYear());
+	}
 	//increment message counter with spam protection
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
@@ -464,6 +467,7 @@ client.on('message', message => {
 		connect.connectHelp(client,message);
 	}
 	else if(message.content.startsWith('!cc mancala') && message.content != '!cc mancalaAccept' && message.content != '!cc mancalaDeny'){
+		console.log(message.author.username + ' is playing mancala');
 		mancala.mancala(client,message);
 	}
 	else if(message.content === '!cc testMancalaBoard'){
