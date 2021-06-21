@@ -368,7 +368,7 @@ function mancala(client,message){
 }
 
 function mancalaHelp(client,message){
-	message.channel.send(`Use !cc mancala <user> <wager> to challenge someone to mancala\nUse !cc pocket <index> to place your piece`);
+	message.channel.send(`Use !cc mancala <user> <wager> to challenge someone to mancala\nUse !cc pocket <index> to place your piece\nHow to play: get the most rocks in your slot at the end. If you land a rock in your slot exactly you get to go again. if you land a rock in an empty pocket you steal the opponents rocks directly across.`);
 }
 
 function getUserFromMention(client,mention) {
@@ -443,8 +443,8 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.fillStyle = '#000000';
 	ctx.fillText(playerScore,230,20);
 	ctx.fillText(enemyScore,60,390);
-	ctx.fillText(playerName,150 - (playerName.length * 10),20);
-	ctx.fillText(enemyName,150 - (enemyName.length * 10),390);
+	ctx.fillText(playerName,150 - (playerName.length * 8),20);
+	ctx.fillText(enemyName,150 - (enemyName.length * 8),390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);
