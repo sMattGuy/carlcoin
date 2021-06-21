@@ -214,7 +214,7 @@ function mancala(client,message){
 								enemyPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][number];
 							}
 							boardArray[sideIndex][number] = 0;
-							boardArray[oppositeSide][number] = 0;
+							boardArray[oppositeSide][5 - number] = 0;
 						}
 					}
 					if(goAgain){
