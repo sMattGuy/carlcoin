@@ -358,10 +358,10 @@ function testDraw(client,message){
 	let enemyScore = 13;
 	let playerIcon = message.author.displayAvatarURL({format:'png'});
 	let EnemyIcon = message.author.displayAvatarURL({format:'png'});
-	drawMancala(message.channel,`test board`,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore)
+	drawMancala(message.channel,`test board`,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore,message.author.username,message.author.username);
 }
 
-async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore){
+async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore,playerName,enemyName){
 	const canvas = Canvas.createCanvas(300,400);
 	const pieceNames = ['red','blue','purple','green','orange','yellow'];
 	const ctx = canvas.getContext('2d');
@@ -374,7 +374,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	//place icons
 	ctx.drawImage(playerPic, 5, 5, 50, 50);
-	ctx.drawImage(enemyPic, 245, 345, 50, 50);
+	ctx.drawImage(enemyPic, 5, 345, 50, 50);
 	//place in pockets
 	for(let i=0;i<boardArray.length;i++){
 		for(let j=0;j<boardArray[0].length;j++){
@@ -399,8 +399,10 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	//draw scores
 	ctx.font = '12px sans-serif';
 	ctx.fillStyle = '#000000';
-	ctx.fillText(playerScore,140,20);
-	ctx.fillText(enemyScore,140,390);
+	ctx.fillText(playerScore,230,20);
+	ctx.fillText(enemyScore,230,390);
+	ctx.fillText(playerName,60,20);
+	ctx.fillText(enemyName,60,390);
 	//place in score sections
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'connect4image.png');
 	return channel.send(info,attachment);
