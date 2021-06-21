@@ -398,7 +398,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 		}
 		ctx.font = '12px sans-serif';
 		ctx.fillStyle = '#000000';
-		ctx.fillText(boardArray[0][j],45,300 - (j * 43));
+		ctx.fillText(boardArray[0][j],45,310 - (j * 43));
 	}
 	//enemy side
 	for(let j=0;j<boardArray[1].length;j++){
