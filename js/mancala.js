@@ -168,13 +168,14 @@ function mancala(client,message){
 					for(let i=pieceCount;i!=0;i--){
 						number++;
 						if(number == 6 && !enemySide){
-							playerPocket++;
 							goAgain = true;
 							if(sideIndex == 1){
 								sideIndex = 0;
+								enemyPocket++;
 							}
 							else{
 								sideIndex = 1;
+								playerPocket++;
 							}
 							number = -1;
 							enemySide = true;
