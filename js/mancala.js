@@ -206,7 +206,7 @@ function mancala(client,message){
 							oppositeSide = 1;
 						}
 						//complete steal
-						if(boardArray[oppositeSide][number] != 0){
+						if(boardArray[oppositeSide][5-number] != 0){
 							if(workingID == id){
 								playerPocket += boardArray[sideIndex][number] + boardArray[oppositeSide][5-number];
 							}
