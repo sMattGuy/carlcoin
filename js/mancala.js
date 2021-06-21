@@ -29,12 +29,10 @@ function mancala(client,message){
 	//parse wager and check if valid
 	let wager = parseInt(chop[chop.length-1]);
 	//check if trying to battle self temp disabled for testing
-	/*
 	if(message.author.id == enemyID){
 		message.channel.send('You cannot play with yourself..... weirdo');
 		return;
 	}
-	*/
 	//check that wager is valid temp 0 for testing
 	if(isNaN(wager) || wager < 0){
 		message.channel.send('Invalid amount entered!');
@@ -82,7 +80,7 @@ function mancala(client,message){
 				message.channel.send(`Your enemy doesn't have enough CC!`);
 				return;
 			}
-			if(id != enemyID && data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
+			if(data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
 				message.channel.send(`Your opponent can only play one game at a time!`);
 				return;
 			}
@@ -119,7 +117,7 @@ function mancala(client,message){
 	async function frame(info){
 		//draw the board
 		//will need to change
-		drawMancala(message.channel,`${info}Use !cc pocket <index>`,boardArray,playerImage,enemyImage).then( msg =>{
+		drawMancala(message.channel,`${info}Use !cc pocket <index>`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then( msg =>{
 			message.channel.awaitMessages(filter,{
 				max:1,time:60000,errors:['time']
 			}).then(choice => {
@@ -272,7 +270,7 @@ function mancala(client,message){
 							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 							//draw final screen
 							info = `It's a tie.... Good job?`;
-							drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage).then(()=>{
+							drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then(()=>{
 								msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 							});
 							return;
@@ -289,7 +287,7 @@ function mancala(client,message){
 						let newData = JSON.stringify(data);
 						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 						//draw final screen
-						drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage).then(()=>{
+						drawMancala(message.channel,`${info}`,boardArray,playerImage,enemyImage,playerScore,enemyScore,playerName,enemyName).then(()=>{
 							msg.delete().catch(() => {console.log('couldnt delete message in battle')});
 						});
 						return;
