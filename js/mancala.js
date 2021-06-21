@@ -382,7 +382,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 			}
 			ctx.font = '12px sans-serif';
 			ctx.fillStyle = '#000000';
-			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 50));
+			ctx.fillText(boardArray[i][j],45 + (i*200),100 + (j * 45));
 		}
 	}
 	for(let k=0;k<playerScore;k++){
