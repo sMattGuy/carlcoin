@@ -389,7 +389,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	ctx.drawImage(playerPic, 5, 5, 50, 50);
 	ctx.drawImage(enemyPic, 245, 345, 50, 50);
 	//place in pockets
-	for(let j=0;j<boardArray[0].length;j++){
+	for(let j=boardArray[0].length-1;j>=0;j--){
 		for(let k=0;k<boardArray[0][j];k++){
 			let currentRock = `${pieceNames[k%pieceNames.length]}Rock.png`;
 			let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${currentRock}`);
