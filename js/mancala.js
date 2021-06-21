@@ -127,7 +127,7 @@ function mancala(client,message){
 				let action = choice.first().content;
 				let chopAction = action.split(" ");
 				let sideIndex = 0;
-				if(workingID == playerId){
+				if(workingID == id){
 					sideIndex = 0;
 				}
 				else{
@@ -308,11 +308,13 @@ function mancala(client,message){
 							workingID = enemyID;
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 							frame(`It's (Right) ${enemyName}'s turn! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
 						}
 						else{
 							workingID = id;
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 							frame(`It's (Left) ${playerName}'s turn! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
 						}
 					}
 				}
