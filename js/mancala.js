@@ -82,8 +82,8 @@ function mancala(client,message){
 				message.channel.send(`Your enemy doesn't have enough CC!`);
 				return;
 			}
-			if(data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
-				message.channel.send(`Your opponent only play one game at a time!`);
+			if(id != enemyID && data.users[i].hasOwnProperty("busy") && data.users[i].busy == 1){
+				message.channel.send(`Your opponent can only play one game at a time!`);
 				return;
 			}
 			data.users[i].busy = 1;
