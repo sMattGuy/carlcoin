@@ -143,7 +143,7 @@ function mancala(client,message){
 					else{
 						currentName = enemyName;
 					}
-					frame(`Invalid pocket selected ${currentName}! try again!\n`);
+					frame(`That pocket is invalid ${currentName}! try again!\n`);
 				}
 				//check if pocket is empty
 				else if(boardArray[sideIndex][number] == 0){
@@ -155,16 +155,17 @@ function mancala(client,message){
 					else{
 						currentName = enemyName;
 					}
-					frame(`Invalid pocket selected ${currentName}! try again!\n`);
+					frame(`Pocket ${number} has no pieces ${currentName}! try again!\n`);
 				}
 				//actually do game calculation
 				else{
 					let pieceCount = boardArray[sideIndex][number];
+					let originalPocket = number;
 					boardArray[sideIndex][number] = 0;
 					//advance to next pocket
 					let enemySide = false;
 					let goAgain = false;
-					for(let i=pieceCount;i>0;i--){
+					for(let i=pieceCount;i!=0;i--){
 						number = (number+1)%7;
 						if(number%7 == 6 && !enemySide){
 							playerPocket++;
@@ -297,12 +298,12 @@ function mancala(client,message){
 						if(workingID == id){
 							workingID = enemyID;
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
-							frame(`It's (Left) ${enemyName}'s turn!\n`);
+							frame(`It's (Right) ${enemyName}'s turn! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
 						}
 						else{
 							workingID = id;
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
-							frame(`It's (Right) ${playerName}'s turn!\n`);
+							frame(`It's (Left) ${playerName}'s turn! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
 						}
 					}
 				}
