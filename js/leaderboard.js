@@ -41,7 +41,8 @@ function checkLeaderboard(client,message){
 				}
 			}
 		}
-		combinedAssests += bankVal + stockValue;
+		combinedAssests += bankVal
+		combinedAssests += stockValue;
 		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`};
 		userArray.push(userObject);
 	}
