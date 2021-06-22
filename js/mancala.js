@@ -246,19 +246,6 @@ function mancala(client,message){
 							boardArray[oppositeSide][5 - number] = 0;
 						}
 					}
-					if(goAgain){
-						//player gets to go again
-						if(workingID == id){
-							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
-							frame(`It's (Right) ${playerName}'s turn again! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
-							return;
-						}
-						else{
-							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
-							frame(`It's (Left) ${enemyName}'s turn again! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
-							return;
-						}
-					}
 					//check game end
 					let gameOver = true;
 					for(let i=0;i<boardArray[0].length;i++){
@@ -339,6 +326,19 @@ function mancala(client,message){
 							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
 						});
 						return;
+					}
+					if(goAgain){
+						//player gets to go again
+						if(workingID == id){
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Right) ${playerName}'s turn again! ${playerName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
+						}
+						else{
+							msg.delete().catch(() => {console.log('couldnt delete message in mancala')});
+							frame(`It's (Left) ${enemyName}'s turn again! ${enemyName} moved ${pieceCount} pieces from pocket ${originalPocket}!\n`);
+							return;
+						}
 					}
 					else{
 						//not won yet
