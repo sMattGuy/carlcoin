@@ -29,8 +29,8 @@ function blackjackStart(client,message){
 		}
 		if(playing){
 			let wager = parseInt(chop[chop.length-1]);
-			if(isNaN(wager) || wager < 2){
-				message.channel.send('Invalid amount entered!');
+			if(isNaN(wager) || wager < 2 || wager > 250){
+				message.channel.send('Invalid amount entered! Bets are between 2 and 250');
 			}
 			else if((wager * 2.5) >= data.blackjack + (wager - Math.floor(wager * .25))){
 				message.channel.send('The blackjack pot doesnt have enough CC!');

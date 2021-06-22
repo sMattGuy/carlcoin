@@ -339,10 +339,23 @@ function connect4(client,message){
 								else{
 									loser = id;
 								}
+								info = "";
 								for(let i=0;i<data.users.length;i++){
 									if(data.users[i].id == winner){
 										data.users[i].balance += (wager*2);
 										data.users[i].busy = 0;
+										if(isNaN(data.users[i]["INT"])){
+											data.users[i]["INT"] = 0;
+										}
+										if(isNaN(data.users[i]["intExp"])){
+											data.users[i]["intExp"] = 0;
+										}
+										data.users[i]["intExp"] += 1;
+										if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+											data.users[i]["intExp"] = 0;
+											data.users[i]["INT"] += 1;
+											info += `Your mind games helped you with critical thinking, causing your INT to increase!\n`;
+										}
 									}
 									if(data.users[i].id == loser){
 										data.users[i].busy = 0;
@@ -351,10 +364,10 @@ function connect4(client,message){
 								let newData = JSON.stringify(data);
 								fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 								if(workingID == id){
-									info = `${playerName} has won! They have won ${wager*2}CC!\n`;
+									info += `${playerName} has won! They have won ${wager*2}CC!\n`;
 								}
 								else{
-									info = `${enemyName} has won! They have won ${wager*2}CC!\n`;
+									info += `${enemyName} has won! They have won ${wager*2}CC!\n`;
 								}
 								drawConnect(message.channel,`${info}`,boardArray).then(()=>{
 									msg.delete().catch(() => {console.log('couldnt delete message in battle')});

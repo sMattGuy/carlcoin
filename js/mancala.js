@@ -271,19 +271,20 @@ function mancala(client,message){
 							enemyPocket += boardArray[1][i];
 							boardArray[1][i] = 0;
 						}
+						info = "";
 						let winner = "";
 						let loser = "";
 						if(playerPocket > enemyPocket){
 							//player wins
 							winner = id;
 							loser = enemyID;
-							info = `${playerName} has won! They got ${wager*2}CC!`;
+							info += `${playerName} has won! They got ${wager*2}CC!\n`;
 						}
 						else if(playerPocket < enemyPocket){
 							//enemy wins
 							winner = enemyID;
 							loser = id;
-							info = `${enemyName} has won! They got ${wager*2}CC!`;
+							info += `${enemyName} has won! They got ${wager*2}CC!\n`;
 						}
 						else{
 							//tie
@@ -314,6 +315,18 @@ function mancala(client,message){
 							if(data.users[i].id == winner){
 								data.users[i].balance += wager*2;
 								data.users[i].busy = 0;
+								if(isNaN(data.users[i]["INT"])){
+									data.users[i]["INT"] = 0;
+								}
+								if(isNaN(data.users[i]["intExp"])){
+									data.users[i]["intExp"] = 0;
+								}
+								data.users[i]["intExp"] += 1;
+								if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+									data.users[i]["intExp"] = 0;
+									data.users[i]["INT"] += 1;
+									info += `Your mind games helped you with critical thinking, causing your INT to increase!`;
+								}
 							}
 							if(data.users[i].id == loser){
 								data.users[i].busy = 0;

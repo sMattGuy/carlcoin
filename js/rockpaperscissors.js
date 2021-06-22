@@ -238,7 +238,7 @@ function acceptDenyRPS(client,message){
 										if(data.users[rpsParse.oppIndex]["INT"] * 2 + 1 < data.users[rpsParse.oppIndex]["intExp"]){
 											data.users[rpsParse.oppIndex]["intExp"] = 0;
 											data.users[rpsParse.oppIndex]["INT"] += 1;
-											message.channel.send(`You mind games helped you with critical thinking, causing your INT to increase!`);
+											message.channel.send(`Your mind games helped you with critical thinking, causing your INT to increase!`);
 										}
 									}
 									data.users[rpsParse.challIndex]["activity"] = Date.now();

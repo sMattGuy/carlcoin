@@ -28,7 +28,7 @@ function playSlots(client,message){
 				if(isNaN(wager) || wager < 0){
 					message.channel.send('Invalid amount entered!');
 				}
-				else if(wager < 5 || wager > 25){
+				else if(wager < 5 || wager > 100){
 					message.channel.send(`Invalid amount entered (Bets are between 5CC and 25CC)`);
 				}
 				else if((wager * 15) >= data.blackjack){
