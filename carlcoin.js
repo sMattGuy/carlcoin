@@ -479,7 +479,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/19/2021\nAdded connect4, use !cc connectHelp for more info. Since this is new there is a possiblilty of bugs, so it is possible to challenge for 0CC as to not risk losing anything.`);
+		message.channel.send(`Patch Notes 6/19/2021\nAdded mancala, see !cc mancalaHelp for more information`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
