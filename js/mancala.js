@@ -443,6 +443,5 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 //export section
 module.exports = {
 	mancala,
-	mancalaHelp,
-	testDraw
+	mancalaHelp
 };
