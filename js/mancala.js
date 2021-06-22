@@ -95,20 +95,49 @@ function mancala(client,message){
 		message.channel.send(`Your opponent is not registered for Carl Coin!`);
 		return;
 	}
+	let newData = JSON.stringify(data);
+	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+	let info = `It is ${message.author.username}'s turn!\n`;
 	message.channel.send(`${enemyName}! Type !cc mancalaAccept to accept the battle, or !cc mancalaDeny to reject the battle, You have 1 min to respond!`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:60000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
 			if(option == '!cc mancalaAccept'){
-				let newData = JSON.stringify(data);
+				database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				data = JSON.parse(database);
+				newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				let info = `It is ${message.author.username}'s turn!\n`;
 				frame(info);
 			}
 			else if(option == '!cc mancalaDeny'){
+				database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				data = JSON.parse(database);
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == enemyID){
+						data.users[i].busy = 0;
+					}
+					if(data.users[i].id == id){
+						data.users[i].busy = 0;
+					}
+				}
+				newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				message.channel.send(`You have declined the game!`);
 				return;
 			}
 		}).catch(e => {
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == enemyID){
+					data.users[i].busy = 0;
+				}
+				if(data.users[i].id == id){
+					data.users[i].busy = 0;
+				}
+			}
+			newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send(`Opponent didn't respond in time`);
 			console.log(e);
 		})
@@ -271,6 +300,8 @@ function mancala(client,message){
 						}
 						else{
 							//tie
+							database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+							data = JSON.parse(database);
 							for(let i=0;i<data.users.length;i++){
 								if(data.users[i].id == id){
 									data.users[i].balance += wager;
@@ -290,6 +321,8 @@ function mancala(client,message){
 							});
 							return;
 						}
+						database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+						data = JSON.parse(database);
 						for(let i=0;i<data.users.length;i++){
 							if(data.users[i].id == winner){
 								data.users[i].balance += wager*2;
@@ -324,6 +357,8 @@ function mancala(client,message){
 					}
 				}
 			}).catch(e => {
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
 			message.channel.send(`Didnt get valid response in time`);
 			let payPlayer = '';
 			let slacker = '';
@@ -349,6 +384,8 @@ function mancala(client,message){
 			console.log(e);
 		});
 		}).catch(e => {
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
 			message.channel.send(`Didnt get valid response in time 2`);
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){

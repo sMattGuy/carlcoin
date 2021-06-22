@@ -204,20 +204,48 @@ function connect4(client,message){
 		message.channel.send(`Your opponent is not registered for Carl Coin!`);
 		return;
 	}
+	let newData = JSON.stringify(data);
+	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	message.channel.send(`${enemyName}! Type !cc connectAccept to accept the battle, or !cc connectDeny to reject the battle, You have 1 min to respond!`).then(msg => {
 		message.channel.awaitMessages(diffFilter,{max:1,time:60000,errors:['time']}).then(choice => {
 			let option = choice.first().content;
 			if(option == '!cc connectAccept'){
+				database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				data = JSON.parse(database);
 				let newData = JSON.stringify(data);
 				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				let info = `It is ${message.author.username}'s turn!\n`;
 				frame(info);
 			}
 			else if(option == '!cc connectDeny'){
+				database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				data = JSON.parse(database);
+				for(let i=0;i<data.users.length;i++){
+					if(data.users[i].id == enemyID){
+						data.users[i].busy = 0;
+					}
+					if(data.users[i].id == id){
+						data.users[i].busy = 0;
+					}
+				}
+				newData = JSON.stringify(data);
+				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				message.channel.send(`You have declined the game!`);
 				return;
 			}
 		}).catch(e => {
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
+			for(let i=0;i<data.users.length;i++){
+				if(data.users[i].id == enemyID){
+					data.users[i].busy = 0;
+				}
+				if(data.users[i].id == id){
+					data.users[i].busy = 0;
+				}
+			}
+			newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			message.channel.send(`Opponent didn't respond in time`);
 			console.log(e);
 		})
@@ -227,6 +255,8 @@ function connect4(client,message){
 		//draw the board
 		if(checkTie(boardArray)){
 			drawConnect(message.channel,`It's a tie!`,boardArray).then(()=>{
+				database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+				data = JSON.parse(database);
 				for(let i=0;i<data.users.length;i++){
 					if(data.users[i].id == id){
 						data.users[i].balance += wager;
@@ -299,6 +329,8 @@ function connect4(client,message){
 							|_|_|_|_|_|_|_| 5
 							*/
 							if(checkVictory(boardArray,number,i,num)){
+								database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+								data = JSON.parse(database);
 								let winner = workingID;
 								let loser = "";
 								if(workingID == id){
@@ -348,6 +380,8 @@ function connect4(client,message){
 				}
 			}).catch(e => {
 			message.channel.send(`Didnt get valid response in time`);
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
 			let payPlayer = '';
 			let slacker = '';
 			if(workingID == id){
@@ -372,6 +406,8 @@ function connect4(client,message){
 			console.log(e);
 		});
 		}).catch(e => {
+			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+			data = JSON.parse(database);
 			message.channel.send(`Didnt get valid response in time 2`);
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
