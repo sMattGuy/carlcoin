@@ -474,9 +474,6 @@ client.on('message', message => {
 		console.log(message.author.username + ' is playing mancala');
 		mancala.mancala(client,message);
 	}
-	else if(message.content === '!cc testMancalaBoard'){
-		mancala.testDraw(client,message);
-	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
 		message.channel.send(`Patch Notes 6/19/2021\nAdded mancala, see !cc mancalaHelp for more information`);
