@@ -132,7 +132,7 @@ function updateStocks(client,message){
 			console.log(stock.stock[i].name + ' is going neg');
 			willGoUp = false;
 		}
-		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .7)){
+		else if(stock.stock[i].boughtRecently > 0 || stock.stock[i].existing <= stock.stock[i].total - (stock.stock[i].total * .9)){
 			console.log(stock.stock[i].name + ' is going positive');
 			willGoUp = true;
 			changeChance += 0.33;
