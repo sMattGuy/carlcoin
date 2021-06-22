@@ -382,15 +382,6 @@ function getUserFromMention(client,mention) {
 	}
 }
 
-function testDraw(client,message){
-	let boardArray = [[1,2,3,4,5,6],[8,9,10,11,12,13]];
-	let playerScore = 7;
-	let enemyScore = 14;
-	let playerIcon = message.author.displayAvatarURL({format:'png'});
-	let EnemyIcon = message.author.displayAvatarURL({format:'png'});
-	drawMancala(message.channel,`test board`,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore,message.author.username,message.author.username);
-}
-
 async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerScore,enemyScore,playerName,enemyName){
 	const canvas = Canvas.createCanvas(300,400);
 	const pieceNames = ['red','blue','purple','green','orange','yellow'];
@@ -415,7 +406,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 		}
 		ctx.font = '12px sans-serif';
 		ctx.fillStyle = '#000000';
-		ctx.fillText(boardArray[0][j],45,310 - (j * 43));
+		ctx.fillText(boardArray[0][j],40,310 - (j * 43));
 	}
 	//enemy side
 	for(let j=0;j<boardArray[1].length;j++){
@@ -436,7 +427,7 @@ async function drawMancala(channel,info,boardArray,playerIcon,EnemyIcon,playerSc
 	//enemy scores
 	for(let k=0;k<enemyScore;k++){
 		let rock = await Canvas.loadImage(`/home/mattguy/carlcoin/mancala/${pieceNames[k%pieceNames.length]}Rock.png`);
-		ctx.drawImage(rock,85 + Math.floor(Math.random() * 120),330 + Math.floor(Math.random() * 8),10,10);
+		ctx.drawImage(rock,85 + Math.floor(Math.random() * 120),335 + Math.floor(Math.random() * 8),10,10);
 	}
 	//draw scores
 	ctx.font = '12px sans-serif';
