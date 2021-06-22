@@ -46,11 +46,11 @@ function checkLeaderboard(client,message){
 		userArray.push(userObject);
 	}
 	userArray.sort(function (a,b){
-		return (parseInt(b.balance) + parseInt(b.assets) + parseInt(b.bank)) - (parseInt(a.balance) + parseInt(a.assets) + parseInt(a.bank));
+		return (parseInt(b.balance) + parseInt(b.assets)) - (parseInt(a.balance) + parseInt(a.assets));
 	});
 	let messageBox = '';
 	for(let i=0;i<userArray.length;i++){
-		let newMessage = `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) (bank:${userArray[i].bank}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)+parseInt(userArray[i].bank)}\n`;
+		let newMessage = `${i+1}.${userArray[i].name}:${userArray[i].balance} (assets:${userArray[i].assets}) total:${parseInt(userArray[i].balance)+parseInt(userArray[i].assets)}\n`;
 		if(messageBox.length + newMessage.length < 1500){
 			messageBox += newMessage;
 		}
