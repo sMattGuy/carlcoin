@@ -32,7 +32,7 @@ function checkLeaderboard(client,message){
 			}
 		}
 		let stockValue = 0;
-		for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
+		for(let stockIndex = 0;stockIndex<stockJSON.stock.length;stockIndex++){
 			if(data.users[i].hasOwnProperty("stock")){
 				for(let j=0;j<data.users[i].stock.length;j++){
 					if(stockJSON.stock[stockIndex].name == data.users[i].stock[j].name){
