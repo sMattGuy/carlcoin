@@ -4,6 +4,10 @@ const fs = require('fs');
 function checkLeaderboard(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
+	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
+	let stockJSON = JSON.parse(stockFile);
+	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+	let bank = JSON.parse(bankFile);
 	let userArray = [];
 	for(let i=0;i<data.users.length;i++){
 		let balance = data.users[i].balance
@@ -21,15 +25,24 @@ function checkLeaderboard(client,message){
 			skyscraperValue = 0;
 		}
 		let combinedAssests = houseValue + apartmentValue + skyscraperValue;
-		let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
-		let bank = JSON.parse(bankFile);
 		let bankVal = 0;
 		for(let j=0;j<bank.users.length;j++){
 			if(data.users[i].id == bank.users[j].id){
 				bankVal = bank.users[j].balance;
 			}
 		}
-		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`,bank:`${bankVal}`};
+		let stockValue = 0;
+		for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
+			if(data.users[i].hasOwnProperty("stock")){
+				for(let j=0;j<data.users[i].stock.length;j++){
+					if(stockJSON.stock[stockIndex].name == data.users[i].stock[j].name){
+						stockValue += (data.users[i].stock[j].amount * stockJSON.stock[stockIndex].price);
+					}
+				}
+			}
+		}
+		combinedAssests += bankVal + stockValue;
+		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`};
 		userArray.push(userObject);
 	}
 	userArray.sort(function (a,b){
