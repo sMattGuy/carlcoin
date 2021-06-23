@@ -598,6 +598,10 @@ function trainHorse(client,message){
 							}
 							massTrain += `Training complete for ${data.users[i].horses[allHorseIndex].name}!\n`;
 							data.users[i].horses[allHorseIndex].trainingCooldown = Date.now() + 21600000;
+							if(massTrain.length >= 1000){
+								message.channel.send(massTrain);
+								massTrain = '';
+							}
 						}
 					}
 					message.channel.send(massTrain);
