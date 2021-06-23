@@ -172,7 +172,7 @@ function raceHorse(client,message){
 					let total = bet;
 					data.users[i].balance -= bet;
 					data.econ -= bet;
-					let userPacket = {"name":`${name}`,"id":`${userID}`,"horse":horse,"bet":bet};
+					let userPacket = {"name":`${name}`,"id":`${userID}`,"horse":horse,"bet":bet,"jocky":{"name":"none","statModifier":[0,0,0],"price":0,"wins":0,"loss":0}};
 					if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 						let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
 						let raceFile = JSON.parse(raceRead);
