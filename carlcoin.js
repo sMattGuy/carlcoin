@@ -468,7 +468,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc mancalaHelp'){
 		console.log(message.author.username + ' is checking mancala help');
-		mancala.testDraw(client,message);
+		mancala.mancalaHelp(client,message);
 	}
 	else if(message.content.startsWith('!cc mancala') && message.content != '!cc mancalaAccept' && message.content != '!cc mancalaDeny'){
 		console.log(message.author.username + ' is playing mancala');
