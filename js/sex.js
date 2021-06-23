@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const die = require('./suicide.js');
 const fs = require('fs');
 
 function haveSex(client,message){
@@ -10,13 +11,7 @@ function haveSex(client,message){
 	if(chance >= 0.999){
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == id){
-				let balance = data.users[i].balance;
-				console.log("busted ultimate nut " + data.users[i].name);
-				data.users.splice(i,1);
-				data.econ -= balance;
-				
-				let newData = JSON.stringify(data);
-				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+				die.die(message,client,data,i);
 				message.channel.send(`You bust the ultimate nut, draining all of your life force\nWith this characters death, the thread of prophecy is severed. Rejoin CarlCoin to restore the weave of fate, or persist in the doomed world you have created.`);
 				break;
 			}

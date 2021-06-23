@@ -244,10 +244,10 @@ function bankDaily(client,message){
 	let data = JSON.parse(database);
 	let newInterest = 0.05;
 	for(let j=0;j<bank.users.length;j++){
-		if(today.getDate() == 1){
+		if(today.getDay() == 0){
 			newInterest = Math.random() * 0.1 + 0.01;
 			//pay out users
-			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 31));
+			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 7));
 			bank.users[j].balance += payout;
 			data.econ += payout;
 			bank.users[j].days = 1;
