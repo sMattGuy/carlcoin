@@ -119,11 +119,11 @@ function updateStocks(client,message){
 				stock.stock[i].addMore = false;
 			}
 			if(stock.stock[i].addMore){
-				console.log(stock.stock[i].name + ' is gaining more shares');
 				stock.stock[i].addMore = false;
 				let newShares = Math.floor(stock.stock[i].total * .5);
 				stock.stock[i].total += newShares;
 				stock.stock[i].existing += newShares;
+				console.log(stock.stock[i].name + ' has gained ' + newShares + ' shares');
 			}
 		}
 		let willGoUp = false;
