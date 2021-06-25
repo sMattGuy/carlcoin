@@ -31,11 +31,99 @@ function showJockeys(client,message){
 		let available = jock.jockey[i].hired ? 'Hired':'Available';
 		jockList += `${i}. ${jock.jockey[i].name}, ${jock.jockey[i].price}CC, ${jock.jockey[i].wins}W/${jock.jockey[i].loss}L: ${available}\n`;
 	}
+	jockList += `${jock.jockey.length}. Random Jockey, 300CC, ?W/?L: Always\n`;
 	message.channel.send(jockList,{code:true});
 }
 
-function jockeyPurchase(client,message){
-	
+function jockeyHire(client,message){
+	let chop = message.content.split(" ");
+	//if too many arguments
+	if(chop.length != 3){
+		message.channel.send(`Usage: !cc jockeyHire <index>`);
+		return;
+	}
+	else{
+		let jockIndex = 0;
+		try{
+			jockIndex = parseInt(chop[chop.length-1]);
+		}
+		//if username cannot be gotten
+		catch(err){
+			message.channel.send(`Invalid index supplied`);
+			return;
+		}
+		if(jockIndex < 0 || isNaN(jockIndex)){
+			message.channel.send(`Jockey selection cannot be negative!`);
+			return;
+		}
+		//start getting files
+		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
+		let data = JSON.parse(database);
+		let id = message.author.id;
+		let jockFile = fs.readFileSync('/home/mattguy/carlcoin/jockeys.json');
+		let jock = JSON.parse(jockFile);
+		if(jockIndex > jock.jockey.length){
+			message.channel.send(`Invalid index selected!`);
+			return;
+		}
+		if(jock.jockey[jockIndex].hired && jockIndex != jock.jockey.length){
+			message.channel.send(`That Jockey has already been hired!`);
+			return;
+		}
+		if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
+			let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
+			let raceFile = JSON.parse(raceRead);
+			for(let j=0;j<raceFile.racers.length;j++){
+				if(id == raceFile.racers[j].id){
+					if(raceFile.racers[j].jocky.name != 'none'){
+						message.channel.send(`You already hired a jockey!`);
+						return;
+					}
+					for(let userIndex = 0;userIndex<data.users.length;userIndex++){
+						if(id == data.users[userIndex].id){
+							//do userside checks
+							let boughtJockey = {};
+							if(jockIndex == jock.jockey.length){
+								//generate random jockey
+								let pointsLeft = 10;
+								let stamina = Math.floor(Math.random() * pointsLeft);
+								pointsLeft -= stamina;
+								let speed = Math.floor(Math.random() * pointsLeft);
+								pointsLeft -= speed;
+								let activate = pointsLeft;
+								boughtJockey = {"name":"Nobody Norman","statModifier":[stamina,speed,activate],"price":300,"wins":0,"loss":0,"hired":false}
+							}
+							else{
+								boughtJockey = jock.jockey[index];
+							}
+							if(data.users[userIndex].balance - boughtJockey.price < 0){
+								message.channel.send(`You don't have enough Carl Coin!`);
+								return;
+							}
+							data.users[userIndex].balance -= boughtJockey.price;
+							boughtJockey.hired = true;
+							raceFile.racers[j].jocky = boughtJockey;
+							//start writing to files
+							let newData = JSON.stringify(data);
+							fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+							let newJock = JSON.stringify(jock);
+							fs.writeFileSync('/home/mattguy/carlcoin/jockeys.json',newJock);
+							let newRace = JSON.stringify(raceFile);
+							fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',newRace);
+							message.channel.send(`You have hired ${jock.jockey[jockIndex].name} to support your horse ${raceFile.racers[j].name} this race!`);
+							return;
+						}
+					}
+					message.channel.send(`You are not registered for carlcoin!`);
+					return;
+				}
+			}
+		}
+		else{
+			message.channel.send(`No one has enrolled in the race for tonight!`);
+			return;
+		}
+	}
 }
 
 function nameHorse(client, message){
@@ -236,7 +324,11 @@ function checkRace(client,message){
 						if(data.users[userFinder].horses[horseFinder].id === raceFile.racers[i].horse){
 							horseFound = true;
 							let horse = JSON.parse(JSON.stringify(data.users[userFinder].horses[horseFinder]));
-							raceEvents += `${horse.name} owned by ${raceFile.racers[i].name} who bet ${raceFile.racers[i].bet}CC\n`
+							raceEvents += `${horse.name} owned by ${raceFile.racers[i].name} who bet ${raceFile.racers[i].bet}CC`;
+							if(raceFile.racers[i].jocky.name != "none"){
+								raceEvents += ` who is supported by ${raceFile.racers[i].jocky.name}!`;
+							}
+							raceEvents += `\n`;
 							break;
 						}
 					}
@@ -276,7 +368,7 @@ function actualRace(client,message){
 							horseFound = true;
 							let horse = JSON.parse(JSON.stringify(data.users[userFinder].horses[horseFinder]));
 							let name = raceFile.racers[i].name;
-							let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse};
+							let currentHorse = {"name":`${name}`,"id":`${id}`,"bet":raceFile.racers[i].bet,"horse":horse,"jocky":raceFile.racers[i].jocky};
 							horses.push(currentHorse);
 							break;
 						}
@@ -294,7 +386,7 @@ function actualRace(client,message){
 				let AIHorse = createHorse();
 				total += 100;
 				let owner = `AI${i}`;
-				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse,"bet":100};
+				let airacer = {"name":`${owner}`,"id":`${owner}`,"horse":AIHorse,"bet":100,"jocky":{"name":"none","statModifier":[0,0,0],"price":0,"wins":0,"loss":0}};
 				horses.push(airacer);
 			}
 		}
@@ -308,7 +400,11 @@ function actualRace(client,message){
 		for(let raceSize=100;raceSize!=0;raceSize--){
 			raceEvents += `Current standings:\n`;
 			for(let places = 0;places < racePos.length;places++){
-				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} owned by ${horses[racePos[places]].name} who bet ${horses[racePos[places]].bet}CC\n`;
+				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} `;
+				if(horses[racePos[places]].horse.jocky.name != "none"){
+					raceEvents += `supported by ${horses[racePos[places]].jocky.name}, `;
+				}
+				raceEvents += `owned by ${horses[racePos[places]].name} who bet ${horses[racePos[places]].bet}CC\n`;
 			}
 			raceEvents += `SPRINTS LEFT: ${raceSize}\n`;
 			//each frame will go through every horses decision
@@ -332,7 +428,7 @@ function actualRace(client,message){
 					horseBehind = horses[racePos[pos+1]];
 				}
 				if(horseInFront.id != 'noPerson'){
-					if(Math.floor(Math.random()*horses[racePos[pos]].horse.speed) > Math.floor(Math.random()*horseInFront.horse.speed)){
+					if(Math.floor(Math.random()*(horses[racePos[pos]].horse.speed + horses[racePos[pos]].jocky.statModifier[1])) > Math.floor(Math.random()*(horseInFront.horse.speed + horseInFront.jocky.statModifier[1]))){
 						//current horse
 						let overtakerHorse = racePos[pos];
 						//horse being overtaken
@@ -351,7 +447,7 @@ function actualRace(client,message){
 					raceEvents += `${horses[racePos[pos]].horse.name} is in first!\n`;
 				}
 				//special ability
-				let specialChance = Math.random();
+				let specialChance = Math.random() + (horses[racePos[newPos]].jocky.statModifier[2] * 0.01);
 				if(horses[racePos[newPos]].horse.special == 'Speed Boost' && specialChance >= 0.80){
 					raceEvents += `${horses[racePos[newPos]].horse.name} activated ${horses[racePos[newPos]].horse.special}!\n`;
 					horses[racePos[newPos]].horse.speed += 10;
@@ -429,6 +525,7 @@ function actualRace(client,message){
 					}
 				}
 				//end of specials
+				horses[racePos[newPos]].horse.stamina += Math.floor(Math.random() * horses[racePos[newPos]].jocky.statModifier[0]);
 				horses[racePos[newPos]].horse.stamina -= 1;
 				if(horses[racePos[newPos]].horse.stamina < 0){
 					raceEvents += `${horses[racePos[newPos]].horse.name} looks tired!\n`;
@@ -466,6 +563,16 @@ function actualRace(client,message){
 		total -= secondWinnings;
 		let thirdWinnings = total;
 		let victory = 'Placements:\n';
+		let jockFile = fs.readFileSync('/home/mattguy/carlcoin/jockeys.json');
+		let jock = JSON.parse(jockFile);
+		for(let i=0;i<jock.jockey.length;i++){
+			for(let j=0;j<horses.length;j++){
+				if(jock.jockey[i].name == horses[j].jocky.name){
+					jock.jockey[i].loss += 1;
+					jock.jockey[i].hired = false;
+				}
+			}
+		}
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
 				let winnings = Math.floor(firstWinnings * (parseInt(firstPlace.bet) / originalTotal)) + parseInt(firstPlace.bet);
@@ -478,8 +585,18 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == firstPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, First Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, `
+						if(firstPlace.jocky.name != "none"){
+							data.users[i].horses[j].timeline += `supported by ${firstPlace.jocky.name}, `;
+						}
+						data.users[i].horses[j].timeline += `First Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
+					}
+				}
+				for(let j=0;j<jock.jockey.length;j++){
+					if(jock.jockey[j].name == firstPlace.jocky.name){
+						jock.jockey[j].win += 1;
+						jock.jockey[j].loss -= 1;
 					}
 				}
 				if(issue){
@@ -497,8 +614,18 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == secondPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, Second Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, `
+						if(secondPlace.jocky.name != "none"){
+							data.users[i].horses[j].timeline += `supported by ${secondPlace.jocky.name}, `;
+						}
+						data.users[i].horses[j].timeline += `Second Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
+					}
+				}
+				for(let j=0;j<jock.jockey.length;j++){
+					if(jock.jockey[j].name == secondPlace.jocky.name){
+						jock.jockey[j].win += 1;
+						jock.jockey[j].loss -= 1;
 					}
 				}
 				if(issue){
@@ -516,8 +643,18 @@ function actualRace(client,message){
 				for(let j=0;j<data.users[i].horses.length;j++){
 					if(data.users[i].horses[j].id == thirdPlace.horse.id){
 						issue = false;
-						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, Third Place Winner of ${raceName}, earning ${winnings}CC\n`;
+						data.users[i].horses[j].timeline += `${data.users[i].horses[j].name}, `
+						if(thirdPlace.jocky.name != "none"){
+							data.users[i].horses[j].timeline += `supported by ${thirdPlace.jocky.name}, `;
+						}
+						data.users[i].horses[j].timeline += `Third Place Winner of ${raceName}, earning ${winnings}CC\n`;
 						break;
+					}
+				}
+				for(let j=0;j<jock.jockey.length;j++){
+					if(jock.jockey[j].name == thirdPlace.jocky.name){
+						jock.jockey[j].win += 1;
+						jock.jockey[j].loss -= 1;
 					}
 				}
 				if(issue){
@@ -527,6 +664,9 @@ function actualRace(client,message){
 		}
 		let newData = JSON.stringify(data);
 		fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+		let newJock = JSON.stringify(jock);
+		fs.writeFileSync('/home/mattguy/carlcoin/jockeys.json',newJock);
+		
 		client.guilds.cache.forEach((guild) => {
 			try{
 				guild.channels.cache.find((x) => x.name == 'general').send(`Here are today's horse race results\n${victory}`,{files:["/home/mattguy/carlcoin/cache/horseRaceEvents.txt"]});
