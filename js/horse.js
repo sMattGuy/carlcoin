@@ -1133,7 +1133,7 @@ function horseStats(client,message){
 }
 
 function horseHelp(client,message){
-	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index / all> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!\nUse !cc checkRace who is in the race`);
+	message.channel.send(`Use !cc horsePurchase to buy a new horse for ${horsePrice}CC! First horse costs 100CC!\nUse !cc horseRace <index> <bet> to enroll your horse in a race!\nUse !cc horseTrain <index / all> to improve your horse's stats!\nUse !cc horseSell <user> <index> <price> to sell your horse!\nUse !cc horseBreed <index1> <index2> to breed two of your horses! WARNING! THIS WILL RETIRE YOUR TWO HORSES!\nUse !cc horseList to see your horses!\nUse !cc horseStats <index / all> to get a specific horses stats!\nUse !cc horseAccept / !cc horseDeny to answer a purchase\nUse !cc horseName <index> <name> to change your horses name, the name can have spaces in it as well!\nUse !cc checkRace who is in the race\nUse !cc showJockeys to see the jockys available!\nUse !cc jockeyHire <index> to hire a specific jockey!`);
 }
 
 function makeHorseEmbed(newHorse,name,message){

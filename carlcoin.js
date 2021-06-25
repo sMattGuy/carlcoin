@@ -486,7 +486,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/19/2021\nAdded mancala, see !cc mancalaHelp for more information`);
+		message.channel.send(`Patch Notes 6/25/2021\nAdded jockeys, see !cc horseHelp for the additional commands`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
