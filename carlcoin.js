@@ -309,7 +309,7 @@ client.on('message', message => {
 		horse.horseHelp(client,message);
 	}
 	//show jockeys
-	else if(message.content === '!cc horseHelp'){
+	else if(message.content === '!cc showJockeys'){
 		console.log(message.author.username + ' is checking jockeys');
 		horse.showJockeys(client,message);
 	}
