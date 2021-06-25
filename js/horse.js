@@ -1221,5 +1221,6 @@ module.exports = {
 	createHorse,
 	nameHorse,
 	checkRace,
-	showJockeys
+	showJockeys,
+	jockeyHire
 };
