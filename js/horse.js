@@ -94,7 +94,7 @@ function jockeyHire(client,message){
 								boughtJockey = {"name":"Nobody Norman","statModifier":[stamina,speed,activate],"price":300,"wins":0,"loss":0,"hired":false}
 							}
 							else{
-								boughtJockey = jock.jockey[index];
+								boughtJockey = jock.jockey[jockIndex];
 							}
 							if(data.users[userIndex].balance - boughtJockey.price < 0){
 								message.channel.send(`You don't have enough Carl Coin!`);
