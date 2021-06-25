@@ -23,6 +23,21 @@ const secondPartName = ['Week','Suzuka','Teio','Vodka','Groove','Pasa','Cap','Wo
 const horsePrice = 750;
 const racerNeededSize = 5;
 
+function showJockeys(client,message){
+	let jockFile = fs.readFileSync('/home/mattguy/carlcoin/jockeys.json');
+	let jock = JSON.parse(jockFile);
+	let jockList = '';
+	for(let i=0;i<jock.jockey.length;i++){
+		let available = jock.jockey[i].hired ? 'Available':'Hired';
+		jockList += `${i}. ${jock.jockey[i].name}, ${jock.jockey[i].price}CC, ${jock.jockey[i].wins}W/${jock.jockey[i].loss}L: ${available}\n`;
+	}
+	message.channel.send(jockList);
+}
+
+function jockeyPurchase(client,message){
+	
+}
+
 function nameHorse(client, message){
 	let chop = message.content.split(" ");
 	//if too many arguments
@@ -1065,5 +1080,6 @@ module.exports = {
 	actualRace,
 	createHorse,
 	nameHorse,
-	checkRace
+	checkRace,
+	showJockeys
 };

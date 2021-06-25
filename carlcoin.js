@@ -308,6 +308,11 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking horse help');
 		horse.horseHelp(client,message);
 	}
+	//show jockeys
+	else if(message.content === '!cc horseHelp'){
+		console.log(message.author.username + ' is checking jockeys');
+		horse.showJockeys(client,message);
+	}
 	//horse train
 	else if(message.content.startsWith('!cc horseTrain')){
 		console.log(message.author.username + ' is training horse');
