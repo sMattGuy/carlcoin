@@ -28,10 +28,10 @@ function showJockeys(client,message){
 	let jock = JSON.parse(jockFile);
 	let jockList = '';
 	for(let i=0;i<jock.jockey.length;i++){
-		let available = jock.jockey[i].hired ? 'Available':'Hired';
+		let available = jock.jockey[i].hired ? 'Hired':'Available';
 		jockList += `${i}. ${jock.jockey[i].name}, ${jock.jockey[i].price}CC, ${jock.jockey[i].wins}W/${jock.jockey[i].loss}L: ${available}\n`;
 	}
-	message.channel.send(jockList);
+	message.channel.send(jockList,{code:true});
 }
 
 function jockeyPurchase(client,message){
