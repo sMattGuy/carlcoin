@@ -604,7 +604,9 @@ function trainHorse(client,message){
 							}
 						}
 					}
-					message.channel.send(massTrain);
+					if(massTrain.length != 0){
+						message.channel.send(massTrain);
+					}
 					let newData = JSON.stringify(data);
 					fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 				}
