@@ -401,7 +401,7 @@ function actualRace(client,message){
 			raceEvents += `Current standings:\n`;
 			for(let places = 0;places < racePos.length;places++){
 				raceEvents += `${places + 1}. ${horses[racePos[places]].horse.name} `;
-				if(horses[racePos[places]].horse.jocky.name != "none"){
+				if(horses[racePos[places]].jocky.name != "none"){
 					raceEvents += `supported by ${horses[racePos[places]].jocky.name}, `;
 				}
 				raceEvents += `owned by ${horses[racePos[places]].name} who bet ${horses[racePos[places]].bet}CC\n`;
