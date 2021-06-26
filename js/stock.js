@@ -144,8 +144,8 @@ function updateStocks(client,message){
 			if((changeChance <= 0.33 && !willGoUp) || marketWideRed){
 				console.log(stock.stock[i].name + ' is moving down');
 				let newPrice = stock.stock[i].price - Math.ceil(stock.stock[i].price * changeDiff);
-				if(newPrice <= 0){
-					newPrice = 1;
+				if(newPrice <= 1){
+					newPrice = 2;
 				}
 				stock.stock[i].price = newPrice;
 			}
@@ -153,7 +153,7 @@ function updateStocks(client,message){
 			else if(changeChance >= 0.66 && willGoUp){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
-				newPrice = Math.ceil(newPrice / 2);
+				newPrice = Math.ceil(newPrice / 2) + 1;
 				stock.stock[i].price = newPrice;
 			}
 			//no movement
