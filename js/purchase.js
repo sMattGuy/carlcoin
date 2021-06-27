@@ -9,44 +9,11 @@ function purchaseItem(client,message){
 	else{
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
-		let houseCount = 0;
-		let apartmentCount = 0;
-		let skyCount = 0;
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i]["house"] > 0 && !isNaN(data.users[i]["house"])){
-				houseCount += data.users[i]["house"];
-			}
-			if(data.users[i]["apartment"] > 0 && !isNaN(data.users[i]["apartment"])){
-				apartmentCount += data.users[i]["apartment"];
-			}
-			if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
-				skyCount += data.users[i]["skyscraper"];
-			}
-		}
-		if(fs.existsSync(`/home/mattguy/carlcoin/realty.json`)){
-			let realtyFile = fs.readFileSync('/home/mattguy/carlcoin/realty.json');
-			let realty = JSON.parse(realtyFile);
-			for(let j=0;j<realty.list.length;j++){
-				if(realty.list[j].type == 'house'){
-					houseCount++;
-				}
-				else if(realty.list[j].type == 'apartment'){
-					apartmentCount++;
-				}
-				else if(realty.list[j].type == 'skyscraper'){
-					skyCount++;
-				}
-			}
-		}
 		let noUser = true;
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == message.author.id){
 				let type = chop[chop.length-1];
 				if(type == "house"){
-					if(houseCount >= 150){
-						message.channel.send(`There are no houses left (150 limit), try checking !cc realtyHelp`);
-						return;
-					}
 					if(isNaN(data.users[i]["house"])){
 						data.users[i]["house"] = 0;
 					}
@@ -80,10 +47,6 @@ function purchaseItem(client,message){
 					}
 				}
 				else if(type == "apartment"){
-					if(apartmentCount >= 125){
-						message.channel.send(`There are no apartments left (125 limit), try checking !cc realtyHelp`);
-						return;
-					}
 					if(isNaN(data.users[i]["apartment"])){
 						data.users[i]["apartment"] = 0;
 					}
@@ -119,10 +82,6 @@ function purchaseItem(client,message){
 				else if(type == "skyscraper"){
 					if(isNaN(data.users[i]["skyscraper"])){
 						data.users[i]["skyscraper"] = 0;
-					}
-					if(skyCount >= 110){
-						message.channel.send(`There are no skyscrapers left (110 limit), try checking !cc realtyHelp`);
-						return;
 					}
 					let cost = 500 + (data.users[i]["skyscraper"] * 250);
 					if(data.users[i].balance - cost < 0){
