@@ -214,7 +214,23 @@ function realtyBuy(client,message){
 					return;
 				}
 			}
-			message.channel.send(`Failed to find seller in the database. Sorry, the transaction cannot be completed!`);
+			console.log(`Failed to find seller in the database.`);
+			realty.list.splice(index,1);
+			//adjust housing market
+			let rise = Math.random() * 0.1;
+			data.houseMarket -= rise;
+			if(data.houseMarket < 0){
+				data.houseMarket = 0.01;
+			}
+			console.log(rise + ' has been subtracted from the house market which is now ' + data.houseMarket);
+			//begin writing files
+			let realtyFileSave = JSON.stringify(realty);
+			fs.writeFileSync('/home/mattguy/carlcoin/realty.json',realtyFileSave);
+			let newData = JSON.stringify(data);
+			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+			let realtyHistoryFileSave = JSON.stringify(realtyHistory);
+			fs.writeFileSync('/home/mattguy/carlcoin/realtyHistory.json',realtyHistoryFileSave);
+			message.channel.send(`Your purchase is complete!`);
 			return;
 		}
 	}
