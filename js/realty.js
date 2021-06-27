@@ -216,6 +216,7 @@ function realtyBuy(client,message){
 			}
 			console.log(`Failed to find seller in the database.`);
 			realty.list.splice(index,1);
+			data.econ -= realty.list[index].price;
 			//adjust housing market
 			let rise = Math.random() * 0.1;
 			data.houseMarket -= rise;
