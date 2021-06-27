@@ -29,8 +29,6 @@ function showJockeys(client,message){
 	let jockList = '';
 	for(let i=0;i<jock.jockey.length;i++){
 		let available = jock.jockey[i].hired ? 'Hired':'Available';
-		let winLossDiff = jock.jockey[i].wins - jock.jockey[i].loss;
-		let newPrice = jock.jockey[i].price + Math.floor(jock.jockey[i].price * (winLossDiff * .01));
 		jockList += `${i}. ${jock.jockey[i].name}, ${jock.jockey[i].price}CC, ${jock.jockey[i].wins}W/${jock.jockey[i].loss}L: ${available}\n`;
 	}
 	jockList += `${jock.jockey.length}. Random Jockey, 300CC, ?W/?L: Always\n`;

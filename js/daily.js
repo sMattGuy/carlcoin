@@ -1,10 +1,13 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const horse = require('./horse.js');
+const bank = require('./bank.js');
 
 function dailyEvents(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
+	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+	let bankJSON = JSON.parse(bankFile);
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stockJSON = JSON.parse(stockFile);
 	let totalAdded = 0;
@@ -42,6 +45,12 @@ function dailyEvents(client,message){
 	}
 	
 	for(let i=0;i<data.users.length;i++){
+		let bankValue = 0;
+		for(let j=0;j<bankJSON.users.length;j++){
+			if(data.users[i].id == bankJSON.users[j].id){
+				bankValue = bankJSON.users[j].balance;
+			}
+		}
 		let stockValue = 0;
 		for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
 			if(data.users[i].hasOwnProperty("stock")){
@@ -52,7 +61,7 @@ function dailyEvents(client,message){
 				}
 			}
 		}
-		let personalTax = Math.floor(((data.users[i].balance + stockValue) / data.econ) * 100) + 1;
+		let personalTax = Math.floor(((data.users[i].balance + bankValue + stockValue) / data.econ) * 100) + 1;
 		console.log(data.users[i].name + ' has a personal tax of ' + personalTax);
 		let taxAmount = 0;
 		let blackjackAmount = 0;
@@ -179,6 +188,7 @@ function dailyEvents(client,message){
 	}
 	newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+	bank.bankDaily(client,message);
 }
 
 //export functions

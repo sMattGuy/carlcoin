@@ -33,6 +33,7 @@ const help = require('./js/help.js');
 const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
+const bank = require('./js/bank.js');
 const stock = require('./js/stock.js');
 const realty = require('./js/realty.js');
 const battle = require('./js/battle.js');
@@ -372,6 +373,31 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking horse race');
 		horse.checkRace(client,message);
 	}
+	//bank stuff
+	else if(message.content.startsWith('!cc createBankAccount')){
+		console.log(message.author.username + ' is creating a bank account');
+		bank.createBankAccount(client,message);
+	}
+	else if(message.content === '!cc bankBalance'){
+		console.log(message.author.username + ' is checking bank account');
+		bank.bankBalance(client,message);
+	}
+	else if(message.content.startsWith('!cc bankDeposit')){
+		console.log(message.author.username + ' is depositing into a bank account');
+		bank.bankDeposit(client,message);
+	}
+	else if(message.content.startsWith('!cc bankWithdraw')){
+		console.log(message.author.username + ' is withdrawing from a bank account');
+		bank.bankWithdraw(client,message);
+	}
+	else if(message.content === '!cc bankInfo'){
+		console.log(message.author.username + ' is checking bank info');
+		bank.bankInfo(client,message);
+	}
+	else if(message.content === '!cc bankHelp'){
+		console.log(message.author.username + ' is checking bank help');
+		bank.bankHelp(client,message);
+	}
 	//stock check
 	else if(message.content === '!cc showStocks'){
 		console.log(message.author.username + ' is checking stocks');
@@ -460,7 +486,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/27/2021\nDue to database corruption, bank has been removed from Carl Coin`);
+		message.channel.send(`Patch Notes 6/25/2021\nAdded jockeys, see !cc horseHelp for the additional commands`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
