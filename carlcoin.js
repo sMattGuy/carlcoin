@@ -89,7 +89,7 @@ client.on('message', message => {
 		messageCounter += 1;
 		recentId = message.author.id;
 	}
-	if(prevHour != universalDate.getHours()){
+	if(prevHour != universalDate.getHours() || (message.content === '!cc updateStocks' && message.author.id == 492850107038040095)){
 		prevHour = universalDate.getHours();
 		stock.updateStocks(client,message);
 	}

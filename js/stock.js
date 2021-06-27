@@ -170,11 +170,14 @@ function updateStocks(client,message){
 		}
 		stock.stock[i].boughtRecently = 0;
 		//add to stock history
-		for(let j=0;j<stockHistory.history.length;j++){
-			if(stockHistory.history[j].name == stock.stock[i].name){
-				foundHistory = true;
-				stockHistory.history[j].priceHis.push(stock.stock[i].price);
-				break;
+		if(stockHistory.history.length > 0){
+			for(let j=0;j<stockHistory.history.length;j++){
+				
+				if(stockHistory.history[j].name == stock.stock[i].name){
+					foundHistory = true;
+					stockHistory.history[j].priceHis.push(stock.stock[i].price);
+					break;
+				}
 			}
 		}
 		if(!foundHistory){
