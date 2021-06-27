@@ -43,15 +43,6 @@ function die(client,message,data,index){
 	//put stocks back;
 	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
 	let stockJSON = JSON.parse(stockFile);
-	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
-	let bankJSON = JSON.parse(bankFile);
-
-	for(let j=0;j<bankJSON.users.length;j++){
-		if(data.users[index].id == bankJSON.users[j].id){
-			bankJSON.users.splice(j,1);
-			break;
-		}
-	}
 
 	for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
 		if(data.users[index].hasOwnProperty("stock")){
@@ -70,8 +61,6 @@ function die(client,message,data,index){
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	let newStockFile = JSON.stringify(stockJSON);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
-	let bankFileSave = JSON.stringify(bankFile);
-	fs.writeFileSync('/home/mattguy/carlcoin/bank.json',bankFileSave);
 }
 
 //export functions
