@@ -61,6 +61,8 @@ function die(client,message,data,index){
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	let newStockFile = JSON.stringify(stockJSON);
 	fs.writeFileSync('/home/mattguy/carlcoin/stock.json',newStockFile);
+	let bankFileSave = JSON.stringify(bankJSON);
+	fs.writeFileSync('/home/mattguy/carlcoin/bank.json',bankFileSave);
 }
 
 //export functions
