@@ -182,8 +182,10 @@ function updateStocks(client,message){
 		}
 		if(!foundHistory){
 			let newEntry = {"name":stock.stock[i].name,"priceHis":[]};
-			for(let j=0;j<stockHistory.history[0].priceHis.length-1;j++){
-				newEntry.priceHis.push(0);
+			if(stockHistory.history.length > 0){
+				for(let j=0;j<stockHistory.history[0].priceHis.length-1;j++){
+					newEntry.priceHis.push(0);
+				}
 			}
 			newEntry.priceHis.push(stock.stock[i].price);
 			stockHistory.history.push(newEntry);
