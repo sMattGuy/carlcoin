@@ -15,8 +15,6 @@ function checkBalance(client,message){
 	//flag
 	let notFound = true;
 	//clerical info
-	let realtyModifier = data.houseMarket;
-
 	let homeOwnership = 0;
 	let apartmentOwnership = 0;
 	let skyOwnership = 0;
@@ -214,9 +212,9 @@ function checkBalance(client,message){
 					data.users[i]["sprinter"] = 0;
 				}
 				let taxAmount = 0;
-				taxAmount = (Math.floor((homes * (homeOwnership / data.users.length))*realtyModifier) * personalTax) * 2;
-				taxAmount += (Math.floor((apartments * (apartmentOwnership / data.users.length))*realtyModifier) * personalTax) * 4;
-				taxAmount += (Math.floor((skyscrapers * (skyOwnership / data.users.length))*realtyModifier) * personalTax) * 8;
+				taxAmount =  Math.floor(homes * (homeOwnership / data.users.length) * personalTax) * 2;
+				taxAmount += Math.floor(apartments * (apartmentOwnership / data.users.length) * personalTax) * 4;
+				taxAmount += Math.floor(skyscrapers * (skyOwnership / data.users.length) * personalTax) * 8;
 				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
 				dailyPayout -= taxAmount;
 				if(dailyPayout < 0){

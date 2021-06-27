@@ -12,8 +12,6 @@ function dailyEvents(client,message){
 	let stockJSON = JSON.parse(stockFile);
 	let totalAdded = 0;
 	let totalTax = 0;
-	
-	let realtyModifier = data.houseMarket;
 
 	let homeOwnership = 0;
 	let apartmentOwnership = 0;
@@ -70,17 +68,17 @@ function dailyEvents(client,message){
 		if(isNaN(homePrice)){
 			homePrice = 0;
 		}
-		taxAmount = (Math.floor(((homePrice / 10) * (homeOwnership / data.users.length))*realtyModifier) * personalTax) * 2;
+		taxAmount = (Math.floor((homePrice / 10) * (homeOwnership / data.users.length)) * personalTax) * 2;
 		let apartPrice = data.users[i]["apartment"] * 25;
 		if(isNaN(apartPrice)){
 			apartPrice = 0;
 		}
-		taxAmount += (Math.floor(((apartPrice / 25) * (apartmentOwnership / data.users.length))*realtyModifier) * personalTax) * 4;
+		taxAmount += (Math.floor((apartPrice / 25) * (apartmentOwnership / data.users.length)) * personalTax) * 4;
 		let skyPrice = data.users[i]["skyscraper"] * 50;
 		if(isNaN(skyPrice)){
 			skyPrice = 0;
 		}
-		taxAmount += (Math.floor(((skyPrice / 50) * (skyOwnership / data.users.length))*realtyModifier) * personalTax) * 8;
+		taxAmount += (Math.floor((skyPrice / 50) * (skyOwnership / data.users.length)) * personalTax) * 8;
 		let amount = homePrice + apartPrice + skyPrice;
 		amount -= taxAmount;
 		if(amount < 0){
