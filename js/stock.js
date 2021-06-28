@@ -162,11 +162,11 @@ function updateStocks(client,message){
 			}
 			//no movement
 			else{
-				console.log(stock.stock[i].name + ' is not moving');
+				console.log(stock.stock[i].name + ' is not moving (failed change chance)');
 			}
 		}
 		else{
-			console.log(stock.stock[i].name + ' is not moving');
+			console.log(stock.stock[i].name + ' is not moving (failed move chance)');
 		}
 		stock.stock[i].boughtRecently = 0;
 		//add to stock history
