@@ -112,6 +112,105 @@ function purchaseItem(client,message){
 						console.log(data.users[i].name + " bought a skyscraper");
 					}
 				}
+				else if(type == "city"){
+					if(isNaN(data.users[i]["city"])){
+						data.users[i]["city"] = 0;
+					}
+					let cost = 1000 + (data.users[i]["city"] * 500);
+					if(data.users[i].balance - cost < 0){
+						message.channel.send(`You do not have enough CC! (Costs ${cost})`);
+					}
+					else{
+						data.users[i]["city"] += 1;
+						data.users[i].balance -= cost;
+						data.econ -= 500;
+						data.welfare += 250;
+						data.blackjack += cost - 250;
+						data.users[i]["activity"] = Date.now();
+						if(isNaN(data.users[i]["INT"])){
+							data.users[i]["INT"] = 0;
+						}
+						if(isNaN(data.users[i]["intExp"])){
+							data.users[i]["intExp"] = 0;
+						}
+						data.users[i]["intExp"] += 8;
+						if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+							data.users[i]["intExp"] = 0;
+							data.users[i]["INT"] += 1;
+							message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have purchased a city! You now own ${data.users[i].city}\nEvery day you will get some rent payments!`);
+						console.log(data.users[i].name + " bought a city");
+					}
+				}
+				else if(type == "country"){
+					if(isNaN(data.users[i]["country"])){
+						data.users[i]["country"] = 0;
+					}
+					let cost = 2000 + (data.users[i]["country"] * 1000);
+					if(data.users[i].balance - cost < 0){
+						message.channel.send(`You do not have enough CC! (Costs ${cost})`);
+					}
+					else{
+						data.users[i]["country"] += 1;
+						data.users[i].balance -= cost;
+						data.econ -= 1000;
+						data.welfare += 500;
+						data.blackjack += cost - 500;
+						data.users[i]["activity"] = Date.now();
+						if(isNaN(data.users[i]["INT"])){
+							data.users[i]["INT"] = 0;
+						}
+						if(isNaN(data.users[i]["intExp"])){
+							data.users[i]["intExp"] = 0;
+						}
+						data.users[i]["intExp"] += 16;
+						if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+							data.users[i]["intExp"] = 0;
+							data.users[i]["INT"] += 1;
+							message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have purchased a country! You now own ${data.users[i].country}\nEvery day you will get some rent payments!`);
+						console.log(data.users[i].name + " bought a country");
+					}
+				}
+				else if(type == "station"){
+					if(isNaN(data.users[i]["station"])){
+						data.users[i]["station"] = 0;
+					}
+					let cost = 4000 + (data.users[i]["station"] * 2000);
+					if(data.users[i].balance - cost < 0){
+						message.channel.send(`You do not have enough CC! (Costs ${cost})`);
+					}
+					else{
+						data.users[i]["station"] += 1;
+						data.users[i].balance -= cost;
+						data.econ -= 2000;
+						data.welfare += 1000;
+						data.blackjack += cost - 1000;
+						data.users[i]["activity"] = Date.now();
+						if(isNaN(data.users[i]["INT"])){
+							data.users[i]["INT"] = 0;
+						}
+						if(isNaN(data.users[i]["intExp"])){
+							data.users[i]["intExp"] = 0;
+						}
+						data.users[i]["intExp"] += 32;
+						if(data.users[i]["INT"] * 2 + 1 < data.users[i]["intExp"]){
+							data.users[i]["intExp"] = 0;
+							data.users[i]["INT"] += 1;
+							message.channel.send(`Your purchase was a smart choice, your INT increased!`);
+						}
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have purchased a space station! You now own ${data.users[i].station}\nEvery day you will get some rent payments!`);
+						console.log(data.users[i].name + " bought a space station");
+					}
+				}
 				else if(type == "office"){
 					if(isNaN(data.users[i]["office"])){
 						data.users[i]["office"] = 0;
@@ -200,7 +299,23 @@ function purchaseList(client,message){
 				data.users[i]["sprinter"] = 0;
 			}
 			let sprinterPrice = (data.users[i].sprinter * 22000) + 44000;
-			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. Mercedes-Benz:tm: 2021 Sprinter Cargo Van (${sprinterPrice}CC type sprinter to purchase)\n5. office (200CC) doubles work output`);
+			
+			
+			if(isNaN(data.users[i]["city"])){
+				data.users[i]["city"] = 0;
+			}
+			let cityPrice = (data.users[i].city * 500) + 1000;
+			if(isNaN(data.users[i]["country"])){
+				data.users[i]["country"] = 0;
+			}
+			let countryPrice = (data.users[i].country * 1000) + 2000;
+			if(isNaN(data.users[i]["station"])){
+				data.users[i]["station"] = 0;
+			}
+			let stationPrice = (data.users[i].station * 2000) + 4000;
+			
+			
+			message.channel.send(`Purchase List:\n1. house (${housePrice}CC) pays 10 daily\n2. apartment (${apartmentPrice}CC) pays 25 daily\n3. skyscraper (${skyscraperPrice}CC) pays 50 daily\n4. Mercedes-Benz:tm: 2021 Sprinter Cargo Van (${sprinterPrice}CC type sprinter to purchase)\n5. office (200CC) doubles work output\n6. city (${cityPrice}CC) pays 100 daily\n7. country (${countryPrice}CC) pays 200 daily\n8. station (${stationPrice}CC) pays 400 daily`);
 			return;
 		}
 	}

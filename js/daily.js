@@ -12,35 +12,6 @@ function dailyEvents(client,message){
 	let stockJSON = JSON.parse(stockFile);
 	let totalAdded = 0;
 	let totalTax = 0;
-
-	let homeOwnership = 0;
-	let apartmentOwnership = 0;
-	let skyOwnership = 0;
-	let homeCount = 0;
-	let apartmentCount = 0;
-	let skyCount = 0;
-	for(let j=0;j<data.users.length;j++){
-		if(data.users[j]["house"] > 0 && !isNaN(data.users[j]["house"])){
-			homeCount += data.users[j]["house"];
-		}
-		if(data.users[j]["apartment"] > 0 && !isNaN(data.users[j]["apartment"])){
-			apartmentCount += data.users[j]["apartment"];
-		}
-		if(data.users[j]["skyscraper"] > 0 && !isNaN(data.users[j]["skyscraper"])){
-			skyCount += data.users[j]["skyscraper"];
-		}
-	}
-	for(let j=0;j<data.users.length;j++){
-		if(data.users[j]["house"] >= Math.floor(homeCount / data.users.length) && !isNaN(data.users[j]["house"])){
-			homeOwnership++;
-		}
-		if(data.users[j]["apartment"] >= Math.floor(apartmentCount / data.users.length) && !isNaN(data.users[j]["apartment"])){
-			apartmentOwnership++;
-		}
-		if(data.users[j]["skyscraper"] >= Math.floor(skyCount / data.users.length) && !isNaN(data.users[j]["skyscraper"])){
-			skyOwnership++;
-		}
-	}
 	
 	for(let i=0;i<data.users.length;i++){
 		let bankValue = 0;
@@ -68,18 +39,33 @@ function dailyEvents(client,message){
 		if(isNaN(homePrice)){
 			homePrice = 0;
 		}
-		taxAmount = (Math.floor((homePrice / 10) * (homeOwnership / data.users.length)) * personalTax) * 2;
+		taxAmount = (Math.floor((homePrice / 10) * personalTax) * 2;
 		let apartPrice = data.users[i]["apartment"] * 25;
 		if(isNaN(apartPrice)){
 			apartPrice = 0;
 		}
-		taxAmount += (Math.floor((apartPrice / 25) * (apartmentOwnership / data.users.length)) * personalTax) * 4;
+		taxAmount += (Math.floor((apartPrice / 25) * personalTax) * 4;
 		let skyPrice = data.users[i]["skyscraper"] * 50;
 		if(isNaN(skyPrice)){
 			skyPrice = 0;
 		}
-		taxAmount += (Math.floor((skyPrice / 50) * (skyOwnership / data.users.length)) * personalTax) * 8;
-		let amount = homePrice + apartPrice + skyPrice;
+		taxAmount += (Math.floor((skyPrice / 50) * personalTax) * 8;
+		let cityPrice = data.users[i]["city"] * 100;
+		if(isNaN(cityPrice)){
+			cityPrice = 0;
+		}
+		taxAmount += (Math.floor((cityPrice / 100) * personalTax) * 16;
+		let countryPrice = data.users[i]["country"] * 200;
+		if(isNaN(countryPrice)){
+			countryPrice = 0;
+		}
+		taxAmount += (Math.floor((countryPrice / 200) * personalTax) * 32;
+		let stationPrice = data.users[i]["station"] * 400;
+		if(isNaN(stationPrice)){
+			stationPrice = 0;
+		}
+		taxAmount += (Math.floor((stationPrice / 400) * personalTax) * 64;
+		let amount = homePrice + apartPrice + skyPrice + cityPrice + countryPrice + stationPrice;
 		amount -= taxAmount;
 		if(amount < 0){
 			amount = 0;

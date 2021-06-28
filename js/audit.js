@@ -69,6 +69,18 @@ function auditUser(client,message){
 					if(isNaN(skyscrapers)){
 						skyscrapers = 0;
 					}
+					let cities = data.users[i]["city"];
+					if(isNaN(cities)){
+						cities = 0;
+					}
+					let countries = data.users[i]["country"];
+					if(isNaN(countries)){
+						countries = 0;
+					}
+					let stations = data.users[i]["station"];
+					if(isNaN(stations)){
+						stations = 0;
+					}
 					//stats
 					let str = data.users[i]["STR"];
 					if(isNaN(str)){
@@ -152,7 +164,7 @@ function auditUser(client,message){
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (before tax) daily`},
+							{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}, Cities: ${cities}, Countries: ${countries}, Space Stations: ${stations}\nYou recieve ${dailyPayout}CC (before tax) daily`},
 							{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
 							{ name: 'Sprinters', value: `${sprinter}`, inline: true},
 							{ name: 'Cooldowns', value: `${messageToSend}`},

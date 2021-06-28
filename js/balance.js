@@ -14,35 +14,7 @@ function checkBalance(client,message){
 	let id = message.author.id;
 	//flag
 	let notFound = true;
-	//clerical info
-	let homeOwnership = 0;
-	let apartmentOwnership = 0;
-	let skyOwnership = 0;
-	let homeCount = 0;
-	let apartmentCount = 0;
-	let skyCount = 0;
-	for(let j=0;j<data.users.length;j++){
-		if(data.users[j]["house"] > 0 && !isNaN(data.users[j]["house"])){
-			homeCount += data.users[j]["house"];
-		}
-		if(data.users[j]["apartment"] > 0 && !isNaN(data.users[j]["apartment"])){
-			apartmentCount += data.users[j]["apartment"];
-		}
-		if(data.users[j]["skyscraper"] > 0 && !isNaN(data.users[j]["skyscraper"])){
-			skyCount += data.users[j]["skyscraper"];
-		}
-	}
-	for(let j=0;j<data.users.length;j++){
-		if(data.users[j]["house"] >= Math.floor(homeCount / data.users.length) && !isNaN(data.users[j]["house"])){
-			homeOwnership++;
-		}
-		if(data.users[j]["apartment"] >= Math.floor(apartmentCount / data.users.length) && !isNaN(data.users[j]["apartment"])){
-			apartmentOwnership++;
-		}
-		if(data.users[j]["skyscraper"] >= Math.floor(skyCount / data.users.length) && !isNaN(data.users[j]["skyscraper"])){
-			skyOwnership++;
-		}
-	}
+
 	//checks for name
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id){
@@ -171,6 +143,22 @@ function checkBalance(client,message){
 				if(isNaN(skyscrapers)){
 					skyscrapers = 0;
 				}
+				
+				let cities = data.users[i]["city"];
+				if(isNaN(cities)){
+					cities = 0;
+				}
+				let countries = data.users[i]["country"];
+				if(isNaN(countries)){
+					countries = 0;
+				}
+				let stations = data.users[i]["station"];
+				if(isNaN(stations)){
+					stations = 0;
+				}
+				
+				
+				
 				//stats
 				let str = data.users[i]["STR"];
 				if(isNaN(str)){
@@ -202,7 +190,7 @@ function checkBalance(client,message){
 					chr = 0;
 					data.users[i]["CHR"] = 0;
 				}
-				let buildings = homes + apartments + skyscrapers;
+				let buildings = homes + apartments + skyscrapers + cities + countries + stations;
 				if(!data.users[i].hasOwnProperty("horses")){
 					data.users[i].horses = [];
 				}
@@ -212,10 +200,15 @@ function checkBalance(client,message){
 					data.users[i]["sprinter"] = 0;
 				}
 				let taxAmount = 0;
-				taxAmount =  Math.floor(homes * (homeOwnership / data.users.length) * personalTax) * 2;
-				taxAmount += Math.floor(apartments * (apartmentOwnership / data.users.length) * personalTax) * 4;
-				taxAmount += Math.floor(skyscrapers * (skyOwnership / data.users.length) * personalTax) * 8;
-				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50);
+				taxAmount =  Math.floor(homes * personalTax) * 2;
+				taxAmount += Math.floor(apartments * personalTax) * 4;
+				taxAmount += Math.floor(skyscrapers * personalTax) * 8;
+				
+				taxAmount += Math.floor(cities * personalTax) * 16;
+				taxAmount += Math.floor(countries * personalTax) * 32;
+				taxAmount += Math.floor(stations * personalTax) * 64;
+				
+				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50) + (cities * 100) + (countries * 200) + (stations * 400);
 				dailyPayout -= taxAmount;
 				if(dailyPayout < 0){
 					dailyPayout = 0;
@@ -229,7 +222,7 @@ function checkBalance(client,message){
 					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}CC) daily`},
+						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}, Cities: ${cities}, Countries: ${countries}, Space Stations: ${stations}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}CC) daily`},
 						{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
 						{ name: 'Sprinters', value: `${sprinter}`, inline: true},
 						{ name: 'Cooldowns', value: `${messageToSend}`},

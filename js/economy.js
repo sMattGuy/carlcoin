@@ -7,6 +7,9 @@ function checkEcon(client,message){
 	let houseCount = 0;
 	let apartmentCount = 0;
 	let skyCount = 0;
+	let cityCount = 0;
+	let countryCount = 0;
+	let stationCount = 0;
 	let horses = 0;
 	let carlball = data.carlball;
 	console.log(message.author.username + ' is checking the econ');
@@ -21,6 +24,18 @@ function checkEcon(client,message){
 		if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
 			skyCount += data.users[i]["skyscraper"];
 		}
+		
+		if(data.users[i]["city"] > 0 && !isNaN(data.users[i]["city"])){
+			cityCount += data.users[i]["city"];
+		}
+		if(data.users[i]["country"] > 0 && !isNaN(data.users[i]["country"])){
+			countryCount += data.users[i]["country"];
+		}
+		if(data.users[i]["country"] > 0 && !isNaN(data.users[i]["country"])){
+			stationCount += data.users[i]["country"];
+		}
+		
+		
 		if(data.users[i].hasOwnProperty("horses")){
 			if(data.users[i].horses.length > 0){
 				horses += data.users[i].horses.length;
@@ -43,6 +58,9 @@ function checkEcon(client,message){
 			{ name: 'Homes', value: `${houseCount}`, inline: true },
 			{ name: 'Apartments', value: `${apartmentCount}`, inline: true },
 			{ name: 'Skyscrapers', value: `${skyCount}`, inline: true },
+			{ name: 'Cities', value: `${cityCount}`, inline: true },
+			{ name: 'Countries', value: `${countryCount}`, inline: true },
+			{ name: 'Space Stations', value: `${stationCount}`, inline: true },
 			{ name: 'Horses', value: `${horses}`, inline: true },
 		)
 	message.channel.send(econEmbed);

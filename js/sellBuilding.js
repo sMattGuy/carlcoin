@@ -58,6 +58,51 @@ function sellBuilding(client,message){
 						console.log(data.users[i].name + " sold a skyscraper");
 					}
 				}
+				else if(type == "city"){
+					if(data.users[i]["city"] - 1 < 0 || isNaN(data.users[i]["city"])){
+						message.channel.send('You do not have any cities!');
+					}
+					else{
+						data.users[i]["city"] -= 1;
+						data.users[i].balance += 500;
+						data.econ += 500;
+						data.users[i]["activity"] = Date.now();
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have sold a city! You now own ${data.users[i].city} cities`);
+						console.log(data.users[i].name + " sold a city");
+					}
+				}
+				else if(type == "country"){
+					if(data.users[i]["country"] - 1 < 0 || isNaN(data.users[i]["country"])){
+						message.channel.send('You do not have any countries!');
+					}
+					else{
+						data.users[i]["country"] -= 1;
+						data.users[i].balance += 1000;
+						data.econ += 1000;
+						data.users[i]["activity"] = Date.now();
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have sold a country! You now own ${data.users[i].country} countries`);
+						console.log(data.users[i].name + " sold a country");
+					}
+				}
+				else if(type == "station"){
+					if(data.users[i]["station"] - 1 < 0 || isNaN(data.users[i]["station"])){
+						message.channel.send('You do not have any space stations!');
+					}
+					else{
+						data.users[i]["station"] -= 1;
+						data.users[i].balance += 2000;
+						data.econ += 2000;
+						data.users[i]["activity"] = Date.now();
+						let newData = JSON.stringify(data);
+						fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+						message.channel.send(`You have sold a space station! You now own ${data.users[i].station} space station`);
+						console.log(data.users[i].name + " sold a station");
+					}
+				}
 				else{
 					message.channel.send('Invalid sell! Try house, apartment or skyscraper');
 				}

@@ -459,7 +459,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/27/2021\nRemoved realty system`);
+		message.channel.send(`Patch Notes 6/28/2021\nAdded new things to buy`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){

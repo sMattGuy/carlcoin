@@ -49,7 +49,7 @@ function sellUser(client,message){
 								if(data.users[j].id == buyer){
 									let offerType = chop[chop.length-2];
 									//check if house
-									if(offerType == "house" || offerType == "apartment" || offerType == "skyscraper"){
+									if(offerType == "house" || offerType == "apartment" || offerType == "skyscraper" || offerType == "city" || offerType == "country" || offerType == "station"){
 										if(data.users[j].balance - price < 0){
 											message.channel.send('Buyer doesnt have enough CC!');
 										}
@@ -133,6 +133,29 @@ function acceptDenySale(client,message){
 							data.users[sellParse.buyerIndex]["skyscraper"] = 1;
 						}
 					}
+					
+					else if(sellParse.type == "city"){
+						data.users[sellParse.sellerIndex]["city"] -= 1;
+						data.users[sellParse.buyerIndex]["city"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["city"])){
+							data.users[sellParse.buyerIndex]["city"] = 1;
+						}
+					}
+					else if(sellParse.type == "country"){
+						data.users[sellParse.sellerIndex]["country"] -= 1;
+						data.users[sellParse.buyerIndex]["country"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["country"])){
+							data.users[sellParse.buyerIndex]["country"] = 1;
+						}
+					}
+					else if(sellParse.type == "station"){
+						data.users[sellParse.sellerIndex]["station"] -= 1;
+						data.users[sellParse.buyerIndex]["station"] += 1;
+						if(isNaN(data.users[sellParse.buyerIndex]["station"])){
+							data.users[sellParse.buyerIndex]["station"] = 1;
+						}
+					}
+					
 					data.users[sellParse.sellerIndex]["activity"] = Date.now();
 					data.users[sellParse.buyerIndex]["activity"] = Date.now();
 					let newData = JSON.stringify(data);

@@ -24,7 +24,19 @@ function checkLeaderboard(client,message){
 		if(isNaN(skyscraperValue)){
 			skyscraperValue = 0;
 		}
-		let combinedAssests = houseValue + apartmentValue + skyscraperValue;
+		let cityValue = 250 * parseInt(data.users[i]["city"]);
+		if(isNaN(cityValue)){
+			cityValue = 0;
+		}
+		let countryValue = 250 * parseInt(data.users[i]["country"]);
+		if(isNaN(countryValue)){
+			countryValue = 0;
+		}
+		let stationValue = 250 * parseInt(data.users[i]["station"]);
+		if(isNaN(stationValue)){
+			stationValue = 0;
+		}
+		let combinedAssests = houseValue + apartmentValue + skyscraperValue + cityValue + countryValue + stationValue;
 		let bankVal = 0;
 		for(let j=0;j<bank.users.length;j++){
 			if(data.users[i].id == bank.users[j].id){
