@@ -595,7 +595,7 @@ function actualRace(client,message){
 				}
 				for(let j=0;j<jock.jockey.length;j++){
 					if(jock.jockey[j].name == firstPlace.jocky.name){
-						jock.jockey[j].win += 1;
+						jock.jockey[j].wins += 1;
 						jock.jockey[j].loss -= 1;
 					}
 				}
@@ -624,7 +624,7 @@ function actualRace(client,message){
 				}
 				for(let j=0;j<jock.jockey.length;j++){
 					if(jock.jockey[j].name == secondPlace.jocky.name){
-						jock.jockey[j].win += 1;
+						jock.jockey[j].wins += 1;
 						jock.jockey[j].loss -= 1;
 					}
 				}
@@ -653,7 +653,7 @@ function actualRace(client,message){
 				}
 				for(let j=0;j<jock.jockey.length;j++){
 					if(jock.jockey[j].name == thirdPlace.jocky.name){
-						jock.jockey[j].win += 1;
+						jock.jockey[j].wins += 1;
 						jock.jockey[j].loss -= 1;
 					}
 				}
