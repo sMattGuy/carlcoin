@@ -152,7 +152,7 @@ function updateStocks(client,message){
 				stock.stock[i].price = newPrice;
 			}
 			//go up
-			else if(changeChance >= 0.66 && willGoUp){
+			else if(changeChance >= 0.66 || willGoUp){
 				console.log(stock.stock[i].name + ' is moving up');
 				let newPrice = stock.stock[i].price + Math.ceil(stock.stock[i].price * changeDiff);
 				if(ownershipUp){
