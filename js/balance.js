@@ -201,9 +201,6 @@ function checkBalance(client,message){
 				
 				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50) + (cities * 100) + (countries * 200) + (stations * 400);
 				dailyPayout -= taxAmount;
-				if(dailyPayout < 0){
-					dailyPayout = 0;
-				}
 				let perc = (balance / data.econ) * 100;
 				perc = perc.toFixed(2);
 				const playercardEmbed = new Discord.MessageEmbed()

@@ -417,7 +417,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/28/2021\nAdded new things to buy, removed stocks`);
+		message.channel.send(`Patch Notes 6/29/2021\nYou are now taxed out of your balance if your homes dont cover it`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){

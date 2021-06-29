@@ -57,10 +57,17 @@ function dailyEvents(client,message){
 		taxAmount += Math.floor((stationPrice / 400) * personalTax) * 64;
 		let amount = homePrice + apartPrice + skyPrice + cityPrice + countryPrice + stationPrice;
 		amount -= taxAmount;
-		if(amount < 0){
-			amount = 0;
-		}
 		data.users[i].balance += amount;
+		if(data.users[i].balance < 0){
+			let moneyOver = data.users[i].balance
+			data.users[i].balance = 0;
+			for(let b = 0;b < bankJSON.users.length;b++){
+				if(data.users[i].id == bankJSON.users[b].id){
+					bankJSON.users[b].balance += moneyOver;
+					break;
+				}
+			}
+		}
 		totalAdded += amount;
 		totalTax += taxAmount;
 		blackjackAmount = Math.floor(taxAmount/2);
@@ -99,6 +106,8 @@ function dailyEvents(client,message){
 	console.log(totalTax + ' was collected from taxes');
 	let newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
+	let newBank = JSON.stringify(bankJSON);
+	fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
 	//lottery
 	if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
 		let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
