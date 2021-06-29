@@ -42,7 +42,6 @@ function createBankAccount(client,message){
 			//no account found, start making new account
 			console.log('making new account for ' + data.users[i].name);
 			data.users[i].balance -= amount;
-			data.econ -= amount;
 			let newEntry = {"id":id,"balance":amount,"days":0};
 			bank.users.push(newEntry);
 			//write files
@@ -147,7 +146,6 @@ function bankDeposit(client,message){
 					else{
 						bank.users[j].balance += amount;
 						data.users[i].balance -= amount;
-						data.econ -= amount;
 						let newBank = JSON.stringify(bank);
 						fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
 						let newData = JSON.stringify(data);
@@ -209,7 +207,6 @@ function bankWithdraw(client,message){
 						bank.users[j].balance -= amount;
 						bank.users[j].days = 0;
 						data.users[i].balance += amount;
-						data.econ += amount;
 						let newBank = JSON.stringify(bank);
 						fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
 						let newData = JSON.stringify(data);
@@ -249,7 +246,6 @@ function bankDaily(client,message){
 			//pay out users
 			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 7));
 			bank.users[j].balance += payout;
-			data.econ += payout;
 			bank.users[j].days = 1;
 		}
 		else{
