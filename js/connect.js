@@ -242,6 +242,7 @@ function connect4(client,message){
 				}
 				if(data.users[i].id == id){
 					data.users[i].busy = 0;
+					data.users[i].balance += wager;
 				}
 			}
 			newData = JSON.stringify(data);
