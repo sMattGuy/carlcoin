@@ -20,6 +20,7 @@ function checkBalance(client,message){
 			for(let j=0;j<bankJSON.users.length;j++){
 				if(data.users[i].id == bankJSON.users[j].id){
 					bankValue = bankJSON.users[j].balance;
+					break;
 				}
 			}
 			let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
