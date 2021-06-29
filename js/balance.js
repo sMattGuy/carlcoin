@@ -7,8 +7,6 @@ function checkBalance(client,message){
 	let data = JSON.parse(database);
 	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
 	let bankJSON = JSON.parse(bankFile);
-	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
-	let stockJSON = JSON.parse(stockFile);
 	//stores user
 	let user = message.author.username;
 	let id = message.author.id;
@@ -24,17 +22,7 @@ function checkBalance(client,message){
 					bankValue = bankJSON.users[j].balance;
 				}
 			}
-			let stockValue = 0;
-			for(let stockIndex = 0;stockIndex<stockJSON.stocklength;stockIndex++){
-				if(data.users[i].hasOwnProperty("stock")){
-					for(let j=0;j<data.users[i].stock.length;j++){
-						if(stockJSON.stock[stockIndex].name == data.users[i].stock[j].name){
-							stockValue += (data.users[i].stock[j].amount * stockJSON.stock[stockIndex].price);
-						}
-					}
-				}
-			}
-			let personalTax = Math.floor(((data.users[i].balance + bankValue + stockValue) / data.econ) * 100) + 1;
+			let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
 			//sanity
 			let sanity = "Fine";
 			if(isNaN(data.users[i]["unstable"])){

@@ -4,8 +4,6 @@ const fs = require('fs');
 function checkLeaderboard(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
-	let stockFile = fs.readFileSync('/home/mattguy/carlcoin/stock.json');
-	let stockJSON = JSON.parse(stockFile);
 	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
 	let bank = JSON.parse(bankFile);
 	let userArray = [];
@@ -43,18 +41,7 @@ function checkLeaderboard(client,message){
 				bankVal = bank.users[j].balance;
 			}
 		}
-		let stockValue = 0;
-		for(let stockIndex = 0;stockIndex<stockJSON.stock.length;stockIndex++){
-			if(data.users[i].hasOwnProperty("stock")){
-				for(let j=0;j<data.users[i].stock.length;j++){
-					if(stockJSON.stock[stockIndex].name == data.users[i].stock[j].name){
-						stockValue += (data.users[i].stock[j].amount * stockJSON.stock[stockIndex].price);
-					}
-				}
-			}
-		}
 		combinedAssests += bankVal
-		combinedAssests += stockValue;
 		let userObject = {name:`${user}`,balance:`${balance}`,assets:`${combinedAssests}`};
 		userArray.push(userObject);
 	}

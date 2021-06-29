@@ -34,7 +34,6 @@ const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
 const bank = require('./js/bank.js');
-const stock = require('./js/stock.js');
 const battle = require('./js/battle.js');
 const connect = require('./js/connect.js');
 const mancala = require('./js/mancala.js');
@@ -88,10 +87,6 @@ client.on('message', message => {
 	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
 		messageCounter += 1;
 		recentId = message.author.id;
-	}
-	if(prevHour != universalDate.getHours() || (message.content === '!cc updateStocks' && message.author.id == 492850107038040095)){
-		prevHour = universalDate.getHours();
-		stock.updateStocks(client,message);
 	}
 	//raffle functionality
 	//message failsafe incase countery somehow goes past value
@@ -396,43 +391,6 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking bank help');
 		bank.bankHelp(client,message);
 	}
-	//stock check
-	else if(message.content === '!cc showStocks'){
-		console.log(message.author.username + ' is checking stocks');
-		stock.showStocks(client,message);
-	}
-	else if(message.content === '!cc stockPort'){
-		console.log(message.author.username + ' is checking stock port');
-		stock.showPort(client,message);
-	}
-	else if(message.content.startsWith('!cc stockBuy')){
-		console.log(message.author.username + ' is buying stock');
-		stock.buyStock(client,message);
-	}
-	else if(message.content.startsWith('!cc stockSell')){
-		console.log(message.author.username + ' is selling stock');
-		stock.sellStock(client,message);
-	}
-	else if(message.content === '!cc stockGraph'){
-		console.log(message.author.username + ' is checking stock graph');
-		stock.stockGraph(client,message);
-	}
-	else if(message.content === '!cc stockOwnership'){
-		console.log(message.author.username + ' is checking stock ownership');
-		stock.stockOwnership(client,message);
-	}
-	else if(message.content === '!cc forceStockUpdate' && message.author.id == 492850107038040095){
-		console.log(message.author.username + ' is forcing stock update');
-		stock.updateStocks(client,message);
-	}
-	else if(message.content.startsWith('!cc createNewStock') && message.author.id == 492850107038040095){
-		console.log(message.author.username + ' is creating a stock');
-		stock.createNewStock(client,message);
-	}
-	else if(message.content === '!cc stockHelp'){
-		console.log(message.author.username + ' is checking stock help');
-		stock.stockHelp(client,message);
-	}
 	else if(message.content === '!cc battle'){
 		console.log(message.author.username + ' is battling an enemy');
 		battle.testResponses(client,message);
@@ -459,7 +417,7 @@ client.on('message', message => {
 	}
 	else if(message.content === '!cc patchnotes'){
 		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/28/2021\nAdded new things to buy`);
+		message.channel.send(`Patch Notes 6/28/2021\nAdded new things to buy, removed stocks`);
 	}
 	//caps lock
 	else if(message.content.startsWith('!CC')){
