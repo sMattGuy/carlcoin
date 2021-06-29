@@ -23,6 +23,7 @@ function checkBalance(client,message){
 					break;
 				}
 			}
+			bankValue = Math.floor(bankValue / 2);
 			let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
 			//sanity
 			let sanity = "Fine";

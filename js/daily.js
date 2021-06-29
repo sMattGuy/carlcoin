@@ -16,8 +16,10 @@ function dailyEvents(client,message){
 		for(let j=0;j<bankJSON.users.length;j++){
 			if(data.users[i].id == bankJSON.users[j].id){
 				bankValue = bankJSON.users[j].balance;
+				break;
 			}
 		}
+		bankValue = Math.floor(bankValue / 2);
 		let personalTax = Math.floor(((data.users[i].balance + bankValue) / data.econ) * 100) + 1;
 		console.log(data.users[i].name + ' has a personal tax of ' + personalTax);
 		let taxAmount = 0;
