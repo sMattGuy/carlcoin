@@ -6,12 +6,21 @@ function doctorVisit(client,message){
 	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 	let data = JSON.parse(database);
 	let id = message.author.id;
+	let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+	let bank = JSON.parse(bankFile);
 	//checks for name
 	for(let i=0;i<data.users.length;i++){
 		if(data.users[i].id == id && !isNaN(data.users[i]["unstable"])){
-			let price = Math.floor(data.users[i].balance / 6) + 10;
+			let totalCost = data.users[i].balance;
+			for(let b = 0;b<bank.users.length;b++){
+				if(data.users[i].id == bank.users[b].id){
+					totalCost += bank.users[b].balance;
+					break;
+				}
+			}
+			let price = Math.floor(totalCost / 6) + 10;
 			if(data.users[i].balance - price < 0){
-				message.channel.send(`You don't have enough CC! (Costs ${price})`);
+				message.channel.send(`You don't have enough CC! You might need to withdraw from your bank account! (Costs ${price})`);
 			}
 			else{
 				let insane = false;
