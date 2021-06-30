@@ -101,6 +101,7 @@ function jockeyHire(client,message){
 								return;
 							}
 							data.users[userIndex].balance -= boughtJockey.price;
+							data.econ -= boughtJockey.price;
 							boughtJockey.hired = true;
 							raceFile.racers[j].jocky = boughtJockey;
 							//start writing to files

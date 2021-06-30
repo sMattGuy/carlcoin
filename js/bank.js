@@ -246,6 +246,7 @@ function bankDaily(client,message){
 			//pay out users
 			let payout = Math.floor(bank.users[j].balance * bank.interest * (bank.users[j].days / 7));
 			bank.users[j].balance += payout;
+			data.econ += payout
 			bank.users[j].days = 1;
 		}
 		else{
@@ -257,6 +258,8 @@ function bankDaily(client,message){
 	bank.interest = newInterest;
 	let newBank = JSON.stringify(bank);
 	fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
+	let newData = JSON.stringify(data);
+	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 }
 
 function bankInfo(client,message){
