@@ -111,7 +111,7 @@ function jockeyHire(client,message){
 							fs.writeFileSync('/home/mattguy/carlcoin/jockeys.json',newJock);
 							let newRace = JSON.stringify(raceFile);
 							fs.writeFileSync('/home/mattguy/carlcoin/cache/horseRace.json',newRace);
-							message.channel.send(`You have hired ${jock.jockey[jockIndex].name} to support your horse ${raceFile.racers[j].name} this race!`);
+							message.channel.send(`You have hired ${jock.jockey[jockIndex].name} to support your horse ${raceFile.racers[j].horse.name} this race!`);
 							return;
 						}
 					}
