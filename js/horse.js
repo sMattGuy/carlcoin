@@ -66,9 +66,11 @@ function jockeyHire(client,message){
 			message.channel.send(`Invalid index selected!`);
 			return;
 		}
-		if(jock.jockey[jockIndex].hired && jockIndex != jock.jockey.length){
-			message.channel.send(`That Jockey has already been hired!`);
-			return;
+		if(jockIndex != jock.jockey.length){
+			if(jock.jockey[jockIndex].hired){
+				message.channel.send(`That Jockey has already been hired!`);
+				return;
+			}
 		}
 		if(fs.existsSync(`/home/mattguy/carlcoin/cache/horseRace.json`)){
 			let raceRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/horseRace.json`);
