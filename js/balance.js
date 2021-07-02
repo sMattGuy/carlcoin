@@ -101,7 +101,7 @@ function checkBalance(client,message){
 				const playercardEmbed = new Discord.MessageEmbed()
 					.setColor('#FA2700')
 					.setTitle(`${data.users[i].name}'s playercard?`)
-					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+					.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL()}`)
 					.setThumbnail('https://i.imgur.com/0aDFif9.png')
 					.addFields(
 						{ name: 'Summary Info?', value: `Balance: ${fakeBalance}CC\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
