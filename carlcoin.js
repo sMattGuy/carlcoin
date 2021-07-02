@@ -2,7 +2,6 @@
 // Import the discord.js module and others
 const Discord = require('discord.js');
 const fs = require('fs');
-const Canvas = require('canvas');
 //additional files holding each feature
 const playerBattle = require('./js/playerBattle.js');
 const guessingGame = require('./js/guessGame.js');
@@ -49,7 +48,6 @@ let raffleStart = false;
 let prevDate = startupDay.getDay();
 //anti spam stuff
 let recentId;
-let prevHour = startupDay.getHours();
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -78,7 +76,6 @@ client.on('message', message => {
    });
 	//defines the date and time for certain aspects of the bot
 	let universalDate = new Date();
-	let timeRightNow = universalDate.getMinutes();
 	let today = universalDate.getDay();	
 	if(message.content.startsWith('!cc')){
 		console.log(universalDate.getHours() + ':' + universalDate.getMinutes() + ' ' + (universalDate.getMonth()+1) + '/' + universalDate.getDate() + '/' + universalDate.getFullYear());
