@@ -186,7 +186,7 @@ function auditUser(client,message){
 					const playercardEmbed = new Discord.MessageEmbed()
 						.setColor('#F7931A')
 						.setTitle(`${data.users[i].name}'s playercard`)
-						.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+						.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL()}`)
 						.setThumbnail('https://i.imgur.com/0aDFif9.png')
 						.addFields(
 							{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
