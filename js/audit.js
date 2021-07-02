@@ -11,6 +11,8 @@ function auditUser(client,message){
 		//fetch and store data
 		let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 		let data = JSON.parse(database);
+		let bankFile = fs.readFileSync('/home/mattguy/carlcoin/bank.json');
+		let bankJSON = JSON.parse(bankFile);
 		//stores user
 		let user = "";
 		let id = 0;
