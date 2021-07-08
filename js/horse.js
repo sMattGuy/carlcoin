@@ -431,7 +431,18 @@ function actualRace(client,message){
 					horseBehind = horses[racePos[pos+1]];
 				}
 				if(horseInFront.id != 'noPerson'){
-					if(Math.floor(Math.random()*(horses[racePos[pos]].horse.speed + horses[racePos[pos]].jocky.statModifier[1])) > Math.floor(Math.random()*(horseInFront.horse.speed + horseInFront.jocky.statModifier[1]))){
+					let currentHorseSpeed = 0;
+					let challengerHorseSpeed = 0;
+					
+					let currMax = horses[racePos[pos]].horse.speed + horses[racePos[pos]].jocky.statModifier[1];
+					let currMin = (horses[racePos[pos]].horse.speed + horses[racePos[pos]].jocky.statModifier[1]) * 0.75;
+					currentHorseSpeed = Math.floor(Math.random()*(currMax - currMin + 1)) + currMin;
+					
+					let challMax = horseInFront.horse.speed + horseInFront.jocky.statModifier[1];
+					let challMin = (horseInFront.horse.speed + horseInFront.jocky.statModifier[1]) * 0.75;
+					challengerHorseSpeed = Math.floor(Math.random()*(challMax - challMin + 1)) + challMin;
+					
+					if(currentHorseSpeed > challengerHorseSpeed){
 						//current horse
 						let overtakerHorse = racePos[pos];
 						//horse being overtaken
