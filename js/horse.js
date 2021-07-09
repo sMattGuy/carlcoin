@@ -583,9 +583,9 @@ function actualRace(client,message){
 			for(let j=0;j<horses.length;j++){
 				if(jock.jockey[i].name == horses[j].jocky.name){
 					jock.jockey[i].loss += 1;
-					jock.jockey[i].hired = false;
 				}
 			}
+			jock.jockey[i].hired = false;
 		}
 		for(let i=0;i<data.users.length;i++){
 			if(data.users[i].id == firstPlace.id){
