@@ -393,11 +393,12 @@ function connect4(client,message){
 					}
 				}
 			}).catch(e => {
-			message.channel.send(`Didnt get valid response in time`);
 			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			data = JSON.parse(database);
 			let payPlayer = '';
 			let slacker = '';
+			let slackerName = '';
+			let payPlayerName = '';
 			if(workingID == id){
 				payPlayer = enemyID;
 				slacker = id;
@@ -410,11 +411,14 @@ function connect4(client,message){
 				if(data.users[i].id == payPlayer){
 					data.users[i].balance += wager*2;
 					data.users[i].busy = 0;
+					payPlayerName = data.users[i].name;
 				}
 				if(data.users[i].id == slacker){
 					data.users[i].busy = 0;
+					slackerName = data.users[i].name;
 				}
 			}
+			message.channel.send(`${slackerName} didn't respond in time! ${payPlayerName} wins!`);
 			let newData = JSON.stringify(data);
 			fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 			console.log(e);
@@ -422,7 +426,7 @@ function connect4(client,message){
 		}).catch(e => {
 			database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
 			data = JSON.parse(database);
-			message.channel.send(`Didnt get valid response in time 2`);
+			message.channel.send(`Didn't get back a response, sending money back to both players`);
 			for(let i=0;i<data.users.length;i++){
 				if(data.users[i].id == id){
 					data.users[i].balance += wager;
