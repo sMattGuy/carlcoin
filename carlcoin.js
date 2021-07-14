@@ -95,6 +95,30 @@ client.on('message', message => {
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
+	if(universalDate.getMinutes() == 0){
+		//check that economy hasnt desynced
+		let bankFile = fs.readFileSync("./bank.json");
+		let bankParse = JSON.parse(bankFile);
+		let total = 0;
+		for(let i=0;i<data.users.length;i++){
+			total += data.users[i].balance;
+		}
+		for(let i=0;i<bank.users.length;i++){
+			total += bank.users[i].balance;
+		}
+		total += data.carlball;
+		total += data.welfare;
+		total += data.blackjack;
+		console.log(`CHECKING FOR ECONOMY DESYNC`);
+		console.log(`Current User and Pot Total:${total}`);
+		console.log(`Current Econ:${data.econ}`);
+		if(total != data.econ){
+			console.log('!!!!! WARNING! ECONOMIC DESYNC HAS OCCURED! !!!!!');
+		}
+		else{
+			console.log('Economy has not desynced');
+		}
+	}
 	//daily events
 	if(today != prevDate || (message.content === '!cc triggerDaily' && message.author.id == 492850107038040095)){
 		prevDate = universalDate.getDay();
