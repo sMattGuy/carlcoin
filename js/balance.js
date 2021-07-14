@@ -84,146 +84,106 @@ function checkBalance(client,message){
 				timeLeftRob = Math.floor(timeLeftRob / 60);
 				messageToSend += `You have ${timeLeftRob} mins left before you can rob again`
 			}
-			//crazy stats
-			if(data.users[i]["unstable"] >= 100){
-				let fakeBalance = Math.floor(Math.random() * 1001);
-				let fakeBuildings = Math.floor(Math.random() * 1001);
-				let fakeHomes = Math.floor(Math.random() * 1001);
-				let fakeApartments = Math.floor(Math.random() * 1001);
-				let fakeSkyscrapers = Math.floor(Math.random() * 1001);
-				let fakeStr = Math.floor(Math.random() * 1001);
-				let fakeDex = Math.floor(Math.random() * 1001);
-				let fakeCon = -1 * Math.floor(Math.random() * 1001);
-				let fakeInt = -1 * Math.floor(Math.random() * 1001);
-				let fakeWis = -1 * Math.floor(Math.random() * 1001);
-				let fakeChr = -1 * Math.floor(Math.random() * 1001);
-				let fakePercent = Math.floor(Math.random() * 1001);
-				const playercardEmbed = new Discord.MessageEmbed()
-					.setColor('#FA2700')
-					.setTitle(`${data.users[i].name}'s playercard?`)
-					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
-					.setThumbnail('https://i.imgur.com/0aDFif9.png')
-					.addFields(
-						{ name: 'Summary Info?', value: `Balance: ${fakeBalance}CC\nBuildings: ${fakeBuildings}\nSanity: ${sanity}\n${fakePercent}% of the economy owned`},
-						{ name: 'Building Info?', value: `Homes: ${fakeHomes}, Apartments: ${fakeApartments}, Skyscrapers: ${fakeSkyscrapers}\nYou recieve crazy coin from Santa daily`},
-						{ name: 'Horses?', value: `Yeehaw`, inline: true},
-						{ name: 'Sprinters?', value: `Vrrrmmmmmm`, inline: true},
-						{ name: 'Cooldowns', value: `${messageToSend}`},
-						{ name: 'Stats?', value: '\u200B' },
-						{ name: 'STR', value: `${fakeStr}`, inline: true },
-						{ name: 'CON', value: `${fakeCon}`, inline: true },
-						{ name: 'WIS', value: `${fakeWis}`, inline: true },
-						{ name: 'DEX', value: `${fakeDex}`, inline: true },
-						{ name: 'INT', value: `${fakeInt}`, inline: true },
-						{ name: 'CHR', value: `${fakeChr}`, inline: true },
-					)
-				message.channel.send(playercardEmbed);
+			//buildings and balance
+			let balance = data.users[i].balance;
+			let homes = data.users[i]["house"];
+			if(isNaN(homes)){
+				homes = 0;
 			}
-			else{
-				//buildings and balance
-				let balance = data.users[i].balance;
-				let homes = data.users[i]["house"];
-				if(isNaN(homes)){
-					homes = 0;
-				}
-				let apartments = data.users[i]["apartment"];
-				if(isNaN(apartments)){
-					apartments = 0;
-				}
-				let skyscrapers = data.users[i]["skyscraper"];
-				if(isNaN(skyscrapers)){
-					skyscrapers = 0;
-				}
-				
-				let cities = data.users[i]["city"];
-				if(isNaN(cities)){
-					cities = 0;
-				}
-				let countries = data.users[i]["country"];
-				if(isNaN(countries)){
-					countries = 0;
-				}
-				let stations = data.users[i]["station"];
-				if(isNaN(stations)){
-					stations = 0;
-				}
-				
-				
-				
-				//stats
-				let str = data.users[i]["STR"];
-				if(isNaN(str)){
-					str = 0;
-					data.users[i]["STR"] = 0;
-				}
-				let dex = data.users[i]["DEX"];
-				if(isNaN(dex)){
-					dex = 0;
-					data.users[i]["DEX"] = 0;
-				}
-				let con = data.users[i]["CON"];
-				if(isNaN(con)){
-					con = 0;
-					data.users[i]["CON"] = 0;
-				}
-				let inte = data.users[i]["INT"];
-				if(isNaN(inte)){
-					inte = 0;
-					data.users[i]["INT"] = 0;
-				}
-				let wis = data.users[i]["WIS"];
-				if(isNaN(wis)){
-					wis = 0;
-					data.users[i]["WIS"] = 0;
-				}
-				let chr = data.users[i]["CHR"];
-				if(isNaN(chr)){
-					chr = 0;
-					data.users[i]["CHR"] = 0;
-				}
-				let buildings = homes + apartments + skyscrapers + cities + countries + stations;
-				if(!data.users[i].hasOwnProperty("horses")){
-					data.users[i].horses = [];
-				}
-				let sprinter = data.users[i]["sprinter"];
-				if(isNaN(sprinter)){
-					sprinter = 0;
-					data.users[i]["sprinter"] = 0;
-				}
-				let taxAmount = 0;
-				taxAmount =  Math.floor(homes * personalTax) * 2;
-				taxAmount += Math.floor(apartments * personalTax) * 4;
-				taxAmount += Math.floor(skyscrapers * personalTax) * 8;
-				
-				taxAmount += Math.floor(cities * personalTax) * 16;
-				taxAmount += Math.floor(countries * personalTax) * 32;
-				taxAmount += Math.floor(stations * personalTax) * 64;
-				
-				let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50) + (cities * 100) + (countries * 200) + (stations * 400);
-				dailyPayout -= taxAmount;
-				let perc = (balance / data.econ) * 100;
-				perc = perc.toFixed(2);
-				const playercardEmbed = new Discord.MessageEmbed()
-					.setColor('#F7931A')
-					.setTitle(`${data.users[i].name}'s playercard`)
-					.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
-					.setThumbnail('https://i.imgur.com/0aDFif9.png')
-					.addFields(
-						{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
-						{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}, Cities: ${cities}, Countries: ${countries}, Space Stations: ${stations}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}CC) daily`},
-						{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
-						{ name: 'Sprinters', value: `${sprinter}`, inline: true},
-						{ name: 'Cooldowns', value: `${messageToSend}`},
-						{ name: 'Stats', value: '\u200B' },
-						{ name: 'STR', value: `${str}`, inline: true },
-						{ name: 'CON', value: `${con}`, inline: true },
-						{ name: 'WIS', value: `${wis}`, inline: true },
-						{ name: 'DEX', value: `${dex}`, inline: true },
-						{ name: 'INT', value: `${inte}`, inline: true },
-						{ name: 'CHR', value: `${chr}`, inline: true },
-					)
-				message.channel.send(playercardEmbed);
+			let apartments = data.users[i]["apartment"];
+			if(isNaN(apartments)){
+				apartments = 0;
 			}
+			let skyscrapers = data.users[i]["skyscraper"];
+			if(isNaN(skyscrapers)){
+				skyscrapers = 0;
+			}
+			
+			let cities = data.users[i]["city"];
+			if(isNaN(cities)){
+				cities = 0;
+			}
+			let countries = data.users[i]["country"];
+			if(isNaN(countries)){
+				countries = 0;
+			}
+			let stations = data.users[i]["station"];
+			if(isNaN(stations)){
+				stations = 0;
+			}
+			//stats
+			let str = data.users[i]["STR"];
+			if(isNaN(str)){
+				str = 0;
+				data.users[i]["STR"] = 0;
+			}
+			let dex = data.users[i]["DEX"];
+			if(isNaN(dex)){
+				dex = 0;
+				data.users[i]["DEX"] = 0;
+			}
+			let con = data.users[i]["CON"];
+			if(isNaN(con)){
+				con = 0;
+				data.users[i]["CON"] = 0;
+			}
+			let inte = data.users[i]["INT"];
+			if(isNaN(inte)){
+				inte = 0;
+				data.users[i]["INT"] = 0;
+			}
+			let wis = data.users[i]["WIS"];
+			if(isNaN(wis)){
+				wis = 0;
+				data.users[i]["WIS"] = 0;
+			}
+			let chr = data.users[i]["CHR"];
+			if(isNaN(chr)){
+				chr = 0;
+				data.users[i]["CHR"] = 0;
+			}
+			let buildings = homes + apartments + skyscrapers + cities + countries + stations;
+			if(!data.users[i].hasOwnProperty("horses")){
+				data.users[i].horses = [];
+			}
+			let sprinter = data.users[i]["sprinter"];
+			if(isNaN(sprinter)){
+				sprinter = 0;
+				data.users[i]["sprinter"] = 0;
+			}
+			let taxAmount = 0;
+			taxAmount =  Math.floor(homes * personalTax) * 2;
+			taxAmount += Math.floor(apartments * personalTax) * 4;
+			taxAmount += Math.floor(skyscrapers * personalTax) * 8;
+			
+			taxAmount += Math.floor(cities * personalTax) * 16;
+			taxAmount += Math.floor(countries * personalTax) * 32;
+			taxAmount += Math.floor(stations * personalTax) * 64;
+			
+			let dailyPayout = (homes * 10) + (apartments * 25) + (skyscrapers * 50) + (cities * 100) + (countries * 200) + (stations * 400);
+			dailyPayout -= taxAmount;
+			let perc = (balance / data.econ) * 100;
+			perc = perc.toFixed(2);
+			const playercardEmbed = new Discord.MessageEmbed()
+				.setColor('#F7931A')
+				.setTitle(`${data.users[i].name}'s playercard`)
+				.setAuthor(`${data.users[i].name}`, `${message.author.displayAvatarURL()}`)
+				.setThumbnail('https://i.imgur.com/0aDFif9.png')
+				.addFields(
+					{ name: 'Summary Info', value: `Balance: ${balance}CC\nBuildings: ${buildings}\nSanity: ${sanity}\n${perc}% of the economy owned`},
+					{ name: 'Building Info', value: `Homes: ${homes}, Apartments: ${apartments}, Skyscrapers: ${skyscrapers}, Cities: ${cities}, Countries: ${countries}, Space Stations: ${stations}\nYou recieve ${dailyPayout}CC (Tax takes ${taxAmount}CC) daily`},
+					{ name: 'Horses', value: `${data.users[i].horses.length}`, inline: true },
+					{ name: 'Sprinters', value: `${sprinter}`, inline: true},
+					{ name: 'Cooldowns', value: `${messageToSend}`},
+					{ name: 'Stats', value: '\u200B' },
+					{ name: 'STR', value: `${str}`, inline: true },
+					{ name: 'CON', value: `${con}`, inline: true },
+					{ name: 'WIS', value: `${wis}`, inline: true },
+					{ name: 'DEX', value: `${dex}`, inline: true },
+					{ name: 'INT', value: `${inte}`, inline: true },
+					{ name: 'CHR', value: `${chr}`, inline: true },
+				)
+			message.channel.send(playercardEmbed);
 			console.log(data.users[i].name + ' checked their balance');
 			notFound = false;
 			let newData = JSON.stringify(data);

@@ -25,39 +25,52 @@ function dailyEvents(client,message){
 		let taxAmount = 0;
 		let blackjackAmount = 0;
 		
-		let homePrice = data.users[i]["house"] * 10;
-		if(isNaN(homePrice)){
-			homePrice = 0;
+		let homes = data.users[i]["house"];
+		if(isNaN(homes)){
+			homes = 0;
 		}
-		taxAmount = Math.floor((homePrice / 10) * personalTax) * 2;
-		let apartPrice = data.users[i]["apartment"] * 25;
-		if(isNaN(apartPrice)){
-			apartPrice = 0;
+		let apartments = data.users[i]["apartment"];
+		if(isNaN(apartments)){
+			apartments = 0;
 		}
-		taxAmount += Math.floor((apartPrice / 25) * personalTax) * 4;
-		let skyPrice = data.users[i]["skyscraper"] * 50;
-		if(isNaN(skyPrice)){
-			skyPrice = 0;
+		let skyscrapers = data.users[i]["skyscraper"];
+		if(isNaN(skyscrapers)){
+			skyscrapers = 0;
 		}
-		taxAmount += Math.floor((skyPrice / 50) * personalTax) * 8;
-		let cityPrice = data.users[i]["city"] * 100;
-		if(isNaN(cityPrice)){
-			cityPrice = 0;
+		
+		let cities = data.users[i]["city"];
+		if(isNaN(cities)){
+			cities = 0;
 		}
-		taxAmount += Math.floor((cityPrice / 100) * personalTax) * 16;
-		let countryPrice = data.users[i]["country"] * 200;
-		if(isNaN(countryPrice)){
-			countryPrice = 0;
+		let countries = data.users[i]["country"];
+		if(isNaN(countries)){
+			countries = 0;
 		}
-		taxAmount += Math.floor((countryPrice / 200) * personalTax) * 32;
-		let stationPrice = data.users[i]["station"] * 400;
-		if(isNaN(stationPrice)){
-			stationPrice = 0;
+		let stations = data.users[i]["station"];
+		if(isNaN(stations)){
+			stations = 0;
 		}
-		taxAmount += Math.floor((stationPrice / 400) * personalTax) * 64;
+		
+		let homePrice = homes * 10;
+		taxAmount = Math.floor(homes * personalTax) * 2;
+		let apartPrice = apartments * 25;
+		taxAmount += Math.floor(apartments * personalTax) * 4;
+		let skyPrice = skyscrapers * 50;
+		taxAmount += Math.floor(skyscrapers * personalTax) * 8;
+		let cityPrice = cities * 100;
+		taxAmount += Math.floor(cities * personalTax) * 16;
+		let countryPrice = countries * 200;
+		taxAmount += Math.floor(countries * personalTax) * 32;
+		let stationPrice = stations * 400;
+		taxAmount += Math.floor(stations * personalTax) * 64;
 		let amount = homePrice + apartPrice + skyPrice + cityPrice + countryPrice + stationPrice;
+		console.log(data.users[i].name + " tax amount " + taxAmount);
+		console.log(data.users[i].name + " amount before tax " + amount);
 		amount -= taxAmount;
+		console.log(data.users[i].name + " amount after tax " + amount);
+		console.log(data.users[i].name + " balance before " + data.users[i].balance);
 		data.users[i].balance += amount;
+		console.log(data.users[i].name + " balance after " + data.users[i].balance);
 		if(data.users[i].balance < 0){
 			let moneyOver = data.users[i].balance
 			data.users[i].balance = 0;
@@ -68,6 +81,7 @@ function dailyEvents(client,message){
 				}
 			}
 		}
+		console.log(data.users[i].name + " final balance " + data.users[i].balance);
 		totalAdded += amount;
 		totalTax += taxAmount;
 		blackjackAmount = Math.floor(taxAmount/2);
