@@ -105,8 +105,8 @@ client.on('message', message => {
 		for(let i=0;i<data.users.length;i++){
 			total += data.users[i].balance;
 		}
-		for(let i=0;i<bank.users.length;i++){
-			total += bank.users[i].balance;
+		for(let i=0;i<bankParse.users.length;i++){
+			total += bankParse.users[i].balance;
 		}
 		total += data.carlball;
 		total += data.welfare;
