@@ -96,7 +96,7 @@ client.on('message', message => {
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
-	if(universalDate.getHours() == prevHour){
+	if(universalDate.getHours() != prevHour){
 		prevHour = universalDate.getHours();
 		//check that economy hasnt desynced
 		let bankFile = fs.readFileSync("./bank.json");
