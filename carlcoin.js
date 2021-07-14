@@ -46,6 +46,7 @@ let messageCounter = 0;
 let raffleStart = false;
 //new day checking variables
 let prevDate = startupDay.getDay();
+let prevHour = startupDay.getHours();
 //anti spam stuff
 let recentId;
 //sets ready presense
@@ -95,7 +96,8 @@ client.on('message', message => {
 		raffleStart = true;
 		guessingGame.startGuessGame(client,message);
 	}
-	if(universalDate.getMinutes() == 0){
+	if(universalDate.getHours() == prevHour){
+		prevHour = universalDate.getHours();
 		//check that economy hasnt desynced
 		let bankFile = fs.readFileSync("./bank.json");
 		let bankParse = JSON.parse(bankFile);
