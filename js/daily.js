@@ -10,7 +10,7 @@ function dailyEvents(client,message){
 	let bankJSON = JSON.parse(bankFile);
 	let totalAdded = 0;
 	let totalTax = 0;
-	
+	let totalRemoved = 0;
 	for(let i=0;i<data.users.length;i++){
 		let bankValue = 0;
 		for(let j=0;j<bankJSON.users.length;j++){
@@ -101,6 +101,7 @@ function dailyEvents(client,message){
 			let removeAmount = data.blackjack - 10000;
 			data.blackjack = data.blackjack - removeAmount;
 			data.econ = data.econ - removeAmount;
+			totalRemoved += removeAmount;
 		}
 		console.log(data.users[i].name + " has gotten " + amount + " in realty payments");
 		if(isNaN(data.users[i]["unstable"])){
@@ -118,6 +119,7 @@ function dailyEvents(client,message){
 	}
 	console.log('users got ' + totalAdded + ' carl coin from realty');
 	console.log(totalTax + ' was collected from taxes');
+	console.log(totalRemoved + ' was removed from the econ');
 	let newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	let newBank = JSON.stringify(bankJSON);
