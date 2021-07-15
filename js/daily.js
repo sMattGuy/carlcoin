@@ -93,12 +93,12 @@ function dailyEvents(client,message){
 		data.econ += blackjackAmount;
 		//limit pots
 		if(data.welfare >= 5000){
-			let removeAmount = data.welfare - 1000;
+			let removeAmount = data.welfare - 5000;
 			data.welfare = data.welfare - removeAmount;
 			data.blackjack = data.blackjack + removeAmount;
 		}
 		if(data.blackjack >= 10000){
-			let removeAmount = data.blackjack - 5000;
+			let removeAmount = data.blackjack - 10000;
 			data.blackjack = data.blackjack - removeAmount;
 			data.econ = data.econ - removeAmount;
 		}
