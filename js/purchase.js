@@ -124,8 +124,8 @@ function purchaseItem(client,message){
 						data.users[i]["city"] += 1;
 						data.users[i].balance -= cost;
 						data.econ -= 500;
-						data.welfare += 250;
-						data.blackjack += cost - 250;
+						data.welfare += 500;
+						data.blackjack += cost - 1000;
 						data.users[i]["activity"] = Date.now();
 						if(isNaN(data.users[i]["INT"])){
 							data.users[i]["INT"] = 0;
@@ -157,8 +157,8 @@ function purchaseItem(client,message){
 						data.users[i]["country"] += 1;
 						data.users[i].balance -= cost;
 						data.econ -= 1000;
-						data.welfare += 500;
-						data.blackjack += cost - 500;
+						data.welfare += 1000;
+						data.blackjack += cost - 2000;
 						data.users[i]["activity"] = Date.now();
 						if(isNaN(data.users[i]["INT"])){
 							data.users[i]["INT"] = 0;
@@ -190,8 +190,8 @@ function purchaseItem(client,message){
 						data.users[i]["station"] += 1;
 						data.users[i].balance -= cost;
 						data.econ -= 2000;
-						data.welfare += 1000;
-						data.blackjack += cost - 1000;
+						data.welfare += 2000;
+						data.blackjack += cost - 4000;
 						data.users[i]["activity"] = Date.now();
 						if(isNaN(data.users[i]["INT"])){
 							data.users[i]["INT"] = 0;
