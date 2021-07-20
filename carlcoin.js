@@ -81,13 +81,6 @@ client.on('message', message => {
 		dailyEvents.dailyEvents(client,message);
 	}
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
-	//guess command
-	if(raffleStart && message.content.startsWith('!cc guess')){ /* !cc guess amount */
-		console.log(message.author.username + ' is guessing');
-		if(guessingGame.guessNumber(client,message)){
-			raffleStart = false;
-		}
-	}
 	//battle start command
 	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
 		console.log(message.author.username + ' is challenging');
