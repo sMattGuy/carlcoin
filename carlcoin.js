@@ -40,15 +40,9 @@ const mancala = require('./js/mancala.js');
 const client = new Discord.Client();
 // import token and database
 const credentials = require('./auth.json');
-//raffle variables
-let startupDay = new Date();
-let messageCounter = 0;
-let raffleStart = false;
 //new day checking variables
+let startupDay = new Date();
 let prevDate = startupDay.getDay();
-let prevHour = startupDay.getHours();
-//anti spam stuff
-let recentId;
 //sets ready presense
 client.on('ready', () => {
   client.user.setPresence({
@@ -80,46 +74,6 @@ client.on('message', message => {
 	let today = universalDate.getDay();	
 	if(message.content.startsWith('!cc')){
 		console.log(universalDate.getHours() + ':' + universalDate.getMinutes() + ' ' + (universalDate.getMonth()+1) + '/' + universalDate.getDate() + '/' + universalDate.getFullYear());
-	}
-	//increment message counter with spam protection
-	if(!raffleStart && (recentId !== message.author.id && !message.author.bot)){
-		messageCounter += 1;
-		recentId = message.author.id;
-	}
-	//raffle functionality
-	//message failsafe incase countery somehow goes past value
-	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	let data = JSON.parse(database);
-	//detects when md5 raffle should begin
-	if((messageCounter >= data.raffleRNG && !raffleStart)){
-		messageCounter = 0;
-		raffleStart = true;
-		guessingGame.startGuessGame(client,message);
-	}
-	if(universalDate.getHours() != prevHour){
-		prevHour = universalDate.getHours();
-		//check that economy hasnt desynced
-		let bankFile = fs.readFileSync("./bank.json");
-		let bankParse = JSON.parse(bankFile);
-		let total = 0;
-		for(let i=0;i<data.users.length;i++){
-			total += data.users[i].balance;
-		}
-		for(let i=0;i<bankParse.users.length;i++){
-			total += bankParse.users[i].balance;
-		}
-		total += data.carlball;
-		total += data.welfare;
-		total += data.blackjack;
-		console.log(`CHECKING FOR ECONOMY DESYNC`);
-		console.log(`Current User and Pot Total:${total}`);
-		console.log(`Current Econ:${data.econ}`);
-		if(total != data.econ){
-			console.log('!!!!! WARNING! ECONOMIC DESYNC HAS OCCURED! !!!!!');
-		}
-		else{
-			console.log('Economy has not desynced');
-		}
 	}
 	//daily events
 	if(today != prevDate || (message.content === '!cc triggerDaily' && message.author.id == 492850107038040095)){
