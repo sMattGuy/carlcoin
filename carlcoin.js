@@ -31,7 +31,6 @@ const horse = require('./js/horse.js');
 const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
 const bank = require('./js/bank.js');
-const battle = require('./js/battle.js');
 const connect = require('./js/connect.js');
 const mancala = require('./js/mancala.js');
 // Create an instance of a Discord client
@@ -354,14 +353,6 @@ client.on('message', message => {
 		console.log(message.author.username + ' is checking bank help');
 		bank.bankHelp(client,message);
 	}
-	else if(message.content === '!cc battle'){
-		console.log(message.author.username + ' is battling an enemy');
-		battle.testResponses(client,message);
-	}
-	else if(message.content === '!cc battleHelp'){
-		console.log(message.author.username + ' is checking battle help');
-		battle.battleHelp(client,message);
-	}
 	else if(message.content.startsWith('!cc connect4')){
 		console.log(message.author.username + ' is playing connect4');
 		connect.connect4(client,message);
@@ -378,14 +369,6 @@ client.on('message', message => {
 		console.log(message.author.username + ' is playing mancala');
 		mancala.mancala(client,message);
 	}
-	else if(message.content === '!cc patchnotes'){
-		console.log(message.author.username + '  is checking patchnotes');
-		message.channel.send(`Patch Notes 6/29/2021\nYou are now taxed out of your balance if your homes dont cover it`);
-	}
-	//caps lock
-	else if(message.content.startsWith('!CC')){
-		message.channel.send(`Stop yelling :|`);
-	}	
 });
 // Log our bot in using the token from https://discord.com/developers/applications
 client.login(`${credentials.token}`);
