@@ -6,7 +6,7 @@ function mainHelp(client,message){
 }
 
 function gambleHelp(client,message){
-	message.channel.send(`use !cc chance to maybe double your money!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rob <@user> to attempt to steal some coin from them!\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
+	message.channel.send(`use !cc chance to maybe double your money!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
 }
 
 function userHelp(client,message){

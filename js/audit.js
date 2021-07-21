@@ -87,18 +87,6 @@ function auditUser(client,message){
 						timeLeftRelax = Math.floor(timeLeftRelax / 60);
 						messageToSend += `You have ${timeLeftRelax} mins left before you can relax again\n`
 					}
-					if(isNaN(data.users[i]["robTimer"])){
-						data.users[i]["robTimer"] = Date.now();
-					}	
-					if(data.users[i]["robTimer"] < Date.now()){
-						messageToSend += `You can rob!`
-					}
-					else{
-						let timeLeftRob = data.users[i]["robTimer"] - Date.now();
-						timeLeftRob = Math.floor(timeLeftRob / 1000);
-						timeLeftRob = Math.floor(timeLeftRob / 60);
-						messageToSend += `You have ${timeLeftRob} mins left before you can rob again`
-					}
 					
 					//buildings and balance
 					let balance = data.users[i].balance;

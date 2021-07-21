@@ -24,7 +24,6 @@ const sanity = require('./js/sanity.js');
 const leaderboard = require('./js/leaderboard.js');
 const changeName = require('./js/changeName.js');
 const sex = require('./js/sex.js');
-const rob = require('./js/robbery.js');
 const RPS = require('./js/rockpaperscissors.js');
 const slots = require('./js/slotmachine.js');
 const help = require('./js/help.js');
@@ -204,11 +203,6 @@ client.on('message', message => {
 	else if(message.content.startsWith('!cc sex')){
 		console.log(message.author.username + ' is having sex');
 		sex.haveSex(client,message);
-	}
-	//robbery
-	else if(message.content.startsWith('!cc rob')){
-		console.log(message.author.username + ' is robbing');
-		rob.robPlayer(client,message);
 	}
 	//rock paper scissors
 	else if(message.content.startsWith('!cc rps')){ /* !cc challenge @user amount */
