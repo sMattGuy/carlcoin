@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 const fs = require('fs');
 //additional files holding each feature
 const playerBattle = require('./js/playerBattle.js');
-const guessingGame = require('./js/guessGame.js');
 const dailyEvents = require('./js/daily.js');
 const joinCarl = require('./js/joinCarl.js');
 const audit = require('./js/audit.js');

@@ -74,15 +74,6 @@ function cureInsanity(client,message){
 	}
 }
 
-function summonGaintCoin(client,message){
-	let database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-	let data = JSON.parse(database);
-	data.raffleRNG = 0
-	console.log('giant coin has been summoned');
-	let newData = JSON.stringify(data);
-	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-	message.channel.send(`A Giant Coin is about to appear!`);
-}
 // !cc leaveServer serverID
 function leaveServer(client,message){
 	let chop = message.content.split(" ");
@@ -128,7 +119,6 @@ function getUserFromMention(client,mention) {
 
 module.exports = {
 	giveUserMoney,
-	summonGaintCoin,
 	leaveServer,
 	cureInsanity
 };
