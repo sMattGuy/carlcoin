@@ -16,7 +16,6 @@ const sell = require('./js/sellBuilding.js');
 const sellUser = require('./js/sellUser.js');
 const econ = require('./js/economy.js');
 const blackjack = require('./js/blackjack.js');
-const suicide = require('./js/suicide.js');
 const relax = require('./js/relax.js');
 const doctor = require('./js/doctor.js');
 const sanity = require('./js/sanity.js');
@@ -158,11 +157,6 @@ client.on('message', message => {
 	else if(message.content === '!cc stand'){
 		console.log(message.author.username + ' is standing in blackjack');
 		blackjack.blackjackStand(client,message);
-	}
-	//uh oh
-	else if(message.content === '!cc suicide'){
-		console.log(message.author.username + ' is suiciding');
-		suicide.attemptSuicide(client,message);
 	}
 	//relax
 	else if(message.content === '!cc relax'){

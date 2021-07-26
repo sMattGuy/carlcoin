@@ -161,7 +161,6 @@ function dailyEvents(client,message){
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	bank.bankDaily(client,message);
 }
-
 //export functions
 module.exports = {
 	dailyEvents

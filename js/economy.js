@@ -23,7 +23,6 @@ function checkEcon(client,message){
 		if(data.users[i]["skyscraper"] > 0 && !isNaN(data.users[i]["skyscraper"])){
 			skyCount += data.users[i]["skyscraper"];
 		}
-		
 		if(data.users[i]["city"] > 0 && !isNaN(data.users[i]["city"])){
 			cityCount += data.users[i]["city"];
 		}
@@ -33,8 +32,6 @@ function checkEcon(client,message){
 		if(data.users[i]["country"] > 0 && !isNaN(data.users[i]["country"])){
 			stationCount += data.users[i]["country"];
 		}
-		
-		
 		if(data.users[i].hasOwnProperty("horses")){
 			if(data.users[i].horses.length > 0){
 				horses += data.users[i].horses.length;
