@@ -30,7 +30,6 @@ const admin = require('./js/admin.js');
 const sprinter = require('./js/sprinter.js');
 const bank = require('./js/bank.js');
 const connect = require('./js/connect.js');
-const mancala = require('./js/mancala.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 // import token and database
@@ -348,14 +347,6 @@ client.on('message', message => {
 	else if(message.content === '!cc connectHelp'){
 		console.log(message.author.username + ' is checking connect help');
 		connect.connectHelp(client,message);
-	}
-	else if(message.content === '!cc mancalaHelp'){
-		console.log(message.author.username + ' is checking mancala help');
-		mancala.mancalaHelp(client,message);
-	}
-	else if(message.content.startsWith('!cc mancala') && message.content != '!cc mancalaAccept' && message.content != '!cc mancalaDeny'){
-		console.log(message.author.username + ' is playing mancala');
-		mancala.mancala(client,message);
 	}
 });
 // Log our bot in using the token from https://discord.com/developers/applications
