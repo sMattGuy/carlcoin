@@ -11,7 +11,6 @@ function checkEcon(client,message){
 	let countryCount = 0;
 	let stationCount = 0;
 	let horses = 0;
-	let carlball = data.carlball;
 	console.log(message.author.username + ' is checking the econ');
 	//searches for highest and lowest earner
 	for(let i=0;i<data.users.length;i++){
@@ -49,7 +48,6 @@ function checkEcon(client,message){
 		.addFields(
 			{ name: 'Carl Coin Circulating', value: `${data.econ}CC`},
 			{ name: 'Users Registered', value: `${data.users.length}`},
-			{ name: 'CarlBall Jackpot', value: `${carlball}CC`, inline: true },
 			{ name: 'Blackjack Pot', value: `${data.blackjack}CC`, inline: true },
 			{ name: '\u200B', value: `\u200B`, inline: true },
 			{ name: 'Mines', value: `${data.welfare}CC`, inline: true },
