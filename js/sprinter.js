@@ -23,17 +23,6 @@ function driveSprinter(client,message){
 	}
 }
 
-function moveCargo(client,message){
-	/*
-	!cc moveCargo <cargo type>
-	cargo types
-	bitches
-	gildians stuff
-	punchbars
-	*/
-	
-}
-
 function sprinterHelp(client,message){
 	message.channel.send(`Use !cc driveSprinter to drive your sprinter\n`);
 }

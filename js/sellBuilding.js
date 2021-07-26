@@ -104,7 +104,7 @@ function sellBuilding(client,message){
 					}
 				}
 				else{
-					message.channel.send('Invalid sell! Try house, apartment or skyscraper');
+					message.channel.send('Invalid sell! Try house, apartment, skyscraper, city, country, or station!');
 				}
 				noUser = false;
 				break;
