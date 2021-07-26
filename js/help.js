@@ -2,11 +2,11 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 function mainHelp(client,message){
-	message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands\nuse !cc horseHelp to see information on horses\nuse !cc sprinterHelp to see sprinter commands\nuse !cc bankHelp to see bank information!\nuse !cc connectHelp to see info on connect 4\nuse !cc patchnotes to see recent changes`);
+	message.channel.send(`use !cc gameHelp to see information on games\nuse !cc userHelp to see user commands\nuse !cc horseHelp to see information on horses\nuse !cc sprinterHelp to see sprinter commands\nuse !cc bankHelp to see bank information!\nuse !cc connectHelp to see info on connect 4`);
 }
 
 function gambleHelp(client,message){
-	message.channel.send(`use !cc chance to maybe double your money!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc lottery to enroll in the lottery, winner gets the pot!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
+	message.channel.send(`use !cc chance to maybe double your money!\nuse !cc challenge <@user> <amount> to challenge someone for some CC!\nuse !cc blackjack <amount> to play blackjack\nuse !cc rps <@user> <amount> to challenge someone to rock paper scissors, the bot will DM you!\nuse !cc slots <amount> to play some slot machine games!`);
 }
 
 function userHelp(client,message){

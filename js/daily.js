@@ -124,34 +124,6 @@ function dailyEvents(client,message){
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	let newBank = JSON.stringify(bankJSON);
 	fs.writeFileSync('/home/mattguy/carlcoin/bank.json',newBank);
-	//lottery
-	if(fs.existsSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`)){
-		let lotteryRead = fs.readFileSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
-		let lotteryFile = JSON.parse(lotteryRead);
-		let winner = Math.floor(Math.random() * (lotteryFile.users.length));
-		database = fs.readFileSync('/home/mattguy/carlcoin/database.json');
-		data = JSON.parse(database);
-		let winnerID = lotteryFile.users[winner].id;
-		for(let i=0;i<data.users.length;i++){
-			if(data.users[i].id == winnerID){
-				data.users[i].balance += data.carlball;
-				let winnerAmount = data.carlball;
-				data.carlball = 0;
-				let newData = JSON.stringify(data);
-				fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
-				client.guilds.cache.forEach((guild) => {
-					try{
-						guild.channels.cache.find((x) => x.name == 'general').send(`Congratulations ${data.users[i].name}! You have won ${winnerAmount}CC in todays lottery!`);
-					}
-					catch(err){
-						console.log("no general chat in "+guild.name);
-					}
-				});
-				break;
-			}
-		}
-		fs.unlinkSync(`/home/mattguy/carlcoin/cache/dailyLottery.json`);
-	}
 	//horse race
 	horse.actualRace(client,message);
 	//horse handler

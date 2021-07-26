@@ -15,7 +15,6 @@ const purchase = require('./js/purchase.js');
 const sell = require('./js/sellBuilding.js');
 const sellUser = require('./js/sellUser.js');
 const econ = require('./js/economy.js');
-const lottery = require('./js/lottery.js');
 const blackjack = require('./js/blackjack.js');
 const suicide = require('./js/suicide.js');
 const relax = require('./js/relax.js');
@@ -144,11 +143,6 @@ client.on('message', message => {
 	else if(message.content === '!cc econ'){
 		console.log(message.author.username + ' is checking econ');
 		econ.checkEcon(client,message);
-	}
-	//lottery
-	else if(message.content === '!cc lottery'){
-		console.log(message.author.username + ' is enrolling in lottery');
-		lottery.enrollInLottery(client,message);
 	}
 	//blackjack
 	else if(message.content.startsWith('!cc blackjack')){ /* !cc blackjack amount */	
