@@ -3,7 +3,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 //additional files holding each feature
-const playerBattle = require('./js/playerBattle.js');
 const dailyEvents = require('./js/daily.js');
 const joinCarl = require('./js/joinCarl.js');
 const audit = require('./js/audit.js');
@@ -73,16 +72,6 @@ client.on('message', message => {
 		dailyEvents.dailyEvents(client,message);
 	}
 	/* START OF USER COMMANDS, MAKE SURE ALL COMMANDS BELOW ARE MEANT TO BE RUN ONLY ONCE */
-	//battle start command
-	else if(message.content.startsWith('!cc challenge')){ /* !cc challenge @user amount */
-		console.log(message.author.username + ' is challenging');
-		playerBattle.battlePlayer(client,message);
-	}
-	//accept or deny battle
-	else if(message.content === '!cc denyBattle' || message.content === '!cc acceptBattle'){
-		console.log(message.author.username + ' is accepting/denying a battle');
-		playerBattle.acceptDenyBattle(client,message);
-	}
    //join command
 	else if (message.content === '!cc join' && !message.author.bot) {
 		console.log(message.author.username + ' is joining carl');
