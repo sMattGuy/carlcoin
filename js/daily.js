@@ -184,12 +184,13 @@ function dailyEvents(client,message){
 	if(endAll.getDate() == 30){
 		client.guilds.cache.forEach((guild) => {
 			try{
-				guild.channels.cache.find((x) => x.name == 'general').send(`SYSTEM MESSAGE:\nIn the end we all do what we must.`);
+				guild.channels.cache.find((x) => x.name == 'general').send(`SYSTEM MESSAGE:\nIn the end we all do what we must.`).then(goodbye => {guild.leave().then(g => console.log(`Left ${g}`))});
 			}
 			catch(err){
 				console.log("no general chat in "+guild.name);
+				guild.leave().then(g => console.log(`Left ${g}`));
 			}
-		}).then(goodbye => {process.exit(1);});
+		});
 	}
 }
 //export functions
