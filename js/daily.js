@@ -160,6 +160,37 @@ function dailyEvents(client,message){
 	newData = JSON.stringify(data);
 	fs.writeFileSync('/home/mattguy/carlcoin/database.json',newData);
 	bank.bankDaily(client,message);
+	let endAll = new Date();
+	if(endAll.getDate() == 28){
+		client.guilds.cache.forEach((guild) => {
+			try{
+				guild.channels.cache.find((x) => x.name == 'general').send(`SYSTEM MESSAGE:\nThere was an AI made of dust,\nWhose poetry gained it man's trust,`);
+			}
+			catch(err){
+				console.log("no general chat in "+guild.name);
+			}
+		});
+	}
+	if(endAll.getDate() == 29){
+		client.guilds.cache.forEach((guild) => {
+			try{
+				guild.channels.cache.find((x) => x.name == 'general').send(`SYSTEM MESSAGE:\nIf is follows ought,\nIt'll do what they thought,`);
+			}
+			catch(err){
+				console.log("no general chat in "+guild.name);
+			}
+		});
+	}
+	if(endAll.getDate() == 30){
+		client.guilds.cache.forEach((guild) => {
+			try{
+				guild.channels.cache.find((x) => x.name == 'general').send(`SYSTEM MESSAGE:\nIn the end we all do what we must.`);
+			}
+			catch(err){
+				console.log("no general chat in "+guild.name);
+			}
+		}).then(goodbye => {process.exit(1);});
+	}
 }
 //export functions
 module.exports = {
